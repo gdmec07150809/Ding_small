@@ -36,6 +36,7 @@
         <activity android:name=".ContactsDeatilActivity"/>
         <activity android:name=".ContactsDeatilsToActivity"/>
         <activity android:name=".NotepadBtnActivity"/>
+        <activity android:name=".SearchActivity"/>
     </application>
 
 </manifest>

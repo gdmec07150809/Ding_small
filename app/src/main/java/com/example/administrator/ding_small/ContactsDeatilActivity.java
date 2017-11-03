@@ -44,8 +44,10 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
         payable_text=findViewById(R.id.payable_text);
         notepad_btn=findViewById(R.id.notepad_btn);
         account_btn=findViewById(R.id.account_btn);
+        findViewById(R.id.f_notepad).setOnClickListener(this);
         notepad_btn.setOnClickListener(this);
         account_btn.setOnClickListener(this);
+        findViewById(R.id.add).setOnClickListener(this);
         account_layout=(LinearLayout) findViewById(R.id.account_layout);
         notepad_layout=(LinearLayout) findViewById(R.id.notepad_layout);
 
@@ -96,6 +98,16 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
                 notepad_btn.setTextColor(Color.parseColor("#6AB845"));
                 account_layout.setVisibility(View.VISIBLE);
                 notepad_layout.setVisibility(View.GONE);
+                break;
+            case R.id.add:
+                Intent intent1=new Intent(ContactsDeatilActivity.this,NotepadActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
+                break;
+            case R.id.f_notepad:
+                Intent intent2=new Intent(ContactsDeatilActivity.this,NotepadBtnActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
                 break;
         }
     }
