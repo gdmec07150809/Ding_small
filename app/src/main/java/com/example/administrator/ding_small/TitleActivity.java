@@ -48,22 +48,27 @@ public class TitleActivity extends Activity implements View.OnClickListener{
         case R.id.received:
             intent=new Intent(TitleActivity.this,ReceivedActivity.class);
             startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             break;
         case R.id.payable:
             intent=new Intent(TitleActivity.this,PayableActivity.class);
             startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             break;
         case R.id.notepad:
             intent=new Intent(TitleActivity.this,NotepadActivity.class);
             startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             break;
         case R.id.add_title:
             intent=new Intent(TitleActivity.this,AddTitleActivity.class);
             startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             break;
         case R.id.edit_title:
             intent=new Intent(TitleActivity.this,EditTitleActivity.class);
             startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             break;
     }
     }

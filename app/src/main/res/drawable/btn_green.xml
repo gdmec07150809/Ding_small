@@ -8,11 +8,11 @@
             <solid
                 android:color="#6AB845"/>
             <corners
-                android:radius="5dip"
+                android:radius="3dip"
                 />
             <stroke
                 android:width="0.5px"
-                android:color="#505050"/>
+                android:color="#6AB845"/>
         </shape>
     </item>
 </layer-list>

@@ -72,6 +72,7 @@ public class EditLabelAdapter extends BaseAdapter implements OnClickListener {
         }
         return contentView;
     }
+
     @Override
     public void onClick(View v) {
         mCallback.click(v);

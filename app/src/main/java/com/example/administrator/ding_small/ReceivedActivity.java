@@ -224,10 +224,12 @@ public class ReceivedActivity extends Activity implements View.OnClickListener{
             case R.id.notepad:
                 intent=new Intent(ReceivedActivity.this,NotepadActivity.class);
                 startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.payable:
                 intent=new Intent(ReceivedActivity.this,PayableActivity.class);
                 startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
         }
     }

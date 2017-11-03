@@ -14,14 +14,13 @@ import android.widget.LinearLayout;
 
 public class NotepadActivity  extends Activity implements View.OnClickListener{
     LinearLayout ll,two;
-    int index=0;
     Intent intent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notepad);
         ll=findViewById(R.id.main_ll);
-        two = (LinearLayout) this.findViewById(R.id.two);
+        two = this.findViewById(R.id.two);
         findViewById(R.id.received).setOnClickListener(this);
         findViewById(R.id.payable).setOnClickListener(this);
         findViewById(R.id.click_btn).setOnClickListener(this);
@@ -34,33 +33,21 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
             case R.id.click_btn:
                 intent=new Intent(NotepadActivity.this,TitleActivity.class);
                 startActivity(intent);
-//                View view=null;
-//                if(index==0){
-//                    view= LayoutInflater.from(NotepadActivity.this).inflate(R.layout.c_layout, null);
-//                }else if(index==1){
-//                   view = LayoutInflater.from(NotepadActivity.this).inflate(R.layout.c2_layout, null);
-//                }else if(index==2){
-//                    view = LayoutInflater.from(NotepadActivity.this).inflate(R.layout.c3_layout, null);
-//                }else if(index==3){
-//                    view = LayoutInflater.from(NotepadActivity.this).inflate(R.layout.c4_layout, null);
-//                }else if(index==4){
-//                    view = LayoutInflater.from(NotepadActivity.this).inflate(R.layout.c5_layout, null);
-//                }else {
-//                    break;
-//                }
-//                two.addView(view);
-//               index++;
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.received:
                 intent=new Intent(NotepadActivity.this,ReceivedActivity.class);
                 startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.payable:
                 intent=new Intent(NotepadActivity.this,PayableActivity.class);
                 startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
         }
     }
+
     /**
      * 实现小圆点的添加，
      * 找到线性布局动态的向线性布局内添加小圆，并添加drawable选择的效果

@@ -519,8 +519,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="27dp"
+                            android:layout_height="27dp"
                             android:layout_gravity="center_horizontal"
                             android:background="@drawable/edit_add" />
 

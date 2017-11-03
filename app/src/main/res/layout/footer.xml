@@ -2,40 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_marginTop="5dp"
-    android:layout_height="60dp">
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:src="@drawable/work_order_no"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"/>
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/account_book_no"
-        android:layout_weight="1"/>
-    <ImageView
-        android:id="@+id/add"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/add"
-        android:layout_weight="1"/>
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:src="@drawable/contacts_yes"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"/>
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:src="@drawable/center_no"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"/>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/hui"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/f_notepad"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/work_order_no"/>
+
+        <ImageView
+            android:id="@+id/f_account"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/account_book_no"/>
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/add"/>
+
+        <ImageView
+            android:id="@+id/f_contacts"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/contacts_yes"/>
+
+        <ImageView
+            android:id="@+id/f_center"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/center_no"/>
+    </LinearLayout>
 </LinearLayout>

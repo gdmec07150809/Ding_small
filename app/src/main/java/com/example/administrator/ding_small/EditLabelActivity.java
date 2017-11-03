@@ -26,7 +26,9 @@ public class EditLabelActivity extends Activity  implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_label);
+        //初始化控件
         list=findViewById(R.id.title_list);
+
         jsonArray=new JSONArray();
         lists=new ArrayList<String>();
         lists.add("通用");
@@ -39,6 +41,7 @@ public class EditLabelActivity extends Activity  implements View.OnClickListener
         lists.add("房租");
         lists.add("零食");
         lists.add("夜宵");
+
         try {
             for (int i=0;i<lists.size();i++){
                 JSONObject jsonObject;
@@ -52,6 +55,7 @@ public class EditLabelActivity extends Activity  implements View.OnClickListener
         }
         list.setAdapter(new com.example.administrator.ding_small.Adapter.EditTitleAdapter(EditLabelActivity.this,jsonArray,this));
     }
+
     @Override
     public void onClick(View view) {
 
