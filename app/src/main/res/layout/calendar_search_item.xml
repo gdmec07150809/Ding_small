@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/hui2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="4.5pt"
+            android:layout_marginLeft="20dp"
+            android:text="2016-04-05"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textSize="4.5pt"
+            android:text="共3条"/>
+    </RelativeLayout>
+    <include layout="@layout/calendar_search_small_item"/>
+    <ListView
+        android:id="@+id/acconut_small_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

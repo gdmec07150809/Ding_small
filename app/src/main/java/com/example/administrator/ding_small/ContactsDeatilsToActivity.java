@@ -16,7 +16,7 @@ public class ContactsDeatilsToActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_details_activity);
         String name=getIntent().getStringExtra("name");
-       nameView=findViewById(R.id.name);
+         nameView=findViewById(R.id.name);
         nameView.setText(name);
     }
 }

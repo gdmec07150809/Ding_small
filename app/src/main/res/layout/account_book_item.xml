@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/hui2">
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="4.5pt"
+            android:layout_marginLeft="20dp"
+            android:text="2016-04-05"/>
+        <TextView
+            android:id="@+id/week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="4.5pt"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/time"
+            android:layout_marginLeft="5dp"
+            android:text="周日"/>
+        <TextView
+            android:id="@+id/chu"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="4.5pt"
+            android:layout_toRightOf="@+id/week"
+            android:layout_marginLeft="5dp"
+            android:text="初一"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/fu"
+            android:textSize="4.5pt"
+            android:text="收 800"/>
+        <TextView
+            android:id="@+id/fu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="4.5pt"
+            android:layout_marginRight="20dp"
+            android:text="付 500"/>
+    </RelativeLayout>
+    <include layout="@layout/account_small_item"/>
+    <ListView
+        android:id="@+id/acconut_small_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

@@ -37,6 +37,10 @@
         <activity android:name=".ContactsDeatilsToActivity"/>
         <activity android:name=".NotepadBtnActivity"/>
         <activity android:name=".SearchActivity"/>
+        <activity android:name=".SearchByCalendarActivity"/>
+        <activity android:name=".AccountBookActivity"/>
+        <activity android:name=".PersonalCenterActivity"/>
+        <activity android:name=".PersonalCenterPerfectActivity"/>
     </application>
 
 </manifest>

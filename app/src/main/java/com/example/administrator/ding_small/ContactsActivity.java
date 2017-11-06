@@ -45,9 +45,11 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
         list=findViewById(R.id.contacts_list);
         search_text=findViewById(R.id.search_edittext);
         findViewById(R.id.f_notepad).setOnClickListener(this);
+        findViewById(R.id.f_account).setOnClickListener(this);
         findViewById(R.id.clean_text).setOnClickListener(this);
         findViewById(R.id.add).setOnClickListener(this);
         findViewById(R.id.search_btn).setOnClickListener(this);
+        findViewById(R.id.f_center).setOnClickListener(this);
 
         //获取手机联系人列表
         try {
@@ -464,6 +466,16 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
                 Intent intent1=new Intent(ContactsActivity.this,NotepadBtnActivity.class);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1);
+                break;
+            case R.id.f_account:
+                Intent intent2=new Intent(ContactsActivity.this,AccountBookActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
+                break;
+            case R.id.f_center:
+                Intent intent3=new Intent(ContactsActivity.this,PersonalCenterActivity.class);
+                intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent3);
                 break;
         }
     }

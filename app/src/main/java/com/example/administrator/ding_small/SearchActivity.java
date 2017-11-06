@@ -1,6 +1,7 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ public class SearchActivity extends Activity implements View.OnClickListener{
         or_butoom_jiantou=findViewById(R.id.or_butoom_jiantou);
         time=findViewById(R.id.time);
         title=findViewById(R.id.title);
+        findViewById(R.id.right_icon).setOnClickListener(this);//试用
         time.setOnClickListener(this);
         title.setOnClickListener(this);
         finished_btn.setOnClickListener(this);
@@ -80,6 +82,10 @@ public class SearchActivity extends Activity implements View.OnClickListener{
                 butoom_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
                 listView.setAdapter(new SearchAdapter(SearchActivity.this,arrayList,isTitle));
                 break;
+            case R.id.right_icon:
+                Intent intent=new Intent(SearchActivity.this,SearchByCalendarActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
         }
     }
 }
