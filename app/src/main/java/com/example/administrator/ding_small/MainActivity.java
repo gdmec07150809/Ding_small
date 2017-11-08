@@ -50,25 +50,23 @@ public class MainActivity extends Activity implements  View.OnClickListener{
 
     }
 
+
     @Override
     protected void onDestroy() {
-
-
+        if(token!=null){
+            if(token.length()>0){
+                System.out.println("缓存："+token);
+                //储存token,备用
+                SharedPreferences share = super.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                SharedPreferences.Editor editor = share.edit(); //使处于可编辑状态
+                editor.putString("token", token);
+                editor.commit();    //提交数据保存
+            }
+        }
         super.onDestroy();
     }
 
-    @Override
-    protected void onStop() {
-        if(token.length()>0&&token!=null){
-            System.out.println("加密后："+MD5Utils.md5(token));
-            //储存token,备用
-            SharedPreferences share = super.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
-            SharedPreferences.Editor editor = share.edit(); //使处于可编辑状态
-            editor.putString("token", MD5Utils.md5(token));
-            editor.commit();    //提交数据保存
-        }
-        super.onStop();
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -86,8 +84,8 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                 findViewById(R.id.register_xml).setVisibility(View.VISIBLE);
                 break;
             case R.id.login:
-                String name=user_name.getText().toString();
-                String password=user_password.getText().toString();
+                String name=user_name.getText().toString().trim();
+                String password=user_password.getText().toString().trim();
                 System.out.println("用户密码："+name+":"+password);
                 //判断是否为空
                 if(name.equals("")|| password.equals("")){
@@ -96,14 +94,15 @@ public class MainActivity extends Activity implements  View.OnClickListener{
 //                    Intent intent = new Intent(MainActivity.this, ContactsActivity.class);
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    startActivity(intent);
-                    sendRequestWithHttpClient(MD5Utils.md5(name),MD5Utils.md5(password));
-
+                    //访问服务器
+                    sendRequestWithHttpClient(name,MD5Utils.Md5(name,password));
                 }
         }
     }
-    //20170821登录验证类，获取手机号和密码
-    //方法：发送网络请求，获取百度首页的数据。在里面开启线程
+    //201701108登录验证类，获取手机号和密码
+    //方法：发送网络请求，获取用户数据。在里面开启线程
     private void sendRequestWithHttpClient(final String name1, final String pass1) {
+        System.out.println("加密密码："+MD5Utils.md5(pass1));
         new Thread(new Runnable() {
 
             @Override
@@ -155,12 +154,12 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                         JSONObject responseObject=new JSONObject(response);
                         System.out.println("返回："+responseObject);
                         Msg=responseObject.getString("msg");
-                        resultStr= responseObject.getString("result");
-                        JSONObject resultObject=new JSONObject(resultStr);
-                        token=resultObject.getString("token");
-                        System.out.println("token:"+token);
                         code=responseObject.getString("resCode");
                         if(code.equals("00000")){
+                            resultStr= responseObject.getString("result");
+                            JSONObject resultObject=new JSONObject(resultStr);
+                            token=resultObject.getString("token");
+                            System.out.println("token:"+token);
                             Intent  intent=new Intent(MainActivity.this,ContactsActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             //跳转

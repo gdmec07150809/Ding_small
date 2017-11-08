@@ -725,17 +725,18 @@
                android:layout_below="@+id/time_day"
                android:orientation="horizontal" />
            <LinearLayout
-               android:id="@+id/remarks"
+               android:id="@+id/title"
                android:layout_width="match_parent"
                android:layout_height="50dp"
                android:orientation="horizontal"
                android:layout_below="@+id/time_day"
                android:focusable="false"
                android:focusableInTouchMode="true"
+               android:layout_marginLeft="10dp"
                android:layout_alignParentLeft="true"
                android:layout_alignParentStart="true">
                <TextView
-                   android:id="@+id/title"
+                   android:id="@+id/remarks"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_gravity="center_vertical"
@@ -743,16 +744,6 @@
                    android:layout_marginLeft="5dp"
                    android:textColor="@color/blank"
                    android:text="备注"/>
-               <EditText
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:background="@null"
-                   android:layout_gravity="center_vertical"
-                   android:layout_marginLeft="10dp"
-                   android:textSize="5pt"
-                   android:hint="请输入备注"
-                   android:textColorHint="@color/hui"
-                   />
            </LinearLayout>
        </RelativeLayout>
    </ScrollView>

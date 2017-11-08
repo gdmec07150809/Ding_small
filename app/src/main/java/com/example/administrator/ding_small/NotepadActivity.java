@@ -24,6 +24,7 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
         findViewById(R.id.received).setOnClickListener(this);
         findViewById(R.id.payable).setOnClickListener(this);
         findViewById(R.id.click_btn).setOnClickListener(this);
+        findViewById(R.id.remarks).setOnClickListener(this);
         initPoints();
 
     }
@@ -44,6 +45,8 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
                 intent=new Intent(NotepadActivity.this,PayableActivity.class);
                 startActivity(intent);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                break;
+            case R.id.remarks:
                 break;
         }
     }

@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.ding_small.Adapter.ContactAccountAdapter;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 
 import org.w3c.dom.Text;
 
@@ -48,6 +49,9 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
         notepad_btn.setOnClickListener(this);
         account_btn.setOnClickListener(this);
         findViewById(R.id.add).setOnClickListener(this);
+        findViewById(R.id.f_account).setOnClickListener(this);
+        findViewById(R.id.f_contacts).setOnClickListener(this);
+        findViewById(R.id.f_center).setOnClickListener(this);
         account_layout=(LinearLayout) findViewById(R.id.account_layout);
         notepad_layout=(LinearLayout) findViewById(R.id.notepad_layout);
 
@@ -109,6 +113,17 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
                 intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
                 break;
+            case R.id.f_account:
+                intent=new Intent(ContactsDeatilActivity.this,AccountBookActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_center:
+                intent=new Intent(ContactsDeatilActivity.this,PersonalCenterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+
         }
     }
 }

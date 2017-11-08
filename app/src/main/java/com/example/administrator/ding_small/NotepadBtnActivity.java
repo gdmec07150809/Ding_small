@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.administrator.ding_small.Adapter.NotepadBtnAdapter;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 
 import java.util.ArrayList;
 
@@ -18,12 +20,25 @@ import java.util.ArrayList;
 public class NotepadBtnActivity extends Activity implements View.OnClickListener{
     private ListView listView;
     private ArrayList<String> arrayList;
+    private ImageView f_account,f_contacts,f_center,f_notepad;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notepad_btn_activity);
         listView=findViewById(R.id.notepad_list);
         findViewById(R.id.add).setOnClickListener(this);
+
+        f_account=findViewById(R.id.f_account);
+        f_contacts=findViewById(R.id.f_contacts);
+        f_center=findViewById(R.id.f_center);
+        f_notepad=findViewById(R.id.f_notepad);
+        f_notepad.setImageResource(R.drawable.work_order_yes);
+        f_contacts.setImageResource(R.drawable.contacts_no);
+
+        f_account.setOnClickListener(this);
+        f_contacts.setOnClickListener(this);
+        f_center.setOnClickListener(this);
+        f_notepad.setOnClickListener(this);
         findViewById(R.id.search).setOnClickListener(this);
         arrayList=new ArrayList<String>();
         for (int i=0;i<10;i++){
@@ -43,6 +58,21 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
                 break;
             case R.id.search:
                 intent=new Intent(NotepadBtnActivity.this,SearchActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_account:
+                Intent intent2=new Intent(NotepadBtnActivity.this,AccountBookActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
+                break;
+            case R.id.f_center:
+                intent=new Intent(NotepadBtnActivity.this,PersonalCenterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_contacts:
+                intent=new Intent(NotepadBtnActivity.this,ContactsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
