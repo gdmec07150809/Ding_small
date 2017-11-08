@@ -108,6 +108,7 @@
                         android:orientation="vertical"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/binding_company"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_gravity="center_horizontal"
@@ -200,6 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp">
                 <TextView
+                    android:id="@+id/instructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -216,6 +218,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp">
                 <TextView
+                    android:id="@+id/about"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -232,6 +235,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp">
                 <TextView
+                    android:id="@+id/setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

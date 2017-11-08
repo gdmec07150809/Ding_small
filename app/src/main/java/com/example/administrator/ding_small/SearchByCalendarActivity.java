@@ -60,8 +60,8 @@ public class SearchByCalendarActivity extends Activity implements OnClickListene
         }
         adapter = new CalendarViewAdapter<>(views);
         setViewPager();
-
     }
+
     private void setViewPager() {
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(498);

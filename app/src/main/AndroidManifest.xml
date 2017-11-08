@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 读短信权限 -->
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -39,8 +41,15 @@
         <activity android:name=".SearchActivity"/>
         <activity android:name=".SearchByCalendarActivity"/>
         <activity android:name=".AccountBookActivity"/>
-        <activity android:name=".PersonalCenterActivity"/>
-        <activity android:name=".PersonalCenterPerfectActivity"/>
+        <activity android:name=".PersonalCenter.PersonalCenterActivity"/>
+        <activity android:name=".PersonalCenter.PersonalCenterPerfectActivity"/>
+        <activity android:name=".PersonalCenter.InstructionsActivity"/>
+        <activity android:name=".PersonalCenter.SettingActivity"/>
+        <activity android:name=".PersonalCenter.SatisticsSettingActivity"/>
+        <activity android:name=".PersonalCenter.BudgetSettingActivity"/>
+        <activity android:name=".PersonalCenter.DataLockActivity"/>
+        <activity android:name=".PersonalCenter.AboutActivity"/>
+        <activity android:name=".PersonalCenter.BindingCompanyActivity"/>
     </application>
 
 </manifest>

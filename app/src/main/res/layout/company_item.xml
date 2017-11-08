@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/company_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="广州大华家电维修部"
+            android:textSize="6pt"/>
+
+        <Switch
+            android:id="@+id/switchbtn"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="false"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/switch_selector"
+            android:thumb="@drawable/switch_thumb"
+            android:track="@drawable/switch_track"/>
+    </RelativeLayout>
+</LinearLayout>
