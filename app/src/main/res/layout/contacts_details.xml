@@ -43,6 +43,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/analysis_img"/>
             <ImageView
+                android:id="@+id/calendar"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_toLeftOf="@+id/search"
