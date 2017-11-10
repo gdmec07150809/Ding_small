@@ -82,10 +82,7 @@ public class SearchActivity extends Activity implements View.OnClickListener{
                 butoom_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
                 listView.setAdapter(new SearchAdapter(SearchActivity.this,arrayList,isTitle));
                 break;
-            case R.id.right_icon:
-                Intent intent=new Intent(SearchActivity.this,SearchByCalendarActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+
         }
     }
 }

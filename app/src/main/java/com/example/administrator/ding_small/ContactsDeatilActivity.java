@@ -45,6 +45,7 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
         payable_text=findViewById(R.id.payable_text);
         notepad_btn=findViewById(R.id.notepad_btn);
         account_btn=findViewById(R.id.account_btn);
+        findViewById(R.id.calendar).setOnClickListener(this);
         findViewById(R.id.f_notepad).setOnClickListener(this);
         notepad_btn.setOnClickListener(this);
         account_btn.setOnClickListener(this);
@@ -123,7 +124,11 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-
+            case R.id.calendar:
+                intent=new Intent(ContactsDeatilActivity.this,SearchByCalendarActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
         }
     }
 }

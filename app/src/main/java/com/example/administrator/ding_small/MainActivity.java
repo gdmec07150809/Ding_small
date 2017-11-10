@@ -160,7 +160,7 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                             JSONObject resultObject=new JSONObject(resultStr);
                             token=resultObject.getString("token");
                             System.out.println("token:"+token);
-                            Intent  intent=new Intent(MainActivity.this,ContactsActivity.class);
+                            Intent  intent=new Intent(MainActivity.this,AccountBookActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             //跳转
                             startActivity(intent);

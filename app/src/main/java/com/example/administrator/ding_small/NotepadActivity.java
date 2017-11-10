@@ -26,7 +26,6 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
         findViewById(R.id.click_btn).setOnClickListener(this);
         findViewById(R.id.remarks).setOnClickListener(this);
         initPoints();
-
     }
     @Override
     public void onClick(View v) {
@@ -47,6 +46,9 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.remarks:
+                intent=new Intent(NotepadActivity.this,RemarksActivity.class);
+                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
         }
     }
