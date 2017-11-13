@@ -155,16 +155,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                           style="@style/cStyle"
                             android:background="@drawable/c1_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="工资"/>
                     </LinearLayout>
                     <LinearLayout
@@ -175,16 +169,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c2_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="奖金"/>
                     </LinearLayout>
                     <LinearLayout
@@ -195,16 +183,10 @@
                         android:layout_marginLeft="10dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c3_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="兼职"/>
                     </LinearLayout>
                     <LinearLayout
@@ -215,16 +197,10 @@
                         android:layout_marginLeft="10dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c4_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="红包"/>
                     </LinearLayout>
                     <LinearLayout
@@ -235,16 +211,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c5_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="一般"/>
                     </LinearLayout>
                     <LinearLayout
@@ -255,16 +225,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c6_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="报销"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -282,16 +246,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c1_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="工资"/>
                     </LinearLayout>
                     <LinearLayout
@@ -302,16 +260,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c2_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="奖金"/>
                     </LinearLayout>
                     <LinearLayout
@@ -322,16 +274,10 @@
                         android:layout_marginLeft="10dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c3_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="兼职"/>
                     </LinearLayout>
                     <LinearLayout
@@ -342,16 +288,10 @@
                         android:layout_marginLeft="10dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c4_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="红包"/>
                     </LinearLayout>
                     <LinearLayout
@@ -362,16 +302,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c5_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="一般"/>
                     </LinearLayout>
                     <LinearLayout
@@ -382,19 +316,14 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c6_bg"/>
 
                         <TextView
                             android:id="@+id/textView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="2dp"
+                            style="@style/cTextStyle"
                             android:text="报销"
-                            android:textSize="5pt"/>
+                            />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -416,16 +345,10 @@
                         android:layout_marginRight="5dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c1_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="工资"/>
                     </LinearLayout>
                     <LinearLayout
@@ -436,16 +359,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c2_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="奖金"/>
                     </LinearLayout>
                     <LinearLayout
@@ -456,16 +373,10 @@
                         android:layout_marginLeft="10dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c3_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="兼职"/>
                     </LinearLayout>
                     <LinearLayout
@@ -476,16 +387,10 @@
                         android:layout_marginLeft="10dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c4_bg"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="红包"/>
                     </LinearLayout>
                     <LinearLayout
@@ -498,17 +403,11 @@
 
                         <TextView
                             android:id="@+id/textView2"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/c5_bg" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cTextStyle"
                             android:text="一般"/>
                     </LinearLayout>
                     <LinearLayout
@@ -520,17 +419,11 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/cStyle"
                             android:background="@drawable/edit_add" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="2dp"
-                            android:textSize="5pt"
+                            style="@style/cTextStyle"
                             android:text="编辑" />
                     </LinearLayout>
                 </LinearLayout>

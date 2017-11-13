@@ -50,6 +50,8 @@
         <activity android:name=".PersonalCenter.DataLockActivity"/>
         <activity android:name=".PersonalCenter.AboutActivity"/>
         <activity android:name=".PersonalCenter.BindingCompanyActivity"/>
+        <activity android:name=".RemarksActivity"/>
+        <activity android:name=".SearchTimeActivity"/>
     </application>
 
 </manifest>

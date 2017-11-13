@@ -15,4 +15,5 @@
     <color name="hui2">#EFEFEF</color>
     <color name="fen">#F16F9A</color>
     <color name="text_color">#323232</color>
+    <color name="red">#FF0000</color>
 </resources>

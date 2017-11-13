@@ -30,4 +30,16 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">6pt</item>
     </style>
+    <style name="cStyle">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+    <style name="cTextStyle">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textSize">5pt</item>
+</style>
 </resources>

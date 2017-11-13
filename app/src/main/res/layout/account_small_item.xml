@@ -5,7 +5,8 @@
               android:layout_height="match_parent">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="40dp"
+    android:layout_marginTop="10dp">
       <Button
           android:id="@+id/repair"
           android:layout_width="60dp"
@@ -29,7 +30,7 @@
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:textSize="4.5pt"
+                      android:textSize="5pt"
                       android:text="2118-乐堡吸塑灯箱"/>
                   <ImageView
                       android:layout_width="20dp"
@@ -47,7 +48,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="4.5pt"
+                android:textSize="5pt"
                 android:text="21元,20170922,到105告拉进来加..."/>
       </LinearLayout>
       <TextView
@@ -64,41 +65,50 @@
           android:layout_width="match_parent"
           android:layout_height="1dp"
           android:background="@color/hui"></LinearLayout>
+
       <RelativeLayout
           android:layout_width="match_parent"
-          android:layout_height="40dp">
+          android:layout_height="40dp"
+          android:layout_marginTop="10dp">
+
             <Button
                 android:layout_width="60dp"
                 android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/btn_workorder"
                 android:text="上门维修"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:textSize="6.5pt"
                 android:textColor="@color/white"
+                android:textSize="6.5pt"
                 />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical">
+
                   <LinearLayout
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="4.5pt"
-                            android:text="2118-乐堡吸塑灯箱"/>
+                            android:text="2118-乐堡吸塑灯箱"
+                            android:textSize="5pt"/>
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/zhifu"/>
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/alarm_img"/>
+
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
@@ -107,18 +117,19 @@
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:textSize="4.5pt"
-                      android:text="工单备注"/>
+                      android:text="工单备注"
+                      android:textSize="5pt"/>
             </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textColor="@color/green"
-                android:textSize="9pt"
                 android:layout_marginRight="10dp"
-                android:text="+800"/>
+                android:text="+800"
+                android:textColor="@color/green"
+                android:textSize="9pt"/>
       </RelativeLayout>
 
 </LinearLayout>
