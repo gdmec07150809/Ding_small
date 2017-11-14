@@ -41,7 +41,7 @@
                   <ImageView
                       android:layout_width="20dp"
                       android:layout_height="match_parent"
-                      android:src="@drawable/alarm_img"/>
+                      android:src="@drawable/alarm_img1"/>
                   <ImageView
                       android:layout_width="20dp"
                       android:layout_height="match_parent"
@@ -115,7 +115,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
-                            android:src="@drawable/alarm_img"/>
+                            android:src="@drawable/alarm_img1"/>
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="match_parent"

@@ -47,6 +47,7 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
         account_btn=findViewById(R.id.account_btn);
         findViewById(R.id.calendar).setOnClickListener(this);
         findViewById(R.id.f_notepad).setOnClickListener(this);
+        findViewById(R.id.search).setOnClickListener(this);
         notepad_btn.setOnClickListener(this);
         account_btn.setOnClickListener(this);
         findViewById(R.id.add).setOnClickListener(this);
@@ -126,6 +127,11 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
                 break;
             case R.id.calendar:
                 intent=new Intent(ContactsDeatilActivity.this,SearchByCalendarActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.search:
+                intent=new Intent(ContactsDeatilActivity.this,SearchActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

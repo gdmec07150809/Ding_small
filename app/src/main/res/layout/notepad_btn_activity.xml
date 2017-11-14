@@ -45,10 +45,11 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/analysis_img"/>
             <ImageView
+                android:id="@+id/calendar"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_toLeftOf="@+id/search"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/alarm_img"/>
             <ImageView
@@ -195,7 +196,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/notepad_btn"
+                android:id="@+id/finished_btn"
                 android:layout_width="50dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
@@ -206,7 +207,7 @@
                 android:textSize="6pt"></Button>
 
             <Button
-                android:id="@+id/account_btn"
+                android:id="@+id/no_finish_btn"
                 android:layout_width="50dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"

@@ -17,8 +17,4 @@
             android:text="2016-04-04"/>
     </LinearLayout>
     <include layout="@layout/notepad_small_item"/>
-    <ListView
-        android:id="@+id/acconut_small_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 </LinearLayout>

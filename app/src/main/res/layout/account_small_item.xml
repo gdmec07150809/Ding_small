@@ -5,8 +5,12 @@
               android:layout_height="match_parent">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:layout_marginTop="10dp">
+    android:layout_height="50dp">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_alignParentTop="true"
+          android:background="@color/hui"/>
       <Button
           android:id="@+id/repair"
           android:layout_width="60dp"
@@ -39,7 +43,7 @@
                   <ImageView
                       android:layout_width="20dp"
                       android:layout_height="match_parent"
-                      android:src="@drawable/alarm_img"/>
+                      android:src="@drawable/alarm_img1"/>
                   <ImageView
                       android:layout_width="20dp"
                       android:layout_height="match_parent"
@@ -107,7 +111,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
-                            android:src="@drawable/alarm_img"/>
+                            android:src="@drawable/alarm_img1"/>
 
                         <ImageView
                             android:layout_width="20dp"

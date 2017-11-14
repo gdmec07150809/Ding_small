@@ -1,6 +1,7 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -54,6 +55,7 @@ public class SearchByCalendarActivity extends Activity implements OnClickListene
         search_results=findViewById(R.id.calendar_results);
         preImgBtn.setOnClickListener(this);
         nextImgBtn.setOnClickListener(this);
+        monthText.setOnClickListener(this);
         CalendarCard[] views = new CalendarCard[3];
         for (int i = 0; i < 3; i++) {
             views[i] = new CalendarCard(this, this);
@@ -93,6 +95,7 @@ public class SearchByCalendarActivity extends Activity implements OnClickListene
     }
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.btnPreMonth:
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
@@ -100,6 +103,10 @@ public class SearchByCalendarActivity extends Activity implements OnClickListene
             case R.id.btnNextMonth:
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 break;
+            case R.id.tvCurrentMonth:
+                intent=new Intent(SearchByCalendarActivity.this,SearchTimeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             default:
                 break;
         }

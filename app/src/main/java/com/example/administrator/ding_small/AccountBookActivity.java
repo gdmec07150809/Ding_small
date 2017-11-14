@@ -2,9 +2,11 @@ package com.example.administrator.ding_small;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -17,6 +19,8 @@ import static com.example.administrator.ding_small.R.id.f_account;
 import static com.example.administrator.ding_small.R.id.f_center;
 import static com.example.administrator.ding_small.R.id.f_contacts;
 import static com.example.administrator.ding_small.R.id.f_notepad;
+import static com.example.administrator.ding_small.R.id.finished_btn;
+import static com.example.administrator.ding_small.R.id.no_finish_btn;
 
 /**
  * Created by Administrator on 2017/11/6.
@@ -26,6 +30,7 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
     private ListView account_book_list;
     private ArrayList<String> arrayList;
     private ImageView f_account,f_contacts,f_center,f_notepad;
+    private Button finished_btn,no_finish_btn;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +43,16 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
         f_notepad=findViewById(R.id.f_notepad);
         f_account.setImageResource(R.drawable.account_book_yes);
         f_contacts.setImageResource(R.drawable.contacts_no);
+        finished_btn=findViewById(R.id.finished_btn);
+        no_finish_btn=findViewById(R.id.no_finish_btn);
 
+        finished_btn.setOnClickListener(this);
+        no_finish_btn.setOnClickListener(this);
         f_contacts.setOnClickListener(this);
         f_center.setOnClickListener(this);
         f_notepad.setOnClickListener(this);
+        findViewById(R.id.calendar).setOnClickListener(this);
+        findViewById(R.id.search).setOnClickListener(this);
         account_book_list=findViewById(R.id.contacts_account_list);
        arrayList=new ArrayList<String>();
         for (int i=0;i<50;i++){
@@ -73,6 +84,28 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
                 intent=new Intent(AccountBookActivity.this,ContactsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.calendar:
+                    intent=new Intent(AccountBookActivity.this,SearchByCalendarActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.search:
+                intent=new Intent(AccountBookActivity.this,SearchActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.finished_btn:
+                finished_btn.setBackgroundColor(Color.parseColor("#6AB845"));
+                finished_btn.setTextColor(Color.parseColor("#FFFFFF"));
+                no_finish_btn.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                no_finish_btn.setTextColor(Color.parseColor("#6AB845"));
+                break;
+            case R.id.no_finish_btn:
+                finished_btn.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                finished_btn.setTextColor(Color.parseColor("#6AB845"));
+                no_finish_btn.setBackgroundColor(Color.parseColor("#6AB845"));
+                no_finish_btn.setTextColor(Color.parseColor("#FFFFFF"));
                 break;
         }
     }

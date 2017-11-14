@@ -19,9 +19,9 @@ public class SearchTimeActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_time);
-        start_date= (TextView) findViewById(R.id.start_time);
-        end_date= (TextView) findViewById(R.id.end_time);
-        Button btn= (Button) findViewById(R.id.confirm);
+        start_date=findViewById(R.id.start_time);
+        end_date=findViewById(R.id.end_time);
+        Button btn=findViewById(R.id.confirm);
         btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

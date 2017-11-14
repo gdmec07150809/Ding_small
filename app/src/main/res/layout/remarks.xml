@@ -3,303 +3,371 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="95dp"
             android:background="@color/fen"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp">
+
                 <ImageView
                     android:id="@+id/back"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/back_clarity"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/back_clarity"/>
+
                 <TextView
-                    android:layout_toRightOf="@+id/back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
-                    android:textSize="8pt"
-                    android:text="待付"/>
+                    android:layout_toRightOf="@+id/back"
+                    android:text="待付"
+                    android:textColor="@color/white"
+                    android:textSize="8pt"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14pt"
-                    android:textColor="@color/white"
                     android:layout_centerHorizontal="true"
-                    android:text="-500"/>
+                    android:text="-500"
+                    android:textColor="@color/white"
+                    android:textSize="14pt"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="10pt"
-                    android:textColor="@color/white"
                     android:layout_centerHorizontal="true"
-                    android:text="上门维修"/>
+                    android:text="上门维修"
+                    android:textColor="@color/white"
+                    android:textSize="10pt"/>
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
                     android:src="@drawable/cancel"/>
+
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/yes"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"
+                    android:src="@drawable/yes"
                     />
             </RelativeLayout>
         </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true">
+
                 <TextView
+                    android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="6pt"
                     android:layout_marginLeft="10dp"
+                    android:text="2017-02-09"
                     android:textColor="@color/blank"
-                    android:text="2017-02-09"/>
+                    android:textSize="6pt"/>
+
                 <TextView
+                    android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="12:35"
                     android:textColor="@color/blank"
-                    android:textSize="6pt"
-                    android:layout_marginLeft="10dp"
-                    android:text="12:35"/>
+                    android:textSize="6pt"/>
+
                 <TextView
+                    android:id="@+id/week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="6pt"
                     android:layout_marginLeft="10dp"
-                    android:text="周二"/>
+                    android:text="周二"
+                    android:textSize="6pt"/>
+
                 <TextView
+                    android:id="@+id/nong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="6pt"
                     android:layout_marginLeft="10dp"
-                    android:text="初一"/>
+                    android:text="初一"
+                    android:textSize="6pt"/>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp">
+
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@drawable/zhifu"/>
+
                 <LinearLayout
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:background="@color/hui"></LinearLayout>
+
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/say"/>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/hui"></LinearLayout>
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_height="90dp">
+            android:layout_marginTop="5dp">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="5pt"
+                android:background="@null"
                 android:hint="写备注...   这个客户是一个大公司来的，应该会有很多的合作机会，所以必须要有足够的重视程度，否则就会耽误时机，同时注意保持日常联系,这个客户是一个大公司来的，应该会有很多的合作"
-                android:background="@null"/>
+                android:textColorHint="@color/hui"
+                android:textSize="5pt"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/remarks_contacts"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/hui_bg"/>
+                        android:background="@drawable/hui_bg"
+                        android:orientation="vertical"/>
 
                     <TextView
+                        android:id="@+id/contacts_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="4.5pt"
                         android:layout_gravity="center_horizontal"
+                        android:text="张先生"
                         android:textColor="@color/green"
-                        android:text="张先生"/>
+                        android:textSize="4.5pt"/>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/remarks_label"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/hui_bg"/>
+                        android:background="@drawable/hui_bg"
+                        android:orientation="vertical"/>
 
                     <TextView
+                        android:id="@+id/label_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="4.5pt"
                         android:layout_gravity="center_horizontal"
-                        android:text="标签"/>
+                        android:text="标签"
+                        android:textSize="4.5pt"/>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <LinearLayout
+                        android:id="@+id/remarks_repeat"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/hui_bg"/>
+                        android:background="@drawable/hui_bg"
+                        android:orientation="vertical"/>
+
                     <TextView
+                        android:id="@+id/repeat_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="4.5pt"
                         android:layout_gravity="center_horizontal"
-                        android:text="提醒"/>
+                        android:text="提醒"
+                        android:textSize="4.5pt"/>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <LinearLayout
+                        android:id="@+id/remarks_location"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/hui_bg"/>
+                        android:background="@drawable/hui_bg"
+                        android:orientation="vertical"/>
+
                     <TextView
+                        android:id="@+id/location_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="4.5pt"
                         android:layout_gravity="center_horizontal"
-                        android:text="地址"/>
+                        android:text="地址"
+                        android:textSize="4.5pt"/>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <LinearLayout
+                        android:id="@+id/remarks_photo"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/c6_bg"/>
+                        android:background="@drawable/c6_bg"
+                        android:orientation="vertical"/>
+
                     <TextView
+                        android:id="@+id/photo_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="4.5pt"
                         android:layout_gravity="center_horizontal"
+                        android:text="图片"
                         android:textColor="@color/green"
-                        android:text="图片"/>
+                        android:textSize="4.5pt"/>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_horizontal"
                         />
+
                     <TextView
+                        android:id="@+id/remarks_bind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="4.5pt"
                         android:layout_gravity="center_horizontal"
+                        android:text="绑定"
                         android:textColor="@color/red"
-                        android:textStyle="bold"
-                        android:text="绑定"/>
+                        android:textSize="4.5pt"
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7">
+
                 <Button
+                    android:id="@+id/confrim"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/green"
                     android:text="确定"
-                    android:textSize="8pt"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:textSize="8pt"/>
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/hui"></LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="0.5"
         android:orientation="vertical">
-      <include layout="@layout/remarks_photo"
+      <include
+          android:id="@+id/remarks_photo_layout"
+          layout="@layout/remarks_photo"
           android:visibility="visible"/>
-        <include layout="@layout/remarks_repeat_setting"
+        <include
+            android:id="@+id/remarks_repeat_layout"
+            layout="@layout/remarks_repeat_setting"
             android:visibility="gone"/>
     </LinearLayout>
 </LinearLayout>
