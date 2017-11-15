@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/found_history_ryt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.example.administrator.ding_small.HelpTool.FlowLayout
+            android:id="@+id/found_activity_fyt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.example.administrator.ding_small.HelpTool.FlowLayout>
+    </LinearLayout>
+</LinearLayout>

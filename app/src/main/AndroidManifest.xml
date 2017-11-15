@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.administrator.ding_small">
     <!-- 读联系人权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- 写联系人权限 -->
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
@@ -9,8 +10,13 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 读短信权限 -->
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--获取当前地理位置要的权限-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 仅网络定位的权限 -->
+    <uses-permission android:name="android.permission.INSTALL_LOCATION_PROVIDER" />
+    <!--网络访问的权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
