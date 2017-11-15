@@ -223,13 +223,14 @@ public class PayableActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.received:
                 intent=new Intent(PayableActivity.this,ReceivedActivity.class);
-                startActivity(intent);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
                 break;
             case R.id.notepad:
                 intent=new Intent(PayableActivity.this,NotepadActivity.class);
-                startActivity(intent);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
     }

@@ -223,6 +223,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 
         }
     }
+    //标签布局方法
     private void labelFlowLayout() {
         for (int i = 0; i < strs.length; i++) {//加载搜索记录
             final TextView text = new TextView(RemarksActivity.this);
@@ -251,15 +252,22 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
             text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {//添加点击事件
-                    if(labelList.contains(text.getText().toString())){
-                        labelList.remove(text.getText().toString());
-                        view.setBackgroundResource(R.drawable.light_button_back);
-                        text.setTextColor(getResources().getColor(R.color.blank));
-                    }else {
-                        view.setBackgroundResource(R.drawable.green_button_back);
-                        text.setTextColor(getResources().getColor(R.color.white));
-                        labelList.add(text.getText().toString());
+                    if(text.getText().toString().equals("+")){
+                        Intent intent=new Intent(RemarksActivity.this,EditLabelActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }else{
+                        if(labelList.contains(text.getText().toString())){
+                            labelList.remove(text.getText().toString());
+                            view.setBackgroundResource(R.drawable.light_button_back);
+                            text.setTextColor(getResources().getColor(R.color.blank));
+                        }else {
+                            view.setBackgroundResource(R.drawable.green_button_back);
+                            text.setTextColor(getResources().getColor(R.color.white));
+                            labelList.add(text.getText().toString());
+                        }
                     }
+
                     Toast.makeText(RemarksActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
