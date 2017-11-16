@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.administrator.ding_small.Title.TitleActivity;
+
 
 public class NotepadActivity  extends Activity implements View.OnClickListener{
     LinearLayout ll,two;
@@ -47,6 +49,7 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
                 break;
             case R.id.remarks:
                 intent=new Intent(NotepadActivity.this,RemarksActivity.class);
+                intent.putExtra("title","记事");
                 startActivity(intent);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;

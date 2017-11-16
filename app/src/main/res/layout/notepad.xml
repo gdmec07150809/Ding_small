@@ -141,7 +141,7 @@
                        android:id="@+id/c_btn"
                        android:layout_below="@+id/action"
                        android:layout_width="match_parent"
-                       android:layout_height="250dp">
+                       android:layout_height="280dp">
                        <LinearLayout
                            android:id="@+id/one"
                            android:layout_width="match_parent"
@@ -249,7 +249,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c1_bg"/>
+                                   android:background="@drawable/c7_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="一般提醒"/>
@@ -263,7 +263,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c2_bg"/>
+                                   android:background="@drawable/c8_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="生日"/>
@@ -277,7 +277,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c3_bg"/>
+                                   android:background="@drawable/c9_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="身份证"/>
@@ -291,7 +291,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c4_bg"/>
+                                   android:background="@drawable/c10_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="银行资料"/>
@@ -305,7 +305,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c5_bg"/>
+                                   android:background="@drawable/c11_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="常用数据"/>
@@ -319,7 +319,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c6_bg"/>
+                                   android:background="@drawable/c12_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="待用事项"/>
@@ -341,7 +341,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c1_bg"/>
+                                   android:background="@drawable/c13_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="一般提醒"/>
@@ -357,7 +357,7 @@
                                <TextView
                                    android:id="@+id/textView5"
                                    style="@style/cStyle"
-                                   android:background="@drawable/c2_bg"/>
+                                   android:background="@drawable/c14_bg"/>
 
                                <TextView
                                    style="@style/cTextStyle"
@@ -374,7 +374,7 @@
                                <TextView
                                    android:id="@+id/textView6"
                                    style="@style/cStyle"
-                                   android:background="@drawable/c3_bg"/>
+                                   android:background="@drawable/c2_bg"/>
 
                                <TextView
                                    style="@style/cTextStyle"
@@ -389,7 +389,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c4_bg"/>
+                                   android:background="@drawable/c8_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="银行资料"/>
@@ -419,7 +419,7 @@
                                <TextView
                                    android:id="@+id/textView7"
                                    style="@style/cStyle"
-                                   android:background="@drawable/c6_bg"/>
+                                   android:background="@drawable/c10_bg"/>
 
                                <TextView
                                    style="@style/cTextStyle"
@@ -459,7 +459,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c2_bg"/>
+                                   android:background="@drawable/c8_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="生日"/>
@@ -475,7 +475,7 @@
                                <TextView
                                    android:id="@+id/textView4"
                                    style="@style/cStyle"
-                                   android:background="@drawable/c3_bg"/>
+                                   android:background="@drawable/c9_bg"/>
 
                                <TextView
                                    style="@style/cTextStyle"
@@ -490,7 +490,7 @@
                                android:orientation="vertical">
                                <TextView
                                    style="@style/cStyle"
-                                   android:background="@drawable/c4_bg"/>
+                                   android:background="@drawable/c12_bg"/>
                                <TextView
                                    style="@style/cTextStyle"
                                    android:text="银行资料"/>
@@ -506,7 +506,7 @@
                                <TextView
                                    android:id="@+id/textView2"
                                    style="@style/cStyle"
-                                   android:background="@drawable/c5_bg" />
+                                   android:background="@drawable/c11_bg" />
 
                                <TextView
                                    style="@style/cTextStyle"
@@ -554,6 +554,7 @@
                        android:id="@+id/time_day"
                        android:layout_width="match_parent"
                        android:layout_height="40dp"
+                       android:layout_marginTop="10dp"
                        android:layout_below="@+id/h1"
                        android:orientation="horizontal">
 

@@ -10,14 +10,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.CalendarViewAdapter;
-import com.example.administrator.ding_small.Adapter.SearchAdapter;
-import com.example.administrator.ding_small.Adapter.SearchByCalendarAdapter;
+import com.example.administrator.ding_small.Adapter.NotepadSearchByCalendarAdapter;
 import com.example.administrator.ding_small.HelpTool.CalendarCard;
 import com.example.administrator.ding_small.HelpTool.CalendarCard.OnCellClickListener;
 import com.example.administrator.ding_small.HelpTool.CustomDate;
@@ -29,7 +26,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/11/6.
  */
 
-public class SearchByCalendarActivity extends Activity implements OnClickListener,OnCellClickListener {
+public class NotepadSearchByCalendarActivity extends Activity implements OnClickListener,OnCellClickListener {
     private MylistView search_results;
     private ArrayList<String> arrayList;
     private ViewPager mViewPager;
@@ -47,7 +44,7 @@ public class SearchByCalendarActivity extends Activity implements OnClickListene
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.search_by_calendar);
+        setContentView(R.layout.notepad_search_by_calendar);
         mViewPager = (ViewPager) this.findViewById(R.id.vp_calendar);
         preImgBtn = (ImageButton) this.findViewById(R.id.btnPreMonth);
         nextImgBtn = (ImageButton) this.findViewById(R.id.btnNextMonth);
@@ -71,7 +68,7 @@ public class SearchByCalendarActivity extends Activity implements OnClickListene
         for (int i=0;i<10;i++){
             arrayList.add(i+"");
         }
-        search_results.setAdapter(new SearchByCalendarAdapter(SearchByCalendarActivity.this,arrayList));
+        search_results.setAdapter(new NotepadSearchByCalendarAdapter(NotepadSearchByCalendarActivity.this,arrayList));
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
@@ -104,7 +101,7 @@ public class SearchByCalendarActivity extends Activity implements OnClickListene
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 break;
             case R.id.tvCurrentMonth:
-                intent=new Intent(SearchByCalendarActivity.this,SearchTimeActivity.class);
+                intent=new Intent(NotepadSearchByCalendarActivity.this,SearchTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             default:

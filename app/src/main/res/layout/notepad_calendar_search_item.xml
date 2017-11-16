@@ -23,7 +23,7 @@
             android:textSize="4.5pt"
             android:text="共3条"/>
     </RelativeLayout>
-    <include layout="@layout/calendar_search_small_item"/>
+    <include layout="@layout/notepad_calendar_search_small_item"/>
     <ListView
         android:id="@+id/acconut_small_item"
         android:layout_width="match_parent"

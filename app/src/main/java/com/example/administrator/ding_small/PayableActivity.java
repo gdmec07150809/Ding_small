@@ -48,6 +48,7 @@ public class PayableActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.number_small).setOnClickListener(this);
         findViewById(R.id.notepad).setOnClickListener(this);
         findViewById(R.id.received).setOnClickListener(this);
+        findViewById(R.id.remark).setOnClickListener(this);
         number= (TextView) findViewById(R.id.number);
         number_enter=findViewById(R.id.number_enter);
         number_enter.setOnClickListener(this);
@@ -230,6 +231,12 @@ public class PayableActivity extends Activity implements View.OnClickListener{
             case R.id.notepad:
                 intent=new Intent(PayableActivity.this,NotepadActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.remark:
+                intent=new Intent(PayableActivity.this,RemarksActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("title","待收");
                 startActivity(intent);
                 break;
         }

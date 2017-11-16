@@ -19,7 +19,7 @@
                     android:layout_centerInParent="true"
                     android:textSize="8pt"
                     android:textColor="@color/blank"
-                    android:text="编辑标题"/>
+                    android:text="编辑标签"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/ge"
@@ -128,6 +128,6 @@
         android:layout_centerHorizontal="true"
         android:textSize="7pt"
         android:textColor="@color/green"
-        android:text="+ 添加标题"/>
+        android:text="+ 添加标签"/>
 </RelativeLayout>
 </RelativeLayout>

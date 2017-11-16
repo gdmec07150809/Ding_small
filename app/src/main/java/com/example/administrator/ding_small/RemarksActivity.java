@@ -8,11 +8,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.text.Layout;
 import android.text.format.Time;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +23,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.LunarCalendar;
+import com.example.administrator.ding_small.Label.EditLabelActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,11 +36,11 @@ import java.util.TimeZone;
  */
 
 public class RemarksActivity extends Activity implements View.OnClickListener{
-    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,timeT,week,nong;
+    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,timeT,week,nong,title;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
     private InputMethodManager inputMethodManager;
-    private String[] strs = {"美的", "格力", "飞利浦", "方太", "西门子", "A.O.史密斯", "爱马仕", "奔腾", "TCL", "小天鹅", "三洋","+"};
+    private String[] strs=null;
     private ArrayList<String> labelList=new ArrayList<String>();
     private FlowLayout found_activity_fyt;
     @RequiresApi(api = VERSION_CODES.N)
@@ -64,6 +63,11 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         dateT=findViewById(R.id.date);
         week=findViewById(R.id.week);
         nong=findViewById(R.id.nong);
+        title=findViewById(R.id.title);
+        //获取传过来的值
+        Bundle bundle=getIntent().getExtras();
+        String t1=bundle.getString("title");
+        title.setText(t1);
        //获取当前年月日时分
         Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
         t.setToNow(); // 取得系统时间。
@@ -225,8 +229,16 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     }
     //标签布局方法
     private void labelFlowLayout() {
-        for (int i = 0; i < strs.length; i++) {//加载搜索记录
+
+
+        if(strs==null){
+            strs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵", "+"};
+        }
+
+        //加载搜索记录
+        for (int i = 0; i < strs.length; i++) {
             final TextView text = new TextView(RemarksActivity.this);
+            System.out.println("数组："+strs[i]);
           if(i<strs.length-1){
               text.setText(strs[i]);//添加内容
               text.setTextSize(12);
@@ -272,5 +284,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 }
             });
         }
+        strs=null;
     }
 }

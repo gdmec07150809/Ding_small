@@ -1,4 +1,4 @@
-package com.example.administrator.ding_small;
+package com.example.administrator.ding_small.Title;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.example.administrator.ding_small.Adapter.EditTitleAdapter.Callback;
+import com.example.administrator.ding_small.NotepadActivity;
+import com.example.administrator.ding_small.PayableActivity;
+import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.ReceivedActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,49 +78,6 @@ public class EditTitleActivity extends Activity implements View.OnClickListener,
             }
         });
     }
-
-
-
-    //    private JSONArray sort(JSONArray ja,final String field, boolean isAsc){
-//       List<JSONObject> sortList=new ArrayList<>();
-//
-//        for (int i=0;i<ja.length();i++){
-//            try {
-//                sortList.add((JSONObject) ja.get(i));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        Collections.sort(sortList, new Comparator<JSONObject>() {
-//            @Override
-//            public int compare(JSONObject o1, JSONObject o2) {
-//                Object f1 = null;
-//                Object f2 = null;
-//                try {
-//
-//                    f1 = o1.getString(field);
-//                    f2 = o2.getString(field);
-//
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                if (f1 instanceof Number && f2 instanceof Number) {
-//                    return ((Number) f1).intValue() - ((Number) f2).intValue();
-//                } else {
-//                    return f1.toString().compareTo(f2.toString());
-//                }
-//            }
-//        });
-//        if(!isAsc){
-//            Collections.reverse(sortList);
-//        }
-//        JSONArray result=new JSONArray();
-//        for(int i=0;i<sortList.size();i++){
-//            result.put(sortList.get(i));
-//        }
-//       return result;
-//    }
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -151,9 +112,9 @@ public class EditTitleActivity extends Activity implements View.OnClickListener,
                 case R.id.up_img:
                     try {
                         JSONObject ob1= new JSONObject(String.valueOf(jsonArray.get((Integer) v.getTag())));
-                        JSONObject ob2= new JSONObject(String.valueOf(jsonArray.get(0)));
+                        JSONObject ob2= new JSONObject(String.valueOf(jsonArray.get(1)));
                         ob1.put("number","1");
-                        jsonArray.put(0,ob1);
+                        jsonArray.put(1,ob1);
                         jsonArray.put((Integer) v.getTag(),ob2);
                         System.out.println("更改后："+ob1);
                     } catch (JSONException e) {

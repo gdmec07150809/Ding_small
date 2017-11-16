@@ -1,4 +1,4 @@
-package com.example.administrator.ding_small;
+package com.example.administrator.ding_small.Title;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ListView;
+
+import com.example.administrator.ding_small.NotepadActivity;
+import com.example.administrator.ding_small.PayableActivity;
+import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.ReceivedActivity;
 
 import java.util.ArrayList;
 

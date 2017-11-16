@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.example.administrator.ding_small.R;
-import com.example.administrator.ding_small.SearchByCalendarActivity;
 
 import java.util.ArrayList;
 
@@ -15,12 +14,12 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/11/6.
  */
 
-public class SearchByCalendarAdapter extends BaseAdapter {
+public class AccountsSearchByCalendarAdapter extends BaseAdapter {
     private Context context;
     private ViewHolder holder;
     private ArrayList<String> list = null;
 
-    public SearchByCalendarAdapter(Context context, ArrayList<String> arrayList) {
+    public AccountsSearchByCalendarAdapter(Context context, ArrayList<String> arrayList) {
         this.context = context;
         holder = new ViewHolder();
         this.list = arrayList;
@@ -46,9 +45,9 @@ public class SearchByCalendarAdapter extends BaseAdapter {
         View contentView = null;
         if (contentView == null) {
             if(i==0){
-                contentView = LayoutInflater.from(context).inflate(R.layout.calendar_search_item, viewGroup, false);
+                contentView = LayoutInflater.from(context).inflate(R.layout.accounts_calendar_search_item, viewGroup, false);
             }else {
-                contentView = LayoutInflater.from(context).inflate(R.layout.calendar_search_small_item, viewGroup, false);
+                contentView = LayoutInflater.from(context).inflate(R.layout.accounts_calendar_search_small_item, viewGroup, false);
             }
 
             contentView.setTag(holder);

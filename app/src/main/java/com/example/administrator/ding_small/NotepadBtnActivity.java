@@ -88,7 +88,7 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.calendar:
-                intent=new Intent(NotepadBtnActivity.this,SearchByCalendarActivity.class);
+                intent=new Intent(NotepadBtnActivity.this,NotepadSearchByCalendarActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

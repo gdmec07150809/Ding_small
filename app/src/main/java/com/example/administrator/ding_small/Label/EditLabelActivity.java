@@ -1,12 +1,14 @@
-package com.example.administrator.ding_small;
+package com.example.administrator.ding_small.Label;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.administrator.ding_small.Adapter.EditTitleAdapter.Callback;
+import com.example.administrator.ding_small.Adapter.EditLabelAdapter.Callback;
+import com.example.administrator.ding_small.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +30,8 @@ public class EditLabelActivity extends Activity  implements View.OnClickListener
         setContentView(R.layout.edit_label);
         //初始化控件
         list=findViewById(R.id.title_list);
-
+        findViewById(R.id.add_label).setOnClickListener(this);
+        findViewById(R.id.edit_label).setOnClickListener(this);
         jsonArray=new JSONArray();
         lists=new ArrayList<String>();
         lists.add("通用");
@@ -53,12 +56,24 @@ public class EditLabelActivity extends Activity  implements View.OnClickListener
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        list.setAdapter(new com.example.administrator.ding_small.Adapter.EditTitleAdapter(EditLabelActivity.this,jsonArray,this));
+        list.setAdapter(new com.example.administrator.ding_small.Adapter.EditLabelAdapter(EditLabelActivity.this,jsonArray,this));
     }
 
     @Override
     public void onClick(View view) {
-
+        Intent intent;
+            switch (view.getId()){
+                case R.id.add_label:
+                    intent=new Intent(EditLabelActivity.this,AddLabelActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    break;
+                case R.id.edit_label:
+                    intent=new Intent(EditLabelActivity.this,EditLabelBtnActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    break;
+            }
     }
 
     @Override

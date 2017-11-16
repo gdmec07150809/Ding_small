@@ -50,6 +50,7 @@ public class MainActivity extends Activity implements  View.OnClickListener{
         findViewById(R.id.login).setOnClickListener(this);
         findViewById(R.id.send_text).setOnClickListener(this);
         findViewById(R.id.register).setOnClickListener(this);
+        findViewById(R.id.forgot_password).setOnClickListener(this);
         user_name=findViewById(R.id.user_name);
         user_password=findViewById(R.id.user_password);
 
@@ -145,6 +146,12 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                       sendRegister(phone_str,p1_str,saveCode);
                     }
                 }
+                break;
+            case R.id.forgot_password:
+                Intent  intent1=new Intent(MainActivity.this,ForgotPassWordActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //跳转
+                startActivity(intent1);
                 break;
 
         }

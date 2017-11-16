@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/tou"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/head"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back_clarity"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+
+                android:text="日历查询"
+                android:textColor="@color/blank"
+                android:textSize="8pt"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/head_buttom"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/head"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/middle"
+                android:layout_width="102dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/bg_green"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/finished_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="1.5dp"
+                    android:background="@color/white"
+                    android:text="已完成"
+                    android:textColor="@color/green"
+                    android:textSize="6pt"></Button>
+
+                <Button
+                    android:id="@+id/no_finish_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:background="@color/green"
+                    android:text="未完成"
+                    android:textColor="@color/white"
+                    android:textSize="6pt"></Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ge"
+                android:layout_width="102dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_green"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="0.1dp"
+                    android:background="@color/green"
+                    android:text="个人"
+                    android:textColor="@color/white"
+                    android:textSize="6pt"></Button>
+
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:text="公司"
+                    android:textColor="@color/green"
+                    android:textSize="6pt"></Button>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/hui"/>
+        </RelativeLayout>
+    </RelativeLayout>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/tou"
+    android:layout_above="@+id/footer">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/year"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/head_buttom"
+            android:background="#f6f1ea"
+            >
+
+            <ImageButton
+                android:id="@+id/btnPreMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50dip"
+                android:layout_toLeftOf="@+id/tvCurrentMonth"
+                android:background="@drawable/ic_before"/>
+
+            <ImageButton
+                android:id="@+id/btnNextMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50dip"
+                android:layout_toRightOf="@+id/tvCurrentMonth"
+                android:background="@drawable/ic_next"/>
+
+            <TextView
+                android:id="@+id/tvCurrentMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:text="11月"
+                android:textColor="#323232"
+                android:textSize="6pt"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/year"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            >
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dip"
+                android:layout_marginBottom="2dip"
+                android:layout_marginTop="2dip">
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/dateStyle"
+                        android:text="@string/sunday"
+                        android:textColor="@color/text_color"/>
+
+                    <TextView
+                        style="@style/dateStyle"
+                        android:text="@string/monday"
+                        android:textColor="@color/text_color"/>
+
+                    <TextView
+                        style="@style/dateStyle"
+                        android:text="@string/thesday"
+                        android:textColor="@color/text_color"/>
+
+                    <TextView
+                        style="@style/dateStyle"
+                        android:text="@string/wednesday"
+                        android:textColor="@color/text_color"/>
+
+                    <TextView
+                        style="@style/dateStyle"
+                        android:text="@string/thursday"
+                        android:textColor="@color/text_color"/>
+
+                    <TextView
+                        style="@style/dateStyle"
+                        android:text="@string/friday"
+                        android:textColor="@color/text_color"/>
+
+                    <TextView
+                        style="@style/dateStyle"
+                        android:text="@string/saturday"
+                        android:textColor="@color/text_color"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/calendar"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_below="@+id/week"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:background="@color/white">
+                </android.support.v4.view.ViewPager>
+            </LinearLayout>
+            <com.example.administrator.ding_small.HelpTool.MylistView
+                android:id="@+id/calendar_results"
+                android:layout_below="@+id/calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.example.administrator.ding_small.HelpTool.MylistView>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
+<LinearLayout
+    android:id="@+id/footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true">
+    <include layout="@layout/footer"/>
+</LinearLayout>
+
+</RelativeLayout>

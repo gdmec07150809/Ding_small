@@ -5,18 +5,20 @@
               android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/tou"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
             android:id="@+id/head"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="10dp">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/back"/>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back_clarity"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,7 +54,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="1.5dp"
                     android:background="@color/white"
-                    android:text="已完成"
+                    android:text="已收付"
                     android:textColor="@color/green"
                     android:textSize="6pt"></Button>
 
@@ -62,7 +64,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:background="@color/green"
-                    android:text="待完成"
+                    android:text="待收付"
                     android:textColor="@color/white"
                     android:textSize="6pt"></Button>
             </LinearLayout>

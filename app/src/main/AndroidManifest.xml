@@ -36,16 +36,15 @@
         <activity android:name=".NotepadActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ReceivedActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".PayableActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".TitleActivity"/>
-        <activity android:name=".AddTitleActivity" android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".EditTitleActivity"/>
-        <activity android:name=".EditTitleItemBtnActivity" android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".EditLabelActivity"/>
+        <activity android:name=".Title.TitleActivity"/>
+        <activity android:name=".Title.AddTitleActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".Title.EditTitleActivity"/>
+        <activity android:name=".Title.EditTitleItemBtnActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ContactsDeatilActivity"/>
         <activity android:name=".ContactsDeatilsToActivity"/>
         <activity android:name=".NotepadBtnActivity"/>
-        <activity android:name=".SearchActivity"/>
-        <activity android:name=".SearchByCalendarActivity"/>
+        <activity android:name=".SearchActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".NotepadSearchByCalendarActivity"/>
         <activity android:name=".AccountBookActivity"/>
         <activity android:name=".PersonalCenter.PersonalCenterActivity"/>
         <activity android:name=".PersonalCenter.PersonalCenterPerfectActivity"/>
@@ -58,6 +57,12 @@
         <activity android:name=".PersonalCenter.BindingCompanyActivity"/>
         <activity android:name=".RemarksActivity"/>
         <activity android:name=".SearchTimeActivity"/>
+        <activity android:name=".Label.AddLabelActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".Label.EditLabelBtnActivity"/>
+        <activity android:name=".Label.EditLabelItemBtnActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".Label.EditLabelActivity"/>
+        <activity android:name=".AccountsSearchByCalendarActivity"/>
+        <activity android:name=".ForgotPassWordActivity"/>
     </application>
 
 </manifest>

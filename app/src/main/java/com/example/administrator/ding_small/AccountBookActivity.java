@@ -15,13 +15,6 @@ import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivit
 
 import java.util.ArrayList;
 
-import static com.example.administrator.ding_small.R.id.f_account;
-import static com.example.administrator.ding_small.R.id.f_center;
-import static com.example.administrator.ding_small.R.id.f_contacts;
-import static com.example.administrator.ding_small.R.id.f_notepad;
-import static com.example.administrator.ding_small.R.id.finished_btn;
-import static com.example.administrator.ding_small.R.id.no_finish_btn;
-
 /**
  * Created by Administrator on 2017/11/6.
  */
@@ -86,7 +79,7 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.calendar:
-                    intent=new Intent(AccountBookActivity.this,SearchByCalendarActivity.class);
+                intent=new Intent(AccountBookActivity.this,AccountsSearchByCalendarActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

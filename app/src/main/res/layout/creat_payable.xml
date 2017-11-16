@@ -255,7 +255,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c1_bg"/>
+                                    android:background="@drawable/c7_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="工资"/>
@@ -269,7 +269,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c2_bg"/>
+                                    android:background="@drawable/c8_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="奖金"/>
@@ -283,7 +283,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c3_bg"/>
+                                    android:background="@drawable/c9_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="兼职"/>
@@ -297,7 +297,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c4_bg"/>
+                                    android:background="@drawable/c10_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="红包"/>
@@ -311,7 +311,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c5_bg"/>
+                                    android:background="@drawable/c11_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="一般"/>
@@ -325,7 +325,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c6_bg"/>
+                                    android:background="@drawable/c12_bg"/>
 
                                 <TextView
                                     android:id="@+id/textView3"
@@ -353,7 +353,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c1_bg"/>
+                                    android:background="@drawable/c13_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="工资"/>
@@ -367,7 +367,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c2_bg"/>
+                                    android:background="@drawable/c14_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="奖金"/>
@@ -381,7 +381,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c3_bg"/>
+                                    android:background="@drawable/c12_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="兼职"/>
@@ -395,7 +395,7 @@
                                 android:orientation="vertical">
                                 <TextView
                                     style="@style/cStyle"
-                                    android:background="@drawable/c4_bg"/>
+                                    android:background="@drawable/c9_bg"/>
                                 <TextView
                                     style="@style/cTextStyle"
                                     android:text="红包"/>
@@ -411,7 +411,7 @@
                                 <TextView
                                     android:id="@+id/textView2"
                                     style="@style/cStyle"
-                                    android:background="@drawable/c5_bg" />
+                                    android:background="@drawable/c6_bg" />
 
                                 <TextView
                                     style="@style/cTextStyle"
@@ -456,6 +456,7 @@
                         android:id="@+id/time_day"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_below="@+id/h1"
                         android:orientation="horizontal">
                         <TextView
@@ -508,6 +509,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_below="@+id/h2"
+                        android:layout_marginLeft="20dp"
                         android:layout_above="@+id/footer"
                         android:focusable="false"
                         android:focusableInTouchMode="true"
@@ -526,10 +528,11 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:textSize="5pt"
-                            android:text="具体的备注内容加上点点点点点点"
+                            android:layout_marginLeft="10dp"
+                            android:hint="具体的备注内容加上点点点点点点"
+                            android:textColorHint="@color/hui"
                             android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/suo"
-                            android:layout_toStartOf="@+id/suo"/>
+                            android:layout_toRightOf="@+id/title"/>
                         <ImageView
                             android:id="@+id/suo"
                             android:layout_width="20dp"

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 
 import com.example.administrator.ding_small.Adapter.ContactAccountAdapter;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -126,7 +123,7 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.calendar:
-                intent=new Intent(ContactsDeatilActivity.this,SearchByCalendarActivity.class);
+                intent=new Intent(ContactsDeatilActivity.this,NotepadSearchByCalendarActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
