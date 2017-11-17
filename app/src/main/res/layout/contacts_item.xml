@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="客服"
+                android:text="客"
                 android:textColor="@color/white"
                 android:textSize="10pt"
                 />

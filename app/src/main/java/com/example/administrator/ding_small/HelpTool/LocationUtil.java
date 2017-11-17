@@ -173,7 +173,7 @@ public class LocationUtil {
                 stringBuilder.append(address.getLongitude());//维度
                 //System.out.println(stringBuilder.toString());
                // LogUtils.INSTANCE.d_debugprint("获取到的地理位置为：",stringBuilder.toString());
-                locationStr=address.getAddressLine(0)+address.getAddressLine(1);
+                locationStr=address.getAddressLine(0);
                 //locationStr=stringBuilder.toString();
                 System.out.println("详细位置："+locationStr);
             }

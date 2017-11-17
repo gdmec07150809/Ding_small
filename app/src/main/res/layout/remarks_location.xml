@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="6pt"
+        android:layout_marginBottom="10dp"
         android:text="广州番禺大学城环城西路12号(手机自动定位的地址)"/>
 </RelativeLayout>
     <RelativeLayout

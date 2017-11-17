@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.example.administrator.ding_small.AccountBookActivity;
 import com.example.administrator.ding_small.ContactsActivity;
+import com.example.administrator.ding_small.MainActivity;
 import com.example.administrator.ding_small.NotepadActivity;
 import com.example.administrator.ding_small.NotepadBtnActivity;
 import com.example.administrator.ding_small.R;
@@ -29,6 +30,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         findViewById(R.id.setting).setOnClickListener(this);
         findViewById(R.id.binding_company).setOnClickListener(this);
         findViewById(R.id.add).setOnClickListener(this);
+        findViewById(R.id.exit).setOnClickListener(this);
         f_account=findViewById(R.id.f_account);
         f_contacts=findViewById(R.id.f_contacts);
         f_center=findViewById(R.id.f_center);
@@ -89,6 +91,11 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 intent=new Intent(PersonalCenterActivity.this,ContactsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.exit:
+                intent=new Intent(PersonalCenterActivity.this, MainActivity.class);
+                startActivity(intent);
+                System.exit(0);
                 break;
         }
     }

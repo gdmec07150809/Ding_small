@@ -52,9 +52,6 @@ public class BindingCompanyActivity extends Activity implements View.OnClickList
     public void click(View v) {
             switch ((int)v.getTag()){
                 case 0:
-                    //int tag= (int) v.getTag();
-                    Switch switchTest = (Switch) findViewById(R.id.switchbtn);
-                    switchTest.setChecked(true);
                     break;
             }
     }

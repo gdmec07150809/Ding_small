@@ -22,8 +22,8 @@ public class ContactAdapter extends BaseAdapter {
     private Context context;
     private ViewHolder holder;
     private JSONObject list=null;
-    public ContactAdapter(ContactsActivity contactsActivity, JSONObject list) {
-        this.context = contactsActivity;
+    public ContactAdapter(Context context, JSONObject list) {
+        this.context = context;
         holder = new ViewHolder();
         this.list = list;
     }
@@ -57,11 +57,7 @@ public class ContactAdapter extends BaseAdapter {
         try {
             String ss=list.getString("contact"+i);
             JSONObject obj=new JSONObject(ss);
-            if(obj.getString("lastname").length()>4){
-                holder.name.setText(obj.getString("lastname").substring(0,4));
-            }else{
-                holder.name.setText(obj.getString("lastname"));
-            }
+            holder.name.setText(obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString());
             holder.mobile.setText(obj.getString("mobile"));
         } catch (JSONException e) {
             e.printStackTrace();

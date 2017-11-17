@@ -13,9 +13,16 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.text.format.Time;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +32,17 @@ import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.LunarCalendar;
 import com.example.administrator.ding_small.Label.EditLabelActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import static com.example.administrator.ding_small.HelpTool.getContactInfo.getContactInfo;
+import static com.example.administrator.ding_small.R.id.found_activity_lay;
+import static com.example.administrator.ding_small.R.id.search_btn;
 
 
 /**
@@ -41,8 +55,19 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     private String str_location=null;
     private InputMethodManager inputMethodManager;
     private String[] strs=null;
+    private String[] ContactsStrs=null;
     private ArrayList<String> labelList=new ArrayList<String>();
     private FlowLayout found_activity_fyt;
+    private FlowLayout found_activity_lay;
+
+    private ListView list;
+    private JSONObject contactData;//储存第一手信息
+    private JSONObject contactDatas;//储存搜索结果
+    private JSONObject jsonObject;//为contactData提供对象
+    private EditText search_text;//搜索框
+    boolean isFlag=true;//用哪个JsonObject响应listVIEW点击事件
+    private Button search_btn;
+    private ImageView clean_text;
     @RequiresApi(api = VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,6 +170,96 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 repeat_text.setTextColor(getResources().getColor(R.color.blank));
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
+
+                findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.VISIBLE);
+
+
+                ContactsStrs = new String[]{"lily/youyou", "张先生/优游", "李小龙", "郭德纲", "李维嘉", "何炅", "谢娜", "黄晓明", "张艺兴"};
+                contactsFlowLayout();
+                //获取手机联系人列表
+                try {
+                    contactData=getContactInfo(RemarksActivity.this);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                list=findViewById(R.id.contacts_list);
+                search_btn=findViewById(R.id.search_btn);
+                clean_text=findViewById(R.id.clean_text);
+                search_text=findViewById(R.id.search_edittext);
+                search_btn.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        findViewById(R.id.found_history_lay).setVisibility(View.GONE);
+                        findViewById(R.id.contacts_list).setVisibility(View.VISIBLE);
+                        isFlag=false;
+                        String search_val=search_text.getText().toString();
+                        String ss= null;
+                        contactDatas=new JSONObject();;
+                        String name="";
+                        int index=0;
+                        try {
+                            for(int i=0;i<contactData.length();i++){
+                                ss = contactData.getString("contact"+i);
+                                JSONObject obj=new JSONObject(ss);
+                                name=obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString();
+                                if(search_val.equals(name)){
+                                    System.out.println("键："+name);
+                                    System.out.println("值："+search_val);
+                                    contactDatas.put("contact"+index, obj);
+                                    index++;
+                                }else if(search_val.equals(obj.getString("mobile"))){
+                                    contactDatas.put("contact"+index, obj);
+                                    index++;
+                                }
+                            }
+
+                            list.setAdapter(new com.example.administrator.ding_small.Adapter.ContactAdapter(RemarksActivity.this, contactDatas));
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+                clean_text.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        findViewById(R.id.found_history_lay).setVisibility(View.GONE);
+                        findViewById(R.id.contacts_list).setVisibility(View.VISIBLE);
+
+                        isFlag=true;
+                        search_text.setText("");
+                        list.setAdapter(new com.example.administrator.ding_small.Adapter.ContactAdapter(RemarksActivity.this, contactData));
+                    }
+                });
+                list.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String ss= null;
+                        String name="";
+                        try {
+                            if(isFlag){
+                                ss = contactData.getString("contact"+i);
+                            }else {
+                                ss = contactDatas.getString("contact"+i);
+                            }
+                            JSONObject obj=new JSONObject(ss);
+                            name=obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString();
+                            contacts_text.setText(name);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
                 break;
             case R.id.remarks_label:
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
@@ -163,6 +278,8 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                strs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵", "+"};
                 labelFlowLayout();
                 break;
             case R.id.remarks_repeat:
@@ -171,10 +288,12 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
 
                 contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
                 label_text.setTextColor(getResources().getColor(R.color.blank));
@@ -188,10 +307,12 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
+
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
 
                 contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
                 label_text.setTextColor(getResources().getColor(R.color.blank));
@@ -217,6 +338,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
                 TextView location=findViewById(R.id.location);
                 if(str_location ==null || str_location.isEmpty()){
                     location.setText("请打开移动网络,重试");
@@ -229,61 +351,91 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     }
     //标签布局方法
     private void labelFlowLayout() {
-
-
-        if(strs==null){
-            strs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵", "+"};
-        }
-
-        //加载搜索记录
-        for (int i = 0; i < strs.length; i++) {
-            final TextView text = new TextView(RemarksActivity.this);
-            System.out.println("数组："+strs[i]);
-          if(i<strs.length-1){
-              text.setText(strs[i]);//添加内容
-              text.setTextSize(12);
-              text.setTextColor(Color.rgb(102, 102, 102));
-              text.setBackgroundResource(R.drawable.light_button_back);
-              text.setPadding(15, 10, 15, 10);
-          }else {
-              text.setText(strs[i]);//添加内容
-              text.setTextSize(12);
-              text.setTextColor(getResources().getColor(R.color.orange));
-              text.setBackgroundResource(R.drawable.light_button_back);
-              text.setPadding(15, 10, 15, 10);
-          }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//设置宽高,第一个参数是宽,第二个参数是高
-            //设置边距
-            params.topMargin = 5;
-            params.bottomMargin = 5;
-            params.leftMargin = 8;
-            params.rightMargin = 8;
-            text.setLayoutParams(params);
-            found_activity_fyt = findViewById(R.id.found_activity_fyt);
-            found_activity_fyt.addView(text);//将内容添加到布局中
-            text.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {//添加点击事件
-                    if(text.getText().toString().equals("+")){
-                        Intent intent=new Intent(RemarksActivity.this,EditLabelActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }else{
-                        if(labelList.contains(text.getText().toString())){
-                            labelList.remove(text.getText().toString());
-                            view.setBackgroundResource(R.drawable.light_button_back);
-                            text.setTextColor(getResources().getColor(R.color.blank));
-                        }else {
-                            view.setBackgroundResource(R.drawable.green_button_back);
-                            text.setTextColor(getResources().getColor(R.color.white));
-                            labelList.add(text.getText().toString());
-                        }
-                    }
-
-                    Toast.makeText(RemarksActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
+        if(found_activity_fyt==null){
+            //加载搜索记录
+            for (int i = 0; i < strs.length; i++) {
+                final TextView text = new TextView(RemarksActivity.this);
+                System.out.println("数组："+strs[i]);
+                if(i<strs.length-1){
+                    text.setText(strs[i]);//添加内容
+                    text.setTextSize(12);
+                    text.setTextColor(Color.rgb(102, 102, 102));
+                    text.setBackgroundResource(R.drawable.light_button_back);
+                    text.setPadding(15, 10, 15, 10);
+                }else {
+                    text.setText(strs[i]);//添加内容
+                    text.setTextSize(12);
+                    text.setTextColor(getResources().getColor(R.color.orange));
+                    text.setBackgroundResource(R.drawable.light_button_back);
+                    text.setPadding(15, 10, 15, 10);
                 }
-            });
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//设置宽高,第一个参数是宽,第二个参数是高
+                //设置边距
+                params.topMargin = 5;
+                params.bottomMargin = 5;
+                params.leftMargin = 8;
+                params.rightMargin = 8;
+                text.setLayoutParams(params);
+                found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                found_activity_fyt.addView(text);//将内容添加到布局中
+                text.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {//添加点击事件
+                        if(text.getText().toString().equals("+")){
+                            Intent intent=new Intent(RemarksActivity.this,EditLabelActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }else{
+                            if(labelList.contains(text.getText().toString())){
+                                labelList.remove(text.getText().toString());
+                                view.setBackgroundResource(R.drawable.light_button_back);
+                                text.setTextColor(getResources().getColor(R.color.blank));
+                            }else {
+                                view.setBackgroundResource(R.drawable.green_button_back);
+                                text.setTextColor(getResources().getColor(R.color.white));
+                                labelList.add(text.getText().toString());
+                            }
+                        }
+
+                        Toast.makeText(RemarksActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
-        strs=null;
+
+    }
+
+    //标签布局方法
+    private void contactsFlowLayout() {
+        if(found_activity_lay==null){
+            //加载搜索记录
+            for (int i = 0; i < ContactsStrs.length; i++) {
+                final TextView text = new TextView(RemarksActivity.this);
+                System.out.println("数组："+ContactsStrs[i]);
+                text.setText(ContactsStrs[i]);//添加内容
+                text.setTextSize(12);
+                text.setTextColor(getResources().getColor(R.color.green));
+                text.setBackgroundResource(R.drawable.light_button_back);
+                text.setPadding(15, 10, 15, 10);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//设置宽高,第一个参数是宽,第二个参数是高
+                //设置边距
+                params.topMargin = 5;
+                params.bottomMargin = 5;
+                params.leftMargin = 8;
+                params.rightMargin = 8;
+                text.setLayoutParams(params);
+                found_activity_lay = findViewById(R.id.found_activity_lay);
+                found_activity_lay.addView(text);//将内容添加到布局中
+                text.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {//添加点击事件
+                        search_text.setText(text.getText().toString());
+                        Toast.makeText(RemarksActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
+
     }
 }
