@@ -88,9 +88,6 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
         });
     }
 
-
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
