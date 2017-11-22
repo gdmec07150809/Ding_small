@@ -76,86 +76,92 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+          android:layout_alignParentBottom="true"
+            android:background="@color/green"
+            android:orientation="horizontal"/>
     </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="5dp"
-        android:id="@+id/hui"
-        android:layout_below="@+id/ge"
-        android:background="@color/green"
-        android:orientation="horizontal"></LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4">
+                android:orientation="horizontal">
 
-                <ImageView
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4">
+
+                    <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_margin="10dp"
                     android:src="@drawable/head_photo"/>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.3"
-                        android:text="姓名"
-                        android:textSize="7pt"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp">
 
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@null"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.3"
+                            android:text="姓名"
+                            android:textSize="7pt"/>
 
-                    <TextView
-                        android:id="@+id/addName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.2"
-                        android:gravity="center"
-                        android:text="+"
-                        android:textSize="12pt"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/hui"/>
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"/>
+
+                        <TextView
+                            android:id="@+id/addName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.2"
+                            android:gravity="center"
+                            android:text="+"
+                            android:textSize="12pt"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/hui"/>
                 <LinearLayout
                     android:id="@+id/addName_layout"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="0dp"
@@ -170,25 +176,12 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"/>
-
-                    <TextView
-                        android:id="@+id/addName2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.2"
-                        android:gravity="center"
-                        android:text="+"
-                        android:textSize="12pt"
-                        android:textStyle="bold"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/hui"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -225,12 +218,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/hui"/>
+
                 <LinearLayout
                     android:id="@+id/addPhone_layout"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="0dp"
@@ -245,18 +239,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"/>
-
-                    <TextView
-                        android:id="@+id/addPhone2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.2"
-                        android:gravity="center"
-                        android:text="+"
-                        android:textSize="12pt"
-                        android:textStyle="bold"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -323,7 +305,7 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="20dp"
-                       android:layout_gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="0.2"
                         android:src="@drawable/bottom"
                         android:text=""/>
@@ -392,6 +374,7 @@
                 android:layout_height="1dp"
                 android:background="@color/hui"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -540,7 +523,18 @@
                     android:text="确定"
                     android:textColor="@color/white"
                     android:textSize="8pt"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/hui"
+            android:layout_below="@+id/ge"
+            android:background="@color/green"
+            android:orientation="horizontal"></LinearLayout>
     </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -47,6 +47,7 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
         finished_btn.setOnClickListener(this);
         no_finish_btn.setOnClickListener(this);
 
+        findViewById(R.id.analysis).setOnClickListener(this);
         findViewById(R.id.search).setOnClickListener(this);
         findViewById(R.id.calendar).setOnClickListener(this);
 
@@ -103,6 +104,11 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
                 finished_btn.setTextColor(Color.parseColor("#6AB845"));
                 no_finish_btn.setBackgroundColor(Color.parseColor("#6AB845"));
                 no_finish_btn.setTextColor(Color.parseColor("#FFFFFF"));
+                break;
+            case R.id.analysis:
+                intent=new Intent(NotepadBtnActivity.this,NotepadReportActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
     }

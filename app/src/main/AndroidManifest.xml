@@ -65,6 +65,9 @@
         <activity android:name=".AccountsSearchByCalendarActivity"/>
         <activity android:name=".ForgotPassWordActivity"/>
         <activity android:name=".AddContactsActivity"  android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".AnalysisActivity"/>
+        <activity android:name=".ScreenActivity"/>
+        <activity android:name=".NotepadReportActivity"/>
     </application>
 
 </manifest>

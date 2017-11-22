@@ -3,90 +3,33 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="6pt"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/orange"
                 android:layout_marginLeft="10dp"
-                android:text="不重复"/>
+                android:text="报销对象"/>
         </LinearLayout>
-       <LinearLayout
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1">
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="自定义"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="天"/>
-       </LinearLayout>
-       <LinearLayout
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1">
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="周"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="月"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="年"/>
-       </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/hui"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:layout_gravity="center_vertical"
+                android:textSize="12pt"
+                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
-                android:text="无限重复"/>
+                android:text="+"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -105,7 +48,9 @@
                 android:textSize="6pt"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:text="次"/>
+                android:textStyle="bold"
+                android:textColor="@color/blank"
+                android:text="天"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -117,10 +62,29 @@
                 android:textSize="6pt"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:text="截止于"/>
-
+                android:text="周"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="6pt"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="月"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="6pt"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="年"/>
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/hui"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -135,33 +99,61 @@
                 android:textSize="6pt"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:text="全部显示"/>
+                android:text="报销时间"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
+            android:layout_weight="2">
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="6pt"
+                android:background="@null"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="仅在到期日前"/>
+                android:hint="请输入预计的报销结算时间 "
+                android:textColorHint="@color/hui"
+                android:layout_marginLeft="20dp"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="天显示"/>
-        </LinearLayout>
+
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/hui"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="6pt"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="报销金额"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="6pt"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:text="500"/>
+        </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -178,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="5pt"
-            android:text="每重复一次则会自动生成一笔待处理记录 "/>
+            android:text="报销信息将会自动生成一笔待收款记录 "/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -186,11 +178,39 @@
             android:textSize="5pt"
             android:text="该记录有“自动”图标以示区别 "/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:textSize="5pt"
-            android:text="仅在到期日前若干天显示,除非您选择了全部显示 "/>
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp"
+             android:layout_gravity="center_horizontal"
+             android:textSize="5pt"
+             android:text="收到报销款后,请不要新建收款"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="5pt"
+                android:layout_marginLeft="70dp"
+                android:text="而是在"/>
+            <TextView
+                android:id="@+id/zhong"
+                android:layout_toRightOf="@+id/left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="5pt"
+                android:textStyle="bold"
+                android:textColor="@color/blank"
+                android:text="待收款"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="5pt"
+                android:layout_toRightOf="@+id/zhong"
+                android:text="列表找到对应记录并录入报销金额"/>
+        </RelativeLayout>
+
     </LinearLayout>
 </LinearLayout>

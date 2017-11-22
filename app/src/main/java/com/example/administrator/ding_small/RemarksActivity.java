@@ -50,7 +50,7 @@ import static com.example.administrator.ding_small.R.id.search_btn;
  */
 
 public class RemarksActivity extends Activity implements View.OnClickListener{
-    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,timeT,week,nong,title;
+    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,timeT,week,nong,title,reimbursement_text,loan_text,privacy_text;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
     private InputMethodManager inputMethodManager;
@@ -78,12 +78,19 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.remarks_repeat).setOnClickListener(this);
         findViewById(R.id.remarks_location).setOnClickListener(this);
         findViewById(R.id.remarks_photo).setOnClickListener(this);
-        findViewById(R.id.remarks_bind).setOnClickListener(this);
+        findViewById(R.id.remarks_reimbursement).setOnClickListener(this);
+        findViewById(R.id.remarks_privacy).setOnClickListener(this);
+        findViewById(R.id.remarks_loan).setOnClickListener(this);
+
         contacts_text= findViewById(R.id.contacts_text);
         label_text=findViewById(R.id.label_text);
         repeat_text=findViewById(R.id.repeat_text);
         location_text=findViewById(R.id.location_text);
         photo_text=findViewById(R.id.photo_text);
+        reimbursement_text=findViewById(R.id.reimbursement_text);
+        loan_text=findViewById(R.id.loan_text);
+        privacy_text=findViewById(R.id.privacy_text);
+
         timeT=findViewById(R.id.time);
         dateT=findViewById(R.id.date);
         week=findViewById(R.id.week);
@@ -92,6 +99,16 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         //获取传过来的值
         Bundle bundle=getIntent().getExtras();
         String t1=bundle.getString("title");
+        if(t1.equals("已收")||t1.equals("待收")){
+            findViewById(R.id.loan_layout).setVisibility(View.GONE);
+            findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
+        }else if(t1.equals("已付")||t1.equals("待付")){
+            findViewById(R.id.loan_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
+        }else {
+            findViewById(R.id.loan_layout).setVisibility(View.GONE);
+            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
+        }
         title.setText(t1);
        //获取当前年月日时分
         Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
@@ -164,7 +181,13 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
                 contacts_text.setTextColor(this.getResources().getColor(R.color.green));
                 label_text.setTextColor(getResources().getColor(R.color.blank));
                 repeat_text.setTextColor(getResources().getColor(R.color.blank));
@@ -176,8 +199,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_contacts_layout).setVisibility(View.VISIBLE);
-
-
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
                 ContactsStrs = new String[]{"lily/youyou", "张先生/优游", "李小龙", "郭德纲", "李维嘉", "何炅", "谢娜", "黄晓明", "张艺兴"};
                 contactsFlowLayout();
                 //获取手机联系人列表
@@ -267,7 +291,13 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
                 contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
                 label_text.setTextColor(getResources().getColor(R.color.green));
                 repeat_text.setTextColor(getResources().getColor(R.color.blank));
@@ -279,6 +309,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
                 strs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵", "+"};
                 labelFlowLayout();
                 break;
@@ -288,12 +321,21 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
 
                 contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
                 label_text.setTextColor(getResources().getColor(R.color.blank));
@@ -307,12 +349,21 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
 
                 contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
                 label_text.setTextColor(getResources().getColor(R.color.blank));
@@ -327,7 +378,13 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
                 contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
                 label_text.setTextColor(getResources().getColor(R.color.blank));
                 repeat_text.setTextColor(getResources().getColor(R.color.blank));
@@ -339,6 +396,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_location_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
+
                 TextView location=findViewById(R.id.location);
                 if(str_location ==null || str_location.isEmpty()){
                     location.setText("请打开移动网络,重试");
@@ -346,7 +407,96 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     location.setText(str_location);
                 }
                 break;
+            case R.id.remarks_reimbursement:
+                findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.c6_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
+
+
+                findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
+
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.green));
+                contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
+                label_text.setTextColor(getResources().getColor(R.color.blank));
+                repeat_text.setTextColor(getResources().getColor(R.color.blank));
+                location_text.setTextColor(getResources().getColor(R.color.blank));
+                photo_text.setTextColor(getResources().getColor(R.color.blank));
+                break;
+            case R.id.remarks_privacy:
+                findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.c6_bg);
+
+
+
+                findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
+
+                privacy_text.setTextColor(getResources().getColor(R.color.green));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
+                contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
+                label_text.setTextColor(getResources().getColor(R.color.blank));
+                repeat_text.setTextColor(getResources().getColor(R.color.blank));
+                location_text.setTextColor(getResources().getColor(R.color.blank));
+                photo_text.setTextColor(getResources().getColor(R.color.blank));
+                break;
+            case R.id.remarks_loan:
+                findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.c6_bg);
+                findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
+
+
+
+                findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_label_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_contacts_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
+                findViewById(R.id.remarks_loan_layout).setVisibility(View.VISIBLE);
+
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.green));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
+                contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
+                label_text.setTextColor(getResources().getColor(R.color.blank));
+                repeat_text.setTextColor(getResources().getColor(R.color.blank));
+                location_text.setTextColor(getResources().getColor(R.color.blank));
+                photo_text.setTextColor(getResources().getColor(R.color.blank));
+                break;
         }
     }
     //标签布局方法

@@ -256,7 +256,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="提醒"
+                        android:text="重复"
                         android:textSize="4.5pt"/>
                 </LinearLayout>
 
@@ -308,7 +308,56 @@
                         android:textColor="@color/green"
                         android:textSize="4.5pt"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/reimbursement_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
+                    <LinearLayout
+                        android:id="@+id/remarks_reimbursement"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/hui_bg"
+                        android:orientation="vertical"/>
+
+                    <TextView
+                        android:id="@+id/reimbursement_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="报销"
+                        android:textColor="@color/blank"
+                        android:textSize="4.5pt"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/loan_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/remarks_loan"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/hui_bg"
+                        android:orientation="vertical"/>
+
+                    <TextView
+                        android:id="@+id/loan_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="借出"
+                        android:textColor="@color/blank"
+                        android:textSize="4.5pt"/>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -317,22 +366,22 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/remarks_privacy"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_horizontal"
-                        />
+                        android:background="@drawable/hui_bg"
+                        android:orientation="vertical"/>
 
                     <TextView
-                        android:id="@+id/remarks_bind"
+                        android:id="@+id/privacy_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="绑定"
-                        android:textColor="@color/red"
-                        android:textSize="4.5pt"
-                        android:textStyle="bold"/>
+                        android:text="隐私"
+                        android:textColor="@color/blank"
+                        android:textSize="4.5pt"/>
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -368,7 +417,7 @@
         <include
             android:id="@+id/remarks_photo_layout"
             layout="@layout/remarks_photo"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
         <include
             android:id="@+id/remarks_repeat_layout"
             layout="@layout/remarks_repeat_setting"
@@ -384,6 +433,18 @@
         <include
             android:id="@+id/remarks_contacts_layout"
             layout="@layout/remarks_contacts"
+            android:visibility="gone"/>
+        <include
+            android:id="@+id/remarks_reimbursement_layout"
+            layout="@layout/remarks_reimbursement"
+            android:visibility="gone"/>
+        <include
+            android:id="@+id/remarks_privacy_layout"
+            layout="@layout/remarks_privacy"
+            android:visibility="gone"/>
+        <include
+            android:id="@+id/remarks_loan_layout"
+            layout="@layout/remarks_loan"
             android:visibility="gone"/>
     </LinearLayout>
 </ScrollView>

@@ -236,7 +236,7 @@ public class PayableActivity extends Activity implements View.OnClickListener{
             case R.id.remark:
                 intent=new Intent(PayableActivity.this,RemarksActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("title","待收");
+                intent.putExtra("title","待付");
                 startActivity(intent);
                 break;
         }
