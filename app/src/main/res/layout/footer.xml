@@ -19,7 +19,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/work_order_no"/>
+            android:src="@drawable/notepad_no_img"/>
 
         <ImageView
             android:id="@+id/f_account"

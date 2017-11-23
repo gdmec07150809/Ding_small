@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.example.administrator.ding_small.Adapter.AnalysisAdapter;
 import com.example.administrator.ding_small.Adapter.NotepadReportAdapter;
 
 import org.json.JSONArray;
@@ -22,17 +22,32 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/11/22.
  */
 
-public class NotepadReportActivity extends Activity {
+public class NotepadReportActivity extends Activity implements View.OnClickListener{
     private ArrayList<String> OutTimeLists;
     private ArrayList<String> lists;
     private ArrayList<String> yearLists;
     public JSONArray jsonArray;
     private ListView listView;
+    private TextView title_text,label_text,finished_text,outtime_text;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notepad_select_report);
         listView=findViewById(R.id.notepad_report_listview);
+        findViewById(R.id.f_title).setOnClickListener(this);
+        findViewById(R.id.f_label).setOnClickListener(this);
+        findViewById(R.id.f_finished).setOnClickListener(this);
+        findViewById(R.id.f_outtime).setOnClickListener(this);
+        title_text=findViewById(R.id.title_text);
+        label_text=findViewById(R.id.label_text);
+        finished_text=findViewById(R.id.finished_text);
+        outtime_text=findViewById(R.id.outtime_text);
+
+        title_text.setTextColor(getResources().getColor(R.color.blank));
+        label_text.setTextColor(getResources().getColor(R.color.blank));
+        finished_text.setTextColor(getResources().getColor(R.color.green));
+        outtime_text.setTextColor(getResources().getColor(R.color.blank));
+
         jsonArray=new JSONArray();
         lists=new ArrayList<String>();
         yearLists=new ArrayList<String>();
@@ -71,10 +86,22 @@ public class NotepadReportActivity extends Activity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(NotepadReportActivity.this,AnalysisActivity.class);
+                Intent intent=new Intent(NotepadReportActivity.this,NotepadAnalysisActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()){
+            case R.id.f_title:
+                intent=new Intent(NotepadReportActivity.this,NotepadAnalysisTitleStatisticsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
     }
 }

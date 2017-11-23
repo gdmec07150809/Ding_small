@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.administrator.ding_small.Adapter.AnalysisAdapter;
+import com.example.administrator.ding_small.Adapter.NotepadAnalysisTitleAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +30,7 @@ import lecho.lib.hellocharts.view.ColumnChartView;
  * Created by Administrator on 2017/11/21.
  */
 
-public class AnalysisActivity extends Activity implements View.OnClickListener{
+public class NotepadAnalysisActivity extends Activity implements View.OnClickListener{
     private ColumnChartView mColumnChartCc;
     private ColumnChartData data;
     private ArrayList<String> OutTimeLists;
@@ -39,9 +40,14 @@ public class AnalysisActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.analysis);
+        setContentView(R.layout.notepad_analysis);
         listView=findViewById(R.id.analasis_list);
         findViewById(R.id.screen).setOnClickListener(this);
+        findViewById(R.id.f_title).setOnClickListener(this);
+        findViewById(R.id.f_label).setOnClickListener(this);
+        findViewById(R.id.f_finished).setOnClickListener(this);
+        findViewById(R.id.f_outtime).setOnClickListener(this);
+
         mColumnChartCc = (ColumnChartView) findViewById(R.id.column_chart_cc);
         mColumnChartCc.setOnValueTouchListener(new ValueTouchListener());
         generateStackedData();
@@ -86,7 +92,7 @@ public class AnalysisActivity extends Activity implements View.OnClickListener{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        listView.setAdapter(new AnalysisAdapter(AnalysisActivity.this,jsonArray));
+        listView.setAdapter(new AnalysisAdapter(NotepadAnalysisActivity.this,jsonArray));
     }
     private void generateStackedData() {
 
@@ -127,7 +133,12 @@ public class AnalysisActivity extends Activity implements View.OnClickListener{
         Intent intent;
         switch (view.getId()){
             case R.id.screen:
-                intent=new Intent(AnalysisActivity.this,ScreenActivity.class);
+                intent=new Intent(NotepadAnalysisActivity.this,ScreenActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_title:
+                intent=new Intent(NotepadAnalysisActivity.this, NotepadAnalysisTitleStatisticsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -135,12 +146,10 @@ public class AnalysisActivity extends Activity implements View.OnClickListener{
     }
 
     private class ValueTouchListener implements ColumnChartOnValueSelectListener {
-
         @Override
         public void onValueSelected(int i, int i1, SubcolumnValue value) {
             // Toast.makeText(ColumnChartActivity.this, "Selected: " + value, Toast.LENGTH_SHORT).show();
         }
-
         @Override
         public void onValueDeselected() {
 

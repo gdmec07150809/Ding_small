@@ -17,11 +17,11 @@ import org.json.JSONObject;
  * Created by Administrator on 2017/10/31.
  */
 
-public class AnalysisAdapter extends BaseAdapter {
+public class NotepadAnalysisTitleAdapter extends BaseAdapter {
     private Context context;
     private ViewHolder holder;
     private JSONArray list;
-    public AnalysisAdapter(Context context, JSONArray list) {
+    public NotepadAnalysisTitleAdapter(Context context, JSONArray list) {
         this.context = context;
         holder = new ViewHolder();
         this.list = list;
@@ -46,10 +46,10 @@ public class AnalysisAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View contentView = null;
         if (contentView == null) {
-            contentView = LayoutInflater.from(context).inflate(R.layout.notpad_analysis_list_item, viewGroup, false);
-            holder.yue = contentView.findViewById(R.id.yue);
-            holder.OutTime = contentView.findViewById(R.id.OutTime);
-            holder.OnTime = contentView.findViewById(R.id.OnTime);
+            contentView = LayoutInflater.from(context).inflate(R.layout.notepad_analysis_title_list_item, viewGroup, false);
+            holder.title = contentView.findViewById(R.id.title);
+            holder.nofinish = contentView.findViewById(R.id.nofinish);
+            holder.finished = contentView.findViewById(R.id.finished);
             holder.acount = contentView.findViewById(R.id.acount);
 
             contentView.setTag(holder);
@@ -58,11 +58,11 @@ public class AnalysisAdapter extends BaseAdapter {
         }
         try {
             JSONObject jsonObject = new JSONObject(String.valueOf(list.get(i)));
-            holder.OutTime.setText(jsonObject.getString("OutTime"));
-            holder.OnTime.setText(jsonObject.getString("OnTime"));
-            holder.yue.setText(i+1+"月");
-            int out= Integer.parseInt(jsonObject.getString("OutTime"));
-            int on= Integer.parseInt(jsonObject.getString("OnTime"));
+            holder.nofinish.setText(jsonObject.getString("nofinish"));
+            holder.finished.setText(jsonObject.getString("finished"));
+            holder.title.setText(jsonObject.getString("title"));
+            int out= Integer.parseInt(jsonObject.getString("nofinish"));
+            int on= Integer.parseInt(jsonObject.getString("finished"));
             int acount=out+on;
             holder.acount.setText(acount+"");
         } catch (JSONException e) {
@@ -72,6 +72,6 @@ public class AnalysisAdapter extends BaseAdapter {
     }
 
     private class ViewHolder{
-        TextView yue,OutTime,OnTime,acount;
+        TextView title,nofinish,finished,acount;
     }
 }

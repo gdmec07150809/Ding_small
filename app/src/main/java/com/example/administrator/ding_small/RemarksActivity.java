@@ -3,6 +3,7 @@ package com.example.administrator.ding_small;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -15,10 +16,13 @@ import android.text.format.Time;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,13 +40,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+
 import static com.example.administrator.ding_small.HelpTool.getContactInfo.getContactInfo;
-import static com.example.administrator.ding_small.R.id.found_activity_lay;
-import static com.example.administrator.ding_small.R.id.search_btn;
+
 
 
 /**
@@ -64,14 +69,18 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     private JSONObject contactData;//储存第一手信息
     private JSONObject contactDatas;//储存搜索结果
     private JSONObject jsonObject;//为contactData提供对象
-    private EditText search_text;//搜索框
+    private EditText search_text,remarks_text;//搜索框
     boolean isFlag=true;//用哪个JsonObject响应listVIEW点击事件
     private Button search_btn;
     private ImageView clean_text;
+    private Calendar cal = Calendar.getInstance();
+    boolean isInfinite=false;//是否无限次重复
+
     @RequiresApi(api = VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         setContentView(R.layout.remarks);
         findViewById(R.id.remarks_contacts).setOnClickListener(this);
         findViewById(R.id.remarks_label).setOnClickListener(this);
@@ -81,6 +90,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.remarks_reimbursement).setOnClickListener(this);
         findViewById(R.id.remarks_privacy).setOnClickListener(this);
         findViewById(R.id.remarks_loan).setOnClickListener(this);
+        findViewById(R.id.infinite).setOnClickListener(this);
 
         contacts_text= findViewById(R.id.contacts_text);
         label_text=findViewById(R.id.label_text);
@@ -96,16 +106,21 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         week=findViewById(R.id.week);
         nong=findViewById(R.id.nong);
         title=findViewById(R.id.title);
+        remarks_text=findViewById(R.id.remarks_text);
         //获取传过来的值
         Bundle bundle=getIntent().getExtras();
         String t1=bundle.getString("title");
-        if(t1.equals("已收")||t1.equals("待收")){
-            findViewById(R.id.loan_layout).setVisibility(View.GONE);
-            findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
-        }else if(t1.equals("已付")||t1.equals("待付")){
-            findViewById(R.id.loan_layout).setVisibility(View.VISIBLE);
-            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
-        }else {
+//        if(t1.equals("已收")||t1.equals("待收")){
+//            findViewById(R.id.loan_layout).setVisibility(View.GONE);
+//            findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
+//        }else if(t1.equals("已付")||t1.equals("待付")){
+//            findViewById(R.id.loan_layout).setVisibility(View.VISIBLE);
+//            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
+//        }else {
+//            findViewById(R.id.loan_layout).setVisibility(View.GONE);
+//            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
+//        }
+        if(t1.equals("记事")){
             findViewById(R.id.loan_layout).setVisibility(View.GONE);
             findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
         }
@@ -176,6 +191,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.remarks_contacts:
+                //设置对应按钮背景样式
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
@@ -185,6 +201,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
+                //设置对应文本颜色
                 privacy_text.setTextColor(getResources().getColor(R.color.blank));
                 loan_text.setTextColor(getResources().getColor(R.color.blank));
                 reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
@@ -194,6 +211,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
 
+                //设置对应布局显隐
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
@@ -216,6 +234,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 search_btn=findViewById(R.id.search_btn);
                 clean_text=findViewById(R.id.clean_text);
                 search_text=findViewById(R.id.search_edittext);
+                //搜索联系人事件
                 search_btn.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -252,7 +271,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 
                     }
                 });
-
+                //清除搜索框内容
                 clean_text.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -264,6 +283,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                         list.setAdapter(new com.example.administrator.ding_small.Adapter.ContactAdapter(RemarksActivity.this, contactData));
                     }
                 });
+                //联系人列表子事件
                 list.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -313,9 +333,11 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
                 strs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵", "+"};
+                //绘制自定义流式布局
                 labelFlowLayout();
                 break;
             case R.id.remarks_repeat:
+
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.c6_bg);
@@ -342,6 +364,84 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 repeat_text.setTextColor(getResources().getColor(R.color.green));
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
+
+                final TextView infinite= findViewById(R.id.infinite);
+                final LinearLayout year= findViewById(R.id.year);
+                final LinearLayout month= findViewById(R.id.month);
+                final LinearLayout week= findViewById(R.id.week_layout);
+                final LinearLayout day= findViewById(R.id.day);
+
+                infinite.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(isInfinite){
+                            TextView infinite1= findViewById(R.id.infinite);
+                            infinite1.setTextColor(getResources().getColor(R.color.blank));
+                            EditText edit_repeat_number_text=findViewById(R.id.edit_repeat_number_text);
+                            edit_repeat_number_text.setEnabled(true);
+                            isInfinite=!isInfinite;
+                        }else{
+                            TextView infinite1= findViewById(R.id.infinite);
+                            infinite1.setTextColor(getResources().getColor(R.color.orange));
+                            isInfinite=!isInfinite;
+                            EditText edit_repeat_number_text=findViewById(R.id.edit_repeat_number_text);
+                            edit_repeat_number_text.setEnabled(false);
+                        }
+
+                    }
+                });
+                year.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final TextView year_text= findViewById(R.id.year_text);
+                        final TextView month_text= findViewById(R.id.month_text);
+                        final TextView week_text= findViewById(R.id.week_text);
+                        final TextView day_text= findViewById(R.id.day_text);
+                        year_text.setTextColor(getResources().getColor(R.color.orange));
+                        month_text.setTextColor(getResources().getColor(R.color.blank));
+                        week_text.setTextColor(getResources().getColor(R.color.blank));
+                        day_text.setTextColor(getResources().getColor(R.color.blank));
+                    }
+                });
+                week.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final TextView year_text= findViewById(R.id.year_text);
+                        final TextView month_text= findViewById(R.id.month_text);
+                        final TextView week_text= findViewById(R.id.week_text);
+                        final TextView day_text= findViewById(R.id.day_text);
+                        year_text.setTextColor(getResources().getColor(R.color.blank));
+                        month_text.setTextColor(getResources().getColor(R.color.blank));
+                        week_text.setTextColor(getResources().getColor(R.color.orange));
+                        day_text.setTextColor(getResources().getColor(R.color.blank));
+                    }
+                });
+                month.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final TextView year_text= findViewById(R.id.year_text);
+                        final TextView month_text= findViewById(R.id.month_text);
+                        final TextView week_text= findViewById(R.id.week_text);
+                        final TextView day_text= findViewById(R.id.day_text);
+                        year_text.setTextColor(getResources().getColor(R.color.blank));
+                        month_text.setTextColor(getResources().getColor(R.color.orange));
+                        week_text.setTextColor(getResources().getColor(R.color.blank));
+                        day_text.setTextColor(getResources().getColor(R.color.blank));
+                    }
+                });
+                day.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final TextView year_text= findViewById(R.id.year_text);
+                        final TextView month_text= findViewById(R.id.month_text);
+                        final TextView week_text= findViewById(R.id.week_text);
+                        final TextView day_text= findViewById(R.id.day_text);
+                        year_text.setTextColor(getResources().getColor(R.color.blank));
+                        month_text.setTextColor(getResources().getColor(R.color.blank));
+                        week_text.setTextColor(getResources().getColor(R.color.blank));
+                        day_text.setTextColor(getResources().getColor(R.color.orange));
+                    }
+                });
                 break;
             case R.id.remarks_photo:
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
@@ -353,9 +453,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
 
-                privacy_text.setTextColor(getResources().getColor(R.color.blank));
-                loan_text.setTextColor(getResources().getColor(R.color.blank));
-                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.remarks_location_layout).setVisibility(View.GONE);
@@ -365,6 +462,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
 
+                privacy_text.setTextColor(getResources().getColor(R.color.blank));
+                loan_text.setTextColor(getResources().getColor(R.color.blank));
+                reimbursement_text.setTextColor(getResources().getColor(R.color.blank));
                 contacts_text.setTextColor(this.getResources().getColor(R.color.blank));
                 label_text.setTextColor(getResources().getColor(R.color.blank));
                 repeat_text.setTextColor(getResources().getColor(R.color.blank));
@@ -401,6 +501,8 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
 
                 TextView location=findViewById(R.id.location);
+
+                //获取地址
                 if(str_location ==null || str_location.isEmpty()){
                     location.setText("请打开移动网络,重试");
                 }else{
@@ -497,6 +599,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
                 break;
+
         }
     }
     //标签布局方法
@@ -585,7 +688,37 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 });
             }
         }
+    }
 
+//    public static void showSoftInputFromWindow(Activity activity, EditText editText) {
+//        editText.setFocusable(true);
+//        editText.setFocusableInTouchMode(true);
+//        editText.requestFocus();
+//        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//    }
+    //日期选择器监听
+    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
 
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, monthOfYear);
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDate();
+        }
+    };
+//弹出日期选择器
+    public void show(View v){
+        new DatePickerDialog(RemarksActivity.this,listener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+        ).show();
+    }
+    //更新日期
+    private void updateDate(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        TextView date=findViewById(R.id.date_text);
+        date.setText(simpleDateFormat.format(cal.getTime()));
     }
 }

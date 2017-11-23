@@ -3,165 +3,182 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="6pt"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/orange"
                 android:layout_marginLeft="10dp"
-                android:text="不重复"/>
+                android:text="重复次数"
+                android:textColor="@color/orange"
+                android:textSize="6pt"/>
         </LinearLayout>
-       <LinearLayout
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1">
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="自定义"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="天"/>
-       </LinearLayout>
-       <LinearLayout
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1">
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="周"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="月"/>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="6pt"
-               android:layout_gravity="center_vertical"
-               android:layout_marginLeft="10dp"
-               android:text="年"/>
-       </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="2">
+
+            <EditText
+                android:id="@+id/edit_repeat_number_text"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_green"
+                android:gravity="center"
+                android:hint="输入重复次数"
+                android:inputType="number"
+                android:textColorHint="@color/hui"
+                android:textSize="6pt"/>
+            <TextView
+                android:id="@+id/infinite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="无限次数"/>
+        </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/hui"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="无限重复"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="自定义"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="次"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="截止于"/>
 
-        </LinearLayout>
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="6pt"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:text="全部显示"/>
+                android:text="重复频率"
+                android:textSize="6pt"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="2">
+        <LinearLayout
+            android:id="@+id/year"
+         android:layout_width="0dp"
+         android:layout_height="match_parent"
+         android:layout_weight="1">
             <TextView
+                android:id="@+id/year_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="6pt"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="仅在到期日前"/>
+                android:layout_marginLeft="20dp"
+                android:text="年"
+                android:textSize="6pt"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="天显示"/>
+            <LinearLayout
+                android:id="@+id/month"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/month_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:text="月"
+                    android:textSize="6pt"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/week_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/week_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:text="周"
+                    android:textSize="6pt"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/day"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/day_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:text="日"
+                    android:textSize="6pt"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="重复日期"
+                android:textSize="6pt"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/date_text"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_green"
+                android:gravity="center"
+                android:onClick="show"
+                android:hint="重复日期"
+                android:inputType="datetime"
+                android:textColorHint="@color/hui"
+                android:textSize="6pt"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -173,6 +190,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -56,7 +56,7 @@
         <activity android:name=".PersonalCenter.DataLockActivity"/>
         <activity android:name=".PersonalCenter.AboutActivity"/>
         <activity android:name=".PersonalCenter.BindingCompanyActivity"/>
-        <activity android:name=".RemarksActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".RemarksActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".SearchTimeActivity"/>
         <activity android:name=".Label.AddLabelActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".Label.EditLabelBtnActivity"/>
@@ -65,9 +65,10 @@
         <activity android:name=".AccountsSearchByCalendarActivity"/>
         <activity android:name=".ForgotPassWordActivity"/>
         <activity android:name=".AddContactsActivity"  android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".AnalysisActivity"/>
+        <activity android:name=".NotepadAnalysisActivity"/>
         <activity android:name=".ScreenActivity"/>
         <activity android:name=".NotepadReportActivity"/>
+        <activity android:name=".NotepadAnalysisTitleStatisticsActivity"/>
     </application>
 
 </manifest>

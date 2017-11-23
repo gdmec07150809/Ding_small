@@ -35,7 +35,7 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
         f_contacts=findViewById(R.id.f_contacts);
         f_center=findViewById(R.id.f_center);
         f_notepad=findViewById(R.id.f_notepad);
-        f_notepad.setImageResource(R.drawable.work_order_yes);
+        f_notepad.setImageResource(R.drawable.notepad_yes_img);
         f_contacts.setImageResource(R.drawable.contacts_no);
         finished_btn=findViewById(R.id.finished_btn);
         no_finish_btn=findViewById(R.id.no_finish_btn);

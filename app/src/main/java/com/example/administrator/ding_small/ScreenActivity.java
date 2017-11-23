@@ -74,7 +74,7 @@ public class ScreenActivity extends Activity implements View.OnClickListener{
                             text.setTextColor(getResources().getColor(R.color.white));
                             titleList.add(text.getText().toString());
                         }
-                        Toast.makeText(ScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(ScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -115,7 +115,7 @@ public class ScreenActivity extends Activity implements View.OnClickListener{
                                 text.setTextColor(getResources().getColor(R.color.white));
                                 labelList.add(text.getText().toString());
                             }
-                        Toast.makeText(ScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
+                      // Toast.makeText(ScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
