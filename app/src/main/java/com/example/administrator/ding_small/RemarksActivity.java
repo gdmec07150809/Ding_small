@@ -3,19 +3,36 @@ package com.example.administrator.ding_small;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateFormat;
 import android.text.format.Time;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
@@ -36,18 +53,24 @@ import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.LunarCalendar;
 import com.example.administrator.ding_small.Label.EditLabelActivity;
 
+import org.feezu.liuli.timeselector.TimeSelector;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 
 import static com.example.administrator.ding_small.HelpTool.getContactInfo.getContactInfo;
-
+import static com.example.administrator.ding_small.R.id.date;
 
 
 /**
@@ -55,7 +78,7 @@ import static com.example.administrator.ding_small.HelpTool.getContactInfo.getCo
  */
 
 public class RemarksActivity extends Activity implements View.OnClickListener{
-    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,timeT,week,nong,title,reimbursement_text,loan_text,privacy_text;
+    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
     private InputMethodManager inputMethodManager;
@@ -75,6 +98,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     private ImageView clean_text;
     private Calendar cal = Calendar.getInstance();
     boolean isInfinite=false;//是否无限次重复
+    private String atTime;
+    private  ImageView photo1,photo2,photo3,photo4;
+    private Dialog mCameraDialog;
+    InputMethodManager imm;
 
     @RequiresApi(api = VERSION_CODES.N)
     @Override
@@ -101,15 +128,16 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         loan_text=findViewById(R.id.loan_text);
         privacy_text=findViewById(R.id.privacy_text);
 
-        timeT=findViewById(R.id.time);
         dateT=findViewById(R.id.date);
+        dateT.setOnClickListener(this);
         week=findViewById(R.id.week);
-        nong=findViewById(R.id.nong);
         title=findViewById(R.id.title);
         remarks_text=findViewById(R.id.remarks_text);
         //获取传过来的值
         Bundle bundle=getIntent().getExtras();
         String t1=bundle.getString("title");
+        atTime=bundle.getString("atTime");
+        week.setText("周"+getWeek(atTime));
 //        if(t1.equals("已收")||t1.equals("待收")){
 //            findViewById(R.id.loan_layout).setVisibility(View.GONE);
 //            findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
@@ -120,52 +148,13 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 //            findViewById(R.id.loan_layout).setVisibility(View.GONE);
 //            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
 //        }
+        //记事时报销、借出功能不显示
         if(t1.equals("记事")){
             findViewById(R.id.loan_layout).setVisibility(View.GONE);
             findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
         }
         title.setText(t1);
-       //获取当前年月日时分
-        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
-        t.setToNow(); // 取得系统时间。
-        int year = t.year;
-        int month = t.month;
-        int date = t.monthDay;
-        int hour = t.hour; // 0-23
-        int minute = t.minute;
-        final Calendar c = Calendar.getInstance();
-        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-        String mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
-        //判断周几
-        if("1".equals(mWay)){
-            mWay ="周日";
-        }else if("2".equals(mWay)){
-            mWay ="周一";
-        }else if("3".equals(mWay)){
-            mWay ="周二";
-        }else if("4".equals(mWay)){
-            mWay ="周三";
-        }else if("5".equals(mWay)){
-            mWay ="周四";
-        }else if("6".equals(mWay)){
-            mWay ="周五";
-        }else if("7".equals(mWay)){
-            mWay ="周六";
-        }
-        //给时分赋值
-        if(minute<10){
-            String minute_text="0"+minute;
-            timeT.setText(hour+":"+minute_text);
-        }else{
-            timeT.setText(hour+":"+minute);
-        }
-        //给星期赋值
-        week.setText(mWay);
-        //给年月日赋值
-        dateT.setText(year+"-"+(month+1)+"-"+date);
-        //给农历赋值
-        System.out.println("农历："+ new LunarCalendar().getChinaDayString(new LunarCalendar().getLunarDateINT(year,month+1,date)));
-        nong.setText(new LunarCalendar().getChinaDayString(new LunarCalendar().getLunarDateINT(year,month+1,date)));
+        dateT.setText(atTime);
         //获取地址
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
@@ -189,8 +178,11 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     @TargetApi(VERSION_CODES.M)
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()){
             case R.id.remarks_contacts:
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
                 //设置对应按钮背景样式
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
@@ -306,6 +298,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 
                 break;
             case R.id.remarks_label:
+
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
@@ -337,6 +333,8 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 labelFlowLayout();
                 break;
             case R.id.remarks_repeat:
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
 
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
@@ -444,6 +442,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 });
                 break;
             case R.id.remarks_photo:
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
@@ -470,8 +471,75 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 repeat_text.setTextColor(getResources().getColor(R.color.blank));
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.green));
+
+                photo1=findViewById(R.id.photo1);
+                photo2=findViewById(R.id.photo2);
+                photo3=findViewById(R.id.photo3);
+                photo4=findViewById(R.id.photo4);
+                photo1.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setDialog(1);
+//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(intent, 0);
+                    }
+                });
+                photo2.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setDialog(2);
+//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(intent, 0);
+                    }
+                });
+                photo3.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setDialog(3);
+//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(intent, 0);
+                    }
+                });
+                photo4.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setDialog(4);
+//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(intent, 0);
+                    }
+                });
+                photo1.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDetelePhotoDialog(1);
+                        return true;
+                    }
+                });
+                photo2.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDetelePhotoDialog(2);
+                        return true;
+                    }
+                });
+                photo3.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDetelePhotoDialog(3);
+                        return true;
+                    }
+                });
+                photo4.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDetelePhotoDialog(4);
+                        return true;
+                    }
+                });
                 break;
             case R.id.remarks_location:
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
 
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
@@ -510,6 +578,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 }
                 break;
             case R.id.remarks_reimbursement:
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
@@ -518,8 +589,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
-
-
 
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
@@ -540,6 +609,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
                 break;
             case R.id.remarks_privacy:
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
@@ -548,8 +620,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.c6_bg);
-
-
 
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
@@ -570,6 +640,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
                 break;
             case R.id.remarks_loan:
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+
                 findViewById(R.id.remarks_contacts).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_label).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_repeat).setBackgroundResource(R.drawable.hui_bg);
@@ -578,8 +651,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_loan).setBackgroundResource(R.drawable.c6_bg);
                 findViewById(R.id.remarks_privacy).setBackgroundResource(R.drawable.hui_bg);
-
-
 
                 findViewById(R.id.remarks_repeat_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
@@ -599,9 +670,60 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
                 break;
+            case R.id.date:
+                TimeSelector timeSelector = new TimeSelector(RemarksActivity.this, new TimeSelector.ResultHandler() {
+                    @Override
+                    public void handle(String time) {
+                        TextView week=findViewById(R.id.week);
+                        atTime=time;
+                        dateT.setText(time);
+                        week.setText("周"+getWeek(atTime));
+                    }
 
+                }, atTime, "2500-12-31 23:59:59");
+                timeSelector.setIsLoop(false);//设置不循环,true循环
+                timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
+                timeSelector.show();
+                break;
+
+            case R.id.btn_open_camera:
+                     intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 11);
+                break;
+            case R.id.btn_open_camera2:
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,12);
+                break;
+            case R.id.btn_open_camera3:
+               intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 13);
+                break;
+            case R.id.btn_open_camera4:
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 14);
+                break;
+            case R.id.btn_cancel:
+                mCameraDialog.dismiss();
+                break;
+            case R.id.btn_choose_img:
+               intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 21);
+                break;
+            case R.id.btn_choose_img2:
+                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 22);
+                break;
+            case R.id.btn_choose_img3:
+                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,23 );
+                break;
+            case R.id.btn_choose_img4:
+                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 24);
+                break;
         }
     }
+
     //标签布局方法
     private void labelFlowLayout() {
         if(found_activity_fyt==null){
@@ -649,13 +771,11 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                                 labelList.add(text.getText().toString());
                             }
                         }
-
                         Toast.makeText(RemarksActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         }
-
     }
 
     //标签布局方法
@@ -689,7 +809,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
             }
         }
     }
-
 //    public static void showSoftInputFromWindow(Activity activity, EditText editText) {
 //        editText.setFocusable(true);
 //        editText.setFocusableInTouchMode(true);
@@ -707,6 +826,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
             updateDate();
         }
     };
+
 //弹出日期选择器
     public void show(View v){
         new DatePickerDialog(RemarksActivity.this,listener,
@@ -715,10 +835,426 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 cal.get(Calendar.DAY_OF_MONTH)
         ).show();
     }
+
     //更新日期
     private void updateDate(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         TextView date=findViewById(R.id.date_text);
         date.setText(simpleDateFormat.format(cal.getTime()));
+    }
+
+
+    /**
+     * 判断当前日期是星期几
+     *
+     * @param  pTime     设置的需要判断的时间  //格式如2012-09-08
+     *
+     * @return dayForWeek 判断结果
+     * @Exception 发生异常
+     */
+    private String getWeek(String pTime) {
+
+        String Week = "";
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(format.parse(pTime));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            Week += "日";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            Week += "一";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
+            Week += "二";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
+            Week += "三";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
+            Week += "四";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+            Week += "五";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+            Week += "六";
+        }
+
+        return Week;
+    }
+    //获取,处理拍照事件
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+        mCameraDialog.dismiss();
+        findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
+        //判断那个相机回调
+        switch (requestCode){
+            case 11:
+                if (resultCode == Activity.RESULT_OK) {
+                    String sdStatus = Environment.getExternalStorageState();
+                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+                        Log.i("TestFile",
+                                "SD card is not avaiable/writeable right now.");
+                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    new DateFormat();
+                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+                    System.out.println("路径："+name);
+                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+
+                    FileOutputStream b = null;
+                    File file = new File("/sdcard/Image/");
+                    file.mkdirs();// 创建文件夹
+                    String fileName = "/sdcard/Image/"+name;
+
+                    try {
+                        b = new FileOutputStream(fileName);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if(b!=null){
+                                b.flush();
+                                b.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try
+                    {
+                        photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
+                    }catch(Exception e)
+                    {
+                        Log.e("error", e.getMessage());
+                    }
+
+                }
+                break;
+            case 12:
+                if (resultCode == Activity.RESULT_OK) {
+                    String sdStatus = Environment.getExternalStorageState();
+                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+                        Log.i("TestFile",
+                                "SD card is not avaiable/writeable right now.");
+                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    new DateFormat();
+                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+                    System.out.println("路径："+name);
+                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+
+                    FileOutputStream b = null;
+                    File file = new File("/sdcard/Image/");
+                    file.mkdirs();// 创建文件夹
+                    String fileName = "/sdcard/Image/"+name;
+
+                    try {
+                        b = new FileOutputStream(fileName);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if(b!=null){
+                                b.flush();
+                                b.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try
+                    {
+                        photo2.setImageBitmap(bitmap);// 将图片显示在ImageView里
+                    }catch(Exception e)
+                    {
+                        Log.e("error", e.getMessage());
+                    }
+
+                }
+                break;
+            case 13:
+                if (resultCode == Activity.RESULT_OK) {
+                    String sdStatus = Environment.getExternalStorageState();
+                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+                        Log.i("TestFile",
+                                "SD card is not avaiable/writeable right now.");
+                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    new DateFormat();
+                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+                    System.out.println("路径："+name);
+                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+
+                    FileOutputStream b = null;
+                    File file = new File("/sdcard/Image/");
+                    file.mkdirs();// 创建文件夹
+                    String fileName = "/sdcard/Image/"+name;
+
+                    try {
+                        b = new FileOutputStream(fileName);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if(b!=null){
+                                b.flush();
+                                b.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try
+                    {
+                        photo3.setImageBitmap(bitmap);// 将图片显示在ImageView里
+                    }catch(Exception e)
+                    {
+                        Log.e("error", e.getMessage());
+                    }
+
+                }
+                break;
+            case 14:
+                if (resultCode == Activity.RESULT_OK) {
+                    String sdStatus = Environment.getExternalStorageState();
+                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+                        Log.i("TestFile",
+                                "SD card is not avaiable/writeable right now.");
+                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    new DateFormat();
+                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+                    System.out.println("路径："+name);
+                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+
+                    FileOutputStream b = null;
+                    File file = new File("/sdcard/Image/");
+                    file.mkdirs();// 创建文件夹
+                    String fileName = "/sdcard/Image/"+name;
+
+                    try {
+                        b = new FileOutputStream(fileName);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if(b!=null){
+                                b.flush();
+                                b.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try
+                    {
+                        photo4.setImageBitmap(bitmap);// 将图片显示在ImageView里
+                    }catch(Exception e)
+                    {
+                        Log.e("error", e.getMessage());
+                    }
+
+                }
+                break;
+            case 21:
+                //打开相册并选择照片，这个方式选择单张
+                // 获取返回的数据，这里是android自定义的Uri地址
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    // 获取选择照片的数据视图
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    // 从数据视图中获取已选择图片的路径
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    // 将图片显示到界面上
+                    photo1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                }
+                break;
+            case 22:
+                //打开相册并选择照片，这个方式选择单张
+                // 获取返回的数据，这里是android自定义的Uri地址
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    // 获取选择照片的数据视图
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    // 从数据视图中获取已选择图片的路径
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    // 将图片显示到界面上
+                    photo2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                }
+                break;
+            case 23:
+                //打开相册并选择照片，这个方式选择单张
+                // 获取返回的数据，这里是android自定义的Uri地址
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    // 获取选择照片的数据视图
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    // 从数据视图中获取已选择图片的路径
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    // 将图片显示到界面上
+                    photo3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                }
+                break;
+            case 24:
+                //打开相册并选择照片，这个方式选择单张
+                // 获取返回的数据，这里是android自定义的Uri地址
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    // 获取选择照片的数据视图
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    // 从数据视图中获取已选择图片的路径
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    // 将图片显示到界面上
+                    photo4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                }
+                break;
+        }
+
+    }
+
+    //删除图片事件
+    private void showDetelePhotoDialog(final int number){
+        /* @setIcon 设置对话框图标
+         * @setTitle 设置对话框标题
+         * @setMessage 设置对话框消息提示
+         * setXXX方法返回Dialog对象，因此可以链式设置属性
+         */
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(RemarksActivity.this);
+        normalDialog.setTitle("删除");
+        normalDialog.setMessage("是否删除该图片？");
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //判断那个图片删除
+                      switch (number){
+                          case 1:
+                              photo1.setImageResource(R.drawable.no_photo);
+                              break;
+                          case 2:
+                              photo2.setImageResource(R.drawable.no_photo);
+                              break;
+                          case 3:
+                              photo3.setImageResource(R.drawable.no_photo);
+                              break;
+                          case 4:
+                              photo4.setImageResource(R.drawable.no_photo);
+                              break;
+                      }
+
+                    }
+                });
+        normalDialog.setNegativeButton("关闭",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                     return;
+                    }
+                });
+        // 显示
+        normalDialog.show();
+    }
+
+    //底部弹出菜单
+    private void setDialog(int number) {
+        LinearLayout root=null;
+        mCameraDialog = new Dialog(this, R.style.BottomDialog);
+        //判断那个相机弹出
+        switch (number){
+            case 1:
+                root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.photo_menu, null);
+                //初始化视图
+                root.findViewById(R.id.btn_choose_img).setOnClickListener(this);
+                root.findViewById(R.id.btn_open_camera).setOnClickListener(this);
+                root.findViewById(R.id.btn_cancel).setOnClickListener(this);
+                break;
+            case 2:
+                root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.photo2_menu, null);
+                //初始化视图
+                root.findViewById(R.id.btn_choose_img2).setOnClickListener(this);
+                root.findViewById(R.id.btn_open_camera2).setOnClickListener(this);
+                root.findViewById(R.id.btn_cancel).setOnClickListener(this);
+                break;
+            case 3:
+                root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.photo3_menu, null);
+                //初始化视图
+                root.findViewById(R.id.btn_choose_img3).setOnClickListener(this);
+                root.findViewById(R.id.btn_open_camera3).setOnClickListener(this);
+                root.findViewById(R.id.btn_cancel).setOnClickListener(this);
+                break;
+            case 4:
+                root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.photo4_menu, null);
+                //初始化视图
+                root.findViewById(R.id.btn_choose_img4).setOnClickListener(this);
+                root.findViewById(R.id.btn_open_camera4).setOnClickListener(this);
+                root.findViewById(R.id.btn_cancel).setOnClickListener(this);
+                break;
+        }
+
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+//        dialogWindow.setWindowAnimations(R.style.dialogstyle); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+
     }
 }

@@ -17,6 +17,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
+                    android:id="@+id/photo1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -36,6 +37,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
+                    android:id="@+id/photo2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -57,6 +59,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/photo3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -72,6 +75,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <ImageView
+                    android:id="@+id/photo4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

@@ -568,15 +568,6 @@
                            android:textColor="@color/blank"
                            android:textSize="6pt"/>
 
-                       <TextView
-                           android:id="@+id/time"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_gravity="center_vertical"
-                           android:layout_marginLeft="10dp"
-                           android:text="14:20"
-                           android:textSize="5pt"/>
-
                        <ImageView
                            android:layout_width="20dp"
                            android:layout_height="20dp"

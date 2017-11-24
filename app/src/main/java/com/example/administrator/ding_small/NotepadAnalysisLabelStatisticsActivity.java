@@ -22,7 +22,7 @@ import static com.example.administrator.ding_small.R.id.ge;
  * Created by Administrator on 2017/11/23.
  */
 
-public class NotepadAnalysisTitleStatisticsActivity extends Activity implements View.OnClickListener{
+public class NotepadAnalysisLabelStatisticsActivity extends Activity implements View.OnClickListener{
     private ArrayList<String> finishedLists;
     private ArrayList<String> nofinishlists;
     private ArrayList<String> titleLists;
@@ -32,8 +32,8 @@ public class NotepadAnalysisTitleStatisticsActivity extends Activity implements 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.notepad_analysis_title_statistics);
-        listView=findViewById(R.id.notepad_analysis_title_listview);
+        setContentView(R.layout.notepad_analysis_label_statistics);
+        listView=findViewById(R.id.notepad_analysis_label_listview);
 
         findViewById(R.id.f_title).setOnClickListener(this);
         findViewById(R.id.f_label).setOnClickListener(this);
@@ -44,8 +44,8 @@ public class NotepadAnalysisTitleStatisticsActivity extends Activity implements 
         finished_text=findViewById(R.id.finished_text);
         outtime_text=findViewById(R.id.outtime_text);
 
-        title_text.setTextColor(getResources().getColor(R.color.green));
-        label_text.setTextColor(getResources().getColor(R.color.blank));
+        title_text.setTextColor(getResources().getColor(R.color.blank));
+        label_text.setTextColor(getResources().getColor(R.color.green));
         finished_text.setTextColor(getResources().getColor(R.color.blank));
         outtime_text.setTextColor(getResources().getColor(R.color.blank));
 
@@ -85,7 +85,7 @@ public class NotepadAnalysisTitleStatisticsActivity extends Activity implements 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        listView.setAdapter(new NotepadAnalysisTitleAdapter(NotepadAnalysisTitleStatisticsActivity.this,jsonArray));
+        listView.setAdapter(new NotepadAnalysisTitleAdapter(NotepadAnalysisLabelStatisticsActivity.this,jsonArray));
     }
 
     @Override
@@ -93,12 +93,12 @@ public class NotepadAnalysisTitleStatisticsActivity extends Activity implements 
         Intent intent;
         switch (view.getId()){
             case R.id.f_finished:
-                intent=new Intent(NotepadAnalysisTitleStatisticsActivity.this,NotepadReportActivity.class);
+                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadReportActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.f_label:
-                intent=new Intent(NotepadAnalysisTitleStatisticsActivity.this,NotepadAnalysisLabelStatisticsActivity.class);
+            case R.id.f_title:
+                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadAnalysisTitleStatisticsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

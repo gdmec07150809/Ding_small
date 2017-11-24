@@ -60,7 +60,7 @@ public class AccountBookAdapter extends BaseAdapter{
         }
 
         if(i>0){
-            System.out.println("保存值："+saveTime);
+            //System.out.println("保存值："+saveTime);
             if(saveTime.equals(holder.time.getText().toString())){
                 holder.time_layout.setVisibility(View.GONE);
             }
