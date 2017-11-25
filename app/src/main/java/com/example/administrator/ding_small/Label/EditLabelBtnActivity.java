@@ -32,7 +32,8 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_label_btn);
-        list=findViewById(R.id.title_list);
+        list=findViewById(R.id.label_list);
+        findViewById(R.id.add_label).setOnClickListener(this);
         jsonArray=new JSONArray();
         lists=new ArrayList<String>();
         lists.add("通用");
@@ -70,7 +71,14 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-
+        Intent intent;
+        switch (view.getId()){
+            case R.id.add_label:
+                intent=new Intent(EditLabelBtnActivity.this,AddLabelActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override

@@ -16,4 +16,18 @@
     <color name="fen">#F16F9A</color>
     <color name="text_color">#323232</color>
     <color name="red">#FF0000</color>
+    <color name="bg1">#81A1E2</color>
+    <color name="bg2">#46BCE7</color>
+    <color name="bg3">#B481C4</color>
+    <color name="bg4">#C8C791</color>
+    <color name="bg5">#FF786F</color>
+    <color name="bg6">#6AB845</color>
+    <color name="bg7">#D18B5C</color>
+    <color name="bg8">#81D9DD</color>
+    <color name="bg9">#56C1A6</color>
+    <color name="bg10">#F16F9A</color>
+    <color name="bg11">#46BCE7</color>
+    <color name="bg12">#F3C51C</color>
+    <color name="bg13">#4EC3A6</color>
+    <color name="bg14">#FF943C</color>
 </resources>

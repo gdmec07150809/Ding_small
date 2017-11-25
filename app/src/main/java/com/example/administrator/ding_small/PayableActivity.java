@@ -2,16 +2,32 @@ package com.example.administrator.ding_small;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.example.administrator.ding_small.Title.TitleActivity;
+
+import org.feezu.liuli.timeselector.TimeSelector;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.example.administrator.ding_small.R.id.at_action;
 
 /**
  * Created by Administrator on 2017/10/27.
@@ -19,15 +35,27 @@ import java.util.ArrayList;
 
 public class PayableActivity extends Activity implements View.OnClickListener{
     LinearLayout ll;
-    private TextView number,number_enter;
+    RelativeLayout action;
+    private TextView number,number_enter,action_text,day;
     private int index=0;
     private int small_index=0;
     private ArrayList<String> arrays=null;
-    private String addNumber="";
+    private String addNumber="",at_action,atTime,bg_number;
     private double sum=0;
     private boolean isAdd=true;
     private boolean isFrist=true;
     Intent intent;
+    private GridView gridView;
+    private List<Map<String, Object>> dataList;
+    private SimpleAdapter adapter;
+    //图标
+    int icno[] = { R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg, R.drawable.c5_bg, R.drawable.c6_bg,
+            R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg ,
+            R.drawable.c13_bg, R.drawable.c14_bg,R.drawable.c1_bg,R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.edit_add};
+    //图标下的文字
+    String name[]={"待办事项","常用数据","一般数据","生日","身份证","银行资料",
+            "待办事项", "常用数据","一般数据","生日","身份证","银行资料",
+            "待办事项", "常用数据","一般数据","生日","身份证","编辑"};
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +79,145 @@ public class PayableActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.remark).setOnClickListener(this);
         number= (TextView) findViewById(R.id.number);
         number_enter=findViewById(R.id.number_enter);
+        action_text=findViewById(R.id.action_text);
         number_enter.setOnClickListener(this);
+        action=findViewById(R.id.action);
+        day=findViewById(R.id.day);
+        day.setOnClickListener(this);
+
         arrays=new ArrayList<String>();
         initPoints();
+        //获取当前年月日时分
+        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+        t.setToNow(); // 取得系统时间。
+        int year = t.year;
+        int month = t.month;
+        int date = t.monthDay;
+        int hour = t.hour; // 0-23
+        int minute = t.minute;
+        //给时分赋值
+        if(minute<10){
+            String minute_text="0"+minute;
+            atTime=year+"-"+(month+1)+"-"+date+"  "+hour+":"+minute_text;
+            day.setText(atTime);
+        }else{
+            atTime=year+"-"+(month+1)+"-"+date+"  "+hour+":"+minute;
+            day.setText(atTime);
+        }
+
+        gridView = (GridView) findViewById(R.id.gridview);
+        //初始化数据
+        initData();
+
+        String[] from={"img","text"};
+
+        int[] to={R.id.img,R.id.text};
+
+        adapter=new SimpleAdapter(this, dataList, R.layout.gride_view_item, from, to);
+
+        gridView.setAdapter(adapter);
+
+        gridView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+//                AlertDialog.Builder builder= new AlertDialog.Builder(NotepadActivity.this);
+//                System.out.println("选择背景："+icno[arg2]);
+//                arg1.setDrawingCacheEnabled(true);
+//                System.out.println("路径:"+ arg1.getDrawingCache());
+//                arg1.setDrawingCacheEnabled(false);
+//                builder.setTitle("提示").setMessage(dataList.get(arg2).get("text").toString()).create().show();
+                Drawable drawable=arg1.getBackground();
+                if(dataList.get(arg2).get("text").toString().equals("编辑")){
+                    intent=new Intent(PayableActivity.this,TitleActivity.class);
+                    startActivity(intent);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                }else{
+                    at_action=dataList.get(arg2).get("text").toString();
+                    action_text.setText(at_action);
+                    switch (arg2){
+                        case 0:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg1));
+                            break;
+                        case 1:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg2));
+
+                            break;
+                        case 2:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg3));
+                            break;
+                        case 3:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg4));
+
+                            break;
+                        case 4:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg5));
+
+                            break;
+                        case 5:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg6));
+
+                            break;
+                        case 6:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg7));
+
+                            break;
+                        case 7:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg8));
+
+                            break;
+                        case 8:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg9));
+                            break;
+                        case 9:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg10));
+                            break;
+                        case 10:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg11));
+                            break;
+                        case 11:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg12));
+                            break;
+                        case 12:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg13));
+                            break;
+                        case 13:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg14));
+                            break;
+                        case 14:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg1));
+                            break;
+                        case 15:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg2));
+                            break;
+                        case 16:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg3));
+                            break;
+                        case 17:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg4));
+                            break;
+                        case 18:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg5));
+                            break;
+                        case 19:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg6));
+                            break;
+                        case 20:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg7));
+                            break;
+                        case 21:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg8));
+                            break;
+                        case 22:
+                            action.setBackgroundColor(getResources().getColor(R.color.bg9));
+                            break;
+
+                    }
+                    bg_number=(arg2)+"";
+                }
+
+            }
+        });
 
     }
     @Override
@@ -226,7 +390,6 @@ public class PayableActivity extends Activity implements View.OnClickListener{
                 intent=new Intent(PayableActivity.this,ReceivedActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-
                 break;
             case R.id.notepad:
                 intent=new Intent(PayableActivity.this,NotepadActivity.class);
@@ -235,9 +398,27 @@ public class PayableActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.remark:
                 intent=new Intent(PayableActivity.this,RemarksActivity.class);
+               String money= number.getText().toString();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("title","待付");
+                intent.putExtra("atTime",atTime);
+                intent.putExtra("at_action",at_action);
+                intent.putExtra("bg_number",bg_number);
+                intent.putExtra("money",money);
                 startActivity(intent);
+                break;
+            case R.id.day:
+                TimeSelector timeSelector = new TimeSelector(PayableActivity.this, new TimeSelector.ResultHandler() {
+                    @Override
+                    public void handle(String time) {
+                        atTime=time;
+                        day.setText(time);
+                    }
+
+                }, atTime, "2500-12-31 23:59:59");
+                timeSelector.setIsLoop(false);//设置不循环,true循环
+                timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
+                timeSelector.show();
                 break;
         }
     }
@@ -266,4 +447,15 @@ public class PayableActivity extends Activity implements View.OnClickListener{
             //设置选中线性布局中的第一个
             ll.getChildAt(0).setSelected(true);
         }
+
+    void initData() {
+
+        dataList = new ArrayList<Map<String, Object>>();
+        for (int i = 0; i <icno.length; i++) {
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("img", icno[i]);
+            map.put("text",name[i]);
+            dataList.add(map);
+        }
+    }
 }

@@ -71,6 +71,7 @@ import java.util.TimeZone;
 
 import static com.example.administrator.ding_small.HelpTool.getContactInfo.getContactInfo;
 import static com.example.administrator.ding_small.R.id.date;
+import static com.example.administrator.ding_small.R.id.money;
 
 
 /**
@@ -78,7 +79,7 @@ import static com.example.administrator.ding_small.R.id.date;
  */
 
 public class RemarksActivity extends Activity implements View.OnClickListener{
-    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text;
+    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text,at_action;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
     private InputMethodManager inputMethodManager;
@@ -98,10 +99,11 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     private ImageView clean_text;
     private Calendar cal = Calendar.getInstance();
     boolean isInfinite=false;//是否无限次重复
-    private String atTime;
+    private String atTime,at_action_text,money;
     private  ImageView photo1,photo2,photo3,photo4;
     private Dialog mCameraDialog;
     InputMethodManager imm;
+    private LinearLayout action;
 
     @RequiresApi(api = VERSION_CODES.N)
     @Override
@@ -133,11 +135,17 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         week=findViewById(R.id.week);
         title=findViewById(R.id.title);
         remarks_text=findViewById(R.id.remarks_text);
+        at_action=findViewById(R.id.at_action);
+        action=findViewById(R.id.action);
         //获取传过来的值
         Bundle bundle=getIntent().getExtras();
         String t1=bundle.getString("title");
+        int  bg_number= Integer.parseInt(bundle.getString("bg_number"));
+        setBackgroundRemarks(bg_number);//设置标题背景
         atTime=bundle.getString("atTime");
+        at_action_text=bundle.getString("at_action");
         week.setText("周"+getWeek(atTime));
+        at_action.setText(at_action_text);
 //        if(t1.equals("已收")||t1.equals("待收")){
 //            findViewById(R.id.loan_layout).setVisibility(View.GONE);
 //            findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
@@ -148,10 +156,17 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 //            findViewById(R.id.loan_layout).setVisibility(View.GONE);
 //            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
 //        }
+
+
         //记事时报销、借出功能不显示
         if(t1.equals("记事")){
             findViewById(R.id.loan_layout).setVisibility(View.GONE);
             findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
+            findViewById(R.id.money).setVisibility(View.INVISIBLE);
+        }else{
+            money=bundle.getString("money");
+            TextView number=findViewById(R.id.money);
+            number.setText(money);
         }
         title.setText(t1);
         dateT.setText(atTime);
@@ -1244,17 +1259,98 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         mCameraDialog.setContentView(root);
         Window dialogWindow = mCameraDialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
-//        dialogWindow.setWindowAnimations(R.style.dialogstyle); // 添加动画
+         dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
         WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
         lp.x = 0; // 新位置X坐标
         lp.y = 0; // 新位置Y坐标
         lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
         root.measure(0, 0);
         lp.height = root.getMeasuredHeight();
-
         lp.alpha = 9f; // 透明度
         dialogWindow.setAttributes(lp);
         mCameraDialog.show();
 
+    }
+    private  void setBackgroundRemarks(int number){
+        switch (number){
+            case 0:
+                action.setBackgroundColor(getResources().getColor(R.color.bg1));
+
+                break;
+            case 1:
+                action.setBackgroundColor(getResources().getColor(R.color.bg2));
+
+                break;
+            case 2:
+                action.setBackgroundColor(getResources().getColor(R.color.bg3));
+
+                break;
+            case 3:
+                action.setBackgroundColor(getResources().getColor(R.color.bg4));
+
+                break;
+            case 4:
+                action.setBackgroundColor(getResources().getColor(R.color.bg5));
+
+                break;
+            case 5:
+                action.setBackgroundColor(getResources().getColor(R.color.bg6));
+
+                break;
+            case 6:
+                action.setBackgroundColor(getResources().getColor(R.color.bg7));
+
+                break;
+            case 7:
+                action.setBackgroundColor(getResources().getColor(R.color.bg8));
+
+                break;
+            case 8:
+                action.setBackgroundColor(getResources().getColor(R.color.bg9));
+                break;
+            case 9:
+                action.setBackgroundColor(getResources().getColor(R.color.bg10));
+                break;
+            case 10:
+                action.setBackgroundColor(getResources().getColor(R.color.bg11));
+                break;
+            case 11:
+                action.setBackgroundColor(getResources().getColor(R.color.bg12));
+                break;
+            case 12:
+                action.setBackgroundColor(getResources().getColor(R.color.bg13));
+                break;
+            case 13:
+                action.setBackgroundColor(getResources().getColor(R.color.bg14));
+                break;
+            case 14:
+                action.setBackgroundColor(getResources().getColor(R.color.bg1));
+                break;
+            case 15:
+                action.setBackgroundColor(getResources().getColor(R.color.bg2));
+                break;
+            case 16:
+                action.setBackgroundColor(getResources().getColor(R.color.bg3));
+                break;
+            case 17:
+                action.setBackgroundColor(getResources().getColor(R.color.bg4));
+                break;
+            case 18:
+                action.setBackgroundColor(getResources().getColor(R.color.bg5));
+                break;
+            case 19:
+                action.setBackgroundColor(getResources().getColor(R.color.bg6));
+                break;
+            case 20:
+                action.setBackgroundColor(getResources().getColor(R.color.bg7));
+                break;
+            case 21:
+                action.setBackgroundColor(getResources().getColor(R.color.bg8));
+                break;
+            case 22:
+                action.setBackgroundColor(getResources().getColor(R.color.bg9));
+                break;
+
+        }
     }
 }
