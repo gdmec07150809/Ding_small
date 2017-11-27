@@ -6,10 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.example.administrator.ding_small.Adapter.AnalysisAdapter;
 import com.example.administrator.ding_small.Adapter.NotepadAnalysisTitleAdapter;
+import com.example.administrator.ding_small.Adapter.NotepadReturnByMonthAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,7 +96,16 @@ public class NotepadAnalysisActivity extends Activity implements View.OnClickLis
             e.printStackTrace();
         }
         listView.setAdapter(new AnalysisAdapter(NotepadAnalysisActivity.this,jsonArray));
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(NotepadAnalysisActivity.this, NotepadReturnByMonthActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
+    //绘制柱形图
     private void generateStackedData() {
 
         int numSubcolumns = 1;
@@ -144,6 +156,11 @@ public class NotepadAnalysisActivity extends Activity implements View.OnClickLis
                 break;
             case R.id.f_label:
                 intent=new Intent(NotepadAnalysisActivity.this, NotepadAnalysisLabelStatisticsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_outtime:
+                intent=new Intent(NotepadAnalysisActivity.this,NotepadOutTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

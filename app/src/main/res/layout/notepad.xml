@@ -141,31 +141,32 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:orientation="vertical">
-                   <RelativeLayout
-                       android:id="@+id/c_btn"
-                       android:layout_below="@+id/action"
-                       android:layout_width="match_parent"
-                       android:layout_height="280dp">
-                       <GridView
-                           android:id="@+id/gridview"
+
+                       <RelativeLayout
+                           android:id="@+id/c_btn"
+                           android:layout_below="@+id/action"
                            android:layout_width="match_parent"
-                           android:layout_height="wrap_content"
-                           android:columnWidth="50dp"
-                           android:gravity="center"
-                           android:layout_marginTop="10dp"
-                           android:verticalSpacing="5px"
-                           android:stretchMode="spacingWidthUniform"
-                           android:numColumns="6"
-                           />
-                       <LinearLayout
-                           android:id="@+id/main_ll"
-                           android:layout_width="match_parent"
-                           android:layout_height="wrap_content"
-                           android:layout_alignParentBottom="true"
-                           android:layout_marginTop="20dp"
-                           android:gravity="center"
-                           android:orientation="horizontal" />
-                   </RelativeLayout>
+                           android:layout_height="280dp">
+                           <GridView
+                               android:id="@+id/gridview"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:columnWidth="50dp"
+                               android:gravity="center"
+                               android:layout_marginTop="10dp"
+                               android:verticalSpacing="5px"
+                               android:stretchMode="spacingWidthUniform"
+                               android:numColumns="6"
+                               />
+                           <LinearLayout
+                               android:id="@+id/main_ll"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:layout_alignParentBottom="true"
+                               android:layout_marginTop="20dp"
+                               android:gravity="center"
+                               android:orientation="horizontal" />
+                       </RelativeLayout>
                    <LinearLayout
                        android:id="@+id/h1"
                        android:layout_marginTop="20dp"

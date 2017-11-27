@@ -107,6 +107,11 @@ public class NotepadReportActivity extends Activity implements View.OnClickListe
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            case R.id.f_outtime:
+                intent=new Intent(NotepadReportActivity.this,NotepadOutTimeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
         }
     }
 }

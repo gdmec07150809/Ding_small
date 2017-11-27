@@ -37,7 +37,6 @@ public class SearchActivity extends Activity implements View.OnClickListener{
         or_butoom_jiantou=findViewById(R.id.or_butoom_jiantou);
         time=findViewById(R.id.time);
         title=findViewById(R.id.title);
-        findViewById(R.id.right_icon).setOnClickListener(this);//试用
         time.setOnClickListener(this);
         title.setOnClickListener(this);
         finished_btn.setOnClickListener(this);

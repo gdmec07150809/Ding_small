@@ -102,6 +102,11 @@ public class NotepadAnalysisLabelStatisticsActivity extends Activity implements 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            case R.id.f_outtime:
+                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadOutTimeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
         }
     }
 }

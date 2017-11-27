@@ -72,6 +72,8 @@
         <activity android:name=".NotepadReportActivity"/>
         <activity android:name=".NotepadAnalysisTitleStatisticsActivity"/>
         <activity android:name=".NotepadAnalysisLabelStatisticsActivity"/>
+        <activity android:name=".NotepadReturnByMonthActivity"/>
+        <activity android:name=".NotepadOutTimeActivity"/>
     </application>
 
 </manifest>
