@@ -808,7 +808,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    //标签布局方法
+    //联系人布局方法
     private void contactsFlowLayout() {
         if(found_activity_lay==null){
             //加载搜索记录

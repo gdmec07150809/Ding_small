@@ -1,6 +1,7 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/11/28.
  */
 
-public class NotepadRemarkDetailsActivity extends Activity{
+public class NotepadRemarkDetailsActivity extends Activity implements View.OnClickListener{
     private ListView listView;
     private ArrayList<String> date;
     private ArrayList<String> explain;
@@ -52,6 +53,7 @@ public class NotepadRemarkDetailsActivity extends Activity{
         name3_view=findViewById(R.id.max_name);
         time_view=findViewById(R.id.time);
         finishing_layout=findViewById(R.id.finishing_layout);
+        findViewById(R.id.turn_to_send).setOnClickListener(this);
 
         handler = new Handler();
         handler.postDelayed(runnable, 100);
@@ -167,5 +169,16 @@ public class NotepadRemarkDetailsActivity extends Activity{
           inTitleColor= getStringValue.getString("titleColor");
           finishing_layout.setBackgroundResource(Integer.parseInt(inTitleColor));
       }
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()){
+            case R.id.turn_to_send:
+                intent=new Intent(NotepadRemarkDetailsActivity.this,NotepadTurnToSendActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }

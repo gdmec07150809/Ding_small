@@ -76,6 +76,7 @@
         <activity android:name=".NotepadOutTimeActivity"/>
         <activity android:name=".NotepadRemarkDetailsActivity"/>
         <activity android:name=".NotepadAnalysisLabelItemActivity"/>
+        <activity android:name=".NotepadTurnToSendActivity" android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

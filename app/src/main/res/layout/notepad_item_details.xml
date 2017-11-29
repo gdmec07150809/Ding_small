@@ -84,6 +84,7 @@
                                 android:src="@drawable/account_img"/>
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/turn_to_send"
                             android:layout_width="0dp"
                             android:orientation="vertical"
                             android:layout_height="wrap_content"
