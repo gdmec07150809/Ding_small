@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -99,11 +101,12 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     private ImageView clean_text;
     private Calendar cal = Calendar.getInstance();
     boolean isInfinite=false;//是否无限次重复
-    private String atTime,at_action_text,money;
+    private String atTime,at_action_text,money,t1;
     private  ImageView photo1,photo2,photo3,photo4;
     private Dialog mCameraDialog;
     InputMethodManager imm;
     private LinearLayout action;
+    private  int  bg_number;
 
     @RequiresApi(api = VERSION_CODES.N)
     @Override
@@ -139,13 +142,39 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         action=findViewById(R.id.action);
         //获取传过来的值
         Bundle bundle=getIntent().getExtras();
-        String t1=bundle.getString("title");
-        int  bg_number= Integer.parseInt(bundle.getString("bg_number"));
-        setBackgroundRemarks(bg_number);//设置标题背景
-        atTime=bundle.getString("atTime");
-        at_action_text=bundle.getString("at_action");
-        week.setText("周"+getWeek(atTime));
-        at_action.setText(at_action_text);
+        if(bundle.getString("title")!=null){
+            t1=bundle.getString("title");
+            //记事时报销、借出功能不显示
+            if(t1.equals("记事")){
+                findViewById(R.id.loan_layout).setVisibility(View.GONE);
+                findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
+                findViewById(R.id.money).setVisibility(View.INVISIBLE);
+            }else{
+                findViewById(R.id.loan_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.money).setVisibility(View.VISIBLE);
+                money=bundle.getString("money");
+                TextView number=findViewById(R.id.money);
+                number.setText(money);
+            }
+            title.setText(t1);
+        }
+
+       if(bundle.getInt("drawable")+""!=null){
+           int drawable= bundle.getInt("drawable");
+           System.out.println("颜色值："+drawable);
+           action.setBackgroundColor(drawable);
+       }
+       if(bundle.getString("atTime")!=null){
+           atTime=bundle.getString("atTime");
+           week.setText("周"+getWeek(atTime));
+           dateT.setText(atTime);
+       }
+      if(bundle.getString("at_action")!=null){
+          at_action_text=bundle.getString("at_action");
+          at_action.setText(at_action_text);
+      }
+
 //        if(t1.equals("已收")||t1.equals("待收")){
 //            findViewById(R.id.loan_layout).setVisibility(View.GONE);
 //            findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
@@ -156,20 +185,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 //            findViewById(R.id.loan_layout).setVisibility(View.GONE);
 //            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
 //        }
-
-
-        //记事时报销、借出功能不显示
-        if(t1.equals("记事")){
-            findViewById(R.id.loan_layout).setVisibility(View.GONE);
-            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
-            findViewById(R.id.money).setVisibility(View.INVISIBLE);
-        }else{
-            money=bundle.getString("money");
-            TextView number=findViewById(R.id.money);
-            number.setText(money);
-        }
-        title.setText(t1);
-        dateT.setText(atTime);
         //获取地址
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
@@ -1093,7 +1108,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     {
                         Log.e("error", e.getMessage());
                     }
-
                 }
                 break;
             case 21:
@@ -1269,88 +1283,5 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         lp.alpha = 9f; // 透明度
         dialogWindow.setAttributes(lp);
         mCameraDialog.show();
-
-    }
-    private  void setBackgroundRemarks(int number){
-        switch (number){
-            case 0:
-                action.setBackgroundColor(getResources().getColor(R.color.bg1));
-
-                break;
-            case 1:
-                action.setBackgroundColor(getResources().getColor(R.color.bg2));
-
-                break;
-            case 2:
-                action.setBackgroundColor(getResources().getColor(R.color.bg3));
-
-                break;
-            case 3:
-                action.setBackgroundColor(getResources().getColor(R.color.bg4));
-
-                break;
-            case 4:
-                action.setBackgroundColor(getResources().getColor(R.color.bg5));
-
-                break;
-            case 5:
-                action.setBackgroundColor(getResources().getColor(R.color.bg6));
-
-                break;
-            case 6:
-                action.setBackgroundColor(getResources().getColor(R.color.bg7));
-
-                break;
-            case 7:
-                action.setBackgroundColor(getResources().getColor(R.color.bg8));
-
-                break;
-            case 8:
-                action.setBackgroundColor(getResources().getColor(R.color.bg9));
-                break;
-            case 9:
-                action.setBackgroundColor(getResources().getColor(R.color.bg10));
-                break;
-            case 10:
-                action.setBackgroundColor(getResources().getColor(R.color.bg11));
-                break;
-            case 11:
-                action.setBackgroundColor(getResources().getColor(R.color.bg12));
-                break;
-            case 12:
-                action.setBackgroundColor(getResources().getColor(R.color.bg13));
-                break;
-            case 13:
-                action.setBackgroundColor(getResources().getColor(R.color.bg14));
-                break;
-            case 14:
-                action.setBackgroundColor(getResources().getColor(R.color.bg1));
-                break;
-            case 15:
-                action.setBackgroundColor(getResources().getColor(R.color.bg2));
-                break;
-            case 16:
-                action.setBackgroundColor(getResources().getColor(R.color.bg3));
-                break;
-            case 17:
-                action.setBackgroundColor(getResources().getColor(R.color.bg4));
-                break;
-            case 18:
-                action.setBackgroundColor(getResources().getColor(R.color.bg5));
-                break;
-            case 19:
-                action.setBackgroundColor(getResources().getColor(R.color.bg6));
-                break;
-            case 20:
-                action.setBackgroundColor(getResources().getColor(R.color.bg7));
-                break;
-            case 21:
-                action.setBackgroundColor(getResources().getColor(R.color.bg8));
-                break;
-            case 22:
-                action.setBackgroundColor(getResources().getColor(R.color.bg9));
-                break;
-
-        }
     }
 }

@@ -4,21 +4,8 @@ package com.example.administrator.ding_small;
  * Created by Administrator on 2017/10/19.
  */
 import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Email;
-import android.provider.ContactsContract.CommonDataKinds.Event;
-import android.provider.ContactsContract.CommonDataKinds.Im;
-import android.provider.ContactsContract.CommonDataKinds.Nickname;
-import android.provider.ContactsContract.CommonDataKinds.Note;
-import android.provider.ContactsContract.CommonDataKinds.Organization;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.ContactsContract.CommonDataKinds.StructuredName;
-import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
-import android.provider.ContactsContract.CommonDataKinds.Website;
-import android.provider.ContactsContract.Data;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -66,7 +53,7 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
         list.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {//联系人列表点击事件
-                Intent intent=new Intent(ContactsActivity.this,ContactsDeatilActivity.class);
+                Intent intent=new Intent(ContactsActivity.this,ContactsDetailActivity.class);
                 String ss= null;
                 String name="";
                 try {

@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/11/2.
  */
 
-public class ContactsDeatilActivity extends Activity implements View.OnClickListener{
+public class ContactsDetailActivity extends Activity implements View.OnClickListener{
     private ListView listView,listView2;
     private ArrayList<String> arrayList;
     private TextView nametext,count_number,count_text,l_money,R_money,received_text,payable_text;
@@ -60,14 +60,14 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
         for (int i=0;i<10;i++){
             arrayList.add(i+"");
         }
-        listView.setAdapter(new ContactAccountAdapter(ContactsDeatilActivity.this,arrayList));
+        listView.setAdapter(new ContactAccountAdapter(ContactsDetailActivity.this,arrayList));
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.name:
-                Intent intent=new Intent(ContactsDeatilActivity.this,ContactsDeatilsToActivity.class);
+                Intent intent=new Intent(ContactsDetailActivity.this,ContactsDetailsToActivity.class);
                 intent.putExtra("name",name);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -86,7 +86,7 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
                 account_layout.setVisibility(View.GONE);
                 notepad_layout.setVisibility(View.VISIBLE);
                 listView2=findViewById(R.id.contacts_notepad_list);
-                listView2.setAdapter(new ContactAccountAdapter(ContactsDeatilActivity.this,arrayList));
+                listView2.setAdapter(new ContactAccountAdapter(ContactsDetailActivity.this,arrayList));
                 break;
             case R.id.account_btn:
                 count_number.setText("3200");
@@ -103,32 +103,32 @@ public class ContactsDeatilActivity extends Activity implements View.OnClickList
                 notepad_layout.setVisibility(View.GONE);
                 break;
             case R.id.add:
-                Intent intent1=new Intent(ContactsDeatilActivity.this,NotepadActivity.class);
+                Intent intent1=new Intent(ContactsDetailActivity.this,NotepadActivity.class);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1);
                 break;
             case R.id.f_notepad:
-                Intent intent2=new Intent(ContactsDeatilActivity.this,NotepadBtnActivity.class);
+                Intent intent2=new Intent(ContactsDetailActivity.this,NotepadBtnActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
                 break;
             case R.id.f_account:
-                intent=new Intent(ContactsDeatilActivity.this,AccountBookActivity.class);
+                intent=new Intent(ContactsDetailActivity.this,AccountBookActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_center:
-                intent=new Intent(ContactsDeatilActivity.this,PersonalCenterActivity.class);
+                intent=new Intent(ContactsDetailActivity.this,PersonalCenterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.calendar:
-                intent=new Intent(ContactsDeatilActivity.this,NotepadSearchByCalendarActivity.class);
+                intent=new Intent(ContactsDetailActivity.this,NotepadSearchByCalendarActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.search:
-                intent=new Intent(ContactsDeatilActivity.this,SearchActivity.class);
+                intent=new Intent(ContactsDetailActivity.this,SearchActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

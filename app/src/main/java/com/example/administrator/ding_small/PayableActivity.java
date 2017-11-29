@@ -2,6 +2,7 @@ package com.example.administrator.ding_small;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -399,11 +400,15 @@ public class PayableActivity extends Activity implements View.OnClickListener{
             case R.id.remark:
                 intent=new Intent(PayableActivity.this,RemarksActivity.class);
                String money= number.getText().toString();
+                Drawable background = action.getBackground();
+                ColorDrawable colorDrawable = (ColorDrawable) background;
+                int color = colorDrawable.getColor();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("title","待付");
                 intent.putExtra("atTime",atTime);
+                intent.putExtra("drawable", color);
                 intent.putExtra("at_action",at_action);
-                intent.putExtra("bg_number",bg_number);
+             //   intent.putExtra("bg_number",bg_number);
                 intent.putExtra("money",money);
                 startActivity(intent);
                 break;

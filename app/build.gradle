@@ -38,4 +38,5 @@ dependencies {
     compile files('libs/fastjson-1.1.34.android-sources.jar')
     compile 'com.github.lecho:hellocharts-android:v1.5.8'
     compile 'com.feezu.liuli:timeselector:1.1.3+'
+    compile files('libs/xUtils-2.6.14.jar')
 }

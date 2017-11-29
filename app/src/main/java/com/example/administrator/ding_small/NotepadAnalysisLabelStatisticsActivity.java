@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -86,6 +88,14 @@ public class NotepadAnalysisLabelStatisticsActivity extends Activity implements 
             e.printStackTrace();
         }
         listView.setAdapter(new NotepadAnalysisTitleAdapter(NotepadAnalysisLabelStatisticsActivity.this,jsonArray));
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadAnalysisLabelItemActivity.class);
+                intent.putExtra("label",titleLists.get(i));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

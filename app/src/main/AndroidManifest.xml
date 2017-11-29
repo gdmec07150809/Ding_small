@@ -43,8 +43,8 @@
         <activity android:name=".Title.AddTitleActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".Title.EditTitleActivity"/>
         <activity android:name=".Title.EditTitleItemBtnActivity" android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".ContactsDeatilActivity"/>
-        <activity android:name=".ContactsDeatilsToActivity"/>
+        <activity android:name=".ContactsDetailActivity"/>
+        <activity android:name=".ContactsDetailsToActivity"/>
         <activity android:name=".NotepadBtnActivity"/>
         <activity android:name=".SearchActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".NotepadSearchByCalendarActivity"/>
@@ -74,6 +74,8 @@
         <activity android:name=".NotepadAnalysisLabelStatisticsActivity"/>
         <activity android:name=".NotepadReturnByMonthActivity"/>
         <activity android:name=".NotepadOutTimeActivity"/>
+        <activity android:name=".NotepadRemarkDetailsActivity"/>
+        <activity android:name=".NotepadAnalysisLabelItemActivity"/>
     </application>
 
 </manifest>

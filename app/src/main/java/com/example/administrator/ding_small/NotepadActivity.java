@@ -4,11 +4,12 @@ package com.example.administrator.ding_small;
  * Created by Administrator on 2017/10/20.
  */
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.ding_small.Title.TitleActivity;
 
@@ -34,8 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.administrator.ding_small.R.id.color;
-import static com.example.administrator.ding_small.R.id.ge;
+import static android.R.attr.button;
 
 
 public class NotepadActivity  extends Activity implements View.OnClickListener{
@@ -43,7 +42,7 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
     Intent intent;
     RelativeLayout action;
     private TextView day,time,action_text;
-    private String atTime,at_action,bg_number;
+    private String atTime,at_action;
     private GridView gridView;
     private List<Map<String, Object>> dataList;
     private SimpleAdapter adapter;
@@ -112,8 +111,11 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
 //                System.out.println("路径:"+ arg1.getDrawingCache());
 //                arg1.setDrawingCacheEnabled(false);
 //                builder.setTitle("提示").setMessage(dataList.get(arg2).get("text").toStrin)).create().show();
-                Resources drawable=arg1.getResources();
-                System.out.println("路径："+drawable);
+//                Drawable drawable=arg1.getBackground();
+//                ColorDrawable colorDrawable = (ColorDrawable) drawable;
+//                int color = colorDrawable.getColor();
+//                System.out.println("路径："+drawable);
+
                 if(dataList.get(arg2).get("text").toString().equals("编辑")){
                     intent=new Intent(NotepadActivity.this,TitleActivity.class);
                     startActivity(intent);
@@ -121,6 +123,14 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
                 }else{
                     at_action=dataList.get(arg2).get("text").toString();
                     action_text.setText(at_action);
+//                    Drawable background =arg1.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor();
+//                     action.setBackgroundColor(color);
+//                    ShapeDrawable bgShape = (ShapeDrawable)arg1.getBackground();
+//                    //bgShape.getPaint().getColor();
+//                    action.setBackgroundColor(bgShape.getPaint().getColor());
+                    /*该方法待考虑*/
                 switch (arg2){
                     case 0:
                         action.setBackgroundColor(getResources().getColor(R.color.bg1));
@@ -199,7 +209,6 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
                         break;
 
                 }
-                bg_number=(arg2)+"";
                 }
             }
         });
@@ -220,10 +229,14 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
                 break;
             case R.id.remarks:
                 intent=new Intent(NotepadActivity.this,RemarksActivity.class);
+                Drawable background = action.getBackground();
+                ColorDrawable colorDrawable = (ColorDrawable) background;
+                int color = colorDrawable.getColor();
+                System.out.println(color);
                 intent.putExtra("title","记事");
                 intent.putExtra("atTime",atTime);
                 intent.putExtra("at_action",at_action);
-                intent.putExtra("bg_number",bg_number);
+                intent.putExtra("drawable", color);
                 startActivity(intent);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
