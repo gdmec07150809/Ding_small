@@ -4,6 +4,7 @@ package com.example.administrator.ding_small;
  * Created by Administrator on 2017/10/20.
  */
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -14,17 +15,30 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.administrator.ding_small.Adapter.MFragmentPagerAdapter;
+import com.example.administrator.ding_small.Fragment.Fragment1;
+import com.example.administrator.ding_small.Fragment.Fragment2;
 import com.example.administrator.ding_small.Title.TitleActivity;
 
 import org.feezu.liuli.timeselector.TimeSelector;
@@ -34,10 +48,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.R.attr.button;
+import static com.example.administrator.ding_small.R.layout.fragment1;
 
 
-public class NotepadActivity  extends Activity implements View.OnClickListener{
+public class NotepadActivity  extends FragmentActivity implements View.OnClickListener{
     LinearLayout ll,two;
     Intent intent;
     RelativeLayout action;
@@ -56,16 +70,39 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
             "待办事项", "常用数据","一般数据","生日","身份证","银行资料",
             "待办事项", "常用数据","一般数据","生日","身份证","杂项",
             "待办事项", "常用数据","一般数据","生日","身份证","编辑"};
+
+
+
+    //实现Tab滑动效果
+    private ViewPager mViewPager;
+
+
+    //当前页卡编号
+    private int currIndex = 0;
+
+    //存放Fragment
+    private ArrayList<Fragment> fragmentArrayList;
+
+    //管理Fragment
+    private FragmentManager fragmentManager;
+
+    public Context context;
+
+    public static final String TAG = "NotepadActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notepad);
         ll=findViewById(R.id.main_ll);
         two = this.findViewById(R.id.two);
-        findViewById(R.id.received).setOnClickListener(this);
-        findViewById(R.id.payable).setOnClickListener(this);
-        //findViewById(R.id.click_btn).setOnClickListener(this);
-        findViewById(R.id.remarks).setOnClickListener(this);
+        findViewById(R.id.received).setOnClickListener(this);//已收
+        findViewById(R.id.payable).setOnClickListener(this);//待付
+        findViewById(R.id.payed).setOnClickListener(this);//已付
+        findViewById(R.id.remarks).setOnClickListener(this);//备注
+        findViewById(R.id.receivables).setOnClickListener(this);//待收
+        findViewById(R.id.back).setOnClickListener(this);//返回
+        InitFragment();
+        InitViewPager();
         initPoints();
         day=findViewById(R.id.day);
         day.setOnClickListener(this);
@@ -88,144 +125,157 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
             atTime=year+"-"+(month+1)+"-"+date+"  "+hour+":"+minute;
             day.setText(atTime);
         }
-        gridView = (GridView) findViewById(R.id.gridview);
-        //初始化数据
-        initData();
-
-        String[] from={"img","text"};
-
-        int[] to={R.id.img,R.id.text};
-
-        adapter=new SimpleAdapter(this, dataList, R.layout.gride_view_item, from, to);
-
-        gridView.setAdapter(adapter);
-
-        gridView.setOnItemClickListener(new OnItemClickListener() {
-            @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-//                AlertDialog.Builder builder= new AlertDialog.Builder(NotepadActivity.this);
-               System.out.println(dataList.get(arg2));
-//                arg1.setDrawingCacheEnabled(true);
-//                System.out.println("路径:"+ arg1.getDrawingCache());
-//                arg1.setDrawingCacheEnabled(false);
-//                builder.setTitle("提示").setMessage(dataList.get(arg2).get("text").toStrin)).create().show();
-//                Drawable drawable=arg1.getBackground();
-//                ColorDrawable colorDrawable = (ColorDrawable) drawable;
-//                int color = colorDrawable.getColor();
-//                System.out.println("路径："+drawable);
-
-                if(dataList.get(arg2).get("text").toString().equals("编辑")){
-                    intent=new Intent(NotepadActivity.this,TitleActivity.class);
-                    startActivity(intent);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                }else{
-                    at_action=dataList.get(arg2).get("text").toString();
-                    action_text.setText(at_action);
-//                    Drawable background =arg1.getBackground();
-//                    ColorDrawable colorDrawable = (ColorDrawable) background;
-//                    int color = colorDrawable.getColor();
-//                     action.setBackgroundColor(color);
-//                    ShapeDrawable bgShape = (ShapeDrawable)arg1.getBackground();
-//                    //bgShape.getPaint().getColor();
-//                    action.setBackgroundColor(bgShape.getPaint().getColor());
-                    /*该方法待考虑*/
-                switch (arg2){
-                    case 0:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg1));
-                        break;
-                    case 1:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg2));
-
-                        break;
-                    case 2:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg3));
-                        break;
-                    case 3:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg4));
-
-                        break;
-                    case 4:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg5));
-
-                        break;
-                    case 5:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg6));
-
-                        break;
-                    case 6:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg7));
-
-                        break;
-                    case 7:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg8));
-
-                        break;
-                    case 8:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg9));
-                        break;
-                    case 9:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg10));
-                        break;
-                    case 10:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg11));
-                        break;
-                    case 11:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg12));
-                        break;
-                    case 12:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg13));
-                        break;
-                    case 13:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg14));
-                        break;
-                    case 14:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg1));
-                        break;
-                    case 15:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg2));
-                        break;
-                    case 16:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg3));
-                        break;
-                    case 17:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg4));
-                        break;
-                    case 18:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg5));
-                        break;
-                    case 19:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg6));
-                        break;
-                    case 20:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg7));
-                        break;
-                    case 21:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg8));
-                        break;
-                    case 22:
-                        action.setBackgroundColor(getResources().getColor(R.color.bg9));
-                        break;
-
-                }
-                }
-            }
-        });
-
+ //       gridView = (GridView) findViewById(R.id.gridview);
+//        //初始化数据
+//        initData();
+//
+//        String[] from={"img","text"};
+//
+//        int[] to={R.id.img,R.id.text};
+//
+//        adapter=new SimpleAdapter(this, dataList, R.layout.gride_view_item, from, to);
+//
+//        gridView.setAdapter(adapter);
+//
+//        gridView.setOnItemClickListener(new OnItemClickListener() {
+//            @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//                                    long arg3) {
+////                AlertDialog.Builder builder= new AlertDialog.Builder(NotepadActivity.this);
+//                System.out.println(dataList.get(arg2));
+////                arg1.setDrawingCacheEnabled(true);
+////                System.out.println("路径:"+ arg1.getDrawingCache());
+////                arg1.setDrawingCacheEnabled(false);
+////                builder.setTitle("提示").setMessage(dataList.get(arg2).get("text").toStrin)).create().show();
+////                Drawable drawable=arg1.getBackground();
+////                ColorDrawable colorDrawable = (ColorDrawable) drawable;
+////                int color = colorDrawable.getColor();
+////                System.out.println("路径："+drawable);
+//
+//                if(dataList.get(arg2).get("text").toString().equals("编辑")){
+//                    intent=new Intent(NotepadActivity.this,TitleActivity.class);
+//                    startActivity(intent);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                }else{
+//                    at_action=dataList.get(arg2).get("text").toString();
+//                    action_text.setText(at_action);
+////                    Drawable background =arg1.getBackground();
+////                    ColorDrawable colorDrawable = (ColorDrawable) background;
+////                    int color = colorDrawable.getColor();
+////                     action.setBackgroundColor(color);
+////                    ShapeDrawable bgShape = (ShapeDrawable)arg1.getBackground();
+////                    //bgShape.getPaint().getColor();
+////                    action.setBackgroundColor(bgShape.getPaint().getColor());
+//                    /*该方法待考虑*/
+//                    switch (arg2){
+//                        case 0:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg1));
+//                            break;
+//                        case 1:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg2));
+//
+//                            break;
+//                        case 2:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg3));
+//                            break;
+//                        case 3:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg4));
+//
+//                            break;
+//                        case 4:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg5));
+//
+//                            break;
+//                        case 5:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg6));
+//
+//                            break;
+//                        case 6:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg7));
+//
+//                            break;
+//                        case 7:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg8));
+//
+//                            break;
+//                        case 8:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg9));
+//                            break;
+//                        case 9:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg10));
+//                            break;
+//                        case 10:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg11));
+//                            break;
+//                        case 11:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg12));
+//                            break;
+//                        case 12:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg13));
+//                            break;
+//                        case 13:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg14));
+//                            break;
+//                        case 14:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg1));
+//                            break;
+//                        case 15:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg2));
+//                            break;
+//                        case 16:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg3));
+//                            break;
+//                        case 17:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg4));
+//                            break;
+//                        case 18:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg5));
+//                            break;
+//                        case 19:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg6));
+//                            break;
+//                        case 20:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg7));
+//                            break;
+//                        case 21:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg8));
+//                            break;
+//                        case 22:
+//                            action.setBackgroundColor(getResources().getColor(R.color.bg9));
+//                            break;
+//
+//                    }
+//                }
+//            }
+//        });
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.received:
+                System.out.println("已收");
                 intent=new Intent(NotepadActivity.this,ReceivedActivity.class);
-                startActivity(intent);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case R.id.payable:
+                System.out.println("待付");
                 intent=new Intent(NotepadActivity.this,PayableActivity.class);
-                startActivity(intent);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.receivables:
+                System.out.println("待收");
+                intent=new Intent(NotepadActivity.this,ReceivablesActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.payed:
+                System.out.println("已付");
+                intent=new Intent(NotepadActivity.this,PayActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case R.id.remarks:
                 intent=new Intent(NotepadActivity.this,RemarksActivity.class);
@@ -253,6 +303,9 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
                 timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
                 timeSelector.show();
                 break;
+            case R.id.back:
+                finish();
+                break;
         }
     }
 
@@ -264,7 +317,7 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
         //实例化线性布局
         ll = (LinearLayout) findViewById(R.id.main_ll);
         //绘制和图片对应的圆点的数量
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < fragmentArrayList.size(); i++) {
             View view = new View(this);
             //设置圆点的大小
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10, 10);
@@ -291,4 +344,76 @@ public class NotepadActivity  extends Activity implements View.OnClickListener{
             dataList.add(map);
         }
     }
+    /**
+     * 初始化页卡内容区
+     */
+    private void InitViewPager() {
+
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mViewPager.setAdapter(new MFragmentPagerAdapter(fragmentManager, fragmentArrayList));
+
+        //让ViewPager缓存2个页面
+        mViewPager.setOffscreenPageLimit(2);
+
+        //设置默认打开第一页
+        mViewPager.setCurrentItem(0);
+        //设置viewpager页面滑动监听事件
+        mViewPager.setOnPageChangeListener(new MyOnPageChangeListener());
+    }
+
+    /**
+     * 初始化Fragment，并添加到ArrayList中
+     */
+    private void InitFragment(){
+        fragmentArrayList = new ArrayList<Fragment>();
+        fragmentArrayList.add(new Fragment1());
+        fragmentArrayList.add(new Fragment2());
+
+        fragmentManager = getSupportFragmentManager();
+
+    }
+
+    /**
+     * 页卡切换监听
+     * @author weizhi
+     * @version 1.0
+     */
+    public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
+
+        @Override
+        public void onPageSelected(int position) {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            switch (position){
+                case 0:
+                    new Fragment2().isHidden();
+                    ft.replace(android.R.id.content, new Fragment1());
+                    //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
+                    for (int i=0;i<ll.getChildCount();i++){
+                        ll.getChildAt(i).setSelected(false);
+                    }
+                    ll.getChildAt(position).setSelected(true);
+                    break;
+                case 1:
+                    new Fragment1().isHidden();
+                    ft.replace(android.R.id.content, new Fragment2());
+                    //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
+                    for (int i=0;i<ll.getChildCount();i++){
+                        ll.getChildAt(i).setSelected(false);
+                    }
+                    ll.getChildAt(position).setSelected(true);
+                    break;
+            }
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 }

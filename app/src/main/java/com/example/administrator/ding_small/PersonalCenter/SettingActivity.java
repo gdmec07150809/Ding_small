@@ -44,9 +44,7 @@ public class SettingActivity extends Activity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.back:
-                intent=new Intent(SettingActivity.this,PersonalCenterActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
                 break;
             case R.id.confirm:
                 intent=new Intent(SettingActivity.this,PersonalCenterActivity.class);

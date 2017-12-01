@@ -39,13 +39,12 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.administrator.ding_small.R.id.at_action;
-import static com.example.administrator.ding_small.R.id.calendar;
 
 /**
  * Created by Administrator on 2017/10/27.
  */
 
-public class PayableActivity extends FragmentActivity implements View.OnClickListener{
+public class ReceivablesActivity extends FragmentActivity implements View.OnClickListener{
     LinearLayout ll;
     RelativeLayout action;
     private TextView number,number_enter,action_text,day;
@@ -86,7 +85,7 @@ public class PayableActivity extends FragmentActivity implements View.OnClickLis
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.creat_payable);
+        setContentView(R.layout.creat_receivables);
         findViewById(R.id.number_0).setOnClickListener(this);
         findViewById(R.id.number_1).setOnClickListener(this);
         findViewById(R.id.number_2).setOnClickListener(this);
@@ -105,7 +104,7 @@ public class PayableActivity extends FragmentActivity implements View.OnClickLis
         findViewById(R.id.received).setOnClickListener(this);//已收
         findViewById(R.id.remark).setOnClickListener(this);//备注
         findViewById(R.id.payed).setOnClickListener(this);//已付
-        findViewById(R.id.receivables).setOnClickListener(this);//待收
+        findViewById(R.id.payable).setOnClickListener(this);//待付
         findViewById(R.id.back).setOnClickListener(this);//返回
         number= (TextView) findViewById(R.id.number);
         number_enter=findViewById(R.id.number_enter);
@@ -419,34 +418,34 @@ public class PayableActivity extends FragmentActivity implements View.OnClickLis
                 arrays.clear();
                 break;
             case R.id.received:
-                intent=new Intent(PayableActivity.this,ReceivedActivity.class);
+                intent=new Intent(ReceivablesActivity.this,ReceivedActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.notepad:
-                intent=new Intent(PayableActivity.this,NotepadActivity.class);
+                intent=new Intent(ReceivablesActivity.this,NotepadActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.payable:
+                intent=new Intent(ReceivablesActivity.this,PayableActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.payed:
-                intent=new Intent(PayableActivity.this,PayActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.receivables:
-                intent=new Intent(PayableActivity.this,ReceivablesActivity.class);
+                intent=new Intent(ReceivablesActivity.this,PayActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.remark:
-                intent=new Intent(PayableActivity.this,RemarksActivity.class);
+                intent=new Intent(ReceivablesActivity.this,RemarksActivity.class);
                String money= number.getText().toString();
                 Drawable background = action.getBackground();
                 ColorDrawable colorDrawable = (ColorDrawable) background;
                 at_action=action_text.getText().toString();
                 int color = colorDrawable.getColor();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("title","待付");
+                intent.putExtra("title","待收");
                 intent.putExtra("atTime",atTime);
                 intent.putExtra("drawable", color);
                 intent.putExtra("at_action",at_action);
@@ -455,7 +454,7 @@ public class PayableActivity extends FragmentActivity implements View.OnClickLis
                 startActivity(intent);
                 break;
             case R.id.day:
-                TimeSelector timeSelector = new TimeSelector(PayableActivity.this, new TimeSelector.ResultHandler() {
+                TimeSelector timeSelector = new TimeSelector(ReceivablesActivity.this, new TimeSelector.ResultHandler() {
                     @Override
                     public void handle(String time) {
                         atTime=time;

@@ -27,9 +27,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         Intent intent;
         switch (view.getId()){
             case R.id.back:
-                intent=new Intent(PersonalCenterPerfectActivity.this,PersonalCenterActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
                 break;
             case R.id.confirm:
                 intent=new Intent(PersonalCenterPerfectActivity.this,PersonalCenterActivity.class);

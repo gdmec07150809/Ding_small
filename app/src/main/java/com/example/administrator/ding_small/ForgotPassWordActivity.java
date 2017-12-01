@@ -92,8 +92,6 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
               }
               break;
           case R.id.back:
-              Intent intent=new Intent(ForgotPassWordActivity.this,MainActivity.class);
-              startActivity(intent);
               finish();
               break;
       }

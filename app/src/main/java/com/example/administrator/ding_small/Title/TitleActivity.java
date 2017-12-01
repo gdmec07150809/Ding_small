@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.administrator.ding_small.NotepadActivity;
+import com.example.administrator.ding_small.PayActivity;
 import com.example.administrator.ding_small.PayableActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.ReceivablesActivity;
 import com.example.administrator.ding_small.ReceivedActivity;
 
 import java.util.ArrayList;
@@ -28,11 +30,14 @@ public class TitleActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title);
         list=findViewById(R.id.title_list);
-        findViewById(R.id.received).setOnClickListener(this);
-        findViewById(R.id.edit_title).setOnClickListener(this);
-        findViewById(R.id.notepad).setOnClickListener(this);
-        findViewById(R.id.payable).setOnClickListener(this);
-        findViewById(R.id.add_title).setOnClickListener(this);
+        findViewById(R.id.received).setOnClickListener(this);//已收
+        findViewById(R.id.edit_title).setOnClickListener(this);//编辑标题
+        findViewById(R.id.notepad).setOnClickListener(this);//记事
+        findViewById(R.id.payable).setOnClickListener(this);//待付
+        findViewById(R.id.add_title).setOnClickListener(this);//添加标题
+        findViewById(R.id.payed).setOnClickListener(this);//已付
+        findViewById(R.id.receivables).setOnClickListener(this);//待收
+
         lists=new ArrayList<String>();
         lists.add("通用");
         lists.add("住房");
@@ -62,6 +67,16 @@ public class TitleActivity extends Activity implements View.OnClickListener{
             break;
         case R.id.notepad:
             intent=new Intent(TitleActivity.this,NotepadActivity.class);
+            startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            break;
+        case R.id.payed:
+            intent=new Intent(TitleActivity.this,PayActivity.class);
+            startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            break;
+        case R.id.receivables:
+            intent=new Intent(TitleActivity.this,ReceivablesActivity.class);
             startActivity(intent);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             break;

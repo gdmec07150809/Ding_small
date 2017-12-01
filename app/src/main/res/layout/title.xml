@@ -47,6 +47,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/hui"/>
                     <Button
+                        android:id="@+id/payed"
                         android:layout_width="35dp"
                         android:layout_height="24dp"
                         android:background="@null"
@@ -59,6 +60,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/hui"/>
                     <Button
+                        android:id="@+id/receivables"
                         android:layout_width="35dp"
                         android:layout_height="24dp"
                         android:background="@null"

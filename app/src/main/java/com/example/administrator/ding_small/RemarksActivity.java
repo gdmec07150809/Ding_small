@@ -123,6 +123,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.remarks_privacy).setOnClickListener(this);
         findViewById(R.id.remarks_loan).setOnClickListener(this);
         findViewById(R.id.infinite).setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
 
         contacts_text= findViewById(R.id.contacts_text);
         label_text=findViewById(R.id.label_text);
@@ -750,6 +751,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
             case R.id.btn_choose_img4:
                 intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 24);
+                break;
+            case R.id.back:
+                finish();
                 break;
         }
     }

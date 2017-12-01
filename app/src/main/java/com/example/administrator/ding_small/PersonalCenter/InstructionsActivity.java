@@ -25,9 +25,7 @@ public class InstructionsActivity extends Activity implements View.OnClickListen
         Intent intent;
         switch (view.getId()){
             case R.id.back:
-                intent=new Intent(InstructionsActivity.this,SettingActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
                 break;
         }
     }

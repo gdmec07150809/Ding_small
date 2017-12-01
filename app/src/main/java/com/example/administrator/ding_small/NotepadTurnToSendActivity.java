@@ -1,6 +1,7 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -33,7 +34,7 @@ import static com.example.administrator.ding_small.R.id.search_btn;
  */
 
 public class NotepadTurnToSendActivity extends Activity{
-    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text,at_action;
+    private TextView label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text,at_action;
     private FlowLayout found_activity_lay;
 
     private ListView list;
@@ -44,6 +45,7 @@ public class NotepadTurnToSendActivity extends Activity{
     boolean isFlag=true;//用哪个JsonObject响应listVIEW点击事件
     private Button search_btn;
     private ImageView clean_text;
+    private     String name="";
     private String[] ContactsStrs = new String[]{"lily/youyou", "张先生/优游", "李小龙", "郭德纲", "李维嘉", "何炅", "谢娜", "黄晓明", "张艺兴"};
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +59,6 @@ public class NotepadTurnToSendActivity extends Activity{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
         list=findViewById(R.id.contacts_list);
         search_btn=findViewById(R.id.search_btn);
         clean_text=findViewById(R.id.clean_text);
@@ -110,7 +111,7 @@ public class NotepadTurnToSendActivity extends Activity{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String ss= null;
-                String name="";
+                String phone="";
                 try {
                     if(isFlag){
                         ss = contactData.getString("contact"+i);
@@ -118,8 +119,14 @@ public class NotepadTurnToSendActivity extends Activity{
                         ss = contactDatas.getString("contact"+i);
                     }
                     JSONObject obj=new JSONObject(ss);
+
                     name=obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString();
-                    contacts_text.setText(name);
+                    phone=obj.getString("mobile");
+                    Intent intent=new Intent(NotepadTurnToSendActivity.this,NotepadRemarkDetailsActivity.class);
+                    intent.putExtra("name",name);
+                    intent.putExtra("phone",phone);
+                    startActivity(intent);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

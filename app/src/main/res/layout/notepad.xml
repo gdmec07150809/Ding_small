@@ -16,6 +16,7 @@
                android:layout_height="wrap_content"
                android:layout_marginTop="5dp">
                <ImageView
+                   android:id="@+id/back"
                    android:layout_width="20dp"
                    android:layout_height="20dp"
                    android:src="@drawable/back"/>
@@ -53,6 +54,7 @@
                        android:layout_height="match_parent"
                        android:background="@color/hui"/>
                    <Button
+                       android:id="@+id/payed"
                        android:layout_width="35dp"
                        android:layout_height="24dp"
                        android:background="@null"
@@ -65,6 +67,7 @@
                        android:layout_height="match_parent"
                        android:background="@color/hui"/>
                    <Button
+                       android:id="@+id/receivables"
                        android:layout_width="35dp"
                        android:layout_height="24dp"
                        android:background="@null"
@@ -147,17 +150,12 @@
                            android:layout_below="@+id/action"
                            android:layout_width="match_parent"
                            android:layout_height="280dp">
-                           <GridView
-                               android:id="@+id/gridview"
+                           <android.support.v4.view.ViewPager
+                               android:id="@+id/viewPager"
+                               android:layout_above="@+id/main_ll"
                                android:layout_width="match_parent"
-                               android:layout_height="wrap_content"
-                               android:columnWidth="50dp"
-                               android:gravity="center"
-                               android:layout_marginTop="10dp"
-                               android:verticalSpacing="5px"
-                               android:stretchMode="spacingWidthUniform"
-                               android:numColumns="6"
-                               />
+                               android:layout_height="wrap_content">
+                           </android.support.v4.view.ViewPager>
                            <LinearLayout
                                android:id="@+id/main_ll"
                                android:layout_width="match_parent"

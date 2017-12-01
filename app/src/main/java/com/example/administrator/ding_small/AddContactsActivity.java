@@ -24,6 +24,7 @@ public class AddContactsActivity extends Activity implements View.OnClickListene
         setContentView(R.layout.add_contacts);
         findViewById(R.id.addName).setOnClickListener(this);
         findViewById(R.id.addPhone).setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
     }
     private void showNameSetDailog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -110,6 +111,9 @@ public class AddContactsActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.addPhone:
                 showPhoneSetDailog();
+                break;
+            case R.id.back:
+                finish();
                 break;
         }
     }

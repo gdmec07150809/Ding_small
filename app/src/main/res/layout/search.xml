@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
         <ImageView
-            android:layout_width="20dp"
+            android:id="@+id/back"
+            android:layout_width="30dp"
             android:layout_height="20dp"
             android:src="@drawable/back"/>
         <TextView

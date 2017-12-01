@@ -2,6 +2,7 @@ package com.example.administrator.ding_small;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -36,8 +37,9 @@ public class NotepadRemarkDetailsActivity extends Activity implements View.OnCli
     private Handler handler;
     private String inName,inDate,inTime,inTitle,inLabel,inExplain,inTitleColor;
     //private int inTitleColor;
-    private TextView name1_view,title_view,name2_view,label_view,date_view,explain_view,name3_view,time_view;
+    private TextView name1_view,title_view,name2_view,label_view,date_view,explain_view,name3_view,time_view,phone;
     private LinearLayout finishing_layout;
+    private static final String Notepadfile = "Notepadfile";//定义保存的文件的名称
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,7 @@ public class NotepadRemarkDetailsActivity extends Activity implements View.OnCli
         explain_view=findViewById(R.id.explain);
         name3_view=findViewById(R.id.max_name);
         time_view=findViewById(R.id.time);
+        phone=findViewById(R.id.phone);
         finishing_layout=findViewById(R.id.finishing_layout);
         findViewById(R.id.turn_to_send).setOnClickListener(this);
 
@@ -140,24 +143,41 @@ public class NotepadRemarkDetailsActivity extends Activity implements View.OnCli
     /*获取页面传过来的值*/
     private void getBundlevalue(){
         Bundle getStringValue=this.getIntent().getExtras();
+        SharedPreferences userSettings= getSharedPreferences("Notepadfile", Activity.MODE_PRIVATE);
         if(getStringValue.getString("date")!=null&&getStringValue.getString("time")!=null){
             inDate=getStringValue.getString("date");
             inTime=getStringValue.getString("time");
             date_view.setText(inDate+"  "+inTime);
             time_view.setText(inDate+"  "+inTime);
+        }else{
+            String saveDate=userSettings.getString("date","0");
+            String saveTime=userSettings.getString("time","0");
+            date_view.setText(saveDate+"  "+saveTime);
+            time_view.setText(saveDate+"  "+saveTime);
         }
         if(getStringValue.getString("title")!=null){
             inTitle=getStringValue.getString("title");
             title_view.setText(inTitle);
+        }else{
+            String saveTitle=userSettings.getString("title","0");
+            title_view.setText(saveTitle);
         }
        if(getStringValue.getString("label")!=null){
            inLabel=getStringValue.getString("label");
            label_view.setText(inLabel);
+       }else{
+           String saveLabel=userSettings.getString("label","0");
+           label_view.setText(saveLabel);
        }
         if(getStringValue.getString("explain")!=null){
             inExplain=getStringValue.getString("explain");
             label_view.setText(inLabel);
             explain_view.setText(inExplain);
+        }else{
+            String saveExplain=userSettings.getString("explain","0");
+            String saveLabel=userSettings.getString("label","0");
+            label_view.setText(saveLabel);
+            explain_view.setText(saveExplain);
         }
         if(getStringValue.getString("name")!=null){
             inName=getStringValue.getString("name");
@@ -168,6 +188,25 @@ public class NotepadRemarkDetailsActivity extends Activity implements View.OnCli
       if(getStringValue.getString("titleColor")!=null){
           inTitleColor= getStringValue.getString("titleColor");
           finishing_layout.setBackgroundResource(Integer.parseInt(inTitleColor));
+      }else{
+          String saveTitleColor=userSettings.getString("titleColor","0");
+          finishing_layout.setBackgroundResource(Integer.parseInt(saveTitleColor));
+      }
+      if(getStringValue.getString("phone")!=null){
+          phone.setText(getStringValue.getString("phone"));
+      }
+      if(getStringValue.get("activityName")!=null){
+          System.out.println("1");
+          //储存token,备用
+          SharedPreferences share = super.getSharedPreferences(Notepadfile, MODE_PRIVATE);//实例化
+          SharedPreferences.Editor editor = share.edit(); //使处于可编辑状态
+          editor.putString("date", inDate);
+          editor.putString("time", inTime);
+          editor.putString("title", inTitle);
+          editor.putString("label", inLabel);
+          editor.putString("explain", inExplain);
+          editor.putString("titleColor", inTitleColor);
+          editor.commit();    //提交数据保存
       }
     }
 

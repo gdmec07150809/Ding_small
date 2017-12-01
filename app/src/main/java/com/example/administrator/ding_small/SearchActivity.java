@@ -41,6 +41,7 @@ public class SearchActivity extends Activity implements View.OnClickListener{
         title.setOnClickListener(this);
         finished_btn.setOnClickListener(this);
         no_finish_btn.setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
         arrayList=new ArrayList<String>();
         for (int i=0;i<10;i++){
             arrayList.add(i+"");
@@ -80,6 +81,9 @@ public class SearchActivity extends Activity implements View.OnClickListener{
                 or_butoom_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 butoom_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
                 listView.setAdapter(new SearchAdapter(SearchActivity.this,arrayList,isTitle));
+                break;
+            case R.id.back:
+                finish();
                 break;
 
         }

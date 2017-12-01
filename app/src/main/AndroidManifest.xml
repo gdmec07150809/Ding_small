@@ -77,6 +77,8 @@
         <activity android:name=".NotepadRemarkDetailsActivity"/>
         <activity android:name=".NotepadAnalysisLabelItemActivity"/>
         <activity android:name=".NotepadTurnToSendActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".PayActivity"/>
+        <activity android:name=".ReceivablesActivity"/>
     </application>
 
 </manifest>

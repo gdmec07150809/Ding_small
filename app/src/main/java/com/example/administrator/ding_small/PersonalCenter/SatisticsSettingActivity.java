@@ -26,9 +26,7 @@ public class SatisticsSettingActivity extends Activity implements View.OnClickLi
         Intent intent;
         switch (view.getId()){
             case R.id.back:
-                intent=new Intent(SatisticsSettingActivity.this,SettingActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
                 break;
             case R.id.confirm:
                 intent=new Intent(SatisticsSettingActivity.this,SettingActivity.class);

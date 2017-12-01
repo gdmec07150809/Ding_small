@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static android.media.CamcorderProfile.get;
 import static com.example.administrator.ding_small.R.id.money;
 import static com.example.administrator.ding_small.R.id.sort;
 import static com.example.administrator.ding_small.HelpTool.JsonArrayBySort.sort;
@@ -175,10 +176,19 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
                 bundle.putString("name",name.get(i));
                 bundle.putString("explain",explain.get(i));
                 bundle.putString("title",title.get(i));
-                bundle.putString("titleColor",titleColor[i]+"");
+                try {
+                    JSONObject object=new JSONObject(sort(jsonArray,"date",true).get(i)+"");
+                    System.out.println("before:"+object.getString("titleColor"));
+                    bundle.putString("titleColor", object.getString("titleColor"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
                 bundle.putString("date",date.get(i));
                 bundle.putString("time",time.get(i));
                 bundle.putString("label",label.get(i));
+                bundle.putString("activityName","1");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtras(bundle);
                 startActivity(intent);

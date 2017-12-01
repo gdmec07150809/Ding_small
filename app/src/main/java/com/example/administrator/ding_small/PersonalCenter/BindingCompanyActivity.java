@@ -41,9 +41,7 @@ public class BindingCompanyActivity extends Activity implements View.OnClickList
         Intent intent;
         switch (view.getId()){
             case R.id.back:
-                intent=new Intent(BindingCompanyActivity.this,PersonalCenterActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+            finish();
                 break;
         }
     }
