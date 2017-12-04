@@ -48,6 +48,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.fragment;
+import static com.example.administrator.ding_small.R.id.number;
 import static com.example.administrator.ding_small.R.layout.fragment1;
 
 
@@ -279,6 +281,8 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
                 break;
             case R.id.remarks:
                 intent=new Intent(NotepadActivity.this,RemarksActivity.class);
+                at_action=action_text.getText().toString();//获取标题
+                //获取标题背景颜色
                 Drawable background = action.getBackground();
                 ColorDrawable colorDrawable = (ColorDrawable) background;
                 int color = colorDrawable.getColor();
@@ -366,8 +370,19 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
      */
     private void InitFragment(){
         fragmentArrayList = new ArrayList<Fragment>();
-        fragmentArrayList.add(new Fragment1());
-        fragmentArrayList.add(new Fragment2());
+        Fragment1 fragment1=new Fragment1();
+        Bundle bundle=new Bundle();
+        bundle.putIntArray("icon",icno);
+        bundle.putStringArray("name",name);
+        fragment1.setArguments(bundle);
+        fragmentArrayList.add(fragment1);
+
+        Fragment2 fragment2=new Fragment2();
+        Bundle bundle1=new Bundle();
+        bundle1.putIntArray("icon",icno);
+        bundle1.putStringArray("name",name);
+        fragment2.setArguments(bundle1);
+        fragmentArrayList.add(fragment2);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -375,7 +390,7 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
 
     /**
      * 页卡切换监听
-     * @author weizhi
+     * @author CZK
      * @version 1.0
      */
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
@@ -386,8 +401,12 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
             FragmentTransaction ft = fm.beginTransaction();
             switch (position){
                 case 0:
-                    new Fragment2().isHidden();
-                    ft.replace(android.R.id.content, new Fragment1());
+                    Fragment1 fragment1=new Fragment1();
+                    Bundle bundle=new Bundle();
+                    bundle.putIntArray("icon",icno);
+                    bundle.putStringArray("name",name);
+                    fragment1.setArguments(bundle);
+                    ft.replace(android.R.id.content, fragment1);
                     //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
                     for (int i=0;i<ll.getChildCount();i++){
                         ll.getChildAt(i).setSelected(false);
@@ -395,8 +414,12 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
                     ll.getChildAt(position).setSelected(true);
                     break;
                 case 1:
-                    new Fragment1().isHidden();
-                    ft.replace(android.R.id.content, new Fragment2());
+                    Fragment2 fragment2=new Fragment2();
+                    Bundle bundle1=new Bundle();
+                    bundle1.putIntArray("icon",icno);
+                    bundle1.putStringArray("name",name);
+                    fragment2.setArguments(bundle1);
+                    ft.replace(android.R.id.content, fragment2);
                     //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
                     for (int i=0;i<ll.getChildCount();i++){
                         ll.getChildAt(i).setSelected(false);

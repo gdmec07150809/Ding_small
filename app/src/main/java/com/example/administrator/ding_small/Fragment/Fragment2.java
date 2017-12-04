@@ -40,15 +40,9 @@ public class Fragment2 extends Fragment {
     RelativeLayout action;
     private String atTime,at_action;
     //图标
-    int icno[] = { R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg, R.drawable.c5_bg, R.drawable.c6_bg,
-            R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg ,
-            R.drawable.c13_bg,R.drawable.c14_bg, R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg,
-            R.drawable.c5_bg, R.drawable.c6_bg,R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.edit_add};
+    int icno[] = null;
     //图标下的文字
-    String name[]={"待办事项","常用数据","一般数据","生日","身份证","银行资料",
-            "待办事项", "常用数据","一般数据","生日","身份证","银行资料",
-            "待办事项", "常用数据","一般数据","生日","身份证","杂项",
-            "待办事项", "常用数据","一般数据","生日","身份证","编辑"};
+    String name[]=null;
     /**
      * 当fragment被创建的时候，调用的方法，返回当前fragment显示的内容
      */
@@ -60,6 +54,12 @@ public class Fragment2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = getArguments();//从activity传过来的Bundle
+        if(bundle!=null){
+            icno=bundle.getIntArray("icon");
+            name=bundle.getStringArray("name");
+        }
+
         View view=inflater.inflate(R.layout.fragment1, container, false);
         gridView = (GridView) view.findViewById(R.id.gridview);
         //初始化数据

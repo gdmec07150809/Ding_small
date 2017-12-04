@@ -14,17 +14,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.example.administrator.ding_small.R.id.ge;
-
 /**
- * Created by Administrator on 2017/10/31.
+ * Created by Administrator on 2017/12/4.
  */
 
-public class AnalysisAdapter extends BaseAdapter {
+public class AccountBookReportAdapter extends BaseAdapter {
     private Context context;
     private ViewHolder holder;
     private JSONArray list;
-    public AnalysisAdapter(Context context, JSONArray list) {
+    public AccountBookReportAdapter(Context context, JSONArray list) {
         this.context = context;
         holder = new ViewHolder();
         this.list = list;
@@ -49,8 +47,8 @@ public class AnalysisAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View contentView = null;
         if (contentView == null) {
-            contentView = LayoutInflater.from(context).inflate(R.layout.notpad_analysis_list_item, viewGroup, false);
-            holder.yue = contentView.findViewById(R.id.yue);
+            contentView = LayoutInflater.from(context).inflate(R.layout.notepad_report_listview_item, viewGroup, false);
+            holder.year = contentView.findViewById(R.id.year);
             holder.OutTime = contentView.findViewById(R.id.OutTime);
             holder.OnTime = contentView.findViewById(R.id.OnTime);
             holder.acount = contentView.findViewById(R.id.acount);
@@ -61,20 +59,21 @@ public class AnalysisAdapter extends BaseAdapter {
         }
         try {
             JSONObject jsonObject = new JSONObject(String.valueOf(list.get(i)));
-            holder.OutTime.setText(jsonObject.getString("OutTime"));
+            holder.OutTime.setText(jsonObject.getString("expenditTure"));
             holder.OutTime.setTextColor(ContextCompat.getColor(context, R.color.blank));
-            holder.OnTime.setText(jsonObject.getString("OnTime"));
+            holder.OnTime.setText(jsonObject.getString("inCome"));
             holder.OnTime.setTextColor(ContextCompat.getColor(context, R.color.blank));
-            holder.yue.setText(i+1+"月");
-            Double out= Double.valueOf(Integer.parseInt(jsonObject.getString("OutTime")));
-            Double on= Double.valueOf(Integer.parseInt(jsonObject.getString("OnTime")));
-            Double acount=out+on;
+            holder.year.setText(jsonObject.getString("year"));
+            holder.year.setTextColor(ContextCompat.getColor(context, R.color.blank));
+            Double out= Double.valueOf(Integer.parseInt(jsonObject.getString("expenditTure")));
+            Double on= Double.valueOf(Integer.parseInt(jsonObject.getString("inCome")));
+            Double acount=on-out;
             if(acount>0){
-                holder.acount.setText(acount+"");
                 holder.acount.setTextColor(ContextCompat.getColor(context, R.color.green));
-            }else{
                 holder.acount.setText(acount+"");
-                holder.acount.setTextColor(ContextCompat.getColor(context, R.color.blank));
+            }else{
+                holder.acount.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                holder.acount.setText(acount+"");
             }
 
         } catch (JSONException e) {
@@ -84,6 +83,6 @@ public class AnalysisAdapter extends BaseAdapter {
     }
 
     private class ViewHolder{
-        TextView yue,OutTime,OnTime,acount;
+        TextView year,OutTime,OnTime,acount;
     }
 }

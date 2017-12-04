@@ -79,6 +79,8 @@
         <activity android:name=".NotepadTurnToSendActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".PayActivity"/>
         <activity android:name=".ReceivablesActivity"/>
+        <activity android:name=".AccountBookReportActivity"/>
+        <activity android:name=".AccountBookAnalysisActivity"/>
     </application>
 
 </manifest>

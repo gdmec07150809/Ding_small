@@ -29,6 +29,7 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_book);
         findViewById(R.id.add).setOnClickListener(this);
+        findViewById(R.id.account_analysis).setOnClickListener(this);
 
         f_account=findViewById(R.id.f_account);
         f_contacts=findViewById(R.id.f_contacts);
@@ -99,6 +100,10 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
                 finished_btn.setTextColor(Color.parseColor("#6AB845"));
                 no_finish_btn.setBackgroundColor(Color.parseColor("#6AB845"));
                 no_finish_btn.setTextColor(Color.parseColor("#FFFFFF"));
+                break;
+            case R.id.account_analysis:
+                intent=new Intent(AccountBookActivity.this,AccountBookReportActivity.class);
+                startActivity(intent);
                 break;
         }
     }

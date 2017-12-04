@@ -519,8 +519,18 @@ public class PayActivity extends FragmentActivity implements View.OnClickListene
      */
     private void InitFragment(){
         fragmentArrayList = new ArrayList<Fragment>();
-        fragmentArrayList.add(new Fragment1());
-        fragmentArrayList.add(new Fragment2());
+        Fragment1 fragment1=new Fragment1();
+        Bundle bundle=new Bundle();
+        bundle.putIntArray("icon",icno);
+        bundle.putStringArray("name",name);
+        fragment1.setArguments(bundle);
+        fragmentArrayList.add(fragment1);
+        Fragment2 fragment2=new Fragment2();
+        Bundle bundle1=new Bundle();
+        bundle1.putIntArray("icon",icno);
+        bundle1.putStringArray("name",name);
+        fragment2.setArguments(bundle1);
+        fragmentArrayList.add(fragment2);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -528,7 +538,7 @@ public class PayActivity extends FragmentActivity implements View.OnClickListene
 
     /**
      * 页卡切换监听
-     * @author weizhi
+     * @author CZK
      * @version 1.0
      */
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
@@ -539,7 +549,12 @@ public class PayActivity extends FragmentActivity implements View.OnClickListene
             FragmentTransaction ft = fm.beginTransaction();
             switch (position){
                 case 0:
-                    ft.replace(android.R.id.content, new Fragment1());
+                    Fragment1 fragment1=new Fragment1();
+                    Bundle bundle=new Bundle();
+                    bundle.putIntArray("icon",icno);
+                    bundle.putStringArray("name",name);
+                    fragment1.setArguments(bundle);
+                    ft.replace(android.R.id.content, fragment1);
                    // Toast.makeText(PayableActivity.this,"页面"+(position+1), Toast.LENGTH_SHORT).show();
                     for (int i=0;i<ll.getChildCount();i++){
                         ll.getChildAt(i).setSelected(false);
@@ -547,7 +562,12 @@ public class PayActivity extends FragmentActivity implements View.OnClickListene
                     ll.getChildAt(position).setSelected(true);
                     break;
                 case 1:
-                    ft.replace(android.R.id.content, new Fragment2());
+                    Fragment2 fragment2=new Fragment2();
+                    Bundle bundle1=new Bundle();
+                    bundle1.putIntArray("icon",icno);
+                    bundle1.putStringArray("name",name);
+                    fragment2.setArguments(bundle1);
+                    ft.replace(android.R.id.content, fragment2);
                  //   Toast.makeText(PayableActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
                     for (int i=0;i<ll.getChildCount();i++){
                         ll.getChildAt(i).setSelected(false);
