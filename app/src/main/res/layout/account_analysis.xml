@@ -45,6 +45,7 @@
                     android:layout_marginLeft="10dp"
                     android:orientation="horizontal">
                     <Button
+                        android:id="@+id/received_btn"
                         android:layout_width="60dp"
                         android:layout_height="24dp"
                         android:background="@drawable/bg_gray"
@@ -53,6 +54,7 @@
                         android:textSize="6pt"
                         android:text="已收付"></Button>
                     <Button
+                        android:id="@+id/yet_btn"
                         android:layout_width="60dp"
                         android:layout_height="24dp"
                         android:background="@drawable/bg_gray"
@@ -61,6 +63,7 @@
                         android:textSize="6pt"
                         android:text="待收付"></Button>
                     <Button
+                        android:id="@+id/all_btn"
                         android:layout_width="60dp"
                         android:layout_height="24dp"
                         android:background="@color/green"

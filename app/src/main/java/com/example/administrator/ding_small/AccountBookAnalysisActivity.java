@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.administrator.ding_small.Adapter.AnalysisAdapter;
@@ -40,11 +41,18 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
     private ArrayList<String> lists;
     public JSONArray jsonArray;
     private ListView listView;
+    private Button received_btn,yet_btn,all_btn;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_analysis);
         listView=findViewById(R.id.analasis_list);
+        received_btn= findViewById(R.id.received_btn);
+        yet_btn= findViewById(R.id.yet_btn);
+        all_btn= findViewById(R.id.all_btn);
+        received_btn.setOnClickListener(this);
+        yet_btn.setOnClickListener(this);
+        all_btn.setOnClickListener(this);
 
         mColumnChartCc = (ColumnChartView) findViewById(R.id.column_chart_cc);
         mColumnChartCc.setOnValueTouchListener(new ValueTouchListener());
@@ -94,7 +102,7 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(AccountBookAnalysisActivity.this, NotepadReturnByMonthActivity.class);
+                Intent intent=new Intent(AccountBookAnalysisActivity.this, AccountReturnByMonthActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -139,6 +147,33 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()){
+            case R.id.received_btn:
+                received_btn.setTextColor(getResources().getColor(R.color.white));
+                all_btn.setTextColor(getResources().getColor(R.color.green));
+                yet_btn.setTextColor(getResources().getColor(R.color.green));
+
+                received_btn.setBackgroundColor(getResources().getColor(R.color.green));
+                all_btn.setBackgroundResource(R.drawable.bg_gray);
+                yet_btn.setBackgroundResource(R.drawable.bg_gray);
+                break;
+            case R.id.all_btn:
+                received_btn.setTextColor(getResources().getColor(R.color.green));
+                all_btn.setTextColor(getResources().getColor(R.color.white));
+                yet_btn.setTextColor(getResources().getColor(R.color.green));
+
+                received_btn.setBackgroundResource(R.drawable.bg_gray);
+                all_btn.setBackgroundColor(getResources().getColor(R.color.green));
+                yet_btn.setBackgroundResource(R.drawable.bg_gray);
+                break;
+            case R.id.yet_btn:
+                received_btn.setTextColor(getResources().getColor(R.color.green));
+                all_btn.setTextColor(getResources().getColor(R.color.green));
+                yet_btn.setTextColor(getResources().getColor(R.color.white));
+
+                received_btn.setBackgroundResource(R.drawable.bg_gray);
+                all_btn.setBackgroundResource(R.drawable.bg_gray);
+                yet_btn.setBackgroundColor(getResources().getColor(R.color.green));
+                break;
         }
     }
 

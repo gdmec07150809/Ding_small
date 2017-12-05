@@ -81,6 +81,7 @@
         <activity android:name=".ReceivablesActivity"/>
         <activity android:name=".AccountBookReportActivity"/>
         <activity android:name=".AccountBookAnalysisActivity"/>
+        <activity android:name=".AccountReturnByMonthActivity"/>
     </application>
 
 </manifest>
