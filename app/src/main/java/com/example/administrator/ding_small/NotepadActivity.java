@@ -73,8 +73,6 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
             "待办事项", "常用数据","一般数据","生日","身份证","杂项",
             "待办事项", "常用数据","一般数据","生日","身份证","编辑"};
 
-
-
     //实现Tab滑动效果
     private ViewPager mViewPager;
 

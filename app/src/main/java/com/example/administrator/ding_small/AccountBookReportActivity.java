@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.ding_small.Adapter.AccountBookReportAdapter;
@@ -102,6 +103,13 @@ public class AccountBookReportActivity extends Activity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-
+        Intent intent;
+        switch (view.getId()){
+            case R.id.f_income:
+                intent=new Intent(AccountBookReportActivity.this,InComeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
     }
 }

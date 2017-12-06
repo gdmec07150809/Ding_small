@@ -68,7 +68,7 @@
         <activity android:name=".ForgotPassWordActivity"/>
         <activity android:name=".AddContactsActivity"  android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".NotepadAnalysisActivity"/>
-        <activity android:name=".ScreenActivity"/>
+        <activity android:name=".NotepadScreenActivity"/>
         <activity android:name=".NotepadReportActivity"/>
         <activity android:name=".NotepadAnalysisTitleStatisticsActivity"/>
         <activity android:name=".NotepadAnalysisLabelStatisticsActivity"/>
@@ -82,6 +82,8 @@
         <activity android:name=".AccountBookReportActivity"/>
         <activity android:name=".AccountBookAnalysisActivity"/>
         <activity android:name=".AccountReturnByMonthActivity"/>
+        <activity android:name=".AccountScreenActiivity"/>
+        <activity android:name=".InComeActivity"/>
     </application>
 
 </manifest>

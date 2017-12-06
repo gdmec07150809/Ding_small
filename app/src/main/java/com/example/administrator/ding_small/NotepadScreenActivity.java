@@ -2,29 +2,23 @@ package com.example.administrator.ding_small;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
-import com.example.administrator.ding_small.Label.EditLabelActivity;
 
 import java.util.ArrayList;
-
-import static com.example.administrator.ding_small.R.id.found_activity_fyt;
-import static com.example.administrator.ding_small.R.id.found_activity_lay;
 
 
 /**
  * Created by Administrator on 2017/11/22.
  */
 
-public class ScreenActivity extends Activity implements View.OnClickListener{
+public class NotepadScreenActivity extends Activity implements View.OnClickListener{
     private FlowLayout title_flowlayout;
     private FlowLayout label_flowlayout;
     private String[] titleStrs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵"};
@@ -44,7 +38,7 @@ public class ScreenActivity extends Activity implements View.OnClickListener{
         if(title_flowlayout==null){
             //加载搜索记录
             for (int i = 0; i < titleStrs.length; i++) {
-                final TextView text = new TextView(ScreenActivity.this);
+                final TextView text = new TextView(NotepadScreenActivity.this);
                 System.out.println("数组："+titleStrs[i]);
                 text.setText(titleStrs[i]);//添加内容
                 text.setTextSize(12);
@@ -74,7 +68,7 @@ public class ScreenActivity extends Activity implements View.OnClickListener{
                             text.setTextColor(getResources().getColor(R.color.white));
                             titleList.add(text.getText().toString());
                         }
-                       //Toast.makeText(ScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(NotepadScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -86,7 +80,7 @@ public class ScreenActivity extends Activity implements View.OnClickListener{
         if(label_flowlayout==null){
             //加载搜索记录
             for (int i = 0; i < labelStrs.length; i++) {
-                final TextView text = new TextView(ScreenActivity.this);
+                final TextView text = new TextView(NotepadScreenActivity.this);
                 System.out.println("数组："+labelStrs[i]);
                     text.setText(labelStrs[i]);//添加内容
                     text.setTextSize(12);
@@ -115,7 +109,7 @@ public class ScreenActivity extends Activity implements View.OnClickListener{
                                 text.setTextColor(getResources().getColor(R.color.white));
                                 labelList.add(text.getText().toString());
                             }
-                      // Toast.makeText(ScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
+                      // Toast.makeText(NotepadScreenActivity.this, text.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

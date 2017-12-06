@@ -6,13 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.example.administrator.ding_small.Adapter.AnalysisAdapter;
-import com.example.administrator.ding_small.Adapter.NotepadAnalysisTitleAdapter;
-import com.example.administrator.ding_small.Adapter.NotepadReturnByMonthAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +28,8 @@ import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
+
+import static com.example.administrator.ding_small.R.id.found_history_ryt;
 
 /**
  * Created by Administrator on 2017/11/21.
@@ -54,6 +56,10 @@ public class NotepadAnalysisActivity extends Activity implements View.OnClickLis
         mColumnChartCc = (ColumnChartView) findViewById(R.id.column_chart_cc);
         mColumnChartCc.setOnValueTouchListener(new ValueTouchListener());
         generateStackedData();
+
+        //为柱形图添加动画
+        Animation myAnimation = AnimationUtils.loadAnimation(this, R.anim.notepad_analysis_anim);
+        mColumnChartCc.startAnimation(myAnimation);
 
         jsonArray=new JSONArray();
         lists=new ArrayList<String>();
@@ -145,7 +151,7 @@ public class NotepadAnalysisActivity extends Activity implements View.OnClickLis
         Intent intent;
         switch (view.getId()){
             case R.id.screen:
-                intent=new Intent(NotepadAnalysisActivity.this,ScreenActivity.class);
+                intent=new Intent(NotepadAnalysisActivity.this,NotepadScreenActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

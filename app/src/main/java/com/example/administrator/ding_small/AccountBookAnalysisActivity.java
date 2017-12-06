@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -53,11 +55,16 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         received_btn.setOnClickListener(this);
         yet_btn.setOnClickListener(this);
         all_btn.setOnClickListener(this);
+        findViewById(R.id.screen).setOnClickListener(this);
+        findViewById(R.id.f_income).setOnClickListener(this);
 
         mColumnChartCc = (ColumnChartView) findViewById(R.id.column_chart_cc);
         mColumnChartCc.setOnValueTouchListener(new ValueTouchListener());
         generateStackedData();
 
+        //为柱形图添加动画
+        Animation myAnimation = AnimationUtils.loadAnimation(this, R.anim.notepad_analysis_anim);
+        mColumnChartCc.startAnimation(myAnimation);
         jsonArray=new JSONArray();
         lists=new ArrayList<String>();
         OutTimeLists=new ArrayList<String>();
@@ -117,9 +124,9 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         List<Column> columns = new ArrayList<Column>();
         List<SubcolumnValue> values;
-        Float[] floats = {320f, 105f, 150f, 115f,520f, 15f, 50f, 125f,720f, 195f, 520f, 115f};//总数数据
-        Float[] lists = {420f, 10f, 50f, 15f,20f, 150f, 500f, 25f,120f, 95f, 220f, 115f};//按期数据
-        Float[] outTimes = {20f, 110f, 510f, 105f,210f, 10f, 100f, 215f,12f, 915f, 205f, 15f};//逾期数据
+        Float[] floats = {320f, 105f, 150f, 115f,520f, 15f, 50f, 125f,720f, 195f, 520f, 115f};//结余数据
+        Float[] lists = {420f, 10f, 50f, 15f,20f, 150f, 500f, 25f,120f, 95f, 220f, 115f};//收入数据
+        Float[] outTimes = {20f, 110f, 510f, 105f,210f, 10f, 100f, 215f,12f, 915f, 205f, 15f};//支出数据
         String[] selecedNames = {"1月", "2月", "3月", "4月","5月","6月","7月","8月","9月","10月","11月","12月"};
 
         for (int i = 0; i < numColumns; ++i) {
@@ -173,6 +180,16 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
                 received_btn.setBackgroundResource(R.drawable.bg_gray);
                 all_btn.setBackgroundResource(R.drawable.bg_gray);
                 yet_btn.setBackgroundColor(getResources().getColor(R.color.green));
+                break;
+            case R.id.screen:
+                intent=new Intent(AccountBookAnalysisActivity.this,AccountScreenActiivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_income:
+                intent=new Intent(AccountBookAnalysisActivity.this,InComeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
     }
