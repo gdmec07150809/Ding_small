@@ -78,11 +78,13 @@ public class InComeAdapter extends BaseAdapter {
             holder.title.setText( object.getString("title"));
             holder.title.setBackgroundResource(object.getInt("color"));
             Double number= Double.valueOf(Integer.parseInt(object.getString("number")));
-            if(number>0){
-                holder.money.setText(number+"");
+            Double money= Double.valueOf(Integer.parseInt(object.getString("money")));
+            System.out.println("money:"+money);
+            if(money>0){
+                holder.money.setText(money+"");
                 holder.money.setTextColor(ContextCompat.getColor(context, R.color.green));
             }else{
-                holder.money.setText(number+"");
+                holder.money.setText(money+"");
                 holder.money.setTextColor(ContextCompat.getColor(context, R.color.orange));
             }
             int color= Integer.parseInt(object.getString("color"));

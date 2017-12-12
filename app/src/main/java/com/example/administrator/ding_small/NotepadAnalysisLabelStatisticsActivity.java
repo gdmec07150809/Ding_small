@@ -50,8 +50,41 @@ public class NotepadAnalysisLabelStatisticsActivity extends Activity implements 
         label_text.setTextColor(getResources().getColor(R.color.green));
         finished_text.setTextColor(getResources().getColor(R.color.blank));
         outtime_text.setTextColor(getResources().getColor(R.color.blank));
+        CreatJson();//构造json数据，备用
 
+        listView.setAdapter(new NotepadAnalysisTitleAdapter(NotepadAnalysisLabelStatisticsActivity.this,jsonArray));
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadAnalysisLabelItemActivity.class);
+                intent.putExtra("label",titleLists.get(i));
+                startActivity(intent);
+            }
+        });
+    }
 
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()){
+            case R.id.f_finished:
+                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadReportActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_title:
+                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadAnalysisTitleStatisticsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_outtime:
+                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadOutTimeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
+    }
+    private void CreatJson(){
         jsonArray=new JSONArray();
         nofinishlists=new ArrayList<String>();
         finishedLists=new ArrayList<String>();
@@ -86,37 +119,6 @@ public class NotepadAnalysisLabelStatisticsActivity extends Activity implements 
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        listView.setAdapter(new NotepadAnalysisTitleAdapter(NotepadAnalysisLabelStatisticsActivity.this,jsonArray));
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadAnalysisLabelItemActivity.class);
-                intent.putExtra("label",titleLists.get(i));
-                startActivity(intent);
-            }
-        });
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent;
-        switch (view.getId()){
-            case R.id.f_finished:
-                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadReportActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.f_title:
-                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadAnalysisTitleStatisticsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.f_outtime:
-                intent=new Intent(NotepadAnalysisLabelStatisticsActivity.this,NotepadOutTimeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
         }
     }
 }

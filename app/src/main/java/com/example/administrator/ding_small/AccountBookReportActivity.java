@@ -46,13 +46,13 @@ public class AccountBookReportActivity extends Activity implements View.OnClickL
         findViewById(R.id.f_outtime).setOnClickListener(this);
         summary_text=findViewById(R.id.summary_text);
         label_text=findViewById(R.id.label_text);
-        label_text=findViewById(R.id.income_text);
+        income_text=findViewById(R.id.income_text);
         expenditure_text=findViewById(R.id.expenditure_text);
         outtime_text=findViewById(R.id.outtime_text);
 
         summary_text.setTextColor(getResources().getColor(R.color.green));
         label_text.setTextColor(getResources().getColor(R.color.blank));
-        label_text.setTextColor(getResources().getColor(R.color.blank));
+        income_text.setTextColor(getResources().getColor(R.color.blank));
         outtime_text.setTextColor(getResources().getColor(R.color.blank));
         expenditure_text.setTextColor(getResources().getColor(R.color.blank));
 
@@ -107,6 +107,21 @@ public class AccountBookReportActivity extends Activity implements View.OnClickL
         switch (view.getId()){
             case R.id.f_income:
                 intent=new Intent(AccountBookReportActivity.this,InComeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_label:
+                intent=new Intent(AccountBookReportActivity.this,AccountAnalysisLabelStatisticsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_expenditure:
+                intent=new Intent(AccountBookReportActivity.this,ExpenditureActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_outtime:
+                intent=new Intent(AccountBookReportActivity.this,AccountOutTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

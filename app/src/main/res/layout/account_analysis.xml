@@ -39,15 +39,16 @@
                 android:layout_alignParentStart="true">
                 <LinearLayout
                     android:id="@+id/left"
-                    android:layout_width="182dp"
+                    android:layout_width="152dp"
                     android:layout_height="25dp"
                     android:background="@drawable/bg_green"
                     android:layout_marginLeft="10dp"
                     android:orientation="horizontal">
                     <Button
                         android:id="@+id/received_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_gray"
                         android:textColor="@color/green"
                         android:layout_gravity="center"
@@ -55,8 +56,9 @@
                         android:text="已收付"></Button>
                     <Button
                         android:id="@+id/yet_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_gray"
                         android:textColor="@color/green"
                         android:layout_gravity="center"
@@ -64,8 +66,9 @@
                         android:text="待收付"></Button>
                     <Button
                         android:id="@+id/all_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
+                        android:layout_weight="1"
                         android:background="@color/green"
                         android:textColor="@color/white"
                         android:layout_gravity="center"
@@ -74,24 +77,26 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/middle"
-                    android:layout_width="122dp"
+                    android:layout_width="132dp"
                     android:layout_height="25dp"
                     android:background="@drawable/bg_green"
                   android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
                     android:orientation="horizontal">
                     <Button
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
+                        android:layout_weight="1"
                         android:background="@color/green"
                         android:textColor="@color/white"
                         android:layout_gravity="center"
                         android:textSize="6pt"
                         android:text="个人"></Button>
                     <Button
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
-                        android:background="@color/white"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_gray"
                         android:textColor="@color/green"
                         android:layout_gravity="center"
                         android:textSize="6pt"

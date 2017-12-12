@@ -6,12 +6,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp">
-        <Button
+        <TextView
             android:id="@+id/title"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:background="@color/fen"
             android:text="上门维修"
+            android:gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
             android:textSize="6.5pt"

@@ -84,6 +84,11 @@
         <activity android:name=".AccountReturnByMonthActivity"/>
         <activity android:name=".AccountScreenActiivity"/>
         <activity android:name=".InComeActivity"/>
+        <activity android:name=".AccountInComeItemDetailActivity"/>
+        <activity android:name=".MainLayoutActivity"  android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".AccountAnalysisLabelStatisticsActivity"/>
+        <activity android:name=".ExpenditureActivity"/>
+        <activity android:name=".AccountOutTimeActivity"/>
     </application>
 
 </manifest>

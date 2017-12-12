@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+<LinearLayout
+    android:id="@+id/head"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="@color/green"
+    android:orientation="horizontal">
+  <include layout="@layout/main_layout_head"/>
+</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/name"
+        android:layout_below="@+id/head"
+        android:layout_width="match_parent"
+        android:background="@color/green"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14pt"
+           android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"
+            android:text="张先生，上午好"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/calendar"
+        android:layout_below="@+id/name"
+        android:layout_width="match_parent"
+        android:background="@color/green"
+        android:orientation="horizontal"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+       <RelativeLayout
+           android:id="@+id/notepad_calendar"
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:layout_weight="1">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
+               android:textColor="@color/white"
+               android:text="记事本日历"/>
+       </RelativeLayout>
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
+        <RelativeLayout
+            android:id="@+id/account_calendar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:text="记账本日历"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/device_list"
+        android:layout_below="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.3">
+
+        <include layout="@layout/home_device_list"/>
+    </LinearLayout>
+<LinearLayout
+    android:id="@+id/function"
+    android:layout_below="@+id/device_list"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="0dp"
+    android:layout_weight="4">
+    <include layout="@layout/home_function"/>
+</LinearLayout>
+    <RelativeLayout
+        android:layout_below="@+id/function"
+        android:layout_above="@+id/footer"
+        android:id="@+id/fragmet"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/home_activity_pager"
+            android:layout_width="match_parent"
+            android:layout_height="167dp"
+            ></android.support.v4.view.ViewPager>
+        <GridView
+            android:id="@+id/pager_position_gv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:verticalSpacing="0dp"
+            android:horizontalSpacing="0dp"
+            ></GridView>
+    </RelativeLayout>
+<LinearLayout
+    android:id="@+id/footer"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:gravity="bottom"
+    android:background="@color/white"
+    android:layout_marginBottom="3dp">
+    <include layout="@layout/main_layout_footer"/>
+</LinearLayout>
+</LinearLayout>

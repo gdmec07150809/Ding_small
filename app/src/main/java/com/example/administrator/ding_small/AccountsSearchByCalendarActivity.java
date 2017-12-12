@@ -53,6 +53,8 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
         preImgBtn.setOnClickListener(this);
         nextImgBtn.setOnClickListener(this);
         monthText.setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
+
         AccountsCalendarCard[] views = new AccountsCalendarCard[3];
         for (int i = 0; i < 3; i++) {
             views[i]=new AccountsCalendarCard(this,this);
@@ -104,6 +106,9 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
                 intent=new Intent(AccountsSearchByCalendarActivity.this,SearchTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+            case R.id.back:
+                finish();
+                break;
             default:
                 break;
         }

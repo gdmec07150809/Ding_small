@@ -10,6 +10,7 @@
         android:layout_height="30dp">
 
         <RelativeLayout
+            android:id="@+id/date_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -37,6 +38,7 @@
                     android:src="@drawable/up_jiantou"/>
 
                 <ImageView
+                    android:id="@+id/date_jiantou"
                     android:layout_width="15dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -51,12 +53,13 @@
             android:background="@color/hui"/>
 
         <RelativeLayout
+            android:id="@+id/title_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/account_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -67,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/title"
+                android:layout_toRightOf="@+id/account_title"
                 android:orientation="vertical">
 
                 <ImageView
@@ -77,6 +80,7 @@
                     android:src="@drawable/up_jiantou"/>
 
                 <ImageView
+                    android:id="@+id/title_jiantou"
                     android:layout_width="15dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -91,6 +95,7 @@
             android:background="@color/hui"/>
 
         <RelativeLayout
+            android:id="@+id/money_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -117,6 +122,7 @@
                     android:src="@drawable/up_jiantou"/>
 
                 <ImageView
+                    android:id="@+id/money_jiantou"
                     android:layout_width="15dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"

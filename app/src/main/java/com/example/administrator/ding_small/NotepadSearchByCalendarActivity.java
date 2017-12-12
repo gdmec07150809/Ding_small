@@ -53,6 +53,7 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
         preImgBtn.setOnClickListener(this);
         nextImgBtn.setOnClickListener(this);
         monthText.setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
         CalendarCard[] views = new CalendarCard[3];
         for (int i = 0; i < 3; i++) {
             views[i] = new CalendarCard(this, this);
@@ -104,6 +105,10 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
                 intent=new Intent(NotepadSearchByCalendarActivity.this,SearchTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.back:
+                finish();
+                break;
             default:
                 break;
         }

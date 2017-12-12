@@ -97,7 +97,8 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                 if(name.equals("")|| password.equals("")){
                     new AlertDialog.Builder(MainActivity.this).setTitle("登录提示").setMessage("用户名或密码不能为空！！！").setPositiveButton("确定",null).show();
                 }else {
-                    Intent  intent=new Intent(MainActivity.this,AccountBookActivity.class);
+                   // Intent  intent=new Intent(MainActivity.this,AccountBookActivity.class);
+                    Intent  intent=new Intent(MainActivity.this,MainLayoutActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     //跳转
                     startActivity(intent);

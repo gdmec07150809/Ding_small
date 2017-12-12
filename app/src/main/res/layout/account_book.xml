@@ -195,7 +195,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/finished_btn"
+                android:id="@+id/already_btn"
                 android:layout_width="50dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
@@ -206,7 +206,7 @@
                 android:textSize="6pt"></Button>
 
             <Button
-                android:id="@+id/no_finish_btn"
+                android:id="@+id/not_btn"
                 android:layout_width="50dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"

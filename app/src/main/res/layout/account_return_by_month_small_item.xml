@@ -8,13 +8,15 @@
         android:layout_height="50dp"
         android:layout_marginTop="10dp">
 
-        <Button
+        <TextView
+            android:id="@+id/title"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:background="@drawable/bg_repair"
             android:text="上门维修"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="6.5pt"
             />
@@ -66,7 +68,6 @@
             android:layout_toLeftOf="@+id/time"
             android:text="待"
             android:textSize="4.5pt"/>
-
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"

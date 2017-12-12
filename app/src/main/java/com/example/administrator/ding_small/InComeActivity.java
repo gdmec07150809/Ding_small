@@ -11,6 +11,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -43,20 +46,39 @@ public class InComeActivity extends Activity implements View.OnClickListener{
     private JSONObject jsonObject;
     private JSONArray jsonArray;
     int viewWidth;
-    private TextView summary_text,income_text;
+    private TextView summary_text,label_text,income_text,expenditure_text,outtime_text;
     private RelativeLayout f_summary,f_income;
+    private Button received_btn,all_btn,yet_btn;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_income);
         found_history_ryt=findViewById(R.id.found_history_ryt);
         analasis_list=findViewById(R.id.income_list);
-        findViewById(R.id.f_summary).setOnClickListener(this);
-        summary_text=findViewById(R.id.summary_text);
-        income_text=findViewById(R.id.income_text);
 
+        findViewById(R.id.f_summary).setOnClickListener(this);
+        findViewById(R.id.f_label).setOnClickListener(this);
+        findViewById(R.id.f_income).setOnClickListener(this);
+        findViewById(R.id.f_expenditure).setOnClickListener(this);
+        findViewById(R.id.f_outtime).setOnClickListener(this);
+
+        summary_text=findViewById(R.id.summary_text);
+        label_text=findViewById(R.id.label_text);
+        income_text=findViewById(R.id.income_text);
+        expenditure_text=findViewById(R.id.expenditure_text);
+        outtime_text=findViewById(R.id.outtime_text);
+        all_btn= findViewById(R.id.all_btn);
+        received_btn= findViewById(R.id.received_btn);
+        yet_btn= findViewById(R.id.yet_btn);
+        all_btn.setOnClickListener(this);
+        received_btn.setOnClickListener(this);
+        yet_btn.setOnClickListener(this);
+
+        label_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
         summary_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
         income_text.setTextColor(ContextCompat.getColor(this, R.color.green));
+        expenditure_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+        outtime_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
 
         ViewUtils.inject(this);
         /*获取屏幕宽度*/
@@ -88,6 +110,22 @@ public class InComeActivity extends Activity implements View.OnClickListener{
         found_history_ryt.startAnimation(myAnimation);
 
         analasis_list.setAdapter(new InComeAdapter(InComeActivity.this,jsonArray));
+
+        analasis_list.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                System.out.println("点击");
+                Intent intent=new Intent(InComeActivity.this,AccountInComeItemDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("title",strs[i]);
+                bundle.putInt("number",number[i]);
+                bundle.putInt("color",color[i]);
+                bundle.putString("name","收入");
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
     private void CreatJson(){
         jsonArray=new JSONArray();
@@ -115,6 +153,48 @@ public class InComeActivity extends Activity implements View.OnClickListener{
                 intent=new Intent(InComeActivity.this,AccountBookReportActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.f_label:
+                intent=new Intent(InComeActivity.this,AccountAnalysisLabelStatisticsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_expenditure:
+                intent=new Intent(InComeActivity.this,ExpenditureActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.f_outtime:
+                intent=new Intent(InComeActivity.this,AccountOutTimeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.received_btn:
+                received_btn.setTextColor(getResources().getColor(R.color.white));
+                all_btn.setTextColor(getResources().getColor(R.color.green));
+                yet_btn.setTextColor(getResources().getColor(R.color.green));
+
+                received_btn.setBackgroundColor(getResources().getColor(R.color.green));
+                all_btn.setBackgroundResource(R.drawable.bg_gray);
+                yet_btn.setBackgroundResource(R.drawable.bg_gray);
+                break;
+            case R.id.all_btn:
+                received_btn.setTextColor(getResources().getColor(R.color.green));
+                all_btn.setTextColor(getResources().getColor(R.color.white));
+                yet_btn.setTextColor(getResources().getColor(R.color.green));
+
+                received_btn.setBackgroundResource(R.drawable.bg_gray);
+                all_btn.setBackgroundColor(getResources().getColor(R.color.green));
+                yet_btn.setBackgroundResource(R.drawable.bg_gray);
+                break;
+            case R.id.yet_btn:
+                received_btn.setTextColor(getResources().getColor(R.color.green));
+                all_btn.setTextColor(getResources().getColor(R.color.green));
+                yet_btn.setTextColor(getResources().getColor(R.color.white));
+
+                received_btn.setBackgroundResource(R.drawable.bg_gray);
+                all_btn.setBackgroundResource(R.drawable.bg_gray);
+                yet_btn.setBackgroundColor(getResources().getColor(R.color.green));
                 break;
         }
     }

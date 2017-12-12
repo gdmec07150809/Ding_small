@@ -26,17 +26,17 @@
                     android:textColor="@color/blank"
                     android:text="收入报表"/>
             </RelativeLayout>
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/ge"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_below="@+id/head"
                 android:layout_marginTop="10dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:orientation="horizontal">
                 <LinearLayout
                     android:id="@+id/left"
-                    android:layout_width="182dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
                     android:layout_height="25dp"
                     android:background="@drawable/bg_green"
                     android:layout_marginLeft="10dp"
@@ -44,9 +44,10 @@
 
                     <Button
                         android:id="@+id/received_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_gray"
                         android:text="已收"
                         android:textColor="@color/green"
@@ -54,8 +55,9 @@
 
                     <Button
                         android:id="@+id/yet_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_gray"
                         android:textColor="@color/green"
                         android:layout_gravity="center"
@@ -63,8 +65,9 @@
                         android:text="待收"></Button>
                     <Button
                         android:id="@+id/all_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
+                        android:layout_weight="1"
                         android:background="@color/green"
                         android:textColor="@color/white"
                         android:layout_gravity="center"
@@ -72,31 +75,37 @@
                         android:text="全部"></Button>
                 </LinearLayout>
                 <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="match_parent"/>
+                <LinearLayout
                     android:id="@+id/middle"
-                    android:layout_width="122dp"
+                    android:layout_width="0dp"
                     android:layout_height="25dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_green"
-                    android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
                     android:orientation="horizontal">
                     <Button
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
+                        android:layout_weight="1"
                         android:background="@color/green"
                         android:textColor="@color/white"
                         android:layout_gravity="center"
                         android:textSize="6pt"
                         android:text="个人"></Button>
                     <Button
-                        android:layout_width="60dp"
+                        android:layout_width="0dp"
                         android:layout_height="24dp"
-                        android:background="@color/white"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_gray"
                         android:textColor="@color/green"
                         android:layout_gravity="center"
                         android:textSize="6pt"
                         android:text="公司"></Button>
                 </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
