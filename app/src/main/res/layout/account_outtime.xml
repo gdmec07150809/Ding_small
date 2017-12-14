@@ -276,7 +276,7 @@
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
-        android:id="@+id/outtime_text"
+        android:id="@+id/outtime_number_text"
         android:layout_width="match_parent"
         android:layout_below="@+id/sort"
         android:layout_height="20dp">
@@ -297,10 +297,15 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="待付 800"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/hui"/>
     </RelativeLayout>
     <ListView
         android:id="@+id/accout_outtime_list"
-        android:layout_below="@+id/outtime_text"
+        android:layout_below="@+id/outtime_number_text"
         android:layout_above="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>

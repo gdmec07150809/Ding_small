@@ -74,7 +74,7 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
         for (int i=0;i<50;i++){
             arrayList.add(i+"");
         }
-        account_book_list.setAdapter(new AccountBookAdapter(AccountBookActivity.this,arrayList));
+        account_book_list.setAdapter(new AccountBookAdapter(AccountBookActivity.this,arrayList,true));
     }
 
     @Override
@@ -135,6 +135,8 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
                 date_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
                 title_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 money_jiantou.setImageResource(R.drawable.butoom_jiantou);
+
+                account_book_list.setAdapter(new AccountBookAdapter(AccountBookActivity.this,arrayList,true));
                 break;
             case R.id.title_layout:
                 date_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
@@ -144,6 +146,8 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
                 date_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 title_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
                 money_jiantou.setImageResource(R.drawable.butoom_jiantou);
+
+                account_book_list.setAdapter(new AccountBookAdapter(AccountBookActivity.this,arrayList,false));
                 break;
             case R.id.money_layout:
                 date_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
@@ -153,6 +157,8 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
                 date_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 title_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 money_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
+
+                account_book_list.setAdapter(new AccountBookAdapter(AccountBookActivity.this,arrayList,false));
                 break;
         }
     }

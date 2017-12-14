@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -75,9 +76,6 @@ public class EditLabelBtnAdapter extends BaseAdapter implements OnClickListener{
             holder.up_img.setOnClickListener(this);
             holder.up_img.setTag(i);
 
-           if(i>0){
-               holder.label_img.setImageResource(R.drawable.title_yes);
-           }
             holder.label_img.setOnClickListener(this);
             holder.label_img.setTag(i);
 
@@ -87,8 +85,6 @@ public class EditLabelBtnAdapter extends BaseAdapter implements OnClickListener{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         return contentView;
     }
 
@@ -97,9 +93,9 @@ public class EditLabelBtnAdapter extends BaseAdapter implements OnClickListener{
             mCallback.click(v);
     }
 
-
     private class ViewHolder{
         TextView label_text;
-        ImageView label_img,up_img,edit_img;
+        ImageView up_img,edit_img;
+        CheckBox label_img;
     }
 }

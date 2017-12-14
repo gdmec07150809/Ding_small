@@ -3,6 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -15,13 +16,14 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:background="@drawable/bg_repair"
-            android:text="上门维修"
             android:gravity="center"
+            android:text="上门维修"
             android:textColor="@color/white"
             android:textSize="6.5pt"
             />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -62,22 +64,30 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/dai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:layout_toLeftOf="@+id/time"
             android:text="待"
             android:textSize="4.5pt"/>
+
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignTop="@+id/linearLayout2"
             android:layout_marginRight="10dp"
-            android:textColor="@color/green"
             android:text="+500"
+            android:textColor="@color/green"
             android:textSize="9pt"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
 </LinearLayout>

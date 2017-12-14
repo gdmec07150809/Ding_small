@@ -25,7 +25,7 @@ public class AccountInComeItemDetailActivity extends Activity implements View.On
     private ArrayList<String> arrayList;
     private String title;
     private int color,number;
-    private TextView number_text,big_title;
+    private TextView number_text,big_title,collect,paid;
     private TextView summary_text,label_text,income_text,expenditure_text,outtime_text,time,money;
     private Button received_btn,all_btn,yet_btn;
     private ImageView date_down,money_down;
@@ -60,7 +60,8 @@ public class AccountInComeItemDetailActivity extends Activity implements View.On
         money=findViewById(R.id.money);
         date_down=findViewById(R.id.date_down);
         money_down=findViewById(R.id.money_down);
-
+        collect=findViewById(R.id.collect);
+        paid=findViewById(R.id.paid);
 
         getString();//获取传送数据
         number_text.setText("共"+number+"条");
@@ -115,6 +116,11 @@ public class AccountInComeItemDetailActivity extends Activity implements View.On
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            case R.id.f_outtime:
+                intent=new Intent(AccountInComeItemDetailActivity.this,AccountOutTimeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
             case R.id.received_btn:
                 received_btn.setTextColor(getResources().getColor(R.color.white));
                 all_btn.setTextColor(getResources().getColor(R.color.green));
@@ -123,6 +129,8 @@ public class AccountInComeItemDetailActivity extends Activity implements View.On
                 received_btn.setBackgroundColor(getResources().getColor(R.color.green));
                 all_btn.setBackgroundResource(R.drawable.bg_gray);
                 yet_btn.setBackgroundResource(R.drawable.bg_gray);
+                collect.setText("已收 2300");
+                paid.setText("已付 800");
                 break;
             case R.id.all_btn:
                 received_btn.setTextColor(getResources().getColor(R.color.green));
@@ -141,6 +149,8 @@ public class AccountInComeItemDetailActivity extends Activity implements View.On
                 received_btn.setBackgroundResource(R.drawable.bg_gray);
                 all_btn.setBackgroundResource(R.drawable.bg_gray);
                 yet_btn.setBackgroundColor(getResources().getColor(R.color.green));
+                collect.setText("待收 2300");
+                paid.setText("待付 800");
                 break;
             case R.id.date_layout:
                 time.setTextColor(ContextCompat.getColor(this, R.color.orange));

@@ -67,7 +67,7 @@ public class EditTitleActivity extends Activity implements View.OnClickListener,
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        System.out.println("标题："+jsonArray);
         list.setAdapter(new com.example.administrator.ding_small.Adapter.EditTitleAdapter(EditTitleActivity.this,jsonArray,this));
 
         list.setOnItemClickListener(new OnItemClickListener() {

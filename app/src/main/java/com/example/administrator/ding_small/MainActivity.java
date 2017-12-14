@@ -104,7 +104,7 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                     startActivity(intent);
                     finish();
                     //访问服务器
-                   // sendRequestWithHttpClient(name,MD5Utils.Md5(name,password));
+              //sendRequestWithHttpClient(name,MD5Utils.Md5(name,password));
                 }
                 break;
             case R.id.send_text:
@@ -169,7 +169,8 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                 //第一步：创建HttpClient对象
                  HttpClient httpCient = new DefaultHttpClient();
                 //第二步：创建代表请求的对象,参数是访问的服务器地址blMac=12:34:56:78:9A:BC&userId=1001&userName=%E5%BC%A0%E4%B8%89
-                HttpGet httpGet = new HttpGet("http://192.168.1.101:8080/appUser/appUserLogin.do?loginType=1&loginAccount="+name1+"&loginPwd="+pass1);
+                //HttpGet httpGet = new HttpGet("http://192.168.1.101:8080/appUser/appUserLogin.do?loginType=1&loginAccount="+name1+"&loginPwd="+pass1);
+                HttpGet httpGet = new HttpGet("http://192.168.1.110:8080/appSecr6000/secr6000List?opId=1&proType=已收");//测试链接
                 try {
                     //第三步：执行请求，获取服务器发还的相应对象
                     HttpResponse httpResponse = httpCient.execute(httpGet);
@@ -226,7 +227,6 @@ public class MainActivity extends Activity implements  View.OnClickListener{
                         }else{
                             new AlertDialog.Builder(MainActivity.this).setTitle("登录异常").setMessage(Msg).setPositiveButton("确定",null).show();
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

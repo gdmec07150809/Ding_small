@@ -80,7 +80,7 @@
     android:id="@+id/function"
     android:layout_below="@+id/device_list"
     android:layout_width="match_parent"
-    android:layout_marginTop="10dp"
+   android:layout_margin="10dp"
     android:layout_height="0dp"
     android:layout_weight="4">
     <include layout="@layout/home_function"/>
@@ -105,6 +105,7 @@
             android:layout_centerHorizontal="true"
             android:verticalSpacing="0dp"
             android:horizontalSpacing="0dp"
+            android:layout_marginBottom="5dp"
             ></GridView>
     </RelativeLayout>
 <LinearLayout

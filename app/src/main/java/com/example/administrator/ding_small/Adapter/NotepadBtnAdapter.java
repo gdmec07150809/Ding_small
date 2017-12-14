@@ -71,12 +71,6 @@ public class NotepadBtnAdapter extends BaseAdapter {
         }
         try {
             JSONObject jsonObject = new JSONObject(String.valueOf(list.get(i)));
-            holder.explain.setText(jsonObject.getString("explain"));
-            holder.name.setText(jsonObject.getString("name"));
-            holder.label.setText(jsonObject.getString("label"));
-            holder.time.setText(jsonObject.getString("time"));
-            holder.title.setText(jsonObject.getString("title"));
-            holder.title.setBackgroundResource(jsonObject.getInt("titleColor"));
 
             if(i==0){
                 holder.date.setText(jsonObject.getString("date"));
@@ -91,6 +85,13 @@ public class NotepadBtnAdapter extends BaseAdapter {
                   holder.head_date.setVisibility(View.VISIBLE);
               }
             }
+
+            holder.explain.setText(jsonObject.getString("explain"));
+            holder.name.setText(jsonObject.getString("name"));
+            holder.label.setText(jsonObject.getString("label"));
+            holder.time.setText(jsonObject.getString("time"));
+            holder.title.setText(jsonObject.getString("title"));
+            holder.title.setBackgroundResource(jsonObject.getInt("titleColor"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

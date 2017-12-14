@@ -12,6 +12,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.administrator.ding_small.Adapter.AccountInComeItemDetailAdapter;
+import com.example.administrator.ding_small.Adapter.AccountOutTimeAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.R.attr.id;
 
 /**
@@ -24,6 +31,14 @@ public class AccountOutTimeActivity extends Activity implements View.OnClickList
     private Button already_btn,not_btn;
     private ListView listView;
     private TextView summary_text,label_text,income_text,expenditure_text,outtime_text;
+
+    private String[] strs = {"美的", "格力", "飞利浦", "方太", "西门子", "A.O.史密斯", "爱马仕", "奔腾", "TCL", "小天鹅", "三洋"};
+
+    private int[] money={12,54,-50,20,-40,45,-16,56,78,-123,12};
+    private int [] color={R.color.bg1,R.color.bg2,R.color.bg3,R.color.bg4,R.color.bg5,R.color.bg6,R.color.bg7,R.color.bg8,R.color.bg9,R.color.bg10,R.color.bg11};
+    private int sum;
+    private JSONObject jsonObject;
+    private JSONArray jsonArray;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +79,23 @@ public class AccountOutTimeActivity extends Activity implements View.OnClickList
         income_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
         expenditure_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
         outtime_text.setTextColor(ContextCompat.getColor(this, R.color.green));
+        CreatJson();//组合一个jsonArray备用
+        listView.setAdapter(new AccountOutTimeAdapter(AccountOutTimeActivity.this,jsonArray,false));
     }
-
+    private void CreatJson(){
+        jsonArray=new JSONArray();
+        for(int i=0;i<color.length;i++){
+            jsonObject=new JSONObject();
+            try {
+                jsonObject.put("color",color[i]);
+                jsonObject.put("title",strs[i]);
+                jsonObject.put("money",money[i]);
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -78,6 +108,7 @@ public class AccountOutTimeActivity extends Activity implements View.OnClickList
                 date_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
                 title_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 money_jiantou.setImageResource(R.drawable.butoom_jiantou);
+                listView.setAdapter(new AccountOutTimeAdapter(AccountOutTimeActivity.this,jsonArray,false));
                 break;
             case R.id.title_layout:
                 date_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
@@ -87,6 +118,7 @@ public class AccountOutTimeActivity extends Activity implements View.OnClickList
                 date_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 title_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
                 money_jiantou.setImageResource(R.drawable.butoom_jiantou);
+                listView.setAdapter(new AccountOutTimeAdapter(AccountOutTimeActivity.this,jsonArray,true));
                 break;
             case R.id.money_layout:
                 date_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
@@ -96,6 +128,8 @@ public class AccountOutTimeActivity extends Activity implements View.OnClickList
                 date_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 title_jiantou.setImageResource(R.drawable.butoom_jiantou);
                 money_jiantou.setImageResource(R.drawable.or_butoom_jiaotou);
+
+                listView.setAdapter(new AccountOutTimeAdapter(AccountOutTimeActivity.this,jsonArray,true));
                 break;
             case R.id.already_btn:
                 already_btn.setBackgroundColor(Color.parseColor("#6AB845"));

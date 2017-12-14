@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,8 @@ import com.example.administrator.ding_small.HelpTool.MylistView;
 
 import java.util.ArrayList;
 
+import static com.example.administrator.ding_small.R.id.no_finish_btn;
+
 /**
  * Created by Administrator on 2017/11/6.
  */
@@ -31,6 +35,7 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
     private ArrayList<String> arrayList;
     private ViewPager mViewPager;
     private int mCurrentIndex = 498;
+    private Button finished_btn,no_finished_btn;
     private AccountsCalendarCard[] mShowViews;
     private CalendarViewAdapter<AccountsCalendarCard> adapter;
     private SildeDirection mDirection = SildeDirection.NO_SILDE;
@@ -49,10 +54,14 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
         preImgBtn = (ImageButton) this.findViewById(R.id.btnPreMonth);
         nextImgBtn = (ImageButton) this.findViewById(R.id.btnNextMonth);
         monthText = (TextView) this.findViewById(R.id.tvCurrentMonth);
+        finished_btn=findViewById(R.id.finished_btn);
+        no_finished_btn=findViewById(R.id.no_finish_btn);
         search_results=findViewById(R.id.calendar_results);
         preImgBtn.setOnClickListener(this);
         nextImgBtn.setOnClickListener(this);
         monthText.setOnClickListener(this);
+        finished_btn.setOnClickListener(this);
+        no_finished_btn.setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
 
         AccountsCalendarCard[] views = new AccountsCalendarCard[3];
@@ -108,6 +117,20 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
                 startActivity(intent);
             case R.id.back:
                 finish();
+                break;
+            case R.id.finished_btn:
+                finished_btn.setTextColor(ContextCompat.getColor(this, R.color.white));
+                no_finished_btn.setTextColor(ContextCompat.getColor(this, R.color.green));
+
+                no_finished_btn.setBackgroundResource(R.drawable.bg_gray);
+                finished_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+                break;
+            case no_finish_btn:
+                finished_btn.setTextColor(ContextCompat.getColor(this, R.color.green));
+                no_finished_btn.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+                finished_btn.setBackgroundResource(R.drawable.bg_gray);
+                no_finished_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
                 break;
             default:
                 break;
