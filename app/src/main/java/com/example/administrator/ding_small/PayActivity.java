@@ -469,6 +469,8 @@ public class PayActivity extends FragmentActivity implements View.OnClickListene
             case R.id.back:
                 finish();
                 break;
+            default:
+                break;
         }
     }
         /**

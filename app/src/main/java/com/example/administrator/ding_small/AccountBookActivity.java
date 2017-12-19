@@ -160,6 +160,8 @@ public class AccountBookActivity extends Activity implements View.OnClickListene
 
                 account_book_list.setAdapter(new AccountBookAdapter(AccountBookActivity.this,arrayList,false));
                 break;
+            default:
+                break;
         }
     }
 }

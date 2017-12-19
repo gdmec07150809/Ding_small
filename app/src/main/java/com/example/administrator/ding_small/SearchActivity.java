@@ -85,6 +85,8 @@ public class SearchActivity extends Activity implements View.OnClickListener{
             case R.id.back:
                 finish();
                 break;
+            default:
+                break;
 
         }
     }

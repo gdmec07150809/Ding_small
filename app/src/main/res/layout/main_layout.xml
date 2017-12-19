@@ -12,22 +12,26 @@
     android:orientation="horizontal">
   <include layout="@layout/main_layout_head"/>
 </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/name"
-        android:layout_below="@+id/head"
         android:layout_width="match_parent"
-        android:background="@color/green"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_below="@+id/head"
+        android:layout_weight="1"
+        android:background="@color/green">
+
         <TextView
+            android:id="@+id/name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="14pt"
-           android:layout_centerInParent="true"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
-            android:text="张先生，上午好"/>
+            android:text="张先生，上午好"
+            android:textColor="@color/white"
+            android:textSize="14pt"/>
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/calendar"
         android:layout_below="@+id/name"
@@ -46,7 +50,7 @@
                android:layout_height="wrap_content"
               android:layout_centerInParent="true"
                android:textColor="@color/white"
-               android:text="记事本日历"/>
+               android:text="记事 日历"/>
        </RelativeLayout>
         <LinearLayout
             android:layout_marginTop="5dp"
@@ -64,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"
-                android:text="记账本日历"/>
+                android:text="记账 日历"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
@@ -76,15 +80,18 @@
 
         <include layout="@layout/home_device_list"/>
     </LinearLayout>
-<LinearLayout
-    android:id="@+id/function"
-    android:layout_below="@+id/device_list"
-    android:layout_width="match_parent"
-   android:layout_margin="10dp"
-    android:layout_height="0dp"
-    android:layout_weight="4">
-    <include layout="@layout/home_function"/>
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/function"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/device_list"
+        android:layout_margin="10dp"
+        android:layout_weight="4">
+
+        <include layout="@layout/home_function"/>
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_below="@+id/function"
         android:layout_above="@+id/footer"

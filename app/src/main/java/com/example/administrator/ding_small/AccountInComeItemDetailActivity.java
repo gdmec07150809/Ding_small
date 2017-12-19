@@ -168,6 +168,8 @@ public class AccountInComeItemDetailActivity extends Activity implements View.On
                 money_down.setImageResource(R.drawable.or_butoom_jiaotou);
                 acount_income_item_detail_list.setAdapter(new AccountInComeItemDetailAdapter(AccountInComeItemDetailActivity.this, arrayList,title,color,true));
                 break;
+            default:
+                break;
         }
     }
 }

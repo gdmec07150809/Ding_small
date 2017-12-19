@@ -29,7 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainLayoutActivity" android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -86,10 +86,13 @@
         <activity android:name=".AccountScreenActiivity"/>
         <activity android:name=".InComeActivity"/>
         <activity android:name=".AccountInComeItemDetailActivity"/>
-        <activity android:name=".MainLayoutActivity"  android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".AccountAnalysisLabelStatisticsActivity"/>
         <activity android:name=".ExpenditureActivity"/>
         <activity android:name=".AccountOutTimeActivity"/>
+        <activity android:name=".DeviceListActivity"/>
+        <activity android:name=".DeviceDetailActivity"/>
+        <activity android:name=".SelectDeviceActivity"/>
     </application>
 
 </manifest>

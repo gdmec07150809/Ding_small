@@ -81,6 +81,8 @@ public class NotepadReturnByMonthActivity extends Activity implements View.OnCli
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            default:
+                break;
         }
     }
 }

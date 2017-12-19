@@ -178,6 +178,8 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
                 outComeflowlayout();
                 labelFlowLayout();
                 break;
+            default:
+                break;
         }
     }
 }

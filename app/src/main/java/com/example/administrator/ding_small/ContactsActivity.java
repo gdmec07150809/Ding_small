@@ -140,6 +140,8 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
                 intent4.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent4);
                 break;
+            default:
+                break;
         }
     }
 }

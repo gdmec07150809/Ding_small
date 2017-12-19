@@ -218,6 +218,8 @@ public class NotepadRemarkDetailsActivity extends Activity implements View.OnCli
                 intent=new Intent(NotepadRemarkDetailsActivity.this,NotepadTurnToSendActivity.class);
                 startActivity(intent);
                 break;
+            default:
+                break;
         }
     }
 }

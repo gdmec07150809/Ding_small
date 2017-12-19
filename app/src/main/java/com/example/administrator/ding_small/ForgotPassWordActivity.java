@@ -94,6 +94,8 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
           case R.id.back:
               finish();
               break;
+          default:
+              break;
       }
     }
     //方法：获取验证码

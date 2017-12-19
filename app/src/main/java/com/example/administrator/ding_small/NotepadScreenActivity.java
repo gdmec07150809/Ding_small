@@ -131,6 +131,8 @@ public class NotepadScreenActivity extends Activity implements View.OnClickListe
                     labelFlowLayout();
                     titleFlowLayout();
                 break;
+            default:
+                break;
         }
     }
 }

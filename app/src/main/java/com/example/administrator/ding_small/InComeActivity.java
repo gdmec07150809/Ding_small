@@ -196,6 +196,8 @@ public class InComeActivity extends Activity implements View.OnClickListener{
                 all_btn.setBackgroundResource(R.drawable.bg_gray);
                 yet_btn.setBackgroundColor(getResources().getColor(R.color.green));
                 break;
+            default:
+                break;
         }
     }
 }

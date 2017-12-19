@@ -123,6 +123,8 @@ public class AccountReturnByMonthActivity extends Activity implements View.OnCli
                 all_btn.setBackgroundResource(R.drawable.bg_gray);
                 yet_btn.setBackgroundColor(getResources().getColor(R.color.green));
                 break;
+            default:
+                break;
         }
     }
 }

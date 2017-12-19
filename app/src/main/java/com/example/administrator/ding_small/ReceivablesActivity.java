@@ -469,6 +469,8 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
             case R.id.back:
                 finish();
                 break;
+            default:
+                break;
         }
     }
         /**

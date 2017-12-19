@@ -170,7 +170,6 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_green"
                 android:gravity="center"
-                android:onClick="show"
                 android:hint="重复日期"
                 android:inputType="datetime"
                 android:textColorHint="@color/hui"

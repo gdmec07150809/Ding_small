@@ -111,8 +111,7 @@ public class LocationUtil {
 
         if (location != null) {
             //获取当前位置，这里只用到了经纬度
-            String stringPosition = "纬度为：" + location.getLatitude() + ",经度为："
-                    + location.getLongitude();
+            String stringPosition = "纬度为：" + location.getLatitude() + ",经度为："+ location.getLongitude();
             longitude=location.getLongitude();
             latitude=location.getLatitude();
             //Toast.makeText(context, stringPosition, Toast.LENGTH_LONG).show();

@@ -471,6 +471,8 @@ public class PayableActivity extends FragmentActivity implements View.OnClickLis
             case R.id.back:
                 finish();
                 break;
+            default:
+                break;
         }
     }
         /**

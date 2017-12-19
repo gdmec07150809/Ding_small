@@ -124,6 +124,8 @@ public class AccountAnalysisLabelStatisticsActivity extends Activity implements 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            default:
+                break;
         }
     }
 }

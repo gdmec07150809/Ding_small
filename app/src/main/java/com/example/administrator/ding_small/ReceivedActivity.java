@@ -355,6 +355,8 @@ public class ReceivedActivity extends FragmentActivity implements View.OnClickLi
             case R.id.back:
                 finish();
                 break;
+            default:
+                break;
         }
     }
     /**

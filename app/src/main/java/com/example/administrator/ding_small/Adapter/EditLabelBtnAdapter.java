@@ -76,6 +76,10 @@ public class EditLabelBtnAdapter extends BaseAdapter implements OnClickListener{
             holder.up_img.setOnClickListener(this);
             holder.up_img.setTag(i);
 
+            if(i>0){
+                holder.label_img.setChecked(false);
+                holder.label_img.setEnabled(true);
+            }
             holder.label_img.setOnClickListener(this);
             holder.label_img.setTag(i);
 

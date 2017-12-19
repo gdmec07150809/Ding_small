@@ -28,6 +28,7 @@
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/up_img"
             android:button="@drawable/checkbox_style"
+            android:enabled="false"
             />
 
         <ImageView

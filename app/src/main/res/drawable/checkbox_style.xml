@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/title_yes" android:state_checked="true"/>
-
-    <item android:drawable="@drawable/title_c" android:state_checked="false"/>
-    <item android:drawable="@drawable/suo"/>
+    <item android:drawable="@drawable/title_yes" android:state_checked="true" android:state_enabled="true"/>
+    <item android:drawable="@drawable/title_c" android:state_checked="false" android:state_enabled="true"/>
+    <item android:drawable="@drawable/suo" android:state_enabled="false"/>
 </selector>

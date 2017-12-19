@@ -262,6 +262,8 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
                 System.out.println("小图标");
                 Right.performClick();
                 break;
+            default:
+                break;
         }
     }
 
@@ -288,6 +290,8 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
                         TextView tv2=(TextView) view;
                         tv2.setTextSize(14.0f);
                         tv2.setTextColor(Color.parseColor("#FFFFFF"));
+                        break;
+                    default:
                         break;
                 }
             }

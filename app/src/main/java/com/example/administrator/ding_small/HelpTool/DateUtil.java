@@ -32,7 +32,7 @@ public class DateUtil {
         try {
             days = arr[month - 1];
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         return days;

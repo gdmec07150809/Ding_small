@@ -81,7 +81,7 @@ import static com.example.administrator.ding_small.R.id.money;
  */
 
 public class RemarksActivity extends Activity implements View.OnClickListener{
-    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text,at_action;
+    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text,at_action,date_text;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
     private InputMethodManager inputMethodManager;
@@ -124,6 +124,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.remarks_loan).setOnClickListener(this);
         findViewById(R.id.infinite).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
+
 
         contacts_text= findViewById(R.id.contacts_text);
         label_text=findViewById(R.id.label_text);
@@ -399,6 +400,8 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 final LinearLayout month= findViewById(R.id.month);
                 final LinearLayout week= findViewById(R.id.week_layout);
                 final LinearLayout day= findViewById(R.id.day);
+                date_text=findViewById(R.id.date_text);
+                date_text.setOnClickListener(this);
 
                 infinite.setOnClickListener(new OnClickListener() {
                     @Override
@@ -716,7 +719,19 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
                 timeSelector.show();
                 break;
+            case R.id.date_text:
+                TimeSelector timeSelector1 = new TimeSelector(RemarksActivity.this, new TimeSelector.ResultHandler() {
+                    @Override
+                    public void handle(String time) {
+                        atTime=time;
+                        date_text.setText(time);
+                    }
 
+                }, atTime, "2500-12-31 23:59:59");
+                timeSelector1.setIsLoop(false);//设置不循环,true循环
+                timeSelector1.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
+                timeSelector1.show();
+                break;
             case R.id.btn_open_camera:
                      intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, 11);
@@ -754,6 +769,8 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.back:
                 finish();
+                break;
+            default:
                 break;
         }
     }
@@ -849,33 +866,8 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 //        editText.requestFocus();
 //        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 //    }
-    //日期选择器监听
-    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
 
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, monthOfYear);
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateDate();
-        }
-    };
 
-//弹出日期选择器
-    public void show(View v){
-        new DatePickerDialog(RemarksActivity.this,listener,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
-        ).show();
-    }
-
-    //更新日期
-    private void updateDate(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        TextView date=findViewById(R.id.date_text);
-        date.setText(simpleDateFormat.format(cal.getTime()));
-    }
 
 
     /**

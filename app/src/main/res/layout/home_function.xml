@@ -76,6 +76,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
         <RelativeLayout
+            android:id="@+id/repair_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -89,7 +90,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/home_repair_img"/>
+                    android:src="@drawable/home_repair_green_img"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"

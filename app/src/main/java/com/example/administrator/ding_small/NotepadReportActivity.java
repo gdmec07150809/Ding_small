@@ -18,16 +18,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by Administrator on 2017/11/22.
  */
 
 public class NotepadReportActivity extends Activity implements View.OnClickListener{
     private ArrayList<String> OutTimeLists;
+
     private ArrayList<String> lists;
+
     private ArrayList<String> yearLists;
+
     public JSONArray jsonArray;
+
     private ListView listView;
+
     private TextView title_text,label_text,finished_text,outtime_text;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,13 +79,13 @@ public class NotepadReportActivity extends Activity implements View.OnClickListe
         try {
             for (int i=0;i<lists.size();i++){
                 JSONObject jsonObject;
-                jsonObject=new JSONObject();
+                jsonObject = new JSONObject();
                 jsonObject.put("OnTime",lists.get(i));
                 jsonObject.put("OutTime",OutTimeLists.get(i));
                 jsonObject.put("year",yearLists.get(i));
                 jsonArray.put(jsonObject);
-            }
-        } catch (JSONException e) {
+                 }
+            } catch (JSONException e) {
             e.printStackTrace();
         }
         listView.setAdapter(new NotepadReportAdapter(NotepadReportActivity.this,jsonArray));
@@ -111,6 +117,8 @@ public class NotepadReportActivity extends Activity implements View.OnClickListe
                 intent=new Intent(NotepadReportActivity.this,NotepadOutTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            default:
                 break;
         }
     }

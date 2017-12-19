@@ -165,6 +165,8 @@ public class AccountOutTimeActivity extends Activity implements View.OnClickList
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            default:
+                break;
         }
     }
 }
