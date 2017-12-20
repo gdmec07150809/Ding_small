@@ -1,22 +1,13 @@
 package com.example.administrator.ding_small;
 
-/**
- * Created by Administrator on 2017/10/20.
- */
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,22 +15,15 @@ import android.support.v4.view.ViewPager;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.MFragmentPagerAdapter;
 import com.example.administrator.ding_small.Fragment.Fragment1;
 import com.example.administrator.ding_small.Fragment.Fragment2;
-import com.example.administrator.ding_small.Title.TitleActivity;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 
@@ -48,12 +32,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.R.attr.fragment;
-import static com.example.administrator.ding_small.R.id.number;
-import static com.example.administrator.ding_small.R.layout.fragment1;
+/**
+ * Created by Administrator on 2017/12/20.
+ */
 
-
-public class NotepadActivity  extends FragmentActivity implements View.OnClickListener{
+public class CreatRepairActivity extends FragmentActivity implements View.OnClickListener{
     LinearLayout ll,two;
     Intent intent;
     RelativeLayout action;
@@ -64,14 +47,12 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
     private SimpleAdapter adapter;
     //图标
     int icno[] = { R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg, R.drawable.c5_bg, R.drawable.c6_bg,
-            R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg ,
-            R.drawable.c13_bg,R.drawable.c14_bg, R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg,
-            R.drawable.c5_bg, R.drawable.c6_bg,R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.edit_add};
+                    R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg ,
+                    R.drawable.edit_add};
     //图标下的文字
     String name[]={"待办事项","常用数据","一般数据","生日","身份证","银行资料",
             "待办事项", "常用数据","一般数据","生日","身份证","银行资料",
-            "待办事项", "常用数据","一般数据","生日","身份证","杂项",
-            "待办事项", "常用数据","一般数据","生日","身份证","编辑"};
+            "编辑"};
 
     //实现Tab滑动效果
     private ViewPager mViewPager;
@@ -86,20 +67,10 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
     private FragmentManager fragmentManager;
 
     public Context context;
-
-    public static final String TAG = "NotepadActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.notepad);
-        ll=findViewById(R.id.main_ll);
-        two = this.findViewById(R.id.two);
-        findViewById(R.id.received).setOnClickListener(this);//已收
-        findViewById(R.id.payable).setOnClickListener(this);//待付
-        findViewById(R.id.payed).setOnClickListener(this);//已付
-        findViewById(R.id.remarks).setOnClickListener(this);//备注
-        findViewById(R.id.receivables).setOnClickListener(this);//待收
-        findViewById(R.id.back).setOnClickListener(this);//返回
+        setContentView(R.layout.creat_repair);
         InitFragment();
         InitViewPager();
         initPoints();
@@ -107,6 +78,8 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
         day.setOnClickListener(this);
         action_text=findViewById(R.id.action_text);
         action=findViewById(R.id.action);
+        findViewById(R.id.comfir_btn).setOnClickListener(this);
+        findViewById(R.id.remarks_layout).setOnClickListener(this);
         //获取当前年月日时分
         Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
         t.setToNow(); // 取得系统时间。
@@ -118,57 +91,20 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
         //给时分赋值
         if(minute<10){
             String minute_text="0"+minute;
-            atTime=year+"-"+(month+1)+"-"+date+"  "+hour+":"+minute_text;
+            atTime=year+"-"+(month+1)+"-"+(date+5)+"  "+hour+":"+minute_text;
             day.setText(atTime);
         }else{
-            atTime=year+"-"+(month+1)+"-"+date+"  "+hour+":"+minute;
+            atTime=year+"-"+(month+1)+"-"+(date+5)+"  "+hour+":"+minute;
             day.setText(atTime);
         }
     }
+
     @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.received:
-                System.out.println("已收");
-                intent=new Intent(NotepadActivity.this,ReceivedActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.payable:
-                System.out.println("待付");
-                intent=new Intent(NotepadActivity.this,PayableActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.receivables:
-                System.out.println("待收");
-                intent=new Intent(NotepadActivity.this,ReceivablesActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.payed:
-                System.out.println("已付");
-                intent=new Intent(NotepadActivity.this,PayActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.remarks:
-                intent=new Intent(NotepadActivity.this,RemarksActivity.class);
-                at_action=action_text.getText().toString();//获取标题
-                //获取标题背景颜色
-                Drawable background = action.getBackground();
-                ColorDrawable colorDrawable = (ColorDrawable) background;
-                int color = colorDrawable.getColor();
-                System.out.println(color);
-                intent.putExtra("title","记事");
-                intent.putExtra("atTime",atTime);
-                intent.putExtra("at_action",at_action);
-                intent.putExtra("drawable", color);
-                startActivity(intent);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()){
             case R.id.day:
-                TimeSelector timeSelector = new TimeSelector(NotepadActivity.this, new TimeSelector.ResultHandler() {
+                TimeSelector timeSelector = new TimeSelector(CreatRepairActivity.this, new TimeSelector.ResultHandler() {
                     @Override
                     public void handle(String time) {
                         atTime=time;
@@ -180,6 +116,27 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
                 timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
                 timeSelector.show();
                 break;
+            case R.id.comfir_btn:
+                    intent=new Intent(CreatRepairActivity.this,DeviceListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                break;
+            case R.id.remarks_layout:
+                String date_str=day.getText().toString();
+                intent=new Intent(CreatRepairActivity.this,CreatRepairRemarksActivity.class);
+                at_action=action_text.getText().toString();//获取标题
+                //获取标题背景颜色
+                Drawable background = action.getBackground();
+                ColorDrawable colorDrawable = (ColorDrawable) background;
+                int color = colorDrawable.getColor();
+                Bundle bundle=new Bundle();
+                bundle.putString("at_action",at_action);
+                bundle.putString("date",date_str);
+                bundle.putInt("drawable", color);
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
             case R.id.back:
                 finish();
                 break;
@@ -187,7 +144,6 @@ public class NotepadActivity  extends FragmentActivity implements View.OnClickLi
                 break;
         }
     }
-
     /**
      * 实现小圆点的添加，
      * 找到线性布局动态的向线性布局内添加小圆，并添加drawable选择的效果

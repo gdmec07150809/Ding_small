@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            style="@style/repair_remarks_LStyle"
+            android:text="公司"/>
+
+
+        <TextView
+            style="@style/device_detail_RStyle"
+            android:text="重庆分公司"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/hui"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/repair_remarks_LStyle"
+            android:text="部门"
+            android:textSize="6pt"/>
+
+        <TextView
+            style="@style/device_detail_RStyle"
+            android:text="市场部"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/hui"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/repair_remarks_LStyle"
+            android:text="联系人"
+            android:textSize="6pt"/>
+
+        <TextView
+            style="@style/device_detail_RStyle"
+            android:text="王小姐"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/hui"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/repair_remarks_LStyle"
+            android:text="电话"
+            android:textSize="6pt"/>
+
+        <TextView
+            style="@style/device_detail_RStyle"
+            android:text="13715454821"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/hui"/>
+    </RelativeLayout>
+</LinearLayout>

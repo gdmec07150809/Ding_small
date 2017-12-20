@@ -9,19 +9,18 @@
         android:layout_height="25dp"
         android:layout_weight="1">
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="启用日期"
             android:textColor="@color/orange"
             android:textSize="6pt"/>
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="18dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/time"
+            android:layout_toRightOf="@+id/date"
             android:orientation="vertical">
 
             <ImageView
@@ -37,7 +36,7 @@
                 android:src="@drawable/butoom_jiantou"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="3dp"
+            android:layout_width="2dp"
             android:layout_height="25dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -77,7 +76,7 @@
                 android:src="@drawable/butoom_jiantou"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="3dp"
+            android:layout_width="2dp"
             android:layout_height="25dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -117,7 +116,7 @@
                 android:src="@drawable/butoom_jiantou"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="3dp"
+            android:layout_width="2dp"
             android:layout_height="25dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"

@@ -33,6 +33,9 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,6 +79,10 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         findViewById(R.id.account_calendar).setOnClickListener(this);
         findViewById(R.id.login_layout).setOnClickListener(this);
         findViewById(R.id.repair_layout).setOnClickListener(this);
+        findViewById(R.id.search_layout).setOnClickListener(this);
+        findViewById(R.id.more_layout).setOnClickListener(this);
+
+        findViewById(R.id.scan_layout).setOnClickListener(this);
         name_text=findViewById(R.id.name_text);
         ViewUtils.inject(this);
     }
@@ -201,10 +208,25 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.repair_layout:
+            case R.id.repair_layout://报修
                 intent=new Intent(MainLayoutActivity.this,SelectDeviceActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.search_layout://搜索
+                intent=new Intent(MainLayoutActivity.this,DeviceSearchActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.more_layout://新建保修功能
+                break;
+            case R.id.scan_layout://扫码功能
+                    IntentIntegrator integrator=new IntentIntegrator(MainLayoutActivity.this);
+                    integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                    integrator.setPrompt("扫描二维码/条形码");
+                    integrator.setCameraId(0);
+                    integrator.setBeepEnabled(true);
+                    integrator.initiateScan();
                 break;
             default:
                 break;
@@ -292,7 +314,6 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             System.exit(0);
         }
     }
-
     //判断是上午还是下午
     private void ifApm(){
         Time localTime = new Time("Asia/Hong_Kong");
@@ -300,13 +321,26 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         int time= Integer.parseInt(localTime.format("%H"));
         System.out.println(localTime.format("%H"));
         if(time>0&&time<=6){
-            name_text.setText("张先生,凌晨好");
+            name_text.setText("凌晨好");
         }else if(time>6&&time<=12){
-            name_text.setText("张先生,上午好");
+            name_text.setText("上午好");
         }else if(time>12&&time<=18){
-            name_text.setText("张先生,下午好");
+            name_text.setText("下午好");
         }else {
-            name_text.setText("张先生,晚上好");
+            name_text.setText("晚上好");
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result=IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if (result.getContents()==null){
+            Toast.makeText(this,"扫描失败",Toast.LENGTH_SHORT).show();
+        }else{
+            System.out.println("扫描结果："+result.getContents());
+           // Intent intent=new Intent(MainLayoutActivity.this,CreatRepairActivity.class);
+            //startActivity(intent);
+            //resultNew.setText("扫描结果："+result.getContents());
         }
     }
 }

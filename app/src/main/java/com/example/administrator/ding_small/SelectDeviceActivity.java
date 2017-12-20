@@ -1,9 +1,15 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 
@@ -19,7 +25,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/12/19.
  */
 
-public class SelectDeviceActivity extends Activity {
+public class SelectDeviceActivity extends Activity implements View.OnClickListener{
     private JSONArray jsonArray;
     private ArrayList<String> device_names;
     private ArrayList<String> device_locations;
@@ -27,6 +33,7 @@ public class SelectDeviceActivity extends Activity {
     private ArrayList<String> device_staus;
     private ArrayList<String> device_type;
     private ListView device_listview;
+    private TextView date_text,selling_text,device_text,ssid_text;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +41,26 @@ public class SelectDeviceActivity extends Activity {
         init();//初始化控件
         CreatJson();//构造jsonArray备用
         device_listview.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this,jsonArray));//设置适配器
+        device_listview.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(SelectDeviceActivity.this,CreatRepairActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     private void init(){
         device_listview=findViewById(R.id.select_device_list);
+        findViewById(R.id.start_layout).setOnClickListener(this);
+        findViewById(R.id.selling_layout).setOnClickListener(this);
+        findViewById(R.id.device_layout).setOnClickListener(this);
+        findViewById(R.id.ssid_layout).setOnClickListener(this);
+        findViewById(R.id.add_device).setOnClickListener(this);
+
+        date_text=findViewById(R.id.date);
+        selling_text=findViewById(R.id.selling);
+        device_text=findViewById(R.id.device);
+        ssid_text=findViewById(R.id.ssid);
     }
     private void CreatJson(){
         jsonArray=new JSONArray();
@@ -99,6 +123,44 @@ public class SelectDeviceActivity extends Activity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+    /*date_text,selling_text,device_text,ssid_text*/
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()){
+            case R.id.start_layout:
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                break;
+            case R.id.selling_layout:
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                break;
+            case R.id.device_layout:
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                break;
+            case R.id.ssid_layout:
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+                break;
+            case R.id.add_device:
+                intent=new Intent(SelectDeviceActivity.this,MainLayoutActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            default:
+                break;
         }
     }
 }

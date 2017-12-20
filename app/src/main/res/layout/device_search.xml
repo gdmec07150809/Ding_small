@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical" android:layout_width="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
                 android:background="@color/white"
                 android:layout_height="match_parent">
 
@@ -19,7 +21,7 @@
             android:layout_centerInParent="true"
             android:textSize="8pt"
             android:textColor="@color/blank"
-            android:text="选择设备"/>
+            android:text="搜索"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/ge"
@@ -30,13 +32,13 @@
         android:layout_alignParentStart="true">
         <LinearLayout
             android:id="@+id/middle"
-            android:layout_width="105dp"
+            android:layout_width="130dp"
             android:layout_height="25dp"
             android:background="@drawable/bg_green"
             android:layout_centerInParent="true"
             android:orientation="horizontal">
             <Button
-                android:layout_width="50dp"
+                android:layout_width="64dp"
                 android:layout_height="23dp"
                 android:background="@color/green"
                 android:textColor="@color/white"
@@ -44,7 +46,7 @@
                 android:textSize="6pt"
                 android:text="个人"></Button>
             <Button
-                android:layout_width="50dp"
+                android:layout_width="64dp"
                 android:layout_height="23dp"
                 android:background="@color/white"
                 android:textColor="@color/green"
@@ -67,14 +69,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/right"
             />
-        <ImageView
-            android:id="@+id/add_device"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/add_device_img"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"/>
+
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,69 +81,44 @@
         android:orientation="horizontal"></LinearLayout>
 
     <LinearLayout
-        android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/hui"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@drawable/bg">
-
-            <EditText
-                android:id="@+id/search_edittext"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="关键字"
-                android:paddingLeft="5dp"
-                android:textColorHint="@color/hui"
-                android:textSize="5pt" />
-
-            <ImageView
-                android:id="@+id/clean_text"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.1"
-                android:src="@drawable/clean" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/search_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:layout_weight="0.2"
-            android:background="@drawable/btn_green"
-            android:text="查询"
-            android:textSize="6pt"
-            android:textColor="@color/white"></Button>
-    </LinearLayout>
-    <LinearLayout
         android:id="@+id/search_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/search"
+        android:layout_below="@+id/ge"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
-        <include layout="@layout/select_device_function"/>
+        <include layout="@layout/search_device"/>
     </LinearLayout>
-    <ListView
-        android:id="@+id/select_device_list"
+    <com.weavey.loading.lib.LoadingLayout
+        android:id="@+id/loading_layout"
         android:layout_width="match_parent"
+        android:layout_above="@id/footer"
         android:layout_below="@+id/search_bottom"
-        android:divider="@null"
-        android:layout_height="match_parent"/>
+        app:isFirstVisible="true"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ListView
+                android:id="@+id/search_device_list"
+                android:layout_width="match_parent"
+                android:divider="@null"
+                android:layout_height="match_parent"
+                android:visibility="visible"/>
+            <ListView
+                android:id="@+id/search_bluetooth_device_list"
+                android:layout_width="match_parent"
+                android:divider="@null"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </com.weavey.loading.lib.LoadingLayout>
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+        <include layout="@layout/search_footer"/>
+    </LinearLayout>
 </RelativeLayout>

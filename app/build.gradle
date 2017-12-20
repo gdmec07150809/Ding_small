@@ -43,4 +43,8 @@ dependencies {
     compile files('libs/classes.jar')
     compile files('libs/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar')
     compile files('libs/nineoldandroids-2.4.0.jar')
+    compile 'com.lai.weavey:loadinglayout:1.2'
+    compile 'com.google.zxing:zxing-parent:3.3.0'
+    compile 'com.google.zxing:core:3.2.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
 }

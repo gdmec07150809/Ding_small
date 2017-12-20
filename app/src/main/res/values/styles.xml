@@ -57,7 +57,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="10dp"
                                 android:textSize="6pt"-->
-    <style name="device_detail_RStyle">   <!-- 设备详情右边字体样式 -->
+    <style name="device_detail_RStyle">   <!-- 设备详情右边字体样式,报修备注右边字体样式 -->
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentRight">true</item>
@@ -65,7 +65,20 @@
         <item name="android:textSize">6pt</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
-
+    <!-- android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="6pt"
+            android:textColor="@color/blank"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"-->
+    <style name="repair_remarks_LStyle">   <!-- 报修备注左边字体样式 -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">6pt</item>
+        <item name="android:textColor">@color/blank</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
     <style name="BottomDialog" parent="@android:style/Theme.Dialog">
 
         <!-- 背景透明 -->

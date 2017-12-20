@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            style="@style/repair_remarks_LStyle"
+            android:text="制造商"/>
+        <RelativeLayout
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_toLeftOf="@+id/phone1"
+                android:layout_marginRight="5dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/phone"/>
+            <TextView
+                android:id="@+id/phone1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="13567898768"
+                android:textSize="6.5pt"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"/>
+        </RelativeLayout>
+        <TextView
+            style="@style/device_detail_RStyle"
+            android:text="广州优游文化"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/hui"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/repair_remarks_LStyle"
+            android:text="保修期"
+            android:textSize="6pt"/>
+
+        <TextView
+            style="@style/device_detail_RStyle"
+            android:text="12个月"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/hui"/>
+    </RelativeLayout>
+</LinearLayout>
