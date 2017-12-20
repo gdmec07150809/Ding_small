@@ -4,9 +4,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,6 +85,14 @@
                         android:src="@drawable/detele_img"/>
                 </RelativeLayout>
             </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -452,14 +457,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:background="@color/hui2"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <include layout="@layout/device_detail_call_record"/>
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <include layout="@layout/device_detail_call_record"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>

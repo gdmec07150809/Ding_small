@@ -218,7 +218,8 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.more_layout://新建保修功能
+            case R.id.more_layout://更多功能暂不开发
+                Toast.makeText(this,"该功能暂不开发",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.scan_layout://扫码功能
                     IntentIntegrator integrator=new IntentIntegrator(MainLayoutActivity.this);
@@ -330,6 +331,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             name_text.setText("晚上好");
         }
     }
+    //接受扫描结果
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -1,6 +1,7 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -22,7 +23,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     private boolean isSellingPoint=true;
     private boolean isRecord=true;
     private LinearLayout call_record_layout,management_layout,manufacturer_layout,parameter_layout,selling_point_layout,record_layout;
-    private ImageView management_img,selling_point_img,parameter_img,manufacturer_img,record_img,call_record_img;
+    private ImageView management_img,selling_point_img,parameter_img,manufacturer_img,record_img,call_record_img,repair_img;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +59,12 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         manufacturer_img=findViewById(R.id.manufacturer_img);
         record_img=findViewById(R.id.record_img);
         call_record_img=findViewById(R.id.call_record_img);
+        findViewById(R.id.repair_img).setOnClickListener(this);
     }
     //按钮点击事件
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()){
             case R.id.call_record_up:
                 if(isCallRecord){
@@ -128,6 +131,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     isRecord=!isRecord;
                     record_img.setImageResource(R.drawable.butoom_jiantou);
                 }
+                break;
+            case R.id.repair_img:
+                intent=new Intent(DeviceDetailActivity.this,CreatRepairActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             default:
                 break;
