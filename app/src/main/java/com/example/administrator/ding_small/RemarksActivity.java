@@ -943,7 +943,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
                     String fileName = "/sdcard/Image/"+name;
-
                     try {
                         b = new FileOutputStream(fileName);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
@@ -966,7 +965,6 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     {
                         Log.e("error", e.getMessage());
                     }
-
                 }
                 break;
             case 12:

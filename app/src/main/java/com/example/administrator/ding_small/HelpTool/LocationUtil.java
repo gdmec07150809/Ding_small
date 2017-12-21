@@ -40,6 +40,7 @@ public class LocationUtil {
     public static Location location;
     private static String provider;
     public static String locationStr=null;
+    public static  String province;
     /**
      * 初始化位置信息
      *
@@ -175,6 +176,7 @@ public class LocationUtil {
                 locationStr=address.getAddressLine(0);
                 //locationStr=stringBuilder.toString();
                 System.out.println("详细位置："+locationStr);
+                province=address.getLocality();
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block

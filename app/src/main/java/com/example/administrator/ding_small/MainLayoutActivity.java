@@ -68,7 +68,19 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         init();//初始化控件
         ifApm();//判断上下午
         initPager();//轮播图
+        Handler handler=new Handler();
+        handler.postDelayed(runnable, 100);
     }
+
+    Runnable runnable=new Runnable(){
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            ifApm();//判断上下午
+            System.out.println("判断上下午");
+            handler.postDelayed(this, 1000*60*30);
+        }
+    };
     private void init(){
         mPager=findViewById(R.id.home_activity_pager);
         findViewById(R.id.notepad_layout).setOnClickListener(this);
@@ -228,6 +240,8 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     integrator.setCameraId(0);
                     integrator.setBeepEnabled(true);
                     integrator.initiateScan();
+//                 intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
+//                startActivity(intent);
                 break;
             default:
                 break;
@@ -325,13 +339,13 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             name_text.setText("凌晨好");
         }else if(time>6&&time<=12){
             name_text.setText("上午好");
-        }else if(time>12&&time<=18){
+        }else if(time>12&&time<18){
             name_text.setText("下午好");
         }else {
             name_text.setText("晚上好");
         }
     }
-    //接受扫描结果
+    //接收扫描结果
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -340,8 +354,8 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             Toast.makeText(this,"扫描失败",Toast.LENGTH_SHORT).show();
         }else{
             System.out.println("扫描结果："+result.getContents());
-           // Intent intent=new Intent(MainLayoutActivity.this,CreatRepairActivity.class);
-            //startActivity(intent);
+            Intent intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
+            startActivity(intent);
             //resultNew.setText("扫描结果："+result.getContents());
         }
     }

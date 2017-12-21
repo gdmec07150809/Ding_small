@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/up"
@@ -12,15 +12,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_weight="1"
+        android:layout_weight="1.2"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/action"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:background="@color/fen"
-            android:orientation="vertical">
+            android:layout_height="75dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -38,124 +36,293 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/back"
-                    android:text="新建报修"
-                    android:textColor="@color/white"
+                    android:text="完善设备信息"
+                    android:textColor="@color/blank"
                     android:textSize="8pt"/>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/ge"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_alignParentBottom="true">
 
-                <TextView
-                    android:id="@+id/at_action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="不通电"
-                    android:textColor="@color/white"
-                    android:textSize="10pt"/>
-
                 <ImageView
+                    android:id="@+id/cancel"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/cancel"/>
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/cancel_blank"/>
+
+                <LinearLayout
+                    android:id="@+id/middle"
+                    android:layout_width="105dp"
+                    android:layout_height="25dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_green"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:background="@color/green"
+                        android:text="个人"
+                        android:textColor="@color/white"
+                        android:textSize="6pt"></Button>
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:text="公司"
+                        android:textColor="@color/green"
+                        android:textSize="6pt"></Button>
+                </LinearLayout>
 
                 <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/middle"
+                    android:src="@drawable/left"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/middle"
+                    android:src="@drawable/right"
+                    />
+
+                <ImageView
+                    android:id="@+id/add_contacts"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/yes"
-                    />
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/yes_blank"/>
             </RelativeLayout>
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="2dp"
+            android:background="@color/green"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="要求完工日期"
-                android:textColor="@color/blank"
-                android:textSize="6pt"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true">
-
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="2017-02-09 12:30"
-                    android:textColor="@color/blank"
-                    android:textSize="6pt"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp">
+                android:layout_weight="0.27">
 
                 <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/hui"></LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/say"/>
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/head_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/head_photo"/>
+                </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp">
-
-            <EditText
-                android:id="@+id/remarks_text"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="写备注...   这个客户是一个大公司来的，应该会有很多的合作机会，所以必须要有足够的重视程度，否则就会耽误时机，同时注意保持日常联系,这个客户是一个大公司来的，应该会有很多的合作"
-                android:textColorHint="@color/hui"
-                android:textSize="5pt"/>
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/hui"/>
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/device_detail_LStyle"
+                        android:text="设备名称"
+                        />
+
+                  <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+
+                        <TextView
+                            style="@style/device_detail_RStyle"
+                            android:text="桌台灯-1664"/>
+
+                    </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/more_device_name"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.2"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/butoom_jiantou"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/hui"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        style="@style/device_detail_LStyle"
+                        android:text="资产编码"
+                        />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.7">
+
+                        <TextView
+                            style="@style/device_detail_RStyle"
+                            android:text="20154546784684848848"/>
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/more_mac"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.2"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/butoom_jiantou"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/hui"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        style="@style/device_detail_LStyle"
+                        android:text="区域"/>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.7">
+
+                        <TextView
+                            style="@style/device_detail_RStyle"
+                            android:text="321444"/>
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/more_poc"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.2"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/butoom_jiantou"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/hui"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="3dp"
+                        android:src="@drawable/xing"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.7"
+                        android:text="启用日期"
+                        android:textSize="7pt"
+                        android:textStyle="bold"
+                        />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.7">
+
+                        <TextView
+                            android:id="@+id/date"
+                            style="@style/device_detail_RStyle"
+                            android:text="2017-12-11"
+                            android:textColor="@color/orange"
+                            />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/hui"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        style="@style/device_detail_LStyle"
+                        android:text="保修期"/>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.7">
+
+                        <TextView
+                            style="@style/device_detail_RStyle"
+                            android:text="12个月"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui2"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -273,7 +440,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/management_layout"
+                    android:id="@id/management_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

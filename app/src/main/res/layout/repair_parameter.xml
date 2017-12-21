@@ -3,32 +3,37 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp">
+
         <TextView
             style="@style/repair_remarks_LStyle"
             android:text="经纬度"/>
 
 
-            <TextView
-                android:id="@+id/phone1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1123.15154545"
-                android:textSize="6.5pt"
-                android:layout_centerVertical="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="5dp"/>
         <TextView
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/latitude"
+            android:layout_centerVertical="true"
+            android:text="1123.15154545"
+            android:layout_marginRight="20dp"
+            android:textSize="6.5pt"/>
+
+        <TextView
+            android:id="@+id/latitude"
             style="@style/device_detail_RStyle"
             android:text="12.415454524"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_alignParentBottom="true"
             android:background="@color/hui"/>
     </RelativeLayout>
 
@@ -42,6 +47,7 @@
             android:textSize="6pt"/>
 
         <TextView
+            android:id="@+id/location"
             style="@style/device_detail_RStyle"
             android:text="大山百乐门酒店"/>
         <LinearLayout
@@ -62,6 +68,7 @@
             android:textSize="6pt"/>
 
         <TextView
+            android:id="@+id/temperature"
             style="@style/device_detail_RStyle"
             android:text="-4℃"/>
         <LinearLayout

@@ -104,6 +104,7 @@
         <activity android:name=".DeviceSearchActivity"/>
         <activity android:name=".CreatRepairActivity"/>
         <activity android:name=".CreatRepairRemarksActivity" android:windowSoftInputMode="adjustPan|stateVisible"/>
+        <activity android:name=".PerfectDeviceActivity" android:windowSoftInputMode="adjustPan|stateAlwaysVisible"/>
     </application>
 
 </manifest>

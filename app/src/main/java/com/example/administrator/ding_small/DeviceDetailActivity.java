@@ -46,6 +46,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         findViewById(R.id.parameter_up).setOnClickListener(this);//设备参数
         findViewById(R.id.selling_point_up).setOnClickListener(this);//售点信息
         findViewById(R.id.record_up).setOnClickListener(this);//维修记录
+        findViewById(R.id.back).setOnClickListener(this);//返回;
         call_record_layout=findViewById(R.id.call_record_layout);
         management_layout=findViewById(R.id.management_layout);
         manufacturer_layout=findViewById(R.id.manufacturer_layout);
@@ -66,7 +67,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()){
-            case R.id.call_record_up:
+            case R.id.call_record_up://调拨记录
                 if(isCallRecord){
                     call_record_layout.setVisibility(View.VISIBLE);
                     isCallRecord=!isCallRecord;
@@ -77,7 +78,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     call_record_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.management_up:
+            case R.id.management_up://管理信息
                 if(isManagement){
                     management_layout.setVisibility(View.VISIBLE);
                     isManagement=!isManagement;
@@ -88,7 +89,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     management_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.manufacturer_up:
+            case R.id.manufacturer_up://制造商
                 if(isManufacturer){
                     manufacturer_layout.setVisibility(View.VISIBLE);
                     isManufacturer=!isManufacturer;
@@ -99,7 +100,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     manufacturer_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.parameter_up:
+            case R.id.parameter_up://参数信息
                 if(isParameter){
                     parameter_layout.setVisibility(View.VISIBLE);
                     isParameter=!isParameter;
@@ -110,7 +111,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     parameter_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.selling_point_up:
+            case R.id.selling_point_up://售点信息
                 if(isSellingPoint){
                     selling_point_layout.setVisibility(View.VISIBLE);
                     isSellingPoint=!isSellingPoint;
@@ -121,7 +122,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     selling_point_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.record_up:
+            case R.id.record_up://维修记录
                 if(isRecord){
                     record_layout.setVisibility(View.VISIBLE);
                     isRecord=!isRecord;
@@ -132,10 +133,13 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     record_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.repair_img:
+            case R.id.repair_img://报修按钮
                 intent=new Intent(DeviceDetailActivity.this,CreatRepairActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.back://返回
+                finish();
                 break;
             default:
                 break;

@@ -45,10 +45,11 @@
     <style name="device_detail_LStyle">   <!-- 设备详情左边字体样式 -->
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.7</item>
+        <item name="android:layout_weight">0.8</item>
         <item name="android:textSize">7pt</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">10dp</item>
     </style>
 
     <!-- android:layout_width="wrap_content"
@@ -63,7 +64,7 @@
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textSize">6pt</item>
-        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginRight">20dp</item>
     </style>
     <!-- android:layout_width="wrap_content"
             android:layout_height="wrap_content"

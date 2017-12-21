@@ -3,6 +3,7 @@ package com.example.administrator.ding_small;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,11 +32,10 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.feezu.liuli.timeselector.TimeSelector;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,31 +61,18 @@ import java.util.Locale;
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
 import static com.example.administrator.ding_small.HelpTool.SendUrlUtils.result;
 import static com.example.administrator.ding_small.MainActivity.SHOW_RESPONSE;
-import static com.example.administrator.ding_small.R.id.contacts_text;
-import static com.example.administrator.ding_small.R.id.label_text;
-import static com.example.administrator.ding_small.R.id.loan_text;
-import static com.example.administrator.ding_small.R.id.location_text;
-import static com.example.administrator.ding_small.R.id.photo1;
-import static com.example.administrator.ding_small.R.id.photo2;
-import static com.example.administrator.ding_small.R.id.photo3;
-import static com.example.administrator.ding_small.R.id.photo4;
-import static com.example.administrator.ding_small.R.id.photo_text;
-import static com.example.administrator.ding_small.R.id.privacy_text;
-import static com.example.administrator.ding_small.R.id.reimbursement_text;
-import static com.example.administrator.ding_small.R.id.repeat_text;
+import static com.example.administrator.ding_small.R.id.date;
 
 /**
- * Created by Administrator on 2017/12/20.
+ * Created by Administrator on 2017/12/21.
  */
 
-public class CreatRepairRemarksActivity extends Activity implements View.OnClickListener{
-    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature;
-    private ImageView photo1,photo2,photo3,photo4;
-    private String atTime,title;
+public class PerfectDeviceActivity extends Activity implements View.OnClickListener{
+    private TextView location_text,photo_text,reimbursement_text,parameter_text,management_text,date_text,latitude,longitude,location,temperature;
     InputMethodManager imm;
     private Dialog mCameraDialog;
-    private int color;
-    private RelativeLayout title_layout;
+    private ImageView photo1,photo2,photo3,photo4;
+    int nowYear,nowMonth,nowDay;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
     private  String latitude_str,longitude_str,province_str,temperature_str;
@@ -93,16 +80,15 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.repair_remarks);
+        setContentView(R.layout.perfect_device);
         init();//初始化控件
-        getStringValue();//获取前页传来的数据
+        getTimeNow();//获取当前时间
         getLocation();//获取当前经纬度
         getTemperature();//获取当前温度
-
     }
     private void getTemperature(){
         try {
-            String str= getAddress(LocationUtil.location,getApplicationContext());
+            String str=LocationUtil.getAddress(LocationUtil.location,getApplicationContext());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,13 +99,22 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         sendRequestWithHttpClient(this,url);//获取温度的方法
 
     }
+    private void getTimeNow(){
+        //获取当前年月日时分
+        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+        t.setToNow(); // 取得系统时间。
+        nowYear = t.year;
+        nowMonth= t.month;
+        nowDay= t.monthDay;
+        System.out.println("日期："+nowYear+"-"+nowMonth+"-"+nowDay);
+    }
     @RequiresApi(api = VERSION_CODES.M)
     private void getLocation(){
         //获取地址
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
         } else {
-            LocationUtil.initLocation(CreatRepairRemarksActivity.this);
+            LocationUtil.initLocation(PerfectDeviceActivity.this);
             System.out.println("主经度:"+Double.toString(LocationUtil.longitude)+"主纬度："+Double.toString(LocationUtil.latitude));
             longitude_str=Double.toString(LocationUtil.longitude);
             latitude_str=Double.toString(LocationUtil.latitude);
@@ -136,51 +131,31 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
             }
         }).start();
     }
-    private void getStringValue(){
-        Bundle bundle = this.getIntent().getExtras();
-        atTime=bundle.getString("date");
-        title=bundle.getString("at_action");
-        color=bundle.getInt("drawable");
-        dateT.setText(atTime);
-        title_layout.setBackgroundColor(color);
-        at_action.setText(title);
-    }
     private void init(){
-        dateT=findViewById(R.id.date);
-        dateT.setOnClickListener(this);
         findViewById(R.id.photo_layout).setOnClickListener(this);
         findViewById(R.id.location_layout).setOnClickListener(this);
         findViewById(R.id.reimbursement_layout).setOnClickListener(this);
         findViewById(R.id.parameter_layout).setOnClickListener(this);
         findViewById(R.id.management_layout).setOnClickListener(this);
+        findViewById(R.id.more_device_name).setOnClickListener(this);
+        findViewById(R.id.more_mac).setOnClickListener(this);
+        findViewById(R.id.more_poc).setOnClickListener(this);
         findViewById(R.id.confrim_btn).setOnClickListener(this);
-        findViewById(R.id.back).setOnClickListener(this);
 
+        date_text=findViewById(date);
+        date_text.setOnClickListener(this);
         location_text=findViewById(R.id.location_text);
         photo_text=findViewById(R.id.photo_text);
         reimbursement_text=findViewById(R.id.reimbursement_text);
         parameter_text=findViewById(R.id.parameter_text);
         management_text=findViewById(R.id.management_text);
-        title_layout=findViewById(R.id.action);
-        at_action=findViewById(R.id.at_action);
+
     }
+
     @Override
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()){
-            case R.id.date://选择时间事件
-                TimeSelector timeSelector = new TimeSelector(CreatRepairRemarksActivity.this, new TimeSelector.ResultHandler() {
-                    @Override
-                    public void handle(String time) {
-                        atTime=time;
-                        dateT.setText(time);
-                    }
-
-                }, atTime, "2500-12-31 23:59:59");
-                timeSelector.setIsLoop(false);//设置不循环,true循环
-                timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
-                timeSelector.show();
-                break;
             case R.id.photo_layout://备注图片事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
@@ -372,7 +347,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 parameter_text.setTextColor(ContextCompat.getColor(this,R.color.green));
                 management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-
                 //获取地址
                 if(str_location ==null || str_location.isEmpty()){
                     Toast.makeText(this,"请打开网络,重新进入",Toast.LENGTH_SHORT).show();
@@ -405,20 +379,33 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 management_text.setTextColor(ContextCompat.getColor(this,R.color.green));
                 break;
+            case R.id.more_device_name://设备更多信息
+                showMoreInformation(1);
+                break;
+            case R.id.more_mac:
+                showMoreInformation(2);//mac
+                break;
+            case R.id.more_poc://运营中心列表
+                showMoreInformation(3);
+                break;
             case R.id.confrim_btn:
-                intent=new Intent(CreatRepairRemarksActivity.this,DeviceListActivity.class);
+                intent=new Intent(PerfectDeviceActivity.this,DeviceListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.back:
-                finish();
+            case date:
+                new DatePickerDialog(PerfectDeviceActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        date_text.setText(String.format("%d-%d-%d",year,monthOfYear+1,dayOfMonth));
+                    }
+                },nowYear,nowMonth,nowDay).show();
                 break;
             default:
                 break;
         }
     }
-
-    //删除图片事件 //获取,处理拍照事件
+    //获取,处理拍照事件
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
@@ -433,7 +420,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PerfectDeviceActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
@@ -479,7 +466,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PerfectDeviceActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
@@ -525,7 +512,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PerfectDeviceActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
@@ -571,7 +558,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PerfectDeviceActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
@@ -685,7 +672,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         }
 
     }
-
     private void showDetelePhotoDialog(final int number){
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
@@ -693,7 +679,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
          * setXXX方法返回Dialog对象，因此可以链式设置属性
          */
         final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(CreatRepairRemarksActivity.this);
+                new AlertDialog.Builder(PerfectDeviceActivity.this);
         normalDialog.setTitle("删除");
         normalDialog.setMessage("是否删除该图片？");
         normalDialog.setPositiveButton("确定",
@@ -788,6 +774,42 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         mCameraDialog.show();
     }
 
+    //底部弹出下拉菜单
+    private void showMoreInformation(int number) {
+        LinearLayout root=null;//弹出布局
+        mCameraDialog = new Dialog(this, R.style.BottomDialog);
+        //判断需要哪个弹窗
+        switch (number){
+            case 1:
+                root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.device_name_bottom, null);
+                break;
+            case 2:
+                root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.device_mac, null);
+                break;
+            case 3:
+                root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.device_operation_center, null);
+                break;
+            default:
+                break;
+        }
+
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+    }
     public  void   sendRequestWithHttpClient(final Context context, final String url) {
         new Thread(new Runnable() {
             @Override
