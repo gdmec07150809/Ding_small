@@ -5,8 +5,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -49,6 +51,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private List<ScanResult> scanResults=null;
     private ListView wifiListView,blueListView;
     private WifiAdapter wifiAdapter;
+    private BluetoothAdapter adapter;
 
     //权限检测类
     private PermissionHelper mPermissionHelper;
@@ -66,7 +69,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private BluetoothAdapter mBluetoothAdapter;
     private Handler mHandler;
     private static final int REQUEST_ENABLE_BT = 1;
-    private static final long SCAN_PERIOD = 1000;//10秒扫描完毕
+    private static final long SCAN_PERIOD = 2000;//2秒扫描完毕
     private DeviceListAdapter mDevListAdapter;
     private List<BluetoothDevice> mBleArray;
     private boolean mScanning;
@@ -114,6 +117,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         starTimer.sendEmptyMessageDelayed(0,100);
         mHandler = new Handler();
 
+        //获取iBeacon设备
         // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -136,6 +140,34 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             Intent enableIntent=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent,REQUEST_ENABLE_BT);
         }
+        adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter == null) {
+            // 设备不支持蓝牙
+        }
+
+        /**获取手机蓝牙设备*/
+        // 打开蓝牙
+        if (!adapter.isEnabled()) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            // 设置蓝牙可见性，最多300秒
+            intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(intent);
+        }
+        mDevListAdapter = new DeviceListAdapter();
+        mBleArray = new ArrayList<BluetoothDevice>();
+        sendReceiver();//查找蓝牙
+    }
+    private void sendReceiver(){
+        // 设置广播信息过滤
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
+        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        intentFilter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        // 注册广播接收器，接收并处理搜索结果
+        this.registerReceiver(receiver, intentFilter);
+        // 寻找蓝牙设备，android会将查找到的设备以广播形式发出去
+        adapter.startDiscovery();
     }
     //打开wifi
     private void openWifi() {
@@ -243,7 +275,6 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 public void run() {
                     mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
                     // invalidateOptionsMenu();
                 }
             }, SCAN_PERIOD);
@@ -260,15 +291,14 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private LeScanCallback mLeScanCallback = new LeScanCallback() {
 
         @Override
-        public void onLeScan(final BluetoothDevice device, final int rssi,
-                             byte[] scanRecord) {
+        public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     mDevListAdapter.addDevice(device);
                     blueListView=findViewById(R.id.search_bluetooth_device_list);
                     blueListView.setAdapter(mDevListAdapter);
-
+                    mDevListAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -313,24 +343,43 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         public void handleMessage(android.os.Message msg) {
             if(msg.what==0){
-                    mBleArray = new ArrayList<BluetoothDevice>();
-                    mBleArray.clear();
-                    scanLeDevice(true);//开始扫描
-                    mDevListAdapter = new DeviceListAdapter();
+                   scanLeDevice(true);//开始扫描ibeacon
+                   // mDevListAdapter = new DeviceListAdapter();
+                    sendReceiver();//查找蓝牙
                     if(mDevListAdapter!=null){
                         blueListView=findViewById(R.id.search_bluetooth_device_list);
                         blueListView.setAdapter(mDevListAdapter);
+                        mDevListAdapter.notifyDataSetChanged();
                     }
-                    //mDevListAdapter.notifyDataSetChanged();
-                    starTimer.sendEmptyMessageDelayed(0,10000);
+
+                    starTimer.sendEmptyMessageDelayed(0,30000);
                 }
 
         }
     };
 
-    //适配器
-    class DeviceListAdapter extends BaseAdapter {
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if(device!=null){
+                    mDevListAdapter.addDevice(device);
+                    System.out.println(device.getName()+"-"+device.getAddress());
+                }
+            }
+        }
+    };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+        System.out.println("取消广播");
+    }
+    //蓝牙适配器
+    class DeviceListAdapter extends BaseAdapter {
         private ViewHolder viewHolder;
         private String[]str=null;
         public DeviceListAdapter() {
@@ -343,7 +392,10 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             }
         }
         public void clear(){
-            mBleArray.clear();
+            if(mBleArray!=null){
+                mBleArray.clear();
+            }
+            notifyDataSetChanged();
         }
 
         @Override
@@ -362,37 +414,37 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View view, ViewGroup parent) {
             viewHolder = new ViewHolder();
-            if (convertView == null) {
-                convertView = LayoutInflater.from(DeviceSearchActivity.this).inflate(
+            View contentView = null;
+            if (contentView == null) {
+                contentView = LayoutInflater.from(DeviceSearchActivity.this).inflate(
                         R.layout.wifi_item, null);
 
-                viewHolder.number = (TextView) convertView
+                viewHolder.number = (TextView) contentView
                         .findViewById(R.id.number);
-                viewHolder.mac = (TextView) convertView
+                viewHolder.mac = (TextView) contentView
                         .findViewById(R.id.mac);
-                viewHolder.ssid = (TextView) convertView
+                viewHolder.ssid = (TextView) contentView
                         .findViewById(R.id.ssid);
-                convertView.setTag(viewHolder);
+                contentView.setTag(viewHolder);
             } else {
-                convertView.getTag();
+                viewHolder = (ViewHolder)contentView.getTag();
             }
             BluetoothDevice device = mBleArray.get(position);
             String devName = device.getName();
-            if (devName != null && devName.length() > 0) {
-                viewHolder.ssid.setText(devName);
+            if (devName!=null&&!"".equals(devName) && devName.length() > 0) {
+                viewHolder.ssid.setText(""+devName);
             } else {
                 viewHolder.ssid.setText("unknow_device"+(position+1));
             }
             viewHolder.mac.setText(device.getAddress());
             viewHolder.number.setText(position+1+"");
-            return convertView;
+            return contentView;
         }
+
         class ViewHolder {
             TextView  number,mac,ssid;
         }
     }
-
-
 }

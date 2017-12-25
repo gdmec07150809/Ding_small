@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.AdvertisementGvAdapter;
 import com.example.administrator.ding_small.Fragment.AdvertisementFragment;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 import com.example.administrator.ding_small.R;
 import com.example.administrator.ding_small.Utils.utils;
 import com.lidroid.xutils.ViewUtils;
@@ -93,6 +94,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         findViewById(R.id.repair_layout).setOnClickListener(this);
         findViewById(R.id.search_layout).setOnClickListener(this);
         findViewById(R.id.more_layout).setOnClickListener(this);
+        findViewById(R.id.personalcenter_layout).setOnClickListener(this);
 
         findViewById(R.id.scan_layout).setOnClickListener(this);
         name_text=findViewById(R.id.name_text);
@@ -242,6 +244,11 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     integrator.initiateScan();
 //                 intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
 //                startActivity(intent);
+                break;
+            case R.id.personalcenter_layout://我的
+                intent=new Intent(MainLayoutActivity.this,PersonalCenterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             default:
                 break;

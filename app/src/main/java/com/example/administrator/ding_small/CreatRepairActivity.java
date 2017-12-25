@@ -50,8 +50,8 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                     R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg ,
                     R.drawable.edit_add};
     //图标下的文字
-    String name[]={"待办事项","常用数据","一般数据","生日","身份证","银行资料",
-            "待办事项", "常用数据","一般数据","生日","身份证","银行资料",
+    String name[]={"不通电","不充电","不亮灯","不制冷","不排气","不防水",
+            "漏水", "漏电","漏气","噪音大","外观破损","其它",
             "编辑"};
 
     //实现Tab滑动效果

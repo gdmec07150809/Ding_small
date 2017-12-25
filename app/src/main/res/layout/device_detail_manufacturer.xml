@@ -67,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:text="13567898768"
                         android:textSize="6.5pt"
+                        android:textColor="@color/font_hui"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="5dp"/>
@@ -82,6 +83,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
                         android:textSize="6.5pt"
+                        android:textColor="@color/font_hui"
                         android:text="广州优游文化"/>
                 </RelativeLayout>
             </LinearLayout>

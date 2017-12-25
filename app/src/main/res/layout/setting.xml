@@ -4,220 +4,318 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="35dp"
-    android:background="@color/white">
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/back"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="8pt"
-        android:textStyle="bold"
-        android:text="设置"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/green"></LinearLayout>
-</RelativeLayout>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
+        android:layout_height="35dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="设置"
+            android:textSize="8pt"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/green"></LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <RelativeLayout
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:text="统计"/>
-            <TextView
-                android:id="@+id/come_statistics"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:text=">"
-                android:gravity="center"
-                android:textSize="6pt"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/come_statistics"
-                android:text="每月开始于1日"/>
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:text="预算"/>
-            <TextView
-                android:id="@+id/come_budget"
-                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:text=">"
-                android:gravity="center"
-                android:textSize="6pt"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/come_budget"
-                android:text="2500"/>
-            <LinearLayout
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="统计"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/come_statistics"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text=">"
+                    android:textSize="6pt"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/come_statistics"
+                    android:text="每月开始于1日"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/hui"></LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:text="数据锁"/>
-            <TextView
-                android:id="@+id/come_data_lock"
-                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:text=">"
-                android:gravity="center"
-                android:textSize="6pt"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
-            <LinearLayout
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="预算"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/come_budget"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text=">"
+                    android:textSize="6pt"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/come_budget"
+                    android:text="2500"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/hui"></LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:text="自动记录"/>
-            <TextView
-                android:id="@+id/come_automatic_recording"
-                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:text=">"
-                android:gravity="center"
-                android:textSize="6pt"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
-            <LinearLayout
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="数据锁"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/come_data_lock"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text=">"
+                    android:textSize="6pt"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/hui"></LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:text="提醒"/>
-            <TextView
-                android:id="@+id/come_remind"
-                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:text=">"
-                android:gravity="center"
-                android:textSize="6pt"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
-            <LinearLayout
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="自动记录"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/come_automatic_recording"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text=">"
+                    android:textSize="6pt"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/hui"></LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:text="导出"/>
-            <TextView
-                android:id="@+id/come_export"
-                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:text=">"
-                android:gravity="center"
-                android:textSize="6pt"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="提醒"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/come_remind"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text=">"
+                    android:textSize="6pt"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/hui"></LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="导出"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/come_export"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text=">"
+                    android:textSize="6pt"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/hui"></LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="删除"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/come_delete"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text=">"
+                    android:textSize="6pt"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/hui"></LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:id="@+id/interval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="自动搜索间隔"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/edittime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:text="10秒"/>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -226,29 +324,36 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="6pt"
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:text="删除"/>
-            <TextView
-                android:id="@+id/come_delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:text=">"
-                android:gravity="center"
-                android:textSize="6pt"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:id="@+id/screen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp"
+                    android:text="屏幕常亮"
+                    android:textSize="6pt"
+                    android:textStyle="bold"/>
+
+                <Switch
+                    android:id="@+id/switchbtn"
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:layout_above="@+id/linearLayout"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/switch_selector"
+                    android:checked="false"
+                    android:thumb="@drawable/switch_thumb"
+                    android:track="@drawable/switch_track"/>
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -256,22 +361,77 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/hui"></LinearLayout>
-        </RelativeLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="40dp">
-            <Button
-                android:id="@+id/confirm"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:text="确定"
-                android:textSize="8pt"
-                android:textColor="@color/white"
-                android:background="@color/green"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/language_group"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/china"
+                        android:layout_width="fill_parent"
+                        android:layout_height="34dip"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableRight="@android:drawable/btn_radio"
+                        android:paddingLeft="10dip"
+                        android:paddingRight="10dip"
+                        android:text="中文："
+                        android:textColor="#636363"
+                        android:textSize="6pt"
+                        android:textStyle="bold"/>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/hui"/>
+
+                    <RadioButton
+                        android:id="@+id/english"
+                        android:layout_width="fill_parent"
+                        android:layout_height="34dip"
+                        android:button="@null"
+                        android:drawableRight="@android:drawable/btn_radio"
+                        android:paddingLeft="10dip"
+                        android:paddingRight="10dip"
+                        android:text="英文："
+                        android:textColor="#636363"
+                        android:textSize="6pt"
+                        android:textStyle="bold"/>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/hui"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="40dp">
+
+                <Button
+                    android:id="@+id/confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@color/green"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:textSize="8pt"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
 </LinearLayout>

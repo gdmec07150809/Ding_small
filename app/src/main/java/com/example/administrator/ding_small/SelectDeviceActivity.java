@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     private ArrayList<String> device_type;
     private ListView device_listview;
     private TextView date_text,selling_text,device_text,ssid_text;
+    private EditText search_edittext;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,16 +53,19 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     }
     private void init(){
         device_listview=findViewById(R.id.select_device_list);
-        findViewById(R.id.start_layout).setOnClickListener(this);
-        findViewById(R.id.selling_layout).setOnClickListener(this);
-        findViewById(R.id.device_layout).setOnClickListener(this);
-        findViewById(R.id.ssid_layout).setOnClickListener(this);
-        findViewById(R.id.add_device).setOnClickListener(this);
+        findViewById(R.id.start_layout).setOnClickListener(this);//启用日期
+        findViewById(R.id.selling_layout).setOnClickListener(this);//售点名称
+        findViewById(R.id.device_layout).setOnClickListener(this);//设备名称
+        findViewById(R.id.ssid_layout).setOnClickListener(this);//SSID
+        findViewById(R.id.add_device).setOnClickListener(this);//新增设备
+        findViewById(R.id.clean_text).setOnClickListener(this);//清空搜索框
+        findViewById(R.id.search_btn).setOnClickListener(this);//查询
 
         date_text=findViewById(R.id.date);
         selling_text=findViewById(R.id.selling);
         device_text=findViewById(R.id.device);
         ssid_text=findViewById(R.id.ssid);
+        search_edittext=findViewById(R.id.search_edittext);
     }
     private void CreatJson(){
         jsonArray=new JSONArray();
@@ -130,34 +135,39 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()){
-            case R.id.start_layout:
+            case R.id.start_layout://启用日期
                 date_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
                 selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 break;
-            case R.id.selling_layout:
+            case R.id.selling_layout://售点名称
                 date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 selling_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
                 device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 break;
-            case R.id.device_layout:
+            case R.id.device_layout://设备名称
                 date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 device_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
                 ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 break;
-            case R.id.ssid_layout:
+            case R.id.ssid_layout://SSID
                 date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
                 ssid_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
                 break;
-            case R.id.add_device:
+            case R.id.add_device://新增
                 intent=new Intent(SelectDeviceActivity.this,MainLayoutActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.clean_text://清空
+                search_edittext.setText("");
+                break;
+            case R.id.search_btn://查询
                 break;
             default:
                 break;

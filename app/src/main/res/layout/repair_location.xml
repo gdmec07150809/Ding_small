@@ -3,21 +3,28 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp">
+
         <TextView
-           style="@style/repair_remarks_LStyle"
+            style="@style/repair_remarks_LStyle"
             android:text="售点名称"/>
-        <TextView
+
+        <EditText
             style="@style/device_detail_RStyle"
-            android:text="大山百乐门酒吧"/>
+            android:background="@null"
+            android:hint="请输入售点名称"
+            android:textColorHint="@color/hui"
+          />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_alignParentBottom="true"
             android:background="@color/hui"/>
     </RelativeLayout>
 
@@ -30,9 +37,11 @@
             android:text="售点编号"
             android:textSize="6pt"/>
 
-        <TextView
+        <EditText
             style="@style/device_detail_RStyle"
-            android:text="28090"/>
+            android:textColorHint="@color/hui"
+            android:background="@null"
+            android:hint="请输入售点编号"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -48,9 +57,12 @@
         <TextView
             style="@style/repair_remarks_LStyle"
             android:text="售点地址"/>
-        <TextView
+
+        <EditText
             style="@style/device_detail_RStyle"
-            android:text="广东广州番禺迎宾路12号"/>
+            android:textColorHint="@color/hui"
+            android:background="@null"
+            android:hint="请输入售点地址"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -65,9 +77,11 @@
         <TextView
             style="@style/repair_remarks_LStyle"
             android:text="售点联系人"/>
-        <TextView
+        <EditText
             style="@style/device_detail_RStyle"
-            android:text="王小姐"/>
+            android:textColorHint="@color/hui"
+            android:background="@null"
+            android:hint="请输入售点联系人"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -80,9 +94,11 @@
         <TextView
             style="@style/repair_remarks_LStyle"
             android:text="联系人号码"/>
-        <TextView
+        <EditText
             style="@style/device_detail_RStyle"
-            android:text="137998098768"/>
+            android:textColorHint="@color/hui"
+            android:background="@null"
+            android:hint="请输入联系人号码"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"

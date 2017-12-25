@@ -57,9 +57,13 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
-                <TextView
+                <EditText
+                    android:id="@+id/selling_point_name"
                    style="@style/device_detail_RStyle"
-                    android:text="大山百乐门酒店"/>
+                   android:background="@null"
+                   android:textColor="#989898"
+                   android:enabled="false"
+                   android:text="大山百乐门酒店"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -83,9 +87,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.7">
 
-                <TextView
+                <EditText
+                    android:id="@+id/selling_point_number"
                   style="@style/device_detail_RStyle"
-                    android:text="280190"/>
+                  android:background="@null"
+                  android:textColor="#989898"
+                  android:enabled="false"
+                  android:text="280190"/>
             </RelativeLayout>
 
 
@@ -102,6 +110,7 @@
             android:layout_marginTop="10dp">
 
             <TextView
+
                 style="@style/device_detail_LStyle"
                 android:text="售点地址"
              />
@@ -111,8 +120,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.7">
 
-                <TextView
+                <EditText
+                    android:id="@+id/selling_point_location"
                     style="@style/device_detail_RStyle"
+                    android:background="@null"
+                    android:textColor="#989898"
+                    android:enabled="false"
                     android:text="广东广州番禺迎宾路12号"/>
             </RelativeLayout>
 
@@ -148,12 +161,15 @@
                         android:layout_marginRight="5dp"
                         android:layout_centerVertical="true"
                         android:src="@drawable/phone"/>
-                    <TextView
-                        android:id="@+id/phone1"
+                    <EditText
+                        android:id="@+id/selling_point_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="13567898768"
                         android:textSize="6.5pt"
+                        android:background="@null"
+                        android:textColor="#989898"
+                        android:enabled="false"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="5dp"/>
@@ -162,13 +178,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
-                    <TextView
+                    <EditText
+                        android:id="@+id/selling_point_user"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
                         android:textSize="6.5pt"
+                        android:background="@null"
+                        android:textColor="#989898"
+                        android:enabled="false"
                         android:text="王小姐"/>
                 </RelativeLayout>
             </LinearLayout>

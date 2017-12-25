@@ -68,7 +68,7 @@ import static com.example.administrator.ding_small.R.id.date;
  */
 
 public class PerfectDeviceActivity extends Activity implements View.OnClickListener{
-    private TextView location_text,photo_text,reimbursement_text,parameter_text,management_text,date_text,latitude,longitude,location,temperature;
+    private TextView location_text,photo_text,reimbursement_text,parameter_text,management_text,date_text,latitude,longitude,location,temperature,location_detail;
     InputMethodManager imm;
     private Dialog mCameraDialog;
     private ImageView photo1,photo2,photo3,photo4;
@@ -106,6 +106,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         nowYear = t.year;
         nowMonth= t.month;
         nowDay= t.monthDay;
+        date_text.setText(nowYear+"-"+(nowMonth+1)+"-"+nowDay);
         System.out.println("日期："+nowYear+"-"+nowMonth+"-"+nowDay);
     }
     @RequiresApi(api = VERSION_CODES.M)
@@ -149,6 +150,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         reimbursement_text=findViewById(R.id.reimbursement_text);
         parameter_text=findViewById(R.id.parameter_text);
         management_text=findViewById(R.id.management_text);
+        location_detail=findViewById(R.id.location_detail);
 
     }
 
@@ -389,9 +391,14 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 showMoreInformation(3);
                 break;
             case R.id.confrim_btn:
-                intent=new Intent(PerfectDeviceActivity.this,DeviceListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                String location_detail_str=location_detail.getText().toString();
+                if (location_detail_str==null||location_detail_str.equals("")){
+                    Toast.makeText(this,"请输入详细地址",Toast.LENGTH_SHORT).show();
+                }else {
+                    intent=new Intent(PerfectDeviceActivity.this,DeviceListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
                 break;
             case date:
                 new DatePickerDialog(PerfectDeviceActivity.this, new DatePickerDialog.OnDateSetListener() {

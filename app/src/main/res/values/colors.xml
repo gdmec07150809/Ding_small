@@ -30,4 +30,6 @@
     <color name="bg12">#F3C51C</color>
     <color name="bg13">#4EC3A6</color>
     <color name="bg14">#FF943C</color>
+    <color name="font_hui">#989898</color>
+    <color name="dialog_bg">#145895</color>
 </resources>
