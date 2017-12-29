@@ -30,7 +30,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,20 +58,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
-import static com.example.administrator.ding_small.HelpTool.SendUrlUtils.result;
-import static com.example.administrator.ding_small.MainActivity.SHOW_RESPONSE;
-import static com.example.administrator.ding_small.R.id.contacts_text;
-import static com.example.administrator.ding_small.R.id.label_text;
-import static com.example.administrator.ding_small.R.id.loan_text;
-import static com.example.administrator.ding_small.R.id.location_text;
-import static com.example.administrator.ding_small.R.id.photo1;
-import static com.example.administrator.ding_small.R.id.photo2;
-import static com.example.administrator.ding_small.R.id.photo3;
-import static com.example.administrator.ding_small.R.id.photo4;
-import static com.example.administrator.ding_small.R.id.photo_text;
-import static com.example.administrator.ding_small.R.id.privacy_text;
-import static com.example.administrator.ding_small.R.id.reimbursement_text;
-import static com.example.administrator.ding_small.R.id.repeat_text;
+import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
 /**
  * Created by Administrator on 2017/12/20.
@@ -806,7 +792,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         //第五步：从相应对象当中取出数据，放到entity当中
                         HttpEntity entity = httpResponse.getEntity();
-                        result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
+                        String result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
 
 
                         if(result!=null){

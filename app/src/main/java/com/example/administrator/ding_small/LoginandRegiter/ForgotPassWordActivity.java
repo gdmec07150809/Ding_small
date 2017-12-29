@@ -1,4 +1,4 @@
-package com.example.administrator.ding_small;
+package com.example.administrator.ding_small.LoginandRegiter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ding_small.HelpTool.CountDownTimerUtils;
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,9 +26,17 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.R.attr.id;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 import static android.icu.lang.UScript.getCode;
-import static com.example.administrator.ding_small.MainActivity.SHOW_RESPONSE;
+import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
 /**
  * Created by Administrator on 2017/11/16.
@@ -41,53 +51,46 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.forgot_password);
+        setContentView(R.layout.new_forgot_password);
         findViewById(R.id.send_text).setOnClickListener(this);
-        findViewById(R.id.edit_password).setOnClickListener(this);
+        findViewById(R.id.confirm_reset).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
+        p_code=findViewById(R.id.p_code);
+        phone=findViewById(R.id.phone);
+        password1=findViewById(R.id.new_password);
+        c_password=findViewById(R.id.c_new_password);
     }
 
     @Override
     public void onClick(View view) {
       switch (view.getId()){
           case R.id.send_text:
-              p_code=findViewById(R.id.p_code);
-              phone=findViewById(R.id.phone);
-              password1=findViewById(R.id.password1);
-              c_password=findViewById(R.id.c_password);
-
-              code_str=p_code.getText().toString();
               phone_str=phone.getText().toString();
-              p1_str=password1.getText().toString();
-              p2_str=c_password.getText().toString();
               //判断信息
-              if(p1_str.equals("")|| p2_str.equals("")||phone_str.equals("")){
-                  new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("注册提示").setMessage("信息不能为空").setPositiveButton("确定",null).show();
+              if(phone_str.equals("")){
+                  new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("信息不能为空").setPositiveButton("确定",null).show();
               }else{
-                  if(!p1_str.equals(p2_str)){
-                      new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("注册提示").setMessage("两次密码不相等").setPositiveButton("确定",null).show();
-                  }else{
                       TextView send_text=findViewById(R.id.send_text);
                       CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
                       mCountDownTimerUtils.start();
-                      getCode(phone_str);
-
-                  }
+                     // getCode(phone_str);
+                    new Thread(networkTask).start();//发送验证码
               }
               break;
-          case R.id.register:
+          case R.id.confirm_reset:
               code_str=p_code.getText().toString();
               phone_str=phone.getText().toString();
               p1_str=password1.getText().toString();
               p2_str=c_password.getText().toString();
               //判断信息
-              if(p1_str.equals("")|| p2_str.equals("")||phone_str.equals("")){
-                  new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("注册提示").setMessage("信息不能为空").setPositiveButton("确定",null).show();
+              if(p1_str.equals("")|| p2_str.equals("")||phone_str.equals("")||code_str.equals("")){
+                  new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("信息不能为空").setPositiveButton("确定",null).show();
               }else{
                   if(!p1_str.equals(p2_str)){
-                      new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("注册提示").setMessage("两次密码不相等").setPositiveButton("确定",null).show();
+                      new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("两次密码不相等").setPositiveButton("确定",null).show();
                   }else{
-                      sendConfirmEdit(phone_str,p1_str,saveCode);
+                      //sendConfirmEdit(phone_str,p1_str,saveCode);
+                      new Thread(comfirPassword).start();//重置密码
                   }
               }
               break;
@@ -98,6 +101,33 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
               break;
       }
     }
+
+    /**
+     * 网络操作相关的子线程okhttp框架  发送验证码
+     */
+    Runnable networkTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
+            OkHttpClient okHttpClient = new OkHttpClient();
+            String b= "{\"memPhone\":"+phone_str+",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                System.out.println("结果："+response.body().string()+"状态码："+ response.code());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
     //方法：获取验证码
     private void getCode(final String phone) {
         // System.out.println("加密密码："+MD5Utils.md5(pass1));
@@ -168,7 +198,6 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
 
     };
     //201701108登录验证类，获取手机号和密码
-    //方法：获取验证码
     private void sendConfirmEdit(final String phone,final String password,final String code) {
         // System.out.println("加密密码："+MD5Utils.md5(pass1));
         new Thread(new Runnable() {
@@ -227,7 +256,7 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
                             new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回登陆").setMessage(Msg).setPositiveButton("确定",new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent=new Intent(ForgotPassWordActivity.this,MainActivity.class);
+                                    Intent intent=new Intent(ForgotPassWordActivity.this,LoginAcitivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -236,7 +265,7 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
                             new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回登陆").setMessage(Msg).setPositiveButton("确定",new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent=new Intent(ForgotPassWordActivity.this,MainActivity.class);
+                                    Intent intent=new Intent(ForgotPassWordActivity.this,LoginAcitivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -252,4 +281,102 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
         }
 
     };
+
+    /**
+     * 网络操作相关的子线程okhttp框架  注册
+     */
+    Runnable comfirPassword = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://120.76.188.131:8080/a10/api/user/register.do";
+            OkHttpClient okHttpClient = new OkHttpClient();
+            String pass= MD5Utils.md5(p1_str);
+            String b= "{\"memPhone\":\""+phone_str+"\",\"memPwd1\":\""+pass+"\",\"smsVerifCode\":\""+code_str+"\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
+            System.out.println(b);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);//请求体
+            Request request = new Request.Builder()//发送请求
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);//创建回调
+            try {
+                Response response = call.execute();//获取请求结果
+                String result=response.body().string();
+                if(response!=null){
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = result.toString();
+                    sendRegisterHandler.sendMessage(message);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    //接收注册返回结果，并处理
+    private Handler sendRegisterHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object=new JSONObject(response);
+                        JSONObject object1=new JSONObject(object.getString("meta"));
+
+                        switch (object1.getString("res")){
+                            case "00000"://成功
+                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回登陆").setMessage("重置成功").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent =new Intent(ForgotPassWordActivity.this,LoginAcitivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                                break;
+                            case "21001"://手机号已存在
+                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("手机号 "+phone_str+" 已存在.").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                                break;
+                            case "21003"://验证码错误
+                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("短信验证码错误, 请核对!").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                                break;
+                            case "21004"://短信验证码已失效
+                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("短信验证码已失效, 请重新发送!").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                                break;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
 }

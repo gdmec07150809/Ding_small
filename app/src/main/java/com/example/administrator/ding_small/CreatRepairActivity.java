@@ -47,12 +47,11 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     private SimpleAdapter adapter;
     //图标
     int icno[] = { R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg, R.drawable.c5_bg, R.drawable.c6_bg,
-                    R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg ,
-                    R.drawable.edit_add};
+                    R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg };
     //图标下的文字
     String name[]={"不通电","不充电","不亮灯","不制冷","不排气","不防水",
             "漏水", "漏电","漏气","噪音大","外观破损","其它",
-            "编辑"};
+    };
 
     //实现Tab滑动效果
     private ViewPager mViewPager;
@@ -71,9 +70,9 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.creat_repair);
-        InitFragment();
-        InitViewPager();
-        initPoints();
+        InitFragment();//初始化流式布局
+        InitViewPager();//初始化viewPager
+
         day=findViewById(R.id.day);
         day.setOnClickListener(this);
         action_text=findViewById(R.id.action_text);
@@ -145,41 +144,6 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         }
     }
     /**
-     * 实现小圆点的添加，
-     * 找到线性布局动态的向线性布局内添加小圆，并添加drawable选择的效果
-     */
-    private void initPoints() {
-        //实例化线性布局
-        ll = (LinearLayout) findViewById(R.id.main_ll);
-        //绘制和图片对应的圆点的数量
-        for (int i = 0; i < fragmentArrayList.size(); i++) {
-            View view = new View(this);
-            //设置圆点的大小
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10, 10);
-            //设置间距
-            params.setMargins(10, 10, 10, 10);
-            //设置图片的自定义效果
-            view.setBackgroundResource(R.drawable.start_selsect);
-            //把设置好的视图属性设置到View中
-            view.setLayoutParams(params);
-            //把创建好的View添加到线性布局中
-            ll.addView(view);
-        }
-        Log.e("TAG", ":" + ll.getChildCount());
-        //设置选中线性布局中的第一个
-        ll.getChildAt(0).setSelected(true);
-    }
-
-    void initData() {
-        dataList = new ArrayList<Map<String, Object>>();
-        for (int i = 0; i <icno.length; i++) {
-            Map<String, Object> map=new HashMap<String, Object>();
-            map.put("img", icno[i]);
-            map.put("text",name[i]);
-            dataList.add(map);
-        }
-    }
-    /**
      * 初始化页卡内容区
      */
     private void InitViewPager() {
@@ -188,7 +152,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         mViewPager.setAdapter(new MFragmentPagerAdapter(fragmentManager, fragmentArrayList));
 
         //让ViewPager缓存2个页面
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(1);
 
         //设置默认打开第一页
         mViewPager.setCurrentItem(0);
@@ -207,14 +171,6 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         bundle.putStringArray("name",name);
         fragment1.setArguments(bundle);
         fragmentArrayList.add(fragment1);
-
-        Fragment2 fragment2=new Fragment2();
-        Bundle bundle1=new Bundle();
-        bundle1.putIntArray("icon",icno);
-        bundle1.putStringArray("name",name);
-        fragment2.setArguments(bundle1);
-        fragmentArrayList.add(fragment2);
-
         fragmentManager = getSupportFragmentManager();
 
     }
@@ -238,19 +194,6 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                     bundle.putStringArray("name",name);
                     fragment1.setArguments(bundle);
                     ft.replace(android.R.id.content, fragment1);
-                    //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
-                    for (int i=0;i<ll.getChildCount();i++){
-                        ll.getChildAt(i).setSelected(false);
-                    }
-                    ll.getChildAt(position).setSelected(true);
-                    break;
-                case 1:
-                    Fragment2 fragment2=new Fragment2();
-                    Bundle bundle1=new Bundle();
-                    bundle1.putIntArray("icon",icno);
-                    bundle1.putStringArray("name",name);
-                    fragment2.setArguments(bundle1);
-                    ft.replace(android.R.id.content, fragment2);
                     //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
                     for (int i=0;i<ll.getChildCount();i++){
                         ll.getChildAt(i).setSelected(false);

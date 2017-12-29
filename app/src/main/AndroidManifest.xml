@@ -78,7 +78,7 @@
         <activity android:name=".Label.EditLabelItemBtnActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".Label.EditLabelActivity"/>
         <activity android:name=".AccountsSearchByCalendarActivity"/>
-        <activity android:name=".ForgotPassWordActivity"/>
+        <activity android:name=".LoginandRegiter.ForgotPassWordActivity"/>
         <activity android:name=".AddContactsActivity"  android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".NotepadAnalysisActivity"/>
         <activity android:name=".NotepadScreenActivity"/>
@@ -98,7 +98,13 @@
         <activity android:name=".AccountScreenActiivity"/>
         <activity android:name=".InComeActivity"/>
         <activity android:name=".AccountInComeItemDetailActivity"/>
-        <activity android:name=".MainActivity"/>
+
+        <!--登录、注册-->
+        <activity android:name=".LoginandRegiter.LoginAcitivity"/>
+        <activity android:name=".LoginandRegiter.RegisterActivity"/>
+        <activity android:name=".LoginandRegiter.EmailRegisterAcitivity"/>
+
+
         <activity android:name=".AccountAnalysisLabelStatisticsActivity"/>
         <activity android:name=".ExpenditureActivity"/>
         <activity android:name=".AccountOutTimeActivity"/>
@@ -109,6 +115,7 @@
         <activity android:name=".CreatRepairActivity"/>
         <activity android:name=".CreatRepairRemarksActivity" android:windowSoftInputMode="adjustPan|stateVisible"/>
         <activity android:name=".PerfectDeviceActivity" android:windowSoftInputMode="adjustPan|stateAlwaysVisible"/>
+        <activity android:name=".PersonalCenter.EditPassWordActivity"/>
     </application>
 
 </manifest>

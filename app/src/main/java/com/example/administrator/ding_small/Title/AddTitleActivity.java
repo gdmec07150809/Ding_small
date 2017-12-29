@@ -59,10 +59,10 @@ public class AddTitleActivity extends Activity implements View.OnClickListener{
             case R.id.c12: title_img.setBackgroundResource(R.drawable.c12_bg);break;
             case R.id.c13: title_img.setBackgroundResource(R.drawable.c13_bg);break;
             case R.id.c14: title_img.setBackgroundResource(R.drawable.c14_bg);break;
-            case R.id.c15: title_img.setBackgroundResource(R.drawable.c3_bg);break;
-            case R.id.c16: title_img.setBackgroundResource(R.drawable.c4_bg);break;
-            case R.id.c17: title_img.setBackgroundResource(R.drawable.c5_bg);break;
-            case R.id.c18: title_img.setBackgroundResource(R.drawable.c6_bg);break;
+            case R.id.c15: title_img.setBackgroundResource(R.drawable.c15_bg);break;
+            case R.id.c16: title_img.setBackgroundResource(R.drawable.c16_bg);break;
+            case R.id.c17: title_img.setBackgroundResource(R.drawable.c17_bg);break;
+            case R.id.c18: title_img.setBackgroundResource(R.drawable.c18_bg);break;
 
             case R.id.confirm:
                 intent=new Intent(AddTitleActivity.this,EditTitleActivity.class);

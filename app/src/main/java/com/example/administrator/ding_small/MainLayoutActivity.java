@@ -1,51 +1,39 @@
 package com.example.administrator.ding_small;
 
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
-import android.os.Build.VERSION_CODES;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.format.DateFormat;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.AdvertisementGvAdapter;
 import com.example.administrator.ding_small.Fragment.AdvertisementFragment;
+import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
-import com.example.administrator.ding_small.R;
 import com.example.administrator.ding_small.Utils.utils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static android.R.attr.id;
-import static android.R.string.no;
 
 /**
  * Created by Administrator on 2017/12/11.
@@ -61,16 +49,24 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     private GridView pager_position_gv;
     private long clickTime=0;
     private TextView name_text;
+    private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+    SharedPreferences sp=null;//定义储存源，备用
+    private String memid,token,sign,oldPass,newPass,ts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        init();//初始化控件
-        ifApm();//判断上下午
+
+        Toast.makeText(MainLayoutActivity.this,"当前系统语言："+Locale.getDefault().getLanguage(),Toast.LENGTH_SHORT).show();
+        init();//初始化控
+        // ifApm();//判断上下午
         initPager();//轮播图
+
         Handler handler=new Handler();
         handler.postDelayed(runnable, 100);
+
+
     }
 
     Runnable runnable=new Runnable(){
@@ -82,6 +78,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             handler.postDelayed(this, 1000*60*30);
         }
     };
+
     private void init(){
         mPager=findViewById(R.id.home_activity_pager);
         findViewById(R.id.notepad_layout).setOnClickListener(this);
@@ -218,7 +215,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.login_layout://登陆
-                intent=new Intent(MainLayoutActivity.this,MainActivity.class);
+                intent=new Intent(MainLayoutActivity.this,LoginAcitivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -232,8 +229,9 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.more_layout://更多功能暂不开发
-                Toast.makeText(this,"该功能暂不开发",Toast.LENGTH_SHORT).show();
+            case R.id.more_layout://更多功能暂未开发
+                Toast.makeText(this,"该功能暂未开发",Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.scan_layout://扫码功能
                     IntentIntegrator integrator=new IntentIntegrator(MainLayoutActivity.this);
@@ -249,6 +247,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 intent=new Intent(MainLayoutActivity.this,PersonalCenterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+
                 break;
             default:
                 break;
@@ -366,4 +365,6 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             //resultNew.setText("扫描结果："+result.getContents());
         }
     }
+
+
 }

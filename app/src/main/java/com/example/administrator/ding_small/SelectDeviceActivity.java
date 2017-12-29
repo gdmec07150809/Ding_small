@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.example.administrator.ding_small.R.id.device_listview;
+import static com.example.administrator.ding_small.R.id.device_type;
 
 
 /**
@@ -32,18 +35,19 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     private ArrayList<String> device_locations;
     private ArrayList<String> device_ssids;
     private ArrayList<String> device_staus;
-    private ArrayList<String> device_type;
-    private ListView device_listview;
+    private ArrayList<String> device_date;
+    private ListView select_device_list;
     private TextView date_text,selling_text,device_text,ssid_text;
     private EditText search_edittext;
+    private ImageView date_img,selling_img,device_img,uuid_img;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_device);
+        setContentView(R.layout.select_new_device);
         init();//初始化控件
         CreatJson();//构造jsonArray备用
-        device_listview.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this,jsonArray));//设置适配器
-        device_listview.setOnItemClickListener(new OnItemClickListener() {
+        select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this,jsonArray));//设置适配器
+        select_device_list.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=new Intent(SelectDeviceActivity.this,CreatRepairActivity.class);
@@ -52,20 +56,26 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         });
     }
     private void init(){
-        device_listview=findViewById(R.id.select_device_list);
+        select_device_list=findViewById(R.id.select_device_list);//设备列表
         findViewById(R.id.start_layout).setOnClickListener(this);//启用日期
         findViewById(R.id.selling_layout).setOnClickListener(this);//售点名称
         findViewById(R.id.device_layout).setOnClickListener(this);//设备名称
-        findViewById(R.id.ssid_layout).setOnClickListener(this);//SSID
+        findViewById(R.id.uuid_layout).setOnClickListener(this);//SSID
         findViewById(R.id.add_device).setOnClickListener(this);//新增设备
-        findViewById(R.id.clean_text).setOnClickListener(this);//清空搜索框
-        findViewById(R.id.search_btn).setOnClickListener(this);//查询
+        findViewById(R.id.back).setOnClickListener(this);//返回
+//        findViewById(R.id.clean_text).setOnClickListener(this);//清空搜索框
+//        findViewById(R.id.search_btn).setOnClickListener(this);//查询
 
-        date_text=findViewById(R.id.date);
-        selling_text=findViewById(R.id.selling);
-        device_text=findViewById(R.id.device);
-        ssid_text=findViewById(R.id.ssid);
-        search_edittext=findViewById(R.id.search_edittext);
+//        date_text=findViewById(R.id.date_text);
+//        selling_text=findViewById(R.id.selling_text);
+//        device_text=findViewById(R.id.device_text);
+//        ssid_text=findViewById(R.id.uuid_text);
+//        search_edittext=findViewById(R.id.search_edittext);
+
+        date_img=findViewById(R.id.date_img);
+        selling_img=findViewById(R.id.selling_img);
+        device_img=findViewById(R.id.device_img);
+        uuid_img=findViewById(R.id.uuid_img);
     }
     private void CreatJson(){
         jsonArray=new JSONArray();
@@ -73,7 +83,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         device_locations=new ArrayList<String>();
         device_ssids=new ArrayList<String>();
         device_staus=new ArrayList<String>();
-        device_type=new ArrayList<String>();
+        device_date=new ArrayList<String>();
 
         device_names.add("桌台灯-1644");
         device_names.add("桌台灯-1620");
@@ -108,13 +118,13 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         device_staus.add("0");
         device_staus.add("1");
 
-        device_type.add("bluetooth");
-        device_type.add("wifi");
-        device_type.add("scan");
-        device_type.add("scan");
-        device_type.add("wifi");
-        device_type.add("bluetooth");
-        device_type.add("wifi");
+        device_date.add("2017/12/5");
+        device_date.add("2017/5/6");
+        device_date.add("2017/6/8");
+        device_date.add("2017/6/8");
+        device_date.add("2017/6/4");
+        device_date.add("2017/2/6");
+        device_date.add("2017/6/9");
         try {
             for (int i=0;i<device_names.size();i++){
                 JSONObject jsonObject;
@@ -123,7 +133,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 jsonObject.put("device_location",device_locations.get(i));
                 jsonObject.put("device_ssid",device_ssids.get(i));
                 jsonObject.put("device_state",device_staus.get(i));
-                jsonObject.put("device_type",device_type.get(i));
+                jsonObject.put("device_date",device_date.get(i));
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
@@ -136,38 +146,56 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         Intent intent;
         switch (view.getId()){
             case R.id.start_layout://启用日期
-                date_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
-                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                date_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+//                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+
+                date_img.setImageResource(R.mipmap.icon_common_sort_down);
+                selling_img.setImageResource(R.mipmap.icon_common_sort_up);
+                device_img.setImageResource(R.mipmap.icon_common_sort_up);
+                uuid_img.setImageResource(R.mipmap.icon_common_sort_up);
                 break;
             case R.id.selling_layout://售点名称
-                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                selling_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
-                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                selling_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+//                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+
+                date_img.setImageResource(R.mipmap.icon_common_sort_up);
+                selling_img.setImageResource(R.mipmap.icon_common_sort_down);
+                device_img.setImageResource(R.mipmap.icon_common_sort_up);
+                uuid_img.setImageResource(R.mipmap.icon_common_sort_up);
                 break;
             case R.id.device_layout://设备名称
-                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                device_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
-                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                device_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+//                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+
+                date_img.setImageResource(R.mipmap.icon_common_sort_up);
+                selling_img.setImageResource(R.mipmap.icon_common_sort_up);
+                device_img.setImageResource(R.mipmap.icon_common_sort_down);
+                uuid_img.setImageResource(R.mipmap.icon_common_sort_up);
                 break;
-            case R.id.ssid_layout://SSID
-                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+            case R.id.uuid_layout://SSID
+//                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
+
+                date_img.setImageResource(R.mipmap.icon_common_sort_up);
+                selling_img.setImageResource(R.mipmap.icon_common_sort_up);
+                device_img.setImageResource(R.mipmap.icon_common_sort_up);
+                uuid_img.setImageResource(R.mipmap.icon_common_sort_down);
                 break;
             case R.id.add_device://新增
                 intent=new Intent(SelectDeviceActivity.this,MainLayoutActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.clean_text://清空
-                search_edittext.setText("");
-                break;
-            case R.id.search_btn://查询
+            case R.id.back:
+                finish();
                 break;
             default:
                 break;

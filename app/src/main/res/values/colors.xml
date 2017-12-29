@@ -30,6 +30,22 @@
     <color name="bg12">#F3C51C</color>
     <color name="bg13">#4EC3A6</color>
     <color name="bg14">#FF943C</color>
+    <color name="bg15">#FF5809</color>
+    <color name="bg16">#FFD306</color>
+    <color name="bg17">#6FB7B7</color>
+    <color name="bg18">#F2C2DE</color>
     <color name="font_hui">#989898</color>
+    <color name="font1_hui">#707070</color>
     <color name="dialog_bg">#145895</color>
+
+
+    <!--新的颜色方案-->
+    <color name="theme_color">#1cd39b</color><!--主题色-->
+    <color name="theme_bg">#f8f8f8</color><!--背景色-->
+    <color name="title_color">#333333</color>
+    <color name="time_color">#C3C3C3</color>
+    <color name="time_bg_color">#F8F8F8</color>
+    <color name="list_item_color">#999999</color>
+    <color name="hui_rule">#EFEFEF</color>
+
 </resources>

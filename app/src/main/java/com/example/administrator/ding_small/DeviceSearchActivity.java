@@ -1,6 +1,7 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothDevice;
@@ -21,12 +22,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +70,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
 
     boolean pression = false;
     private  LoadingLayout loading;
+    private LinearLayout wifi_buttom,bluetooth_buttom,refresh_layout;
     private TextView wifi_text,bluetooth_text;
 
     private BluetoothAdapter mBluetoothAdapter;
@@ -73,12 +80,15 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private DeviceListAdapter mDevListAdapter;
     private List<BluetoothDevice> mBleArray;
     private boolean mScanning;
+    private Dialog mCameraDialog;
+    private ImageView default_img,five_img,one_minute_img;
+    private int refresh_num=1;
 
     @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.device_search);
+        setContentView(R.layout.new_device_search);
         init();//初始化控件
         wifiUtils();//wifi代码类
         blueToothUtils();//蓝牙代码类
@@ -86,10 +96,14 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private void init(){
         wifiListView = (ListView) findViewById(R.id.search_device_list);
         loading=findViewById(R.id.loading_layout);
-        wifi_text=findViewById(R.id.wifi);
-        bluetooth_text=findViewById(R.id.bluetooth);
+        wifi_text=findViewById(R.id.wifi_text);
+        bluetooth_text=findViewById(R.id.bluetooth_text);
+        wifi_buttom=findViewById(R.id.wifi_buttom);
+        bluetooth_buttom=findViewById(R.id.bluetooth_buttom);
         findViewById(R.id.wifi_layout).setOnClickListener(this);
         findViewById(R.id.bluetooth_layout).setOnClickListener(this);
+        findViewById(R.id.footer).setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
 
         wifiListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -182,7 +196,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         mWifiAdmin.startScan();
         return mWifiAdmin.getWifiList();
     }
-    //每隔1000*5时间刷新一次wifi列表
+    //每隔1000*10时间刷新一次wifi列表
     private Handler one_handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -204,7 +218,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 });
                 wifiAdapter = new WifiAdapter(DeviceSearchActivity.this, scanResults);
                 wifiListView.setAdapter(wifiAdapter);
-                one_handler.sendEmptyMessageDelayed(1, 10000);
+                one_handler.sendEmptyMessageDelayed(1, 10000);//默认10秒
             }
     };
 
@@ -265,6 +279,16 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         scanLeDevice(true);
     }
 
+    @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR2)
+    @Override
+    protected void onStop() {
+        super.onStop();
+        indexPression = pression;
+        pression = true;
+        finish();
+        scanLeDevice(false);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void scanLeDevice(final boolean enable) {
         if (enable) {
@@ -309,18 +333,22 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.wifi_layout:
-                wifi_text.setTextColor(ContextCompat.getColor(this, R.color.orange));
-                bluetooth_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+            case R.id.wifi_layout://wifi
+                wifi_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                bluetooth_text.setTextColor(ContextCompat.getColor(this, R.color.time_color));
+                wifi_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_color));
+                bluetooth_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
 
                 wifiListView=findViewById(R.id.search_device_list);
                 wifiListView.setVisibility(View.VISIBLE);
                 blueListView=findViewById(R.id.search_bluetooth_device_list);
                 blueListView.setVisibility(View.GONE);
                 break;
-            case R.id.bluetooth_layout:
-                wifi_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
-                bluetooth_text.setTextColor(ContextCompat.getColor(this, R.color.orange));
+            case R.id.bluetooth_layout://蓝牙
+                wifi_text.setTextColor(ContextCompat.getColor(this, R.color.time_color));
+                bluetooth_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                wifi_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                bluetooth_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_color));
 
                 wifiListView=findViewById(R.id.search_device_list);
                 wifiListView.setVisibility(View.GONE);
@@ -335,6 +363,32 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                         startActivity(intent);
                     }
                 });
+                break;
+            case R.id.footer://刷新频率
+                setDialog();
+                break;
+            case R.id.default_layout:
+                default_img.setVisibility(View.VISIBLE);
+                five_img.setVisibility(View.GONE);
+                one_minute_img.setVisibility(View.GONE);
+                refresh_num=1;
+                break;
+            case R.id.five_layout:
+                five_img.setVisibility(View.VISIBLE);
+                default_img.setVisibility(View.GONE);
+                one_minute_img.setVisibility(View.GONE);
+                refresh_num=2;
+                break;
+            case R.id.one_minute_layout:
+                five_img.setVisibility(View.GONE);
+                default_img.setVisibility(View.GONE);
+                one_minute_img.setVisibility(View.VISIBLE);
+                refresh_num=3;
+                break;
+            case R.id.back:
+                finish();
+                break;
+            default:
                 break;
         }
     }
@@ -352,7 +406,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                         mDevListAdapter.notifyDataSetChanged();
                     }
 
-                    starTimer.sendEmptyMessageDelayed(0,30000);
+                    starTimer.sendEmptyMessageDelayed(0,10000);//默认10秒
                 }
 
         }
@@ -446,5 +500,35 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         class ViewHolder {
             TextView  number,mac,ssid;
         }
+    }
+
+    //底部弹出菜单
+    private void setDialog() {
+        LinearLayout root=null;
+        mCameraDialog = new Dialog(this, R.style.BottomDialog);
+        root = (LinearLayout) LayoutInflater.from(this).inflate(
+                        R.layout.refresh_item, null);
+        //初始化视图
+        root.findViewById(R.id.default_layout).setOnClickListener(this);
+        root.findViewById(R.id.five_layout).setOnClickListener(this);
+        root.findViewById(R.id.one_minute_layout).setOnClickListener(this);
+
+        default_img=root.findViewById(R.id.default_img);
+        five_img=root.findViewById(R.id.five_img);
+        one_minute_img=root.findViewById(R.id.one_minute_img);
+
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
     }
 }

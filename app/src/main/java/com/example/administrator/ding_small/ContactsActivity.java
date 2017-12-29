@@ -4,6 +4,7 @@ package com.example.administrator.ding_small;
  * Created by Administrator on 2017/10/19.
  */
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -13,10 +14,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.content.Intent;
 
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.example.administrator.ding_small.HelpTool.getContactInfo.getContactInfo;
 
@@ -25,9 +37,11 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
     private static final String TAG = "ContactsActivity";
     private JSONObject contactData;//储存第一手信息
     private JSONObject contactDatas;//储存搜索结果
-    private JSONObject jsonObject;//为contactData提供对象
     private EditText search_text;//搜索框
     boolean isFlag=true;//用哪个JsonObject响应listVIEW点击事件
+    private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+    SharedPreferences sp=null;//定义储存源，备用
+    private String memid,token,sign,ts;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +87,24 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
 
             }
         });
+        getCache();//获取缓存值
     }
 
+    private  void getCache(){
+        //  new Thread(networkTask).start();
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url1 = "http://192.168.1.101:8080/a10/app/ppt6000/dataList.do";//测试链接,未通
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "ts:" + ts +"token:"+token);
+        String Sign = url1 + memid + token + ts;
+        sign = MD5Utils.md5(Sign);
+        if(memid!=null){
+            new Thread(networkTask).start();
+        }
+
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -82,7 +112,6 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
                 Intent intent=new Intent(ContactsActivity.this,NotepadActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-
                 break;
             case R.id.clean_text://清除输入框内容
                 isFlag=true;
@@ -111,10 +140,7 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
                             index++;
                         }
                     }
-
                         list.setAdapter(new com.example.administrator.ding_small.Adapter.ContactAdapter(ContactsActivity.this, contactDatas));
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -144,4 +170,34 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
                 break;
         }
     }
+
+    /**
+     * 网络操作相关的子线程okhttp框架  测试实例
+     */
+    Runnable networkTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://192.168.1.101:8080/a10/app/ppt6000/dataList.do?memId=" + memid + "&ts=" + ts;
+            System.out.println("URL:"+url);
+            OkHttpClient okHttpClient = new OkHttpClient();
+            String b= "{\"eqpId\":\"198dbe33682548f4a92a864dca3ac5a9\"}";//json字符串
+            System.out.println("json:"+b);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn",sign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                System.out.println("结果："+response.body().string()+"状态码："+ response.code());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }

@@ -44,7 +44,7 @@ import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -59,8 +59,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
-import static com.example.administrator.ding_small.HelpTool.SendUrlUtils.result;
-import static com.example.administrator.ding_small.MainActivity.SHOW_RESPONSE;
+import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 import static com.example.administrator.ding_small.R.id.date;
 
 /**
@@ -75,7 +74,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     int nowYear,nowMonth,nowDay;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
-    private  String latitude_str,longitude_str,province_str,temperature_str;
+    private  String latitude_str,longitude_str,province_str,temperature_str,result;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,7 +95,11 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         province_str=LocationUtil.province;
         System.out.println("市："+province_str);
         String url="https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location="+province_str+"&language=zh-Hans&unit=c";
+        System.out.println(url);
         sendRequestWithHttpClient(this,url);//获取温度的方法
+
+//        String result=SendUrlUtils.sendRequestHttpClient(this,url);
+//        System.out.println("结果22："+result);
 
     }
     private void getTimeNow(){
@@ -826,10 +829,10 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 HttpClient httpCient = new DefaultHttpClient();
                 //第二步：创建代表请求的对象,参数是访问的服务器地址blMac=12:34:56:78:9A:BC&userId=1001&userName=%E5%BC%A0%E4%B8%89
                 //HttpGet httpGet = new HttpGet("http://192.168.1.101:8080/appUser/appUserLogin.do?loginType=1&loginAccount="+name1+"&loginPwd="+pass1);
-                HttpGet httpGet = new HttpGet(url);//测试链接
+                HttpPost httpPost = new HttpPost(url);//测试链接
                 try {
                     //第三步：执行请求，获取服务器发还的相应对象
-                    HttpResponse httpResponse = httpCient.execute(httpGet);
+                    HttpResponse httpResponse = httpCient.execute(httpPost);
                     //第四步：检查相应的状态是否正常：检查状态码的值是200表示正常
                     System.out.println("状态码："+httpResponse.getStatusLine().getStatusCode());
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
@@ -837,13 +840,12 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                         HttpEntity entity = httpResponse.getEntity();
                         result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
 
-
                         if(result!=null){
                             //在子线程中将Message对象发出去
                             Message message = new Message();
                             message.what = SHOW_RESPONSE;
                             message.obj = result.toString();
-                            System.out.println("返回结果："+result);
+                            System.out.println("返回结果1："+result);
                             handler.sendMessage(message);
 
                         }
@@ -860,6 +862,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         }).start();//这个start()方法不要忘记了
 
     }
+    //解析天气
     private Handler handler = new Handler() {
 
         @Override
@@ -870,7 +873,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     String response = (String) msg.obj;
                     try {
                         JSONObject responseObject=new JSONObject(response);
-                        System.out.println("返回："+responseObject);
+                        System.out.println("返回1："+responseObject);
                         JSONArray jsonArray=new JSONArray(responseObject.getString("results"));
                         JSONObject jsonObject=new JSONObject(jsonArray.get(0).toString());
                         JSONObject jsonObject1=new JSONObject(jsonObject.getString("now"));
@@ -886,4 +889,6 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         }
 
     };
+
+
 }

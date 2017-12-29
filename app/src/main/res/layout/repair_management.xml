@@ -3,9 +3,11 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp">
+
         <TextView
             style="@style/repair_remarks_LStyle"
             android:text="公司"/>
@@ -14,12 +16,13 @@
         <TextView
             style="@style/device_detail_RStyle"
             android:text="重庆分公司"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_alignParentBottom="true"
             android:background="@color/hui"/>
     </RelativeLayout>
 

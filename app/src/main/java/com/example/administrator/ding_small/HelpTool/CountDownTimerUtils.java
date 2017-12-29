@@ -6,6 +6,7 @@ package com.example.administrator.ding_small.HelpTool;
 
 import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -66,6 +67,6 @@ public class CountDownTimerUtils extends CountDownTimer {
     public void onFinish() {
         mTextView.setText("重新获取验证码");
         mTextView.setClickable(true);//重新获得点击
-        mTextView.setTextColor(Color.GREEN);
+        mTextView.setTextColor(Color.parseColor("#1cd39b"));
     }
 }

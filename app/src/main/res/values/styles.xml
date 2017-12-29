@@ -78,7 +78,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textSize">6pt</item>
-        <item name="android:textColor">@color/font_hui</item>
+        <item name="android:textColor">@color/font1_hui</item>
         <item name="android:layout_marginLeft">10dp</item>
     </style>
     <style name="BottomDialog" parent="@android:style/Theme.Dialog">
@@ -144,5 +144,16 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
+    </style>
+    /* android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16px"
+    android:textSize="30px"*/
+    <style name="back_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">16px</item>
+        <item name="android:textSize">30px</item>
+        <item name="android:textColor">@color/theme_color</item>
     </style>
 </resources>

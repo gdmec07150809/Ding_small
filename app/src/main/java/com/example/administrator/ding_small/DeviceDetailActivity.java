@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +36,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
-import static com.example.administrator.ding_small.HelpTool.SendUrlUtils.result;
-import static com.example.administrator.ding_small.MainActivity.SHOW_RESPONSE;
-import static com.example.administrator.ding_small.R.id.temperature;
+import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
 /**
  * Created by Administrator on 2017/12/19.
@@ -307,7 +304,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         //第五步：从相应对象当中取出数据，放到entity当中
                         HttpEntity entity = httpResponse.getEntity();
-                        result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
+                        String result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
 
 
                         if(result!=null){

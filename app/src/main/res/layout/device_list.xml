@@ -188,6 +188,7 @@
         android:layout_height="0dp"
         android:layout_below="@+id/calendar"
         android:layout_weight="0.8">
+
         <include layout="@layout/device_function"/>
     </LinearLayout>
 

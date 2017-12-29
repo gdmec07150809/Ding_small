@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -47,9 +48,9 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.device_list);
+        setContentView(R.layout.new_device_list);
         init();//初始化控件
-        getSpnner();//下拉列表
+        //getSpnner();//下拉列表
         CreatJson();//构造jsonArray备用
         device_listview.setAdapter(new DeviceListAdapter(DeviceListActivity.this,jsonArray));//设置适配器
         device_listview.setOnItemClickListener(new OnItemClickListener() {//列表item事件
@@ -70,11 +71,12 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         });
     }
     private void init(){
-        Right = findViewById(R.id.Right);
-        device_listview=findViewById(R.id.device_listview);
-        findViewById(R.id.select).setOnClickListener(this);
+        //Right = findViewById(R.id.Right);
+        device_listview=findViewById(R.id.select_device_list);
+        //findViewById(R.id.select).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
-        findViewById(R.id.scan_layout).setOnClickListener(this);
+        findViewById(R.id.scan_list_layout).setOnClickListener(this);
+        //findViewById(R.id.personalcenter_layout).setOnClickListener(this);
     }
     private void CreatJson(){
         jsonArray=new JSONArray();
@@ -108,11 +110,11 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         device_staus.add("0");
         device_staus.add("1");
 
-        device_type.add("bluetooth");
-        device_type.add("wifi");
-        device_type.add("scan");
-        device_type.add("scan");
-        device_type.add("wifi");
+        device_type.add("2017/5/9");
+        device_type.add("2017/6/2");
+        device_type.add("2017/8/1");
+        device_type.add("2017/9/2");
+        device_type.add("2017/10/12");
         try {
             for (int i=0;i<device_names.size();i++){
                 JSONObject jsonObject;
@@ -121,13 +123,14 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 jsonObject.put("device_location",device_locations.get(i));
                 jsonObject.put("device_ssid",device_ssids.get(i));
                 jsonObject.put("device_state",device_staus.get(i));
-                jsonObject.put("device_type",device_type.get(i));
+                jsonObject.put("device_date",device_type.get(i));
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     private void getSpnner() {
         data_list = new ArrayList<String>();
         data_list.add("个人");
@@ -164,12 +167,14 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()){
-            case R.id.select:
-                System.out.println("小图标");
-                Right.performClick();
-                break;
-            case R.id.scan_layout:
+//            case R.id.select:
+//                System.out.println("小图标");
+//                Right.performClick();
+//                break;
+            case R.id.scan_list_layout:
+                System.out.println("扫码");
                 IntentIntegrator integrator=new IntentIntegrator(DeviceListActivity.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
                 integrator.setPrompt("扫描二维码/条形码");
@@ -177,6 +182,11 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 integrator.setBeepEnabled(true);
                 integrator.initiateScan();
                 break;
+//            case R.id.personalcenter_layout:
+//                intent=new Intent(DeviceListActivity.this,PersonalCenterActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                break;
             case R.id.back:
                 finish();
                 break;

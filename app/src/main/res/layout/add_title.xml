@@ -322,7 +322,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/c3_bg"/>
+                            android:background="@drawable/c15_bg"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -336,7 +336,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/c4_bg"/>
+                            android:background="@drawable/c16_bg"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -350,7 +350,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/c5_bg"/>
+                            android:background="@drawable/c17_bg"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -364,7 +364,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/c6_bg"/>
+                            android:background="@drawable/c18_bg"/>
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>

@@ -13,22 +13,23 @@
             android:layout_weight="1"
             android:layout_height="match_parent">
             <LinearLayout
-                android:id="@+id/scan_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/scan_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
                 android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btn_green"
                 android:orientation="vertical">
-             <Button
+             <TextView
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
-                 android:layout_marginTop="15dp"
-                 android:layout_marginLeft="10dp"
-                 android:layout_marginRight="10dp"
-                 android:layout_marginBottom="15dp"
                  android:text="扫码"
+                 android:layout_gravity="center"
+                 android:gravity="center"
                  android:textSize="6pt"
                  android:textColor="@color/white"
-                 android:background="@drawable/btn_green"/>
+                />
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
@@ -37,21 +38,23 @@
             android:layout_weight="1"
             android:layout_height="match_parent">
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/manual_layout"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
                 android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btn_green"
                 android:orientation="vertical">
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="15dp"
-                    android:text="手工"
+                    android:text="手动"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:textSize="6pt"
                     android:textColor="@color/white"
-                    android:background="@drawable/btn_green"/>
+                    />
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
@@ -60,21 +63,23 @@
             android:layout_weight="1"
             android:layout_height="match_parent">
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
                 android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btn_green"
                 android:orientation="vertical">
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="15dp"
                     android:text="搜索"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:textSize="6pt"
                     android:textColor="@color/white"
-                    android:background="@drawable/btn_green"/>
+                    />
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
@@ -83,21 +88,23 @@
             android:layout_weight="1"
             android:layout_height="match_parent">
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
                 android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btn_green"
                 android:orientation="vertical">
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="15dp"
                     android:text="刷新"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:textSize="6pt"
                     android:textColor="@color/white"
-                    android:background="@drawable/btn_green"/>
+                    />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
