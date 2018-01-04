@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.content.Intent;
 
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
@@ -30,6 +33,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static com.example.administrator.ding_small.NotepadActivity.TAG;
 import static com.example.administrator.ding_small.R.*;
 
 
@@ -41,6 +46,30 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
     SharedPreferences sp=null;//定义储存源，备用
     String memId,tokEn;
     String code_str,phone_str,p1_str,p2_str,login_user,login_pass;
+
+
+    private long clickTime=0;
+
+    //重写onKeyDown方法,实现双击退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - clickTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再次点击退出",  Toast.LENGTH_SHORT).show();
+            clickTime = System.currentTimeMillis();
+        } else {
+            Log.e(TAG, "exit application");
+            this.finish();
+            System.exit(0);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,7 +189,8 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.101:8080/a10/api/user/login.do";
+           // String url = "http://120.76.188.131:8080/a10/api/user/login.do";192.168.1.105
+            String url = "http://192.168.1.105:8080/a10/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass=MD5Utils.md5(login_pass);
 
@@ -256,7 +286,7 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.101:8080/a10/api/user/getSmsMsg.do";
+            String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String b= "{\"memPhone\":"+phone_str+",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
@@ -283,7 +313,7 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.101:8080/a10/api/user/register.do";
+            String url = "http://120.76.188.131:8080/a10/api/user/register.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass=MD5Utils.md5(p1_str);
             String b= "{\"memPhone\":\""+phone_str+"\",\"memPwd1\":\""+pass+"\",\"smsVerifCode\":\""+code_str+"\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串

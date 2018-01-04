@@ -1,19 +1,28 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +48,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     private ListView select_device_list;
     private TextView date_text,selling_text,device_text,ssid_text;
     private EditText search_edittext;
+    private Dialog mCameraDialog;
     private ImageView date_img,selling_img,device_img,uuid_img;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +60,15 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         select_device_list.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(SelectDeviceActivity.this,CreatRepairActivity.class);
+                Intent intent=new Intent(SelectDeviceActivity.this,DeviceDetailActivity.class);
+                Bundle bundle=new Bundle();
+                try {
+                    JSONObject object=new JSONObject(jsonArray.get(i).toString());
+                    bundle.putString("device_name",object.getString("device_name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -190,15 +208,77 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 uuid_img.setImageResource(R.mipmap.icon_common_sort_down);
                 break;
             case R.id.add_device://新增
-                intent=new Intent(SelectDeviceActivity.this,MainLayoutActivity.class);
+//                intent=new Intent(SelectDeviceActivity.this,MainLayoutActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+                setDialog();
+                break;
+            case R.id.search_layout://搜索添加
+                intent=new Intent(SelectDeviceActivity.this,DeviceSearchActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.cancel_layout://取消
+                mCameraDialog.dismiss();
+                break;
+            case R.id.scan_layout:
+                IntentIntegrator integrator=new IntentIntegrator(SelectDeviceActivity.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                integrator.setPrompt("扫描二维码/条形码");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(true);
+                integrator.initiateScan();
                 break;
             case R.id.back:
                 finish();
                 break;
             default:
                 break;
+        }
+    }
+
+    //底部弹出菜单
+    private void setDialog() {
+        LinearLayout root=null;
+        mCameraDialog = new Dialog(this, R.style.BottomDialog);
+        root = (LinearLayout) LayoutInflater.from(this).inflate(
+                R.layout.device_style, null);
+        //初始化视图
+        root.findViewById(R.id.search_layout).setOnClickListener(this);
+        root.findViewById(R.id.scan_layout).setOnClickListener(this);
+        root.findViewById(R.id.cancel_layout).setOnClickListener(this);
+
+//        default_img=root.findViewById(R.id.default_img);
+//        five_img=root.findViewById(R.id.five_img);
+//        one_minute_img=root.findViewById(R.id.one_minute_img);
+
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+    }
+
+    //接收扫描结果
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result=IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if (result.getContents()==null){
+            Toast.makeText(this,"扫描失败",Toast.LENGTH_SHORT).show();
+        }else{
+            System.out.println("扫描结果："+result.getContents());
+            Intent intent=new Intent(SelectDeviceActivity.this,PerfectDeviceActivity.class);
+            startActivity(intent);
+            //resultNew.setText("扫描结果："+result.getContents());
         }
     }
 }

@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -26,18 +29,20 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
+import com.example.administrator.ding_small.Label.EditLabelActivity;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -54,6 +59,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -65,8 +72,8 @@ import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivit
  */
 
 public class CreatRepairRemarksActivity extends Activity implements View.OnClickListener{
-    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature;
-    private ImageView photo1,photo2,photo3,photo4;
+    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature,information_text,remarks_text;
+    private ImageView photo1,photo2,photo3,photo4,new_information_img,new_photo_img,new_remarks_img;
     private String atTime,title;
     InputMethodManager imm;
     private Dialog mCameraDialog;
@@ -75,16 +82,19 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
     private  String latitude_str,longitude_str,province_str,temperature_str;
+    private FlowLayout found_activity_fyt;
+    private ArrayList<Bitmap> arrayList=new ArrayList<Bitmap>();
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.repair_remarks);
+        setContentView(R.layout.new_repair_layout);
         init();//初始化控件
-        getStringValue();//获取前页传来的数据
-        getLocation();//获取当前经纬度
-        getTemperature();//获取当前温度
-
+        //getStringValue();//获取前页传来的数据
+        //getLocation();//获取当前经纬度
+        //getTemperature();//获取当前温度
+        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),R.mipmap.icon_fix_addimg);
+        arrayList.add(icon);
     }
     private void getTemperature(){
         try {
@@ -97,7 +107,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         System.out.println("市："+province_str);
         String url="https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location="+province_str+"&language=zh-Hans&unit=c";
         sendRequestWithHttpClient(this,url);//获取温度的方法
-
     }
     @RequiresApi(api = VERSION_CODES.M)
     private void getLocation(){
@@ -132,23 +141,31 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         at_action.setText(title);
     }
     private void init(){
-        dateT=findViewById(R.id.date);
-        dateT.setOnClickListener(this);
-        findViewById(R.id.photo_layout).setOnClickListener(this);
-        findViewById(R.id.location_layout).setOnClickListener(this);
-        findViewById(R.id.reimbursement_layout).setOnClickListener(this);
-        findViewById(R.id.parameter_layout).setOnClickListener(this);
-        findViewById(R.id.management_layout).setOnClickListener(this);
-        findViewById(R.id.confrim_btn).setOnClickListener(this);
-        findViewById(R.id.back).setOnClickListener(this);
+//        dateT=findViewById(R.id.date);
+//        dateT.setOnClickListener(this);
+        findViewById(R.id.new_information_layout).setOnClickListener(this);//信息
+        findViewById(R.id.new_remarks_layout).setOnClickListener(this);//备注
+        findViewById(R.id.new_photo_layout).setOnClickListener(this);//图片
+//        findViewById(R.id.reimbursement_layout).setOnClickListener(this);
+//        findViewById(R.id.parameter_layout).setOnClickListener(this);
+//        findViewById(R.id.management_layout).setOnClickListener(this);
+        findViewById(R.id.confrim_btn).setOnClickListener(this);//确定
+        findViewById(R.id.back).setOnClickListener(this);//返回
+        findViewById(R.id.new_select_layout).setOnClickListener(this);//选择地址
 
-        location_text=findViewById(R.id.location_text);
+        remarks_text=findViewById(R.id.remarks_text);
         photo_text=findViewById(R.id.photo_text);
-        reimbursement_text=findViewById(R.id.reimbursement_text);
-        parameter_text=findViewById(R.id.parameter_text);
-        management_text=findViewById(R.id.management_text);
-        title_layout=findViewById(R.id.action);
-        at_action=findViewById(R.id.at_action);
+        information_text=findViewById(R.id.information_text);
+//        reimbursement_text=findViewById(R.id.reimbursement_text);
+//        parameter_text=findViewById(R.id.parameter_text);
+//        management_text=findViewById(R.id.management_text);
+//        title_layout=findViewById(R.id.action);
+//        at_action=findViewById(R.id.at_action);
+
+       // information_img,photo_img,location_img;
+        new_information_img=findViewById(R.id.new_information_img);
+        new_photo_img=findViewById(R.id.new_photo_img);
+        new_remarks_img=findViewById(R.id.new_remarks_img);
     }
     @Override
     public void onClick(View view) {
@@ -167,128 +184,177 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
                 timeSelector.show();
                 break;
-            case R.id.photo_layout://备注图片事件
+            case R.id.new_information_layout:
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+                imm.showSoftInputFromInputMethod(view.getWindowToken(), 0); //强制显示键盘
 
-                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
-                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.new_repair_photo_lay).setVisibility(View.GONE);
+                findViewById(R.id.new_repair_remarks_lay).setVisibility(View.GONE);
+                findViewById(R.id.repair_information_lay).setVisibility(View.VISIBLE);
 
-                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
-                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                information_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
 
-                photo1=findViewById(R.id.photo1);
-                photo2=findViewById(R.id.photo2);
-                photo3=findViewById(R.id.photo3);
-                photo4=findViewById(R.id.photo4);
-                photo1.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(1);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo2.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(2);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo3.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(3);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo4.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(4);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo1.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(1);
-                        return true;
-                    }
-                });
-                photo2.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(2);
-                        return true;
-                    }
-                });
-                photo3.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(3);
-                        return true;
-                    }
-                });
-                photo4.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(4);
-                        return true;
-                    }
-                });
+                new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_normal);
+                new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_normal);
+                new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_active);
+
                 break;
-            case R.id.btn_open_camera://打开相机1
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 11);
+            case R.id.new_remarks_layout:
+                findViewById(R.id.new_repair_photo_lay).setVisibility(View.GONE);
+                findViewById(R.id.new_repair_remarks_lay).setVisibility(View.VISIBLE);
+                findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
+
+                information_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+
+                new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_normal);
+                new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_active);
+                new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
+
                 break;
-            case R.id.btn_open_camera2://打开相机2
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,12);
+            case R.id.new_photo_layout://备注图片事件
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInputFromInputMethod(view.getWindowToken(), 0); //强制显示键盘
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+
+//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
+//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+//
+//                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
+//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
+//
+//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//
+//                photo1=findViewById(R.id.photo1);
+//                photo2=findViewById(R.id.photo2);
+//                photo3=findViewById(R.id.photo3);
+//                photo4=findViewById(R.id.photo4);
+//                photo1.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(1);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo2.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(2);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo3.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(3);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo4.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(4);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo1.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(1);
+//                        return true;
+//                    }
+//                });
+//                photo2.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(2);
+//                        return true;
+//                    }
+//                });
+//                photo3.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(3);
+//                        return true;
+//                    }
+//                });
+//                photo4.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(4);
+//                        return true;
+//                    }
+//                });
+                findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
+                findViewById(R.id.new_repair_remarks_lay).setVisibility(View.GONE);
+                findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
+
+                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                information_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+
+                new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_active);
+                new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_normal);
+                new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
+
+                labelFlowLayout(arrayList);
                 break;
-            case R.id.btn_open_camera3://打开相机3
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 13);
+
+            case R.id.new_select_layout:
+                intent=new Intent(CreatRepairRemarksActivity.this,SelectLocationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
-            case R.id.btn_open_camera4://打开相机4
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 14);
-                break;
-            case R.id.btn_cancel://上弹菜单取消事件
-                mCameraDialog.dismiss();
-                break;
-            case R.id.btn_choose_img://选择相册1
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 21);
-                break;
-            case R.id.btn_choose_img2://选择相册2
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 22);
-                break;
-            case R.id.btn_choose_img3://选择相册3
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,23 );
-                break;
-            case R.id.btn_choose_img4://选择相册4
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 24);
-                break;
+//            case R.id.btn_open_camera2://打开相机2
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent,12);
+//                break;
+//            case R.id.btn_open_camera3://打开相机3
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent, 13);
+//                break;
+//            case R.id.btn_open_camera4://打开相机4
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent, 14);
+//                break;
+//            case R.id.btn_cancel://上弹菜单取消事件
+//                mCameraDialog.dismiss();
+//                break;
+//            case R.id.btn_choose_img://选择相册1
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 21);
+//                break;
+//            case R.id.btn_choose_img2://选择相册2
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 22);
+//                break;
+//            case R.id.btn_choose_img3://选择相册3
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent,23 );
+//                break;
+//            case R.id.btn_choose_img4://选择相册4
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 24);
+//                break;
             case R.id.location_layout://备注地址事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
@@ -392,7 +458,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 management_text.setTextColor(ContextCompat.getColor(this,R.color.green));
                 break;
             case R.id.confrim_btn:
-                intent=new Intent(CreatRepairRemarksActivity.this,DeviceListActivity.class);
+                intent=new Intent(CreatRepairRemarksActivity.this,CreatRepairActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -409,8 +475,8 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-        mCameraDialog.dismiss();
-        findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
+
+        findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
         //判断那个相机回调
         switch (requestCode){
             case 11:
@@ -425,9 +491,41 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     new DateFormat();
                     String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
                     System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+
+                    arrayList.add(bitmap);
+                    if(arrayList.size()==10){
+                        arrayList.remove(0);
+                    }
+                    /*更新图片布局*/
+                    found_activity_fyt.removeAllViews();
+                    //加载搜索记录
+                    for (int i = arrayList.size()-1; i >=0; i--) {
+                        final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                        System.out.println("数组："+arrayList.size());
+                        imageView.setImageBitmap(arrayList.get(i));
+                        imageView.setPadding(15, 10, 15, 10);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                        //设置边距
+                        params.topMargin = 30;
+                        params.bottomMargin = 5;
+                        params.leftMargin = 0;
+                        params.rightMargin = 8;
+                        imageView.setLayoutParams(params);
+                        found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                        found_activity_fyt.addView(imageView);//将内容添加到布局中
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {//添加点击事件
+                                if(found_activity_fyt.getChildCount()<10){
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(intent, 11);
+                                }
+                                }
+                            });
+                        }
 
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
@@ -449,225 +547,224 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                             e.printStackTrace();
                         }
                     }
-                    try
-                    {
-                        photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-
+//                    try
+//                    {
+//                        photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
+//                    }catch(Exception e)
+//                    {
+//                        Log.e("error", e.getMessage());
+//                    }
                 }
                 break;
-            case 12:
-                if (resultCode == Activity.RESULT_OK) {
-                    String sdStatus = Environment.getExternalStorageState();
-                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                        Log.i("TestFile",
-                                "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new DateFormat();
-                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-                    Bundle bundle = data.getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-
-                    FileOutputStream b = null;
-                    File file = new File("/sdcard/Image/");
-                    file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
-
-                    try {
-                        b = new FileOutputStream(fileName);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if(b!=null){
-                                b.flush();
-                                b.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    try
-                    {
-                        photo2.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-
-                }
-                break;
-            case 13:
-                if (resultCode == Activity.RESULT_OK) {
-                    String sdStatus = Environment.getExternalStorageState();
-                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                        Log.i("TestFile",
-                                "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new DateFormat();
-                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-                    Bundle bundle = data.getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-
-                    FileOutputStream b = null;
-                    File file = new File("/sdcard/Image/");
-                    file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
-
-                    try {
-                        b = new FileOutputStream(fileName);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if(b!=null){
-                                b.flush();
-                                b.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    try
-                    {
-                        photo3.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-
-                }
-                break;
-            case 14:
-                if (resultCode == Activity.RESULT_OK) {
-                    String sdStatus = Environment.getExternalStorageState();
-                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                        Log.i("TestFile",
-                                "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new DateFormat();
-                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-                    Bundle bundle = data.getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-
-                    FileOutputStream b = null;
-                    File file = new File("/sdcard/Image/");
-                    file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
-
-                    try {
-                        b = new FileOutputStream(fileName);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if(b!=null){
-                                b.flush();
-                                b.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    try
-                    {
-                        photo4.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-                }
-                break;
-            case 21:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                }
-                break;
-            case 22:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                }
-                break;
-            case 23:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                }
-                break;
-            case 24:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                }
-                break;
+//            case 12:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    String sdStatus = Environment.getExternalStorageState();
+//                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+//                        Log.i("TestFile",
+//                                "SD card is not avaiable/writeable right now.");
+//                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    new DateFormat();
+//                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+//                    System.out.println("路径："+name);
+//                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+//                    Bundle bundle = data.getExtras();
+//                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+//
+//                    FileOutputStream b = null;
+//                    File file = new File("/sdcard/Image/");
+//                    file.mkdirs();// 创建文件夹
+//                    String fileName = "/sdcard/Image/"+name;
+//
+//                    try {
+//                        b = new FileOutputStream(fileName);
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } finally {
+//                        try {
+//                            if(b!=null){
+//                                b.flush();
+//                                b.close();
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    try
+//                    {
+//                        photo2.setImageBitmap(bitmap);// 将图片显示在ImageView里
+//                    }catch(Exception e)
+//                    {
+//                        Log.e("error", e.getMessage());
+//                    }
+//
+//                }
+//                break;
+//            case 13:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    String sdStatus = Environment.getExternalStorageState();
+//                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+//                        Log.i("TestFile",
+//                                "SD card is not avaiable/writeable right now.");
+//                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    new DateFormat();
+//                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+//                    System.out.println("路径："+name);
+//                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+//                    Bundle bundle = data.getExtras();
+//                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+//
+//                    FileOutputStream b = null;
+//                    File file = new File("/sdcard/Image/");
+//                    file.mkdirs();// 创建文件夹
+//                    String fileName = "/sdcard/Image/"+name;
+//
+//                    try {
+//                        b = new FileOutputStream(fileName);
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } finally {
+//                        try {
+//                            if(b!=null){
+//                                b.flush();
+//                                b.close();
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    try
+//                    {
+//                        photo3.setImageBitmap(bitmap);// 将图片显示在ImageView里
+//                    }catch(Exception e)
+//                    {
+//                        Log.e("error", e.getMessage());
+//                    }
+//
+//                }
+//                break;
+//            case 14:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    String sdStatus = Environment.getExternalStorageState();
+//                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+//                        Log.i("TestFile",
+//                                "SD card is not avaiable/writeable right now.");
+//                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    new DateFormat();
+//                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+//                    System.out.println("路径："+name);
+//                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+//                    Bundle bundle = data.getExtras();
+//                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+//
+//                    FileOutputStream b = null;
+//                    File file = new File("/sdcard/Image/");
+//                    file.mkdirs();// 创建文件夹
+//                    String fileName = "/sdcard/Image/"+name;
+//
+//                    try {
+//                        b = new FileOutputStream(fileName);
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } finally {
+//                        try {
+//                            if(b!=null){
+//                                b.flush();
+//                                b.close();
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    try
+//                    {
+//                        photo4.setImageBitmap(bitmap);// 将图片显示在ImageView里
+//                    }catch(Exception e)
+//                    {
+//                        Log.e("error", e.getMessage());
+//                    }
+//                }
+//                break;
+//            case 21:
+//                //打开相册并选择照片，这个方式选择单张
+//                // 获取返回的数据，这里是android自定义的Uri地址
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Uri selectedImage = data.getData();
+//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//                    // 获取选择照片的数据视图
+//                    Cursor cursor = getContentResolver().query(selectedImage,
+//                            filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    // 从数据视图中获取已选择图片的路径
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String picturePath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    // 将图片显示到界面上
+//                    photo1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//                }
+//                break;
+//            case 22:
+//                //打开相册并选择照片，这个方式选择单张
+//                // 获取返回的数据，这里是android自定义的Uri地址
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Uri selectedImage = data.getData();
+//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//                    // 获取选择照片的数据视图
+//                    Cursor cursor = getContentResolver().query(selectedImage,
+//                            filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    // 从数据视图中获取已选择图片的路径
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String picturePath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    // 将图片显示到界面上
+//                    photo2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//                }
+//                break;
+//            case 23:
+//                //打开相册并选择照片，这个方式选择单张
+//                // 获取返回的数据，这里是android自定义的Uri地址
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Uri selectedImage = data.getData();
+//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//                    // 获取选择照片的数据视图
+//                    Cursor cursor = getContentResolver().query(selectedImage,
+//                            filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    // 从数据视图中获取已选择图片的路径
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String picturePath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    // 将图片显示到界面上
+//                    photo3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//                }
+//                break;
+//            case 24:
+//                //打开相册并选择照片，这个方式选择单张
+//                // 获取返回的数据，这里是android自定义的Uri地址
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Uri selectedImage = data.getData();
+//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//                    // 获取选择照片的数据视图
+//                    Cursor cursor = getContentResolver().query(selectedImage,
+//                            filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    // 从数据视图中获取已选择图片的路径
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String picturePath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    // 将图片显示到界面上
+//                    photo4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//                }
+//                break;
         }
 
     }
@@ -843,4 +940,35 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         }
 
     };
+
+    //图片布局方法
+    private void labelFlowLayout(final ArrayList<Bitmap> arrayList) {
+        if(found_activity_fyt==null){
+            //加载搜索记录
+            for (int i = 0; i < arrayList.size(); i++) {
+                final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                System.out.println("数组："+arrayList.size());
+                imageView.setImageBitmap(arrayList.get(i));
+                imageView.setPadding(15, 10, 15, 10);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//设置宽高,第一个参数是宽,第二个参数是高
+                //设置边距
+                params.topMargin = 5;
+                params.bottomMargin = 5;
+                params.leftMargin = 8;
+                params.rightMargin = 8;
+                imageView.setLayoutParams(params);
+                found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                found_activity_fyt.addView(imageView);//将内容添加到布局中
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {//添加点击事件
+                           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                           startActivityForResult(intent, 11);
+
+                    }
+                });
+            }
+        }
+    }
+
 }

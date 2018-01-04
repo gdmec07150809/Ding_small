@@ -43,7 +43,7 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
     SharedPreferences sp=null;//定义储存源，备用
     private String memid,token,sign,ts;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts);
         list=findViewById(R.id.contacts_list);
@@ -95,9 +95,9 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url1 = "http://192.168.1.101:8080/a10/app/ppt6000/dataList.do";//测试链接,未通
+        String url1 = "http://192.168.1.103:8080/a10/app/ppt6000/dataList.do";//测试链接,未通
         ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：" + memid + "ts:" + ts +"token:"+token);
+        System.out.println("首页：" + memid + "  ts:" + ts +"  token:"+token);
         String Sign = url1 + memid + token + ts;
         sign = MD5Utils.md5(Sign);
         if(memid!=null){
@@ -179,7 +179,7 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.101:8080/a10/app/ppt6000/dataList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/a10/app/ppt6000/dataList.do?memId=" + memid + "&ts=" + ts;
             System.out.println("URL:"+url);
             OkHttpClient okHttpClient = new OkHttpClient();
             String b= "{\"eqpId\":\"198dbe33682548f4a92a864dca3ac5a9\"}";//json字符串

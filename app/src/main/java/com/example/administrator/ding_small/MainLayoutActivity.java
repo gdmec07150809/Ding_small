@@ -185,14 +185,16 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         Intent intent;
         switch (view.getId()){
             case R.id.notepad_layout://记事本
-                intent=new Intent(MainLayoutActivity.this,NotepadBtnActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
+//                intent=new Intent(MainLayoutActivity.this,NotepadBtnActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
                 break;
             case R.id.account_layout://记账本
-                intent=new Intent(MainLayoutActivity.this,AccountBookActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
+//                intent=new Intent(MainLayoutActivity.this,AccountBookActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
                 break;
             case R.id.device_layout://设备表
                 intent=new Intent(MainLayoutActivity.this,DeviceListActivity.class);
@@ -200,19 +202,22 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.contacts_layout://联系人
-                intent=new Intent(MainLayoutActivity.this,ContactsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
+//                intent=new Intent(MainLayoutActivity.this,ContactsActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
                 break;
             case R.id.notepad_calendar://记事本日历
-                intent=new Intent(MainLayoutActivity.this,NotepadSearchByCalendarActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
+//                intent=new Intent(MainLayoutActivity.this,NotepadSearchByCalendarActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
                 break;
             case R.id.account_calendar://记账本日历
-                intent=new Intent(MainLayoutActivity.this,AccountsSearchByCalendarActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
+//                intent=new Intent(MainLayoutActivity.this,AccountsSearchByCalendarActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
                 break;
             case R.id.login_layout://登陆
                 intent=new Intent(MainLayoutActivity.this,LoginAcitivity.class);
@@ -230,7 +235,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.more_layout://更多功能暂未开发
-                Toast.makeText(this,"该功能暂未开发",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.scan_layout://扫码功能

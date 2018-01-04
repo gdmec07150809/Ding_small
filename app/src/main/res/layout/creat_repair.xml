@@ -15,11 +15,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
-            <ImageView
+            <LinearLayout
                 android:id="@+id/back"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/back"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30px"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/icon_common_back_col"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#1CD39B"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10px"
+                    android:text="返回"/>
+            </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +91,8 @@
                     android:id="@+id/c_btn"
                     android:layout_below="@+id/action"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp">
+                    android:background="@color/time_bg_color"
+                    android:layout_height="300dp">
                     <android.support.v4.view.ViewPager
                         android:id="@+id/viewPager"
                         android:layout_above="@+id/main_ll"
@@ -84,17 +100,6 @@
                         android:layout_height="wrap_content">
                     </android.support.v4.view.ViewPager>
                 </RelativeLayout>
-                <LinearLayout
-                    android:id="@+id/h1"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/hui"
-                    android:layout_below="@+id/c_btn"
-                    android:orientation="horizontal" />
-
                 <RelativeLayout
                     android:id="@+id/time_day"
                     android:layout_width="match_parent"
@@ -107,31 +112,37 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:textSize="6pt"
-                        android:textColor="@color/blank"
+                        android:textSize="30px"
+                        android:textColor="@color/title_color"
                         android:text="要求完工日期"/>
                     <TextView
                         android:id="@+id/day"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
+                       android:layout_toLeftOf="@+id/date"
                         android:text="10月12日"
-                        android:textColor="@color/blank"
+                        android:textColor="@color/list_item_color"
                         android:textSize="6pt"/>
+                    <ImageView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/new_come"/>
                 </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/h2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/hui"
+                    android:background="@color/hui_rule"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_below="@+id/time_day"
                     android:orientation="horizontal" />
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/remarks_layout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -144,11 +155,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="6pt"
+                        android:textSize="30px"
                         android:layout_marginLeft="5dp"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/blank"
-                        android:text="备注"/>
-                </LinearLayout>
+                        android:text="报修信息"/>
+
+                    <TextView
+                        android:id="@+id/confirmation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/con_img"
+                        android:text="未填写"
+                        android:textColor="@color/list_item_color"
+                        android:textSize="6pt"/>
+                    <ImageView
+                        android:id="@+id/con_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/new_come"/>
+                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
 
@@ -157,15 +186,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
-            <Button
-                android:id="@+id/comfir_btn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/green"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="8pt"
-                android:text="确定"/>
+           <include layout="@layout/confirm_submit"/>
         </LinearLayout>
     </RelativeLayout>
 

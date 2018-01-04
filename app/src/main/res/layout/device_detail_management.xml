@@ -41,7 +41,7 @@
         android:layout_weight="1"
         android:layout_marginLeft="10dp"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         >
 
         <LinearLayout

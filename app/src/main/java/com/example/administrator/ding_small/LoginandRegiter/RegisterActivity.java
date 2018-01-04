@@ -113,8 +113,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-           // String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
-             String url = "http://192.168.1.101:8080/a10/api/user/getSmsMsg.do";
+            //String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
+            String url = "http://192.168.1.105:8080/a10/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String b= "{\"memPhone\":"+phone_str+",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
@@ -141,7 +141,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.101:8080/a10/api/user/register.do";
+           // String url = "http://120.76.188.131:8080/a10/api/user/register.do";
+            String url = "http://192.168.1.105:8080/a10/api/user/register.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass= MD5Utils.md5(p1_str);
             String b= "{\"memPhone\":\""+phone_str+"\",\"memPwd1\":\""+pass+"\",\"memName\":\"" + memName_str + "\",\"smsVerifCode\":\""+code_str+"\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串

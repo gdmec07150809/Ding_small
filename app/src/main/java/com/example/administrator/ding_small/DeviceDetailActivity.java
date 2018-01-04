@@ -53,10 +53,10 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     private boolean isEdit=false;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
 
-    private LinearLayout call_record_layout,management_layout,manufacturer_layout,parameter_layout,selling_point_layout,record_layout;
-    private ImageView management_img,selling_point_img,parameter_img,manufacturer_img,record_img,call_record_img,repair_img;
+    private LinearLayout call_record_layout,management_layout,manufacturer_layout,parameter_layout,selling_point_layout,record_layout,base_layout;
+    private ImageView management_img,selling_point_img,parameter_img,manufacturer_img,record_img,call_record_img,repair_img,base_img;
     private EditText selling_point_name,selling_point_number,selling_point_location,selling_point_phone,selling_point_user,parameter_location;
-    private TextView latitude,longitude,temperature,location_detail;
+    private TextView latitude,longitude,temperature,location_detail,base_text,management_text,selling_text,parameter_text,manufacturer_text;
 
     private String str_location=null;
     private  String latitude_str,longitude_str,province_str,temperature_str;
@@ -64,7 +64,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.device_detail);
+        setContentView(R.layout.new_device_detail);
         init();//初始化控件，绑定监听
         getBundleString();//获取bundle数据
         getLocation();//获取当前地址
@@ -79,30 +79,43 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
     private void init(){
         device_name=findViewById(R.id.device_name);
-        findViewById(R.id.call_record_up).setOnClickListener(this);//调拨记录
-        findViewById(R.id.management_up).setOnClickListener(this);//管理信息
-        findViewById(R.id.manufacturer_up).setOnClickListener(this);//制造商
-        findViewById(R.id.parameter_up).setOnClickListener(this);//设备参数
-        findViewById(R.id.selling_point_up).setOnClickListener(this);//售点信息
-        findViewById(R.id.record_up).setOnClickListener(this);//维修记录
+        //findViewById(R.id.call_record_up).setOnClickListener(this);//调拨记录
+        findViewById(R.id.management_layout).setOnClickListener(this);//管理信息
+        findViewById(R.id.new_manufacturer_layout).setOnClickListener(this);//制造商
+        findViewById(R.id.new_parameter_layout).setOnClickListener(this);//设备参数
+        findViewById(R.id.new_selling_layout).setOnClickListener(this);//售点信息
+        findViewById(R.id.base_layout).setOnClickListener(this);//基本信息
+        findViewById(R.id.repair_btn).setOnClickListener(this);//一键报修
+        //findViewById(R.id.record_up).setOnClickListener(this);//维修记录
         findViewById(R.id.back).setOnClickListener(this);//返回;
-        findViewById(R.id.edit).setOnClickListener(this);//编辑
-        findViewById(R.id.device_del).setOnClickListener(this);//删除
+        //findViewById(R.id.edit).setOnClickListener(this);//编辑
+        //findViewById(R.id.device_del).setOnClickListener(this);//删除
 
-        call_record_layout=findViewById(R.id.call_record_layout);
-        management_layout=findViewById(R.id.management_layout);
-        manufacturer_layout=findViewById(R.id.manufacturer_layout);
-        parameter_layout=findViewById(R.id.parameter_layout);
-        selling_point_layout=findViewById(R.id.selling_point_layout);
-        record_layout=findViewById(R.id.record_layout);
+       // call_record_layout=findViewById(R.id.call_record_layout);
+
+        base_layout=findViewById(R.id.base_down_layout);
+        management_layout=findViewById(R.id.management_down_layout);
+        manufacturer_layout=findViewById(R.id.manufacturer_down_layout);
+        parameter_layout=findViewById(R.id.parameter_down_layout);
+        selling_point_layout=findViewById(R.id.selling_down_layout);
+        //record_layout=findViewById(R.id.record_layout);
         /* management_img,selling_point_img,parameter_img,manufacturer_img,record_img,call_record_img;  箭头图片的初始化*/
+
         management_img=findViewById(R.id.management_img);
-        selling_point_img=findViewById(R.id.selling_point_img);
+        selling_point_img=findViewById(R.id.selling_img);
         parameter_img=findViewById(R.id.parameter_img);
         manufacturer_img=findViewById(R.id.manufacturer_img);
-        record_img=findViewById(R.id.record_img);
-        call_record_img=findViewById(R.id.call_record_img);
-        findViewById(R.id.repair_img).setOnClickListener(this);
+        base_img=findViewById(R.id.base_img);
+//        record_img=findViewById(R.id.record_img);
+//        call_record_img=findViewById(R.id.call_record_img);
+     //   findViewById(R.id.repair_img).setOnClickListener(this);
+
+        //base_text,management_text,selling_text,parameter_text,manufacturer_text;信息标题
+        base_text=findViewById(R.id.base_text);
+        management_text=findViewById(R.id.management_text);
+        selling_text=findViewById(R.id.selling_text);
+        parameter_text=findViewById(R.id.parameter_text);
+        manufacturer_text=findViewById(R.id.manufacturer_text);
     }
     //按钮点击事件
     @Override
@@ -120,49 +133,101 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     call_record_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.management_up://管理信息
-                if(isManagement){
-                    management_layout.setVisibility(View.VISIBLE);
-                    isManagement=!isManagement;
-                    management_img.setImageResource(R.drawable.up_jiantou);
-                }else{
-                    management_layout.setVisibility(View.GONE);
-                    isManagement=!isManagement;
-                    management_img.setImageResource(R.drawable.butoom_jiantou);
-                }
+            case R.id.management_layout://管理信息
+                management_layout.setVisibility(View.VISIBLE);
+                base_layout.setVisibility(View.GONE);
+                manufacturer_layout.setVisibility(View.GONE);
+                parameter_layout.setVisibility(View.GONE);
+                selling_point_layout.setVisibility(View.GONE);
+
+                management_img.setImageResource(R.mipmap.icon_info_up);
+                selling_point_img.setImageResource(R.mipmap.icon_info_down);
+                parameter_img.setImageResource(R.mipmap.icon_info_down);
+                manufacturer_img.setImageResource(R.mipmap.icon_info_down);
+                base_img.setImageResource(R.mipmap.icon_info_down);
+
+                //base_text,management_text,selling_text,parameter_text,manufacturer_text
+                base_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                management_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                manufacturer_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
                 break;
-            case R.id.manufacturer_up://制造商
-                if(isManufacturer){
-                    manufacturer_layout.setVisibility(View.VISIBLE);
-                    isManufacturer=!isManufacturer;
-                    manufacturer_img.setImageResource(R.drawable.up_jiantou);
-                }else{
-                    manufacturer_layout.setVisibility(View.GONE);
-                    isManufacturer=!isManufacturer;
-                    manufacturer_img.setImageResource(R.drawable.butoom_jiantou);
-                }
+            case R.id.new_manufacturer_layout://制造商
+                management_layout.setVisibility(View.GONE);
+                base_layout.setVisibility(View.GONE);
+                manufacturer_layout.setVisibility(View.VISIBLE);
+                parameter_layout.setVisibility(View.GONE);
+                selling_point_layout.setVisibility(View.GONE);
+
+                management_img.setImageResource(R.mipmap.icon_info_down);
+                selling_point_img.setImageResource(R.mipmap.icon_info_down);
+                parameter_img.setImageResource(R.mipmap.icon_info_down);
+                manufacturer_img.setImageResource(R.mipmap.icon_info_up);
+                base_img.setImageResource(R.mipmap.icon_info_down);
+
+                base_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                management_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                manufacturer_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
                 break;
-            case R.id.parameter_up://参数信息
-                if(isParameter){
-                    parameter_layout.setVisibility(View.VISIBLE);
-                    isParameter=!isParameter;
-                    parameter_img.setImageResource(R.drawable.up_jiantou);
-                }else{
-                    parameter_layout.setVisibility(View.GONE);
-                    isParameter=!isParameter;
-                    parameter_img.setImageResource(R.drawable.butoom_jiantou);
-                }
+            case R.id.new_parameter_layout://参数信息
+                management_layout.setVisibility(View.GONE);
+                base_layout.setVisibility(View.GONE);
+                manufacturer_layout.setVisibility(View.GONE);
+                parameter_layout.setVisibility(View.VISIBLE);
+                selling_point_layout.setVisibility(View.GONE);
+
+                management_img.setImageResource(R.mipmap.icon_info_down);
+                selling_point_img.setImageResource(R.mipmap.icon_info_down);
+                parameter_img.setImageResource(R.mipmap.icon_info_up);
+                manufacturer_img.setImageResource(R.mipmap.icon_info_down);
+                base_img.setImageResource(R.mipmap.icon_info_down);
+
+                base_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                management_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                manufacturer_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
                 break;
-            case R.id.selling_point_up://售点信息
-                if(isSellingPoint){
-                    selling_point_layout.setVisibility(View.VISIBLE);
-                    isSellingPoint=!isSellingPoint;
-                    selling_point_img.setImageResource(R.drawable.up_jiantou);
-                }else{
-                    selling_point_layout.setVisibility(View.GONE);
-                    isSellingPoint=!isSellingPoint;
-                    selling_point_img.setImageResource(R.drawable.butoom_jiantou);
-                }
+            case R.id.new_selling_layout://售点信息
+                management_layout.setVisibility(View.GONE);
+                base_layout.setVisibility(View.GONE);
+                manufacturer_layout.setVisibility(View.GONE);
+                parameter_layout.setVisibility(View.GONE);
+                selling_point_layout.setVisibility(View.VISIBLE);
+
+                management_img.setImageResource(R.mipmap.icon_info_down);
+                selling_point_img.setImageResource(R.mipmap.icon_info_up);
+                parameter_img.setImageResource(R.mipmap.icon_info_down);
+                manufacturer_img.setImageResource(R.mipmap.icon_info_down);
+                base_img.setImageResource(R.mipmap.icon_info_down);
+
+                base_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                management_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                manufacturer_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                break;
+            case R.id.base_layout://基本信息
+                management_layout.setVisibility(View.GONE);
+                base_layout.setVisibility(View.VISIBLE);
+                manufacturer_layout.setVisibility(View.GONE);
+                parameter_layout.setVisibility(View.GONE);
+                selling_point_layout.setVisibility(View.GONE);
+
+                management_img.setImageResource(R.mipmap.icon_info_down);
+                selling_point_img.setImageResource(R.mipmap.icon_info_down);
+                parameter_img.setImageResource(R.mipmap.icon_info_down);
+                manufacturer_img.setImageResource(R.mipmap.icon_info_down);
+                base_img.setImageResource(R.mipmap.icon_info_up);
+
+                base_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                management_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                manufacturer_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
                 break;
             case R.id.record_up://维修记录
                 if(isRecord){
@@ -175,7 +240,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     record_img.setImageResource(R.drawable.butoom_jiantou);
                 }
                 break;
-            case R.id.repair_img://报修按钮
+            case R.id.repair_btn://报修按钮
                 intent=new Intent(DeviceDetailActivity.this,CreatRepairActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -251,7 +316,6 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 dialog.dismiss();
                             }
                         });
-
                 builder.create().show();
                 break;
             case R.id.back://返回

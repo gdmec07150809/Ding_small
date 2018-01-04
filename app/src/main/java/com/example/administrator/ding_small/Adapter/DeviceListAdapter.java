@@ -16,6 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 
 /**
  * Created by Administrator on 2017/10/19.
@@ -25,7 +28,7 @@ public class DeviceListAdapter extends BaseAdapter {
     private Context context;
     private ViewHolder holder;
     private JSONArray list=null;
-    private String date=null;
+    private long date;
     public DeviceListAdapter(Context context, JSONArray list) {
         this.context = context;
         holder = new ViewHolder();
@@ -64,25 +67,32 @@ public class DeviceListAdapter extends BaseAdapter {
         }
         try {
             JSONObject obj=new JSONObject(String.valueOf(list.get(i)));
-            holder.device_name.setText( obj.getString("device_name"));
-            holder.location.setText( obj.getString("device_location"));
-            holder.ssid.setText( obj.getString("device_ssid"));
-            String stauts=obj.getString("device_state");
-            String type=obj.getString("device_date");
+            System.out.println("adapter:"+String.valueOf(list.get(i)));
+            holder.device_name.setText( obj.getString("eqp_name"));
+            if(obj.getString("eqp_address_json")==null||obj.getString("eqp_address_json").equals("null")){
+                holder.location.setText("");
+            }else{
+                holder.location.setText(obj.getString("eqp_address_json"));
+            }
+            holder.ssid.setText( obj.getString("mac_no"));
+            String stauts=obj.getString("eqp_status");
+            String type=obj.getString("insert_date");
+            long date1= Long.parseLong(type);
+
             if(stauts.equals("0")){
                 holder.stauts.setImageResource(R.mipmap.icon_maintain_connected);
             }else{
                 holder.stauts.setImageResource(R.mipmap.icon_maintain_unconnect);
             }
-            holder.device_date.setText(type);
+            holder.device_date.setText( getFormatedDateTime("yyyy-MM-dd HH:mm:ss",date1));
             if(i==0){
-                    date=type;
+                    date=date1;
             }else{
-                    if(date.equals(type)){
+                    if(date==date1){
                         holder.date_layout.setVisibility(View.GONE);
-                        date=type;
+                        date=date1;
                     }else{
-                        date=type;
+                        date=date1;
                     }
 
             }
@@ -95,5 +105,9 @@ public class DeviceListAdapter extends BaseAdapter {
         TextView  device_name,location,ssid,device_date;
         ImageView stauts;
         LinearLayout date_layout;
+    }
+    public static String getFormatedDateTime(String pattern, long dateTime) {
+        SimpleDateFormat sDateFormat = new SimpleDateFormat(pattern);
+        return sDateFormat.format(new Date(dateTime + 0));
     }
 }

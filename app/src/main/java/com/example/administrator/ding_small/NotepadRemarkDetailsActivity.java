@@ -105,8 +105,8 @@ public class NotepadRemarkDetailsActivity extends Activity implements View.OnCli
             e.printStackTrace();
         }
         listView.setAdapter(new NotepadRemarkDetailsAdapter(NotepadRemarkDetailsActivity.this,jsonArray));
-        setListViewHeightBasedOnChildren(listView);
-        getBundlevalue();
+        setListViewHeightBasedOnChildren(listView);//计算listview的item个数，并完整显示
+        getBundlevalue();//获取页面传递的值
     }
     public void setListViewHeightBasedOnChildren(ListView listView) {
         // 获取ListView对应的Adapter

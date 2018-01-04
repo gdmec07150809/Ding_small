@@ -77,7 +77,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         day.setOnClickListener(this);
         action_text=findViewById(R.id.action_text);
         action=findViewById(R.id.action);
-        findViewById(R.id.comfir_btn).setOnClickListener(this);
+        findViewById(R.id.footer).setOnClickListener(this);
         findViewById(R.id.remarks_layout).setOnClickListener(this);
         //获取当前年月日时分
         Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
@@ -115,7 +115,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                 timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
                 timeSelector.show();
                 break;
-            case R.id.comfir_btn:
+            case R.id.footer:
                     intent=new Intent(CreatRepairActivity.this,DeviceListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

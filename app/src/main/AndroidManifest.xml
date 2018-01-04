@@ -62,6 +62,8 @@
         <activity android:name=".SearchActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".NotepadSearchByCalendarActivity"/>
         <activity android:name=".AccountBookActivity"/>
+
+
         <activity android:name=".PersonalCenter.PersonalCenterActivity"/>
         <activity android:name=".PersonalCenter.PersonalCenterPerfectActivity"/>
         <activity android:name=".PersonalCenter.InstructionsActivity"/>
@@ -71,6 +73,9 @@
         <activity android:name=".PersonalCenter.DataLockActivity"/>
         <activity android:name=".PersonalCenter.AboutActivity"/>
         <activity android:name=".PersonalCenter.BindingCompanyActivity"/>
+        <activity android:name=".PersonalCenter.EditPassWordActivity"/>
+        <activity android:name=".PersonalCenter.AccountSecurityActivity"/>
+
         <activity android:name=".RemarksActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".SearchTimeActivity"/>
         <activity android:name=".Label.AddLabelActivity" android:windowSoftInputMode="adjustResize"/>
@@ -113,9 +118,10 @@
         <activity android:name=".SelectDeviceActivity"/>
         <activity android:name=".DeviceSearchActivity"/>
         <activity android:name=".CreatRepairActivity"/>
-        <activity android:name=".CreatRepairRemarksActivity" android:windowSoftInputMode="adjustPan|stateVisible"/>
+        <activity android:name=".CreatRepairRemarksActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".PerfectDeviceActivity" android:windowSoftInputMode="adjustPan|stateAlwaysVisible"/>
-        <activity android:name=".PersonalCenter.EditPassWordActivity"/>
+
+        <activity android:name=".SelectLocationActivity" android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
