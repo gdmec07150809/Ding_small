@@ -84,6 +84,8 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private ImageView default_img,five_img,one_minute_img;
     private int refresh_num=1;
 
+    private int refreshTime=30000;//默认30秒
+
     @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,9 +110,13 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         wifiListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(DeviceSearchActivity.this,CreatRepairActivity.class);
+                Intent intent=new Intent(DeviceSearchActivity.this,DeviceDetailActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 System.out.println("WIFI："+i);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("activity", "DeviceSearch");
+                bundle1.putString("device_mac", scanResults.get(i).BSSID);
+                intent.putExtras(bundle1);
                 startActivity(intent);
             }
         });
@@ -196,7 +202,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         mWifiAdmin.startScan();
         return mWifiAdmin.getWifiList();
     }
-    //每隔1000*10时间刷新一次wifi列表
+    //每隔1000*30时间刷新一次wifi列表
     private Handler one_handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -218,7 +224,8 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 });
                 wifiAdapter = new WifiAdapter(DeviceSearchActivity.this, scanResults);
                 wifiListView.setAdapter(wifiAdapter);
-                one_handler.sendEmptyMessageDelayed(1, 10000);//默认10秒
+                 System.out.println("刷新时间："+refreshTime);
+                one_handler.sendEmptyMessageDelayed(1, refreshTime);//默认30秒
             }
     };
 
@@ -357,8 +364,11 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 blueListView.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent=new Intent(DeviceSearchActivity.this,CreatRepairActivity.class);
+                        Intent intent=new Intent(DeviceSearchActivity.this,DeviceDetailActivity.class);
                         System.out.println("蓝牙："+i);
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("device_name", "蓝牙"+i);
+                        intent.putExtras(bundle1);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
@@ -372,18 +382,21 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 five_img.setVisibility(View.GONE);
                 one_minute_img.setVisibility(View.GONE);
                 refresh_num=1;
+                refreshTime=30000;//30秒
                 break;
             case R.id.five_layout:
                 five_img.setVisibility(View.VISIBLE);
                 default_img.setVisibility(View.GONE);
                 one_minute_img.setVisibility(View.GONE);
                 refresh_num=2;
+                refreshTime=5000;//5秒
                 break;
             case R.id.one_minute_layout:
                 five_img.setVisibility(View.GONE);
                 default_img.setVisibility(View.GONE);
                 one_minute_img.setVisibility(View.VISIBLE);
                 refresh_num=3;
+                refreshTime=1000*60;//1分钟
                 break;
             case R.id.back:
                 finish();
@@ -392,7 +405,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 break;
         }
     }
-    //默认10秒搜一次
+    //默认30秒搜一次
     private Handler starTimer = new Handler(){
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         public void handleMessage(android.os.Message msg) {
@@ -405,8 +418,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                         blueListView.setAdapter(mDevListAdapter);
                         mDevListAdapter.notifyDataSetChanged();
                     }
-
-                    starTimer.sendEmptyMessageDelayed(0,10000);//默认10秒
+                    starTimer.sendEmptyMessageDelayed(0,refreshTime);//默认30秒
                 }
 
         }
@@ -516,6 +528,21 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         default_img=root.findViewById(R.id.default_img);
         five_img=root.findViewById(R.id.five_img);
         one_minute_img=root.findViewById(R.id.one_minute_img);
+
+        //判断哪个之前被选中
+        if(refresh_num==1){
+            default_img.setVisibility(View.VISIBLE);
+            five_img.setVisibility(View.GONE);
+            one_minute_img.setVisibility(View.GONE);
+        }else if(refresh_num==2){
+            default_img.setVisibility(View.GONE);
+            five_img.setVisibility(View.VISIBLE);
+            one_minute_img.setVisibility(View.GONE);
+        }else {
+            default_img.setVisibility(View.GONE);
+            five_img.setVisibility(View.GONE);
+            one_minute_img.setVisibility(View.VISIBLE);
+        }
 
         mCameraDialog.setContentView(root);
         Window dialogWindow = mCameraDialog.getWindow();

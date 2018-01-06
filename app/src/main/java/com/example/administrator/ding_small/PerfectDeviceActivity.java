@@ -30,15 +30,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 
 import org.apache.http.HttpEntity;
@@ -55,6 +58,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -67,23 +71,38 @@ import static com.example.administrator.ding_small.R.id.date;
  */
 
 public class PerfectDeviceActivity extends Activity implements View.OnClickListener{
-    private TextView location_text,photo_text,reimbursement_text,parameter_text,management_text,date_text,latitude,longitude,location,temperature,location_detail;
+    //private TextView location_text,photo_text,reimbursement_text,parameter_text,management_text,date_text,latitude,longitude,location,temperature,location_detail;
+    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature,information_text,remarks_text,adress_text,leapfrog;
+    private ImageView new_information_img,new_photo_img,new_remarks_img;
     InputMethodManager imm;
     private Dialog mCameraDialog;
     private ImageView photo1,photo2,photo3,photo4;
     int nowYear,nowMonth,nowDay;
     private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
     private String str_location=null;
-    private  String latitude_str,longitude_str,province_str,temperature_str,result;
+    private  String latitude_str,longitude_str,province_str,temperature_str,result,device_mac;
+    private FlowLayout found_activity_fyt;
+    private ArrayList<Bitmap> arrayList=new ArrayList<Bitmap>();
+    private EditText repair_user;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.perfect_device);
+        setContentView(R.layout.new_perfect_device);
         init();//初始化控件
-        getTimeNow();//获取当前时间
+        getBundleString();//获取页面传递数据
+        //getTimeNow();//获取当前时间
         getLocation();//获取当前经纬度
-        getTemperature();//获取当前温度
+        //getTemperature();//获取当前温度
+        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),R.mipmap.icon_fix_addimg);
+        arrayList.add(icon);
+    }
+
+    private  void getBundleString(){
+        Bundle getStringValue=this.getIntent().getExtras();
+        if(getStringValue.getString("device_mac")!=null){
+            device_mac=getStringValue.getString("device_mac");
+        }
     }
     private void getTemperature(){
         try {
@@ -109,7 +128,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         nowYear = t.year;
         nowMonth= t.month;
         nowDay= t.monthDay;
-        date_text.setText(nowYear+"-"+(nowMonth+1)+"-"+nowDay);
+       // date_text.setText(nowYear+"-"+(nowMonth+1)+"-"+nowDay);
         System.out.println("日期："+nowYear+"-"+nowMonth+"-"+nowDay);
     }
     @RequiresApi(api = VERSION_CODES.M)
@@ -136,24 +155,39 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         }).start();
     }
     private void init(){
-        findViewById(R.id.photo_layout).setOnClickListener(this);
-        findViewById(R.id.location_layout).setOnClickListener(this);
-        findViewById(R.id.reimbursement_layout).setOnClickListener(this);
-        findViewById(R.id.parameter_layout).setOnClickListener(this);
-        findViewById(R.id.management_layout).setOnClickListener(this);
-        findViewById(R.id.more_device_name).setOnClickListener(this);
-        findViewById(R.id.more_mac).setOnClickListener(this);
-        findViewById(R.id.more_poc).setOnClickListener(this);
-        findViewById(R.id.confrim_btn).setOnClickListener(this);
+//        findViewById(R.id.photo_layout).setOnClickListener(this);
+//        findViewById(R.id.location_layout).setOnClickListener(this);
+//        findViewById(R.id.reimbursement_layout).setOnClickListener(this);
+//        findViewById(R.id.parameter_layout).setOnClickListener(this);
+//        findViewById(R.id.management_layout).setOnClickListener(this);
+//        findViewById(R.id.more_device_name).setOnClickListener(this);
+//        findViewById(R.id.more_mac).setOnClickListener(this);
+//        findViewById(R.id.more_poc).setOnClickListener(this);
+            findViewById(R.id.confrim_btn).setOnClickListener(this);
+            findViewById(R.id.leapfrog).setOnClickListener(this);
+            findViewById(R.id.back).setOnClickListener(this);
+//
+//        date_text=findViewById(date);
+//        date_text.setOnClickListener(this);
+//        location_text=findViewById(R.id.location_text);
+//        photo_text=findViewById(R.id.photo_text);
+//        reimbursement_text=findViewById(R.id.reimbursement_text);
+//        parameter_text=findViewById(R.id.parameter_text);
+//        management_text=findViewById(R.id.management_text);
+//        location_detail=findViewById(R.id.location_detail);
+        findViewById(R.id.new_information_layout).setOnClickListener(this);//信息
+        findViewById(R.id.new_remarks_layout).setOnClickListener(this);//备注
+        findViewById(R.id.new_photo_layout).setOnClickListener(this);//图片
 
-        date_text=findViewById(date);
-        date_text.setOnClickListener(this);
-        location_text=findViewById(R.id.location_text);
+        remarks_text=findViewById(R.id.remarks_text);
         photo_text=findViewById(R.id.photo_text);
-        reimbursement_text=findViewById(R.id.reimbursement_text);
-        parameter_text=findViewById(R.id.parameter_text);
-        management_text=findViewById(R.id.management_text);
-        location_detail=findViewById(R.id.location_detail);
+        information_text=findViewById(R.id.information_text);
+
+        repair_user=findViewById(R.id.repair_user);
+
+        new_information_img=findViewById(R.id.new_information_img);
+        new_photo_img=findViewById(R.id.new_photo_img);
+        new_remarks_img=findViewById(R.id.new_remarks_img);
 
     }
 
@@ -161,256 +195,413 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()){
-            case R.id.photo_layout://备注图片事件
-                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-
-                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
-                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-
-                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
-                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-
-                photo1=findViewById(R.id.photo1);
-                photo2=findViewById(R.id.photo2);
-                photo3=findViewById(R.id.photo3);
-                photo4=findViewById(R.id.photo4);
-                photo1.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(1);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo2.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(2);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo3.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(3);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo4.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setDialog(4);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(intent, 0);
-                    }
-                });
-                photo1.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(1);
-                        return true;
-                    }
-                });
-                photo2.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(2);
-                        return true;
-                    }
-                });
-                photo3.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(3);
-                        return true;
-                    }
-                });
-                photo4.setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        showDetelePhotoDialog(4);
-                        return true;
-                    }
-                });
+//            case R.id.photo_layout://备注图片事件
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+//
+//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
+//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+//
+//                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
+//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
+//
+//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//
+//                photo1=findViewById(R.id.photo1);
+//                photo2=findViewById(R.id.photo2);
+//                photo3=findViewById(R.id.photo3);
+//                photo4=findViewById(R.id.photo4);
+//                photo1.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(1);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo2.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(2);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo3.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(3);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo4.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(4);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo1.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(1);
+//                        return true;
+//                    }
+//                });
+//                photo2.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(2);
+//                        return true;
+//                    }
+//                });
+//                photo3.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(3);
+//                        return true;
+//                    }
+//                });
+//                photo4.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(4);
+//                        return true;
+//                    }
+//                });
+//                break;
+//            case R.id.btn_open_camera://打开相机1
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent, 11);
+//                break;
+//            case R.id.btn_open_camera2://打开相机2
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent,12);
+//                break;
+//            case R.id.btn_open_camera3://打开相机3
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent, 13);
+//                break;
+//            case R.id.btn_open_camera4://打开相机4
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent, 14);
+//                break;
+//            case R.id.btn_cancel://上弹菜单取消事件
+//                mCameraDialog.dismiss();
+//                break;
+//            case R.id.btn_choose_img://选择相册1
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 21);
+//                break;
+//            case R.id.btn_choose_img2://选择相册2
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 22);
+//                break;
+//            case R.id.btn_choose_img3://选择相册3
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent,23 );
+//                break;
+//            case R.id.btn_choose_img4://选择相册4
+//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 24);
+//                break;
+//            case R.id.location_layout://备注地址事件
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+//
+//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.c6_bg);
+//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+//
+//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_location_layout).setVisibility(View.VISIBLE);
+//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
+//
+//                location_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                break;
+//            case R.id.reimbursement_layout://备注维修人事件
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+//
+//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.c6_bg);
+//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+//
+//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_user_layout).setVisibility(View.VISIBLE);
+//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
+//
+//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                break;
+//            case R.id.parameter_layout://备注参数事件
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+//
+//                longitude=findViewById(R.id.longitude);
+//                latitude=findViewById(R.id.latitude);
+//                location=findViewById(R.id.location);
+//                temperature=findViewById(R.id.temperature);
+//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.c6_bg);
+//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+//
+//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_parameter_layout).setVisibility(View.VISIBLE);
+//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
+//
+//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                //获取地址
+//                if(str_location ==null || str_location.isEmpty()){
+//                    Toast.makeText(this,"请打开网络,重新进入",Toast.LENGTH_SHORT).show();
+//                }else{
+//                    longitude.setText(longitude_str);
+//                    latitude.setText(latitude_str);
+//                    location.setText(str_location);
+//                }
+//                temperature.setText(temperature_str+"℃");
+//                break;
+//            case R.id.management_layout://备注管理人事件
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+//
+//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.c6_bg);
+//
+//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_management_layout).setVisibility(View.VISIBLE);
+//
+//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                management_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+//                break;
+//            case R.id.more_device_name://设备更多信息
+//                showMoreInformation(1);
+//                break;
+//            case R.id.more_mac:
+//                showMoreInformation(2);//mac
+//                break;
+//            case R.id.more_poc://运营中心列表
+//                showMoreInformation(3);
+//                break;
+               case R.id.confrim_btn://确定
+                    // String location_detail_str=location_detail.getText().toString();
+                   //String device_name_str=repair_user.getText().toString();
+                   intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
+                   Bundle bundle = new Bundle();
+                   bundle.putString("device_mac", device_mac);
+                   intent.putExtras(bundle);
+                   intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                   startActivity(intent);
                 break;
-            case R.id.btn_open_camera://打开相机1
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 11);
+            case R.id.leapfrog://跳过
+                // String location_detail_str=location_detail.getText().toString();
+                //String device_name_str=repair_user.getText().toString();
+                intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
+                   Bundle bundle1 = new Bundle();
+                    bundle1.putString("device_mac", device_mac);
+                    intent.putExtras(bundle1);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 break;
-            case R.id.btn_open_camera2://打开相机2
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,12);
+            case R.id.back:
+                finish();
                 break;
-            case R.id.btn_open_camera3://打开相机3
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 13);
-                break;
-            case R.id.btn_open_camera4://打开相机4
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 14);
-                break;
-            case R.id.btn_cancel://上弹菜单取消事件
-                mCameraDialog.dismiss();
-                break;
-            case R.id.btn_choose_img://选择相册1
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 21);
-                break;
-            case R.id.btn_choose_img2://选择相册2
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 22);
-                break;
-            case R.id.btn_choose_img3://选择相册3
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,23 );
-                break;
-            case R.id.btn_choose_img4://选择相册4
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 24);
-                break;
-            case R.id.location_layout://备注地址事件
-                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+//            case date:
+//                new DatePickerDialog(PerfectDeviceActivity.this, new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                     //   date_text.setText(String.format("%d-%d-%d",year,monthOfYear+1,dayOfMonth));
+//                    }
+//                },nowYear,nowMonth,nowDay).show();
+//                break;
+            case R.id.new_information_layout:
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.showSoftInputFromInputMethod(view.getWindowToken(), 0); //强制显示键盘
 
-                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.c6_bg);
-                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+                findViewById(R.id.new_repair_photo_lay).setVisibility(View.GONE);
+                findViewById(R.id.new_repair_remarks_lay).setVisibility(View.GONE);
+                findViewById(R.id.repair_information_lay).setVisibility(View.VISIBLE);
 
-                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_location_layout).setVisibility(View.VISIBLE);
-                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                information_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+
+                new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_normal);
+                new_remarks_img.setBackgroundResource(R.mipmap.icon_equiplist_location_normal);
+                new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_active);
+
                 break;
-            case R.id.reimbursement_layout://备注维修人事件
-                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
+            case R.id.new_remarks_layout:
+                findViewById(R.id.new_repair_photo_lay).setVisibility(View.GONE);
+                findViewById(R.id.new_repair_remarks_lay).setVisibility(View.VISIBLE);
+                findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
 
-                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.c6_bg);
-                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+                information_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
 
-                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_user_layout).setVisibility(View.VISIBLE);
-                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
+                new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_normal);
+                new_remarks_img.setBackgroundResource(R.mipmap.icon_equiplist_location_active);
+                new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                break;
-            case R.id.parameter_layout://备注参数事件
-                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-
-                longitude=findViewById(R.id.longitude);
-                latitude=findViewById(R.id.latitude);
-                location=findViewById(R.id.location);
-                temperature=findViewById(R.id.temperature);
-                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.c6_bg);
-                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-
-                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_parameter_layout).setVisibility(View.VISIBLE);
-                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                TextView location_text=findViewById(R.id.location_text);
+                TextView location_str=findViewById(R.id.location_str);
                 //获取地址
                 if(str_location ==null || str_location.isEmpty()){
                     Toast.makeText(this,"请打开网络,重新进入",Toast.LENGTH_SHORT).show();
                 }else{
-                    longitude.setText(longitude_str);
-                    latitude.setText(latitude_str);
-                    location.setText(str_location);
+                    location_text.setText(longitude_str+",  "+latitude_str);
+                    location_str.setText(str_location);
                 }
-                temperature.setText(temperature_str+"℃");
-                break;
-            case R.id.management_layout://备注管理人事件
-                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
 
-                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.c6_bg);
+                break;
+            case R.id.new_photo_layout://备注图片事件
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.showSoftInputFromInputMethod(view.getWindowToken(), 0); //强制显示键盘
+//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
 
-                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-                findViewById(R.id.repair_management_layout).setVisibility(View.VISIBLE);
+//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
+//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
+//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
+//
+//                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
+//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
+//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
+//
+//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+//
+//                photo1=findViewById(R.id.photo1);
+//                photo2=findViewById(R.id.photo2);
+//                photo3=findViewById(R.id.photo3);
+//                photo4=findViewById(R.id.photo4);
+//                photo1.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(1);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo2.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(2);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo3.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(3);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo4.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDialog(4);
+////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+////                        startActivityForResult(intent, 0);
+//                    }
+//                });
+//                photo1.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(1);
+//                        return true;
+//                    }
+//                });
+//                photo2.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(2);
+//                        return true;
+//                    }
+//                });
+//                photo3.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(3);
+//                        return true;
+//                    }
+//                });
+//                photo4.setOnLongClickListener(new OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View view) {
+//                        showDetelePhotoDialog(4);
+//                        return true;
+//                    }
+//                });
+                findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
+                findViewById(R.id.new_repair_remarks_lay).setVisibility(View.GONE);
+                findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                information_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+
+                new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_active);
+                new_remarks_img.setBackgroundResource(R.mipmap.icon_equiplist_location_normal);
+                new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
+               labelFlowLayout(arrayList);
                 break;
-            case R.id.more_device_name://设备更多信息
-                showMoreInformation(1);
-                break;
-            case R.id.more_mac:
-                showMoreInformation(2);//mac
-                break;
-            case R.id.more_poc://运营中心列表
-                showMoreInformation(3);
-                break;
-            case R.id.confrim_btn:
-                String location_detail_str=location_detail.getText().toString();
-                if (location_detail_str==null||location_detail_str.equals("")){
-                    Toast.makeText(this,"请输入详细地址",Toast.LENGTH_SHORT).show();
-                }else {
-                    intent=new Intent(PerfectDeviceActivity.this,DeviceListActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-                break;
-            case date:
-                new DatePickerDialog(PerfectDeviceActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        date_text.setText(String.format("%d-%d-%d",year,monthOfYear+1,dayOfMonth));
-                    }
-                },nowYear,nowMonth,nowDay).show();
-                break;
+
             default:
                 break;
         }
@@ -420,8 +611,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-        mCameraDialog.dismiss();
-        findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
         //判断那个相机回调
         switch (requestCode){
             case 11:
@@ -436,9 +626,41 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     new DateFormat();
                     String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
                     System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+
+                    arrayList.add(bitmap);
+                    if(arrayList.size()==10){
+                        arrayList.remove(0);
+                    }
+                    /*更新图片布局*/
+                    found_activity_fyt.removeAllViews();
+                    //加载搜索记录
+                    for (int i = arrayList.size()-1; i >=0; i--) {
+                        final ImageView imageView = new ImageView(PerfectDeviceActivity.this);
+                        System.out.println("数组："+arrayList.size());
+                        imageView.setImageBitmap(arrayList.get(i));
+                        imageView.setPadding(15, 10, 15, 10);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                        //设置边距
+                        params.topMargin = 30;
+                        params.bottomMargin = 5;
+                        params.leftMargin = 0;
+                        params.rightMargin = 8;
+                        imageView.setLayoutParams(params);
+                        found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                        found_activity_fyt.addView(imageView);//将内容添加到布局中
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {//添加点击事件
+                                if(found_activity_fyt.getChildCount()<10){
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(intent, 11);
+                                }
+                            }
+                        });
+                    }
 
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
@@ -460,223 +682,13 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                             e.printStackTrace();
                         }
                     }
-                    try
-                    {
-                        photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-
-                }
-                break;
-            case 12:
-                if (resultCode == Activity.RESULT_OK) {
-                    String sdStatus = Environment.getExternalStorageState();
-                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                        Log.i("TestFile",
-                                "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(PerfectDeviceActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new DateFormat();
-                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-                    Bundle bundle = data.getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-
-                    FileOutputStream b = null;
-                    File file = new File("/sdcard/Image/");
-                    file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
-
-                    try {
-                        b = new FileOutputStream(fileName);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if(b!=null){
-                                b.flush();
-                                b.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    try
-                    {
-                        photo2.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-
-                }
-                break;
-            case 13:
-                if (resultCode == Activity.RESULT_OK) {
-                    String sdStatus = Environment.getExternalStorageState();
-                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                        Log.i("TestFile",
-                                "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(PerfectDeviceActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new DateFormat();
-                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-                    Bundle bundle = data.getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-
-                    FileOutputStream b = null;
-                    File file = new File("/sdcard/Image/");
-                    file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
-
-                    try {
-                        b = new FileOutputStream(fileName);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if(b!=null){
-                                b.flush();
-                                b.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    try
-                    {
-                        photo3.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-
-                }
-                break;
-            case 14:
-                if (resultCode == Activity.RESULT_OK) {
-                    String sdStatus = Environment.getExternalStorageState();
-                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                        Log.i("TestFile",
-                                "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(PerfectDeviceActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new DateFormat();
-                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-                    Bundle bundle = data.getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-
-                    FileOutputStream b = null;
-                    File file = new File("/sdcard/Image/");
-                    file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
-
-                    try {
-                        b = new FileOutputStream(fileName);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if(b!=null){
-                                b.flush();
-                                b.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    try
-                    {
-                        photo4.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
-                        Log.e("error", e.getMessage());
-                    }
-                }
-                break;
-            case 21:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                }
-                break;
-            case 22:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                }
-                break;
-            case 23:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                }
-                break;
-            case 24:
-                //打开相册并选择照片，这个方式选择单张
-                // 获取返回的数据，这里是android自定义的Uri地址
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // 获取选择照片的数据视图
-                    Cursor cursor = getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    // 从数据视图中获取已选择图片的路径
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    // 将图片显示到界面上
-                    photo4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//                    try
+//                    {
+//                        photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
+//                    }catch(Exception e)
+//                    {
+//                        Log.e("error", e.getMessage());
+//                    }
                 }
                 break;
         }
@@ -890,5 +902,33 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
     };
 
+    //图片布局方法
+    private void labelFlowLayout(final ArrayList<Bitmap> arrayList) {
+        if(found_activity_fyt==null){
+            //加载搜索记录
+            for (int i = 0; i < arrayList.size(); i++) {
+                final ImageView imageView = new ImageView(PerfectDeviceActivity.this);
+                System.out.println("数组："+arrayList.size());
+                imageView.setImageBitmap(arrayList.get(i));
+                imageView.setPadding(15, 10, 15, 10);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//设置宽高,第一个参数是宽,第二个参数是高
+                //设置边距
+                params.topMargin = 5;
+                params.bottomMargin = 5;
+                params.leftMargin = 8;
+                params.rightMargin = 8;
+                imageView.setLayoutParams(params);
+                found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                found_activity_fyt.addView(imageView);//将内容添加到布局中
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {//添加点击事件
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 11);
 
+                    }
+                });
+            }
+        }
+    }
 }

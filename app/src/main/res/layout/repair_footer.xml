@@ -6,14 +6,14 @@
         android:layout_width="match_parent"
         android:layout_height="30px"
         android:background="@drawable/shadow_line"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="90px"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:layout_marginTop="10px"
             android:background="@drawable/btn_theme">
             <TextView
@@ -27,5 +27,5 @@
                 android:textColor="@color/white"
                 android:textSize="32px"/>
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

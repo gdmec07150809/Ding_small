@@ -21,7 +21,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/login_img"/>
             <TextView
-                android:layout_below="@+id/login_img"
+                android:layout_below="@+id/login_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -74,7 +74,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/custom_service_img"/>
             <TextView
-                android:layout_below="@+id/custom_service_img"
+                android:layout_below="@+id/custom_service_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -99,7 +99,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/news_img"/>
             <TextView
-                android:layout_below="@+id/news_img"
+                android:layout_below="@+id/news_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"

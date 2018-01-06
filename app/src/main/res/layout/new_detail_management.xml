@@ -20,6 +20,7 @@
                 android:textColor="@color/list_item_color"
                 android:layout_centerVertical="true" />
             <TextView
+                android:id="@+id/poc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -43,6 +44,7 @@
                 android:textColor="@color/list_item_color"
                 android:layout_centerVertical="true" />
             <TextView
+                android:id="@+id/companyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -66,6 +68,7 @@
                 android:textColor="@color/list_item_color"
                 android:layout_centerVertical="true" />
             <TextView
+                android:id="@+id/deptName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -89,6 +92,7 @@
                 android:textColor="@color/list_item_color"
                 android:layout_centerVertical="true" />
             <TextView
+                android:id="@+id/managementPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -112,6 +116,7 @@
                 android:textColor="@color/list_item_color"
                 android:layout_centerVertical="true" />
             <TextView
+                android:id="@+id/managementName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

@@ -28,7 +28,7 @@ public class DeviceListAdapter extends BaseAdapter {
     private Context context;
     private ViewHolder holder;
     private JSONArray list=null;
-    private long date;
+    private String date;
     public DeviceListAdapter(Context context, JSONArray list) {
         this.context = context;
         holder = new ViewHolder();
@@ -59,6 +59,7 @@ public class DeviceListAdapter extends BaseAdapter {
             holder.location =contentView.findViewById(R.id.location);
             holder.ssid = contentView.findViewById(R.id.uuid);
             holder.stauts = contentView.findViewById(R.id.stauts);
+            holder.stauts_img = contentView.findViewById(R.id.stauts_img);
             holder.device_date=contentView.findViewById(R.id.device_date);
             holder.date_layout=contentView.findViewById(R.id.date_layout);
             contentView.setTag(holder);
@@ -68,31 +69,33 @@ public class DeviceListAdapter extends BaseAdapter {
         try {
             JSONObject obj=new JSONObject(String.valueOf(list.get(i)));
             System.out.println("adapter:"+String.valueOf(list.get(i)));
-            holder.device_name.setText( obj.getString("eqp_name"));
-            if(obj.getString("eqp_address_json")==null||obj.getString("eqp_address_json").equals("null")){
+            holder.device_name.setText( obj.getString("eqpName"));
+            if(obj.getString("eqpAddressJson")==null||obj.getString("eqpAddressJson").equals("null")){
                 holder.location.setText("");
             }else{
-                holder.location.setText(obj.getString("eqp_address_json"));
+                JSONObject jsonObject=new JSONObject(obj.getString("eqpAddressJson"));
+                holder.location.setText(jsonObject.getString("fa"));
             }
-            holder.ssid.setText( obj.getString("mac_no"));
-            String stauts=obj.getString("eqp_status");
-            String type=obj.getString("insert_date");
-            long date1= Long.parseLong(type);
+            holder.ssid.setText( obj.getString("macNo"));
+            String stauts=obj.getString("eqpStatus");
+            String type=obj.getString("insertDate");
+           // long date1= Long.parseLong(type);
 
-            if(stauts.equals("0")){
-                holder.stauts.setImageResource(R.mipmap.icon_maintain_connected);
+            if(stauts.equals("1")){
+                holder.stauts_img.setImageResource(R.mipmap.icon_list_fixing);
             }else{
-                holder.stauts.setImageResource(R.mipmap.icon_maintain_unconnect);
+                holder.stauts_img.setVisibility(View.GONE);
             }
-            holder.device_date.setText( getFormatedDateTime("yyyy-MM-dd HH:mm:ss",date1));
+            //holder.device_date.setText( getFormatedDateTime("yyyy-MM-dd HH:mm:ss",date1));
+            holder.device_date.setText(type);
             if(i==0){
-                    date=date1;
+                    date=type;
             }else{
-                    if(date==date1){
+                    if(date.equals(type)){
                         holder.date_layout.setVisibility(View.GONE);
-                        date=date1;
+                        date=type;
                     }else{
-                        date=date1;
+                        date=type;
                     }
 
             }
@@ -103,7 +106,7 @@ public class DeviceListAdapter extends BaseAdapter {
     }
     private class ViewHolder{
         TextView  device_name,location,ssid,device_date;
-        ImageView stauts;
+        ImageView stauts,stauts_img;
         LinearLayout date_layout;
     }
     public static String getFormatedDateTime(String pattern, long dateTime) {

@@ -79,6 +79,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         action=findViewById(R.id.action);
         findViewById(R.id.footer).setOnClickListener(this);
         findViewById(R.id.remarks_layout).setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
         //获取当前年月日时分
         Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
         t.setToNow(); // 取得系统时间。

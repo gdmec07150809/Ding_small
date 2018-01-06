@@ -74,9 +74,12 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp=null;//定义储存源，备用
     String memid,token,sign,oldPass,newPass,ts,c_newPass;
+    int using_num=0;
+    int maintenancing_num=0;
     public static final int SHOW_RESPONSE = 0;
     private ScrollView scrollview;
     private Handler handler;
+    private TextView count_number,using,maintenancing;
     private LoadingLayout loading;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,13 +104,12 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.107:8080/app/ppt6000/dateList.do";
+        String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts+ "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("Sign:"+Sign);
         sign = MD5Utils.md5(Sign);
-
         new Thread(networkTask).start();//获取设备列表
     }
     private void init(){
@@ -118,7 +120,13 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         findViewById(R.id.scan_list_layout).setOnClickListener(this);
         scrollview=findViewById(R.id.scrollview_layout);
         loading=findViewById(R.id.loading_layout);
-        //findViewById(R.id.personalcenter_layout).setOnClickListener(this);
+        findViewById(R.id.search_img).setOnClickListener(this);//搜索
+        count_number=findViewById(R.id.count_number);//总数
+        findViewById(R.id.refresh_img).setOnClickListener(this);//刷新
+        findViewById(R.id.add_by_search).setOnClickListener(this);//搜索添加
+        // findViewById(R.id.personalcenter_layout).setOnClickListener(this);
+        using=findViewById(R.id.using);//使用中
+        maintenancing=findViewById(R.id.maintenancing);//维修中
     }
     private void CreatJson(){
         jsonArray=new JSONArray();
@@ -237,6 +245,20 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
 //                break;
+            case R.id.search_img:
+                intent=new Intent(DeviceListActivity.this,SearchBoxActiivty.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.refresh_img:
+                loading.setStatus(LoadingLayout.Loading);
+                getCache();
+                break;
+            case R.id.add_by_search:
+                intent=new Intent(DeviceListActivity.this,DeviceSearchActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
             case R.id.back:
                 finish();
                 break;
@@ -253,22 +275,34 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
             Toast.makeText(this,"扫描失败",Toast.LENGTH_SHORT).show();
         }else{
             System.out.println("扫描结果："+result.getContents());
-            Intent intent=new Intent(DeviceListActivity.this,PerfectDeviceActivity.class);
-            startActivity(intent);
+            String mac_str=null;
+            try{
+                mac_str=result.getContents().substring(result.getContents().indexOf("=")+1, result.getContents().indexOf("&"));
+                System.out.println("截取结果："+result.getContents().substring(result.getContents().indexOf("=")+1, result.getContents().indexOf("&")));
+            }catch (Exception e){
+                Toast.makeText(this,"该设备不存在",Toast.LENGTH_SHORT).show();
+            }
+            if(mac_str!=null){
+                Intent intent=new Intent(DeviceListActivity.this,PerfectDeviceActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("device_mac",mac_str);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
             //resultNew.setText("扫描结果："+result.getContents());
         }
     }
 
 
     /**
-     * 网络操作相关的子线程okhttp框架  发送验证码
+     * 网络操作相关的子线程okhttp框架  获取设备
      */
     Runnable networkTask = new Runnable() {
         @Override
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.107:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证："+sign);
             String b= "{}";//json字符串
@@ -323,8 +357,9 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                             System.out.println("数据："+object.getString("data"));
                             jsonArray=new JSONArray(object.getString("data"));
                             if(jsonArray.length()>0){
-                                loading.setStatus(LoadingLayout.Success);
 
+                                System.out.println(jsonArray.length());
+                                count_number.setText(jsonArray.length()+"");
                                 /*按销售日期排序 */
                                 sortedJsonArray = new JSONArray();
                                 List<JSONObject> jsonValues = new ArrayList<JSONObject>();
@@ -355,10 +390,17 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                 });
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     sortedJsonArray.put(jsonValues.get(i));
+                                    if(jsonValues.get(i).getString("eqpStatus").equals("1")){
+                                        maintenancing_num+=1;
+                                    }else   if(jsonValues.get(i).getString("eqpStatus").equals("2")){
+                                        using_num+=1;
+                                    }
                                 }
                             }
-
+                            using.setText(using_num+"");
+                            maintenancing.setText(maintenancing_num+"");
                             device_listview.setAdapter(new DeviceListAdapter(DeviceListActivity.this,sortedJsonArray));//设置适配器
+                            loading.setStatus(LoadingLayout.Success);
                             device_listview.setOnItemClickListener(new OnItemClickListener() {//列表item事件
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -366,8 +408,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                     Bundle bundle=new Bundle();
                                     try {
                                         JSONObject object=new JSONObject(sortedJsonArray.get(i).toString());
-
-                                        bundle.putString("device_name",object.getString("eqp_name"));
+                                        bundle.putString("device_mac",object.getString("macNo"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -375,9 +416,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                     startActivity(intent);
                                 }
                             });
-
                             setListViewHeightBasedOnChildren(device_listview);//计算listview的item个数,并完整显示
-
                         }else{
                             new AlertDialog.Builder(DeviceListActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定",new DialogInterface.OnClickListener() {
                                 @Override

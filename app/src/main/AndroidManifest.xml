@@ -117,11 +117,12 @@
         <activity android:name=".DeviceDetailActivity"/>
         <activity android:name=".SelectDeviceActivity"/>
         <activity android:name=".DeviceSearchActivity"/>
-        <activity android:name=".CreatRepairActivity"/>
+        <activity android:name=".CreatRepairActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".CreatRepairRemarksActivity" android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".PerfectDeviceActivity" android:windowSoftInputMode="adjustPan|stateAlwaysVisible"/>
+        <activity android:name=".PerfectDeviceActivity" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"/>
 
         <activity android:name=".SelectLocationActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".SearchBoxActiivty"/>
     </application>
 
 </manifest>

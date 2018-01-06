@@ -1,5 +1,7 @@
 package com.example.administrator.ding_small;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.AdvertisementGvAdapter;
 import com.example.administrator.ding_small.Fragment.AdvertisementFragment;
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 import com.example.administrator.ding_small.Utils.utils;
@@ -30,6 +33,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -53,22 +57,31 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     SharedPreferences sp=null;//定义储存源，备用
     private String memid,token,sign,oldPass,newPass,ts;
 
+    //变化语言所改变的控件
+    private TextView login_text,custom_service_text,news_text;//未定完
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-
-        Toast.makeText(MainLayoutActivity.this,"当前系统语言："+Locale.getDefault().getLanguage(),Toast.LENGTH_SHORT).show();
         init();//初始化控
         // ifApm();//判断上下午
+        changeLanguage();//设置语言
         initPager();//轮播图
 
         Handler handler=new Handler();
         handler.postDelayed(runnable, 100);
-
-
     }
+    private void changeLanguage(){
+        Toast.makeText(MainLayoutActivity.this,"当前系统语言："+Locale.getDefault().getLanguage(),Toast.LENGTH_SHORT).show();
+        if(Locale.getDefault().getLanguage().equals("eg")){
 
+        }
+    }
+    private  void getCache() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+    }
     Runnable runnable=new Runnable(){
         @Override
         public void run() {
@@ -197,9 +210,16 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 //                startActivity(intent);
                 break;
             case R.id.device_layout://设备表
-                intent=new Intent(MainLayoutActivity.this,DeviceListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                getCache();
+                System.out.println(memid);
+                if(!memid.equals("null")&&memid!=null){
+                    intent=new Intent(MainLayoutActivity.this,DeviceListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "请先登陆",  Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.contacts_layout://联系人
                 Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
@@ -225,26 +245,47 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.repair_layout://报修
-                intent=new Intent(MainLayoutActivity.this,SelectDeviceActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                getCache();
+                System.out.println(memid);
+                if(!memid.equals("null")&&memid!=null){
+                    intent=new Intent(MainLayoutActivity.this,SelectDeviceActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "请先登陆",  Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.search_layout://搜索
-                intent=new Intent(MainLayoutActivity.this,DeviceSearchActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                getCache();
+                System.out.println(memid);
+                if(!memid.equals("null")&&memid!=null){
+                    intent=new Intent(MainLayoutActivity.this,DeviceSearchActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "请先登陆",  Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.more_layout://更多功能暂未开发
                 Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.scan_layout://扫码功能
+                getCache();
+                System.out.println(memid);
+                if(!"null".equals(memid)&&memid!=null){
                     IntentIntegrator integrator=new IntentIntegrator(MainLayoutActivity.this);
                     integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
                     integrator.setPrompt("扫描二维码/条形码");
                     integrator.setCameraId(0);
                     integrator.setBeepEnabled(true);
                     integrator.initiateScan();
+                }else{
+                    Toast.makeText(getApplicationContext(), "请先登陆",  Toast.LENGTH_SHORT).show();
+                }
+
 //                 intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
 //                startActivity(intent);
                 break;
@@ -364,12 +405,24 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         if (result.getContents()==null){
             Toast.makeText(this,"扫描失败",Toast.LENGTH_SHORT).show();
         }else{
+            //http://www.ding-new.com/pptappdwnld.do?p1=16402&p2=03&p3=2w&p4=yy
             System.out.println("扫描结果："+result.getContents());
-            Intent intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
-            startActivity(intent);
+           // result.getContents().substring(result.getContents().indexOf("="), result.getContents().indexOf("&"));
+            String mac_str=null;
+            try{
+                mac_str=result.getContents().substring(result.getContents().indexOf("=")+1, result.getContents().indexOf("&"));
+                System.out.println("截取结果："+result.getContents().substring(result.getContents().indexOf("=")+1, result.getContents().indexOf("&")));
+            }catch (Exception e){
+                Toast.makeText(this,"该设备不存在",Toast.LENGTH_SHORT).show();
+            }
+            if(mac_str!=null){
+                Intent intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("device_mac",mac_str);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
             //resultNew.setText("扫描结果："+result.getContents());
         }
     }
-
-
 }

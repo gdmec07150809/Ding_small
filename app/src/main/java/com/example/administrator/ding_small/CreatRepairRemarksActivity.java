@@ -72,7 +72,7 @@ import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivit
  */
 
 public class CreatRepairRemarksActivity extends Activity implements View.OnClickListener{
-    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature,information_text,remarks_text;
+    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature,information_text,remarks_text,adress_text;
     private ImageView photo1,photo2,photo3,photo4,new_information_img,new_photo_img,new_remarks_img;
     private String atTime,title;
     InputMethodManager imm;
@@ -93,8 +93,15 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         //getStringValue();//获取前页传来的数据
         //getLocation();//获取当前经纬度
         //getTemperature();//获取当前温度
+        getString();//获取页面传递数据
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(),R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
+    }
+
+    private void getString(){
+        if(getIntent().getStringExtra("adress")!=null){
+            adress_text.setText(getIntent().getStringExtra("adress"));
+        };
     }
     private void getTemperature(){
         try {
@@ -166,6 +173,8 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         new_information_img=findViewById(R.id.new_information_img);
         new_photo_img=findViewById(R.id.new_photo_img);
         new_remarks_img=findViewById(R.id.new_remarks_img);
+
+        adress_text=findViewById(R.id.adress_text);
     }
     @Override
     public void onClick(View view) {

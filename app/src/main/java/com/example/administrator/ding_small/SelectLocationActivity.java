@@ -26,6 +26,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
+    private String adress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                 String text = options1Items.get(options1).getPickerViewText() +
                         options2Items.get(options1).get(options2) +
                         options3Items.get(options1).get(options2).get(options3);
+                adress=text;
                 mTvAddress.setText(text);
             }
         }).setTitleText("")
@@ -148,6 +150,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                 break;
             case R.id.comfir_btn://确定
                 intent=new Intent(SelectLocationActivity.this,CreatRepairRemarksActivity.class);
+                intent.putExtra("adress",adress);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
