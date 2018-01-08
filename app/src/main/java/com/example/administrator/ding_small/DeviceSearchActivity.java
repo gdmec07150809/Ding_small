@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2017/12/19.
@@ -71,7 +72,9 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     boolean pression = false;
     private  LoadingLayout loading;
     private LinearLayout wifi_buttom,bluetooth_buttom,refresh_layout;
-    private TextView wifi_text,bluetooth_text;
+
+    //更改语言所要更改的控件 wifi连接、蓝牙连接、返回、附近设备、刷新频率
+    private TextView wifi_text,bluetooth_text,back_text,nearby_devices_text,refresh_text;
 
     private BluetoothAdapter mBluetoothAdapter;
     private Handler mHandler;
@@ -92,8 +95,20 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_search);
         init();//初始化控件
+        changeTextView();//更改语言
         wifiUtils();//wifi代码类
         blueToothUtils();//蓝牙代码类
+    }
+
+    private void changeTextView(){
+        //wifi_text,bluetooth_text,back_text,nearby_devices_text,refresh_text
+        if(Locale.getDefault().getLanguage().equals("en")){
+            wifi_text.setText("WIFI Connection");
+            bluetooth_text.setText("Bluetooth Connection");
+            back_text.setText("Back");
+            nearby_devices_text.setText("Nearby Device");
+            refresh_text.setText("Refresh Rate");
+        }
     }
     private void init(){
         wifiListView = (ListView) findViewById(R.id.search_device_list);
@@ -102,6 +117,12 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         bluetooth_text=findViewById(R.id.bluetooth_text);
         wifi_buttom=findViewById(R.id.wifi_buttom);
         bluetooth_buttom=findViewById(R.id.bluetooth_buttom);
+
+        //wifi_text,bluetooth_text,back_text,nearby_devices_text,refresh_text
+        back_text=findViewById(R.id.back_text);
+        nearby_devices_text=findViewById(R.id.nearby_devices_text);
+        refresh_text=findViewById(R.id.refresh_text);
+
         findViewById(R.id.wifi_layout).setOnClickListener(this);
         findViewById(R.id.bluetooth_layout).setOnClickListener(this);
         findViewById(R.id.footer).setOnClickListener(this);
@@ -367,7 +388,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                         Intent intent=new Intent(DeviceSearchActivity.this,DeviceDetailActivity.class);
                         System.out.println("蓝牙："+i);
                         Bundle bundle1 = new Bundle();
-                        bundle1.putString("device_name", "蓝牙"+i);
+                        bundle1.putString("device_mac", mBleArray.get(i).getAddress());
                         intent.putExtras(bundle1);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -528,6 +549,17 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         default_img=root.findViewById(R.id.default_img);
         five_img=root.findViewById(R.id.five_img);
         one_minute_img=root.findViewById(R.id.one_minute_img);
+
+        TextView default_text=root.findViewById(R.id.default_text);
+        TextView five_text=root.findViewById(R.id.five_text);
+        TextView one_minute_text=root.findViewById(R.id.one_minute_text);
+        TextView refresh_text=root.findViewById(R.id.refresh_text);
+        if(Locale.getDefault().getLanguage().equals("en")){
+            default_text.setText("Default");
+            five_text.setText("Five Second ");
+            one_minute_text.setText("One Minute");
+            refresh_text.setText("Refresh Rate");
+        }
 
         //判断哪个之前被选中
         if(refresh_num==1){

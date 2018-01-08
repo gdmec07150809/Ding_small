@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -42,12 +44,18 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
     private EditText password,c_password,memName;
     private String p1_str,p2_str,phone_str,code_str,memName_str;
     public static final int SHOW_RESPONSE = 0;
+
+    //更改语言所要更改的控件
+    private TextView back_text,register_text,email_text,phone_text,code_text,nickname_text,password_text,confirm_text,send_text;
+    private Button next;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_phone_register);
-        findViewById(R.id.send_text).setOnClickListener(this);
-        findViewById(R.id.next).setOnClickListener(this);
+        send_text=findViewById(R.id.send_text);
+        send_text.setOnClickListener(this);
+        next=findViewById(R.id.next);
+        next.setOnClickListener(this);
         findViewById(R.id.email).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
         password=findViewById(R.id.password1);
@@ -55,6 +63,37 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         p_code=findViewById(R.id.p_code);
         phone=findViewById(R.id.phone);
         memName=findViewById(R.id.memName);
+
+        back_text=findViewById(R.id.back_text);
+        register_text=findViewById(R.id.register_text);
+        email_text=findViewById(R.id.email_text);
+        phone_text=findViewById(R.id.phone_text);
+        code_text=findViewById(R.id.code_text);
+        nickname_text=findViewById(R.id.nickname_text);
+        password_text=findViewById(R.id.password_text);
+        confirm_text=findViewById(R.id.confirm_text);
+
+        changeTextView();
+    }
+    private void changeTextView(){
+        if(Locale.getDefault().getLanguage().equals("en")){
+            phone_text.setText("Phone");
+            register_text.setText("Register");
+            back_text.setText("Back");
+            code_text.setText("Code");
+            email_text.setText("Email");
+            nickname_text.setText("NickName");
+
+            confirm_text.setText("Confirm");
+            phone.setHint("Enter phone");
+            p_code.setHint("Enter Code");
+            password_text.setText("PassWord");
+            c_password.setHint("Enter The PassWord Again");
+            memName.setHint("Enter NickName");
+            password.setHint("Enter PassWord");
+            send_text.setText("Get");
+            next.setText("Finish Register");
+        }
     }
 
     @Override

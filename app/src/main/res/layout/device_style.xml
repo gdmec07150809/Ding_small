@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="100px">
             <TextView
+                android:id="@+id/search_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -33,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="100px">
             <TextView
+                android:id="@+id/scan_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -46,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="100px">
             <TextView
+                android:id="@+id/cancel_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

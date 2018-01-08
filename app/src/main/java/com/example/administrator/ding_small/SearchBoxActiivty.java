@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.SearchBoxAdapter;
@@ -30,6 +31,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -55,21 +57,34 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener{
     public static final int SHOW_RESPONSE = 0;
 
     private JSONArray jsonArray;
+
+    //更改语言所要更改的控件
+    private TextView cancel_text,recent_search_record_text,clean_text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_search_list);
         init();//初始化控件
+        changeTextView();
         search_record_lists=new ArrayList<String>();
         getCache();//获取缓存
 
+
     }
 
+    private void changeTextView(){
+        if(Locale.getDefault().getLanguage().equals("en")){
+            recent_search_record_text.setText("Recent Search Record");
+            clean_text.setText("Clean");
+            cancel_text.setText("Cancel");
+            search_text.setHint("Search");
+        }
+    }
     private  void getMemId() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+        String url = "http://192.168.1.114:8080/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts+ "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -113,12 +128,17 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener{
     }
     private void init(){
         findViewById(R.id.search_btn).setOnClickListener(this);
-        findViewById(R.id.cancel_btn).setOnClickListener(this);
+        //findViewById(R.id.cancel_btn).setOnClickListener(this);
         findViewById(R.id.remove_cache).setOnClickListener(this);
         search_text=findViewById(R.id.searh_box);
         search_record_list=findViewById(R.id.search_record_list);
         select_device_list=findViewById(R.id.select_device_list);
         loading=findViewById(R.id.loading_layout);
+        // cancel_text,recent_search_record_text,clean_text;
+        recent_search_record_text=findViewById(R.id.recent_record_text);
+        clean_text=findViewById(R.id.clean_text);
+        cancel_text=findViewById(R.id.cancel_btn);
+        cancel_text.setOnClickListener(this);
     }
 
     @Override
@@ -176,7 +196,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener{
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.114:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证："+sign);
             String b= "{}";//json字符串
@@ -249,7 +269,8 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener{
                                     Bundle bundle=new Bundle();
                                     try {
                                         JSONObject object=new JSONObject(sortedJsonArray.get(i).toString());
-                                        bundle.putString("device_name",object.getString("eqpName"));
+                                        System.out.println(object.getString("macNo"));
+                                        bundle.putString("device_mac",object.getString("macNo"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

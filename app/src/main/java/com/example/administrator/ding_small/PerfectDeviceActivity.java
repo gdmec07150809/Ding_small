@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -43,10 +44,12 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -60,7 +63,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
 import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
@@ -72,7 +83,7 @@ import static com.example.administrator.ding_small.R.id.date;
 
 public class PerfectDeviceActivity extends Activity implements View.OnClickListener{
     //private TextView location_text,photo_text,reimbursement_text,parameter_text,management_text,date_text,latitude,longitude,location,temperature,location_detail;
-    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature,information_text,remarks_text,adress_text,leapfrog;
+    private TextView dateT,location_text,photo_text,reimbursement_text,parameter,management_text,at_action,latitude,longitude,location,temperature,information_text,remarks_text,adress_text,leapfrog;
     private ImageView new_information_img,new_photo_img,new_remarks_img;
     InputMethodManager imm;
     private Dialog mCameraDialog;
@@ -84,42 +95,62 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     private FlowLayout found_activity_fyt;
     private ArrayList<Bitmap> arrayList=new ArrayList<Bitmap>();
     private EditText repair_user;
+    //更改语言所要更改的控件 返回、完善设备信息、自定义名称、售点名称、售点地址、售点联系人、联系人电话、当前位置参数、具体地址,确定
+    private TextView back_text,perfect_device_information,custom_name_text,selling_name_text,selling_location_text,
+                        selling_user_name_text,selling_phone_text,location_parameters_text,address_text,comfir_text;
+    private EditText selling_edit_text,selling_location_edit_text,selling_user_edit_text,selling_phone_edit_text,address_edit_text;
+
+    private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+    SharedPreferences sp=null;//定义储存源，备用
+    String memid,token,sign,oldPass,newPass,ts,c_newPass;
+    // longitude_str,latitude_str,str_location,temperature_str
+    String repair_user_str,selling_edit_str,selling_location_edit_str,selling_user_edit_str,selling_phone_edit_str,address_edit_str;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_perfect_device);
         init();//初始化控件
+        changeTextView();//更改语言
         getBundleString();//获取页面传递数据
         //getTimeNow();//获取当前时间
         getLocation();//获取当前经纬度
-        //getTemperature();//获取当前温度
+        getTemperature();//获取当前温度
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(),R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
     }
 
+    private void changeTextView(){
+        // back_text,perfect_device_information,custom_name_text,selling_name_text,selling_location_text,selling_user_name_text,selling_phone_text,location_parameters_text,address_text
+        if(Locale.getDefault().getLanguage().equals("en")){
+            back_text.setText("Back");
+            perfect_device_information.setText("Perfect Device Information");
+            custom_name_text.setText("Custom Name");
+            selling_name_text.setText("Selling Name");
+            selling_location_text.setText("Selling Location");
+            selling_user_name_text.setText("Selling User Name");
+            selling_phone_text.setText("Selling Phone");
+            location_parameters_text.setText("Location Parameters");
+            address_text.setText("Address");
+            leapfrog.setText("Skip");
+            information_text.setText("Remarks");
+            photo_text.setText("Photo");
+            remarks_text.setText("Location");
+            comfir_text.setText("Comfir");
+
+          //selling_edit_text,selling_location_edit_text,selling_user_edit_text,selling_phone_edit_text;
+            selling_edit_text.setHint("Enter");
+            selling_location_edit_text.setHint("Enter");
+            selling_user_edit_text.setHint("Enter");
+            selling_phone_edit_text.setHint("Enter");
+            address_edit_text.setHint("Enter");
+        }
+    }
     private  void getBundleString(){
         Bundle getStringValue=this.getIntent().getExtras();
         if(getStringValue.getString("device_mac")!=null){
             device_mac=getStringValue.getString("device_mac");
         }
-    }
-    private void getTemperature(){
-        try {
-            String str=LocationUtil.getAddress(LocationUtil.location,getApplicationContext());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        province_str=LocationUtil.province;
-        System.out.println("市："+province_str);
-        String url="https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location="+province_str+"&language=zh-Hans&unit=c";
-        System.out.println(url);
-        sendRequestWithHttpClient(this,url);//获取温度的方法
-
-//        String result=SendUrlUtils.sendRequestHttpClient(this,url);
-//        System.out.println("结果22："+result);
-
     }
     private void getTimeNow(){
         //获取当前年月日时分
@@ -155,29 +186,15 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         }).start();
     }
     private void init(){
-//        findViewById(R.id.photo_layout).setOnClickListener(this);
-//        findViewById(R.id.location_layout).setOnClickListener(this);
-//        findViewById(R.id.reimbursement_layout).setOnClickListener(this);
-//        findViewById(R.id.parameter_layout).setOnClickListener(this);
-//        findViewById(R.id.management_layout).setOnClickListener(this);
-//        findViewById(R.id.more_device_name).setOnClickListener(this);
-//        findViewById(R.id.more_mac).setOnClickListener(this);
-//        findViewById(R.id.more_poc).setOnClickListener(this);
-            findViewById(R.id.confrim_btn).setOnClickListener(this);
-            findViewById(R.id.leapfrog).setOnClickListener(this);
-            findViewById(R.id.back).setOnClickListener(this);
-//
-//        date_text=findViewById(date);
-//        date_text.setOnClickListener(this);
-//        location_text=findViewById(R.id.location_text);
-//        photo_text=findViewById(R.id.photo_text);
-//        reimbursement_text=findViewById(R.id.reimbursement_text);
-//        parameter_text=findViewById(R.id.parameter_text);
-//        management_text=findViewById(R.id.management_text);
-//        location_detail=findViewById(R.id.location_detail);
+        findViewById(R.id.confrim_btn).setOnClickListener(this);
+        leapfrog=findViewById(R.id.leapfrog);
+        leapfrog.setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
+
         findViewById(R.id.new_information_layout).setOnClickListener(this);//信息
         findViewById(R.id.new_remarks_layout).setOnClickListener(this);//备注
         findViewById(R.id.new_photo_layout).setOnClickListener(this);//图片
+        findViewById(R.id.icon_equiplist_boxdelete).setOnClickListener(this);//清空自定义名称
 
         remarks_text=findViewById(R.id.remarks_text);
         photo_text=findViewById(R.id.photo_text);
@@ -188,254 +205,54 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         new_information_img=findViewById(R.id.new_information_img);
         new_photo_img=findViewById(R.id.new_photo_img);
         new_remarks_img=findViewById(R.id.new_remarks_img);
+        // back_text,perfect_device_information,custom_name_text,selling_name_text,selling_location_text,selling_user_name_text,selling_phone_text,location_parameters_text,address_text
+        back_text=findViewById(R.id.back_text);
+        perfect_device_information=findViewById(R.id.perfect_device_information);
+        custom_name_text=findViewById(R.id.custom_name_text);
+        selling_name_text=findViewById(R.id.selling_name_text);
+        selling_location_text=findViewById(R.id.selling_location_text);
+        selling_user_name_text=findViewById(R.id.selling_user_name_text);
+        selling_phone_text=findViewById(R.id.selling_phone_text);
+        location_parameters_text=findViewById(R.id.location_parameters_text);
+        address_text=findViewById(R.id.address_text);
+        comfir_text=findViewById(R.id.comfir_text);
 
+        //selling_edit_text,selling_location_edit_text,selling_user_edit_text,selling_phone_edit_text;
+        selling_edit_text=findViewById(R.id.selling_edit_text);
+        selling_location_edit_text=findViewById(R.id.selling_location_edit_text);
+        selling_user_edit_text=findViewById(R.id.selling_user_edit_text);
+        selling_phone_edit_text=findViewById(R.id.selling_phone_edit_text);
+
+        address_edit_text=findViewById(R.id.address_edit_text);
+        temperature=findViewById(R.id.temperature);
     }
 
     @Override
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()){
-//            case R.id.photo_layout://备注图片事件
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-//
-//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
-//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-//
-//                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
-//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-//
-//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//
-//                photo1=findViewById(R.id.photo1);
-//                photo2=findViewById(R.id.photo2);
-//                photo3=findViewById(R.id.photo3);
-//                photo4=findViewById(R.id.photo4);
-//                photo1.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(1);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo2.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(2);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo3.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(3);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo4.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(4);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo1.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(1);
-//                        return true;
-//                    }
-//                });
-//                photo2.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(2);
-//                        return true;
-//                    }
-//                });
-//                photo3.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(3);
-//                        return true;
-//                    }
-//                });
-//                photo4.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(4);
-//                        return true;
-//                    }
-//                });
-//                break;
-//            case R.id.btn_open_camera://打开相机1
-//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent, 11);
-//                break;
-//            case R.id.btn_open_camera2://打开相机2
-//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent,12);
-//                break;
-//            case R.id.btn_open_camera3://打开相机3
-//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent, 13);
-//                break;
-//            case R.id.btn_open_camera4://打开相机4
-//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent, 14);
-//                break;
-//            case R.id.btn_cancel://上弹菜单取消事件
-//                mCameraDialog.dismiss();
-//                break;
-//            case R.id.btn_choose_img://选择相册1
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent, 21);
-//                break;
-//            case R.id.btn_choose_img2://选择相册2
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent, 22);
-//                break;
-//            case R.id.btn_choose_img3://选择相册3
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent,23 );
-//                break;
-//            case R.id.btn_choose_img4://选择相册4
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent, 24);
-//                break;
-//            case R.id.location_layout://备注地址事件
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-//
-//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.c6_bg);
-//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-//
-//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_location_layout).setVisibility(View.VISIBLE);
-//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-//
-//                location_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                break;
-//            case R.id.reimbursement_layout://备注维修人事件
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-//
-//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.c6_bg);
-//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-//
-//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_user_layout).setVisibility(View.VISIBLE);
-//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-//
-//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                break;
-//            case R.id.parameter_layout://备注参数事件
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-//
-//                longitude=findViewById(R.id.longitude);
-//                latitude=findViewById(R.id.latitude);
-//                location=findViewById(R.id.location);
-//                temperature=findViewById(R.id.temperature);
-//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.c6_bg);
-//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-//
-//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_parameter_layout).setVisibility(View.VISIBLE);
-//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-//
-//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                //获取地址
-//                if(str_location ==null || str_location.isEmpty()){
-//                    Toast.makeText(this,"请打开网络,重新进入",Toast.LENGTH_SHORT).show();
-//                }else{
-//                    longitude.setText(longitude_str);
-//                    latitude.setText(latitude_str);
-//                    location.setText(str_location);
-//                }
-//                temperature.setText(temperature_str+"℃");
-//                break;
-//            case R.id.management_layout://备注管理人事件
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-//
-//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.c6_bg);
-//
-//                findViewById(R.id.remarks_photo_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_management_layout).setVisibility(View.VISIBLE);
-//
-//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                management_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-//                break;
-//            case R.id.more_device_name://设备更多信息
-//                showMoreInformation(1);
-//                break;
-//            case R.id.more_mac:
-//                showMoreInformation(2);//mac
-//                break;
-//            case R.id.more_poc://运营中心列表
-//                showMoreInformation(3);
-//                break;
                case R.id.confrim_btn://确定
-                    // String location_detail_str=location_detail.getText().toString();
-                   //String device_name_str=repair_user.getText().toString();
-                   intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
-                   Bundle bundle = new Bundle();
-                   bundle.putString("device_mac", device_mac);
-                   intent.putExtras(bundle);
-                   intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                   startActivity(intent);
+                    repair_user_str=repair_user.getText().toString().trim();//自定义名称
+                    selling_edit_str=selling_edit_text.getText().toString().trim();//售点名称
+                    selling_location_edit_str=selling_location_edit_text.getText().toString().trim();//售点地址
+                    selling_user_edit_str=selling_user_edit_text.getText().toString().trim();//售点联系人
+                    selling_phone_edit_str=selling_phone_edit_text.getText().toString().trim();//联系人电话
+                   address_edit_str=address_edit_text.getText().toString().trim();//详细地址
+                  // longitude_str,latitude_str,str_location,temperature_str
+                   if(repair_user_str.equals("")||selling_edit_str.equals("")||selling_location_edit_str.equals("")||selling_user_edit_str.equals("")||selling_phone_edit_str.equals("")||address_edit_str.equals("")){
+                       Toast.makeText(this,"请检查信息是否为空",Toast.LENGTH_SHORT).show();
+                   }else{
+                       getCache();
+                   }
+//                   intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
+//                   Bundle bundle = new Bundle();
+//                   bundle.putString("device_mac", device_mac);
+//                   intent.putExtras(bundle);
+//                   intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                   startActivity(intent);
+                break;
+            case R.id.icon_equiplist_boxdelete:
+                repair_user.setText("");
                 break;
             case R.id.leapfrog://跳过
                 // String location_detail_str=location_detail.getText().toString();
@@ -450,14 +267,6 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             case R.id.back:
                 finish();
                 break;
-//            case date:
-//                new DatePickerDialog(PerfectDeviceActivity.this, new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                     //   date_text.setText(String.format("%d-%d-%d",year,monthOfYear+1,dayOfMonth));
-//                    }
-//                },nowYear,nowMonth,nowDay).show();
-//                break;
             case R.id.new_information_layout:
 //                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.showSoftInputFromInputMethod(view.getWindowToken(), 0); //强制显示键盘
@@ -490,104 +299,17 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
 
                 TextView location_text=findViewById(R.id.location_text);
-                TextView location_str=findViewById(R.id.location_str);
+                TextView location_str1=findViewById(R.id.location_str);
                 //获取地址
                 if(str_location ==null || str_location.isEmpty()){
                     Toast.makeText(this,"请打开网络,重新进入",Toast.LENGTH_SHORT).show();
                 }else{
                     location_text.setText(longitude_str+",  "+latitude_str);
-                    location_str.setText(str_location);
+                    location_str1.setText(str_location);
                 }
 
                 break;
             case R.id.new_photo_layout://备注图片事件
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.showSoftInputFromInputMethod(view.getWindowToken(), 0); //强制显示键盘
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-
-//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
-//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-//
-//                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
-//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-//
-//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//
-//                photo1=findViewById(R.id.photo1);
-//                photo2=findViewById(R.id.photo2);
-//                photo3=findViewById(R.id.photo3);
-//                photo4=findViewById(R.id.photo4);
-//                photo1.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(1);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo2.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(2);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo3.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(3);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo4.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(4);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo1.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(1);
-//                        return true;
-//                    }
-//                });
-//                photo2.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(2);
-//                        return true;
-//                    }
-//                });
-//                photo3.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(3);
-//                        return true;
-//                    }
-//                });
-//                photo4.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(4);
-//                        return true;
-//                    }
-//                });
                 findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
                 findViewById(R.id.new_repair_remarks_lay).setVisibility(View.GONE);
                 findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
@@ -841,40 +563,35 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 HttpClient httpCient = new DefaultHttpClient();
                 //第二步：创建代表请求的对象,参数是访问的服务器地址blMac=12:34:56:78:9A:BC&userId=1001&userName=%E5%BC%A0%E4%B8%89
                 //HttpGet httpGet = new HttpGet("http://192.168.1.101:8080/appUser/appUserLogin.do?loginType=1&loginAccount="+name1+"&loginPwd="+pass1);
-                HttpPost httpPost = new HttpPost(url);//测试链接
+                HttpGet httpGet = new HttpGet(url);//测试链接
                 try {
                     //第三步：执行请求，获取服务器发还的相应对象
-                    HttpResponse httpResponse = httpCient.execute(httpPost);
+                    HttpResponse httpResponse = httpCient.execute(httpGet);
                     //第四步：检查相应的状态是否正常：检查状态码的值是200表示正常
                     System.out.println("状态码："+httpResponse.getStatusLine().getStatusCode());
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         //第五步：从相应对象当中取出数据，放到entity当中
                         HttpEntity entity = httpResponse.getEntity();
-                        result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
-
+                        String result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
                         if(result!=null){
                             //在子线程中将Message对象发出去
                             Message message = new Message();
                             message.what = SHOW_RESPONSE;
                             message.obj = result.toString();
-                            System.out.println("返回结果1："+result);
+                            System.out.println("返回结果："+result);
                             handler.sendMessage(message);
-
                         }
                     }else{
-                        Toast.makeText(context,"访问失败!!!请检查服务器...",Toast.LENGTH_LONG).show();
+                        System.out.println("访问失败！！！");
                     }
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     System.out.println("访问失败！！！");
                     e.printStackTrace();
                 }
-
             }
         }).start();//这个start()方法不要忘记了
-
     }
-    //解析天气
     private Handler handler = new Handler() {
 
         @Override
@@ -885,12 +602,13 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     String response = (String) msg.obj;
                     try {
                         JSONObject responseObject=new JSONObject(response);
-                        System.out.println("返回1："+responseObject);
+                        System.out.println("返回："+responseObject);
                         JSONArray jsonArray=new JSONArray(responseObject.getString("results"));
                         JSONObject jsonObject=new JSONObject(jsonArray.get(0).toString());
                         JSONObject jsonObject1=new JSONObject(jsonObject.getString("now"));
                         System.out.println("温度："+jsonObject1.getString("temperature"));
                         temperature_str=jsonObject1.getString("temperature");
+                        temperature.setText(temperature_str+"℃");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -901,6 +619,19 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         }
 
     };
+    private void getTemperature(){
+        try {
+            String str=LocationUtil.getAddress(LocationUtil.location,getApplicationContext());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        province_str=LocationUtil.province;
+        System.out.println("市："+province_str);
+        String url="https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location="+province_str+"&language=zh-Hans&unit=c";
+        sendRequestWithHttpClient(this,url);//获取温度的方法
+
+    }
 
     //图片布局方法
     private void labelFlowLayout(final ArrayList<Bitmap> arrayList) {
@@ -931,4 +662,63 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             }
         }
     }
+
+    //获取缓存的memId,tokEn
+    private  void getCache() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://192.168.1.114:8080/app/ppt6000/updateDate.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts+ "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("Sign:"+Sign);
+        sign = MD5Utils.md5(Sign);
+        new Thread(networkTask).start();//更新设备信息
+    }
+
+    /**
+     * 网络操作相关的子线程okhttp框架  获取设备
+     */
+    Runnable networkTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // longitude_str,latitude_str,str_location,temperature_str
+           /* repair_user_str=repair_user.getText().toString().trim();//自定义名称
+                    selling_edit_str=selling_edit_text.getText().toString().trim();//售点名称
+                    selling_location_edit_str=selling_location_edit_text.getText().toString().trim();//售点地址
+                    selling_user_edit_str=selling_user_edit_text.getText().toString().trim();//售点联系人
+                    selling_phone_edit_str=selling_phone_edit_text.getText().toString().trim();//联系人电话*/
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://192.168.1.114:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
+            OkHttpClient okHttpClient = new OkHttpClient();
+            System.out.println("验证："+sign);
+            String b= "{\"macNo\": \""+device_mac+"\",\"memFullName\": \""+repair_user_str+"\",\"Temperature\": \""+temperature_str+"\",\"userInfoJson\": {\"username\": \""+selling_user_edit_str+"\",\"pointOfSalePhone\": \""+selling_phone_edit_str+"\",\"pointOfSaleName\": \""+selling_edit_str+"\",\"addressInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \""+selling_location_edit_str+"\",\"ar\": \"\",\"pv\": \"山东\",\"te\": \"\",\"ct\": \"滨州\"}}}";//json字符串
+            System.out.println("完善设备json:"+b);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn",sign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result=response.body().string();
+                if(response!=null){
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = result.toString();
+                    //getDeviceListHandler.sendMessage(message);
+                }
+                System.out.println("结果："+result+"状态码："+ response.code());
+                //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }

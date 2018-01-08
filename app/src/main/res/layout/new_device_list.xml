@@ -22,11 +22,13 @@
                 android:src="@mipmap/icon_common_back_col"/>
 
             <TextView
+                android:id="@+id/back_text"
                 style="@style/back_style"
                 android:layout_gravity="center_vertical"
                 android:text="返回"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/device_list_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -71,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="96px">
                 <TextView
+                    android:id="@+id/device_history_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

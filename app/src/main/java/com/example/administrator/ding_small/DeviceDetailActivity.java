@@ -20,11 +20,13 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
+import com.example.administrator.ding_small.Adapter.ManufacturerAdapter;
 import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
@@ -46,6 +48,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -81,7 +84,8 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     //{"poc": "", "deptName": "", "companyName": "", "managementName": "", "managementPhone": ""}
     private TextView latitude,longitude,temperature,loaction,location_detail,base_text,management_text,selling_text,phone_record_text,
                         parameter_text,manufacturer_text,fa_location,ssid,macNo,eqpBrand,eqpStyle,startDate,protectDateTo,
-                        poc,deptName,companyName,managementName,managementPhone,repair_text,selling_name,selling_num,selling_location,selling_phone,selling_user_name;
+                        poc,deptName,companyName,managementName,managementPhone,repair_text,selling_name,selling_num,selling_location,
+                        selling_phone,selling_user_name,lo_la_text,auto_text,location_detail_text,temperature_text,no_data_text;
 
     private String str_location=null;
     private  String latitude_str,longitude_str,province_str,temperature_str;
@@ -93,6 +97,12 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     private ScrollView scrollview;
     private JSONObject DataObject;//设备数据
     private  LoadingLayout loading;
+
+    private ListView manufacturer_list;//制造商与报修
+
+    //更改语言所要更改的控件 品牌名称、品类、销售日期、保质期、返回、设备信息、一键报修，管理公司名、部门、管理联系人电话、管理联系人名称、售点名称、售点编号、售点地址、售点联系人电话、售点联系人名称
+    private TextView brand_name_text,category_text,selling_date,shelf_life_text,back_text,device_dateil_text,next_text,
+                        company_text,deptName_text,managementPhone_text,managementName_text,selling_name_text,selling_num_text,selling_location_text,selling_phone_text,selling_user_name_text;
     //private Handler handler;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
@@ -100,12 +110,52 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_detail);
         init();//初始化控件，绑定监听
+        changeTextView();//更改语言
         loading.setStatus(LoadingLayout.Loading);
         getBundleString();//获取bundle数据
         getCache();//获取缓存
         getLocation();//获取当前地址
         getTemperature();//获取当前温度
 
+    }
+    private void changeTextView(){
+        //base_text,management_text,selling_text,phone_record_text,parameter_text,manufacturer_text,company_text,deptName_text,managementPhone_text,managementName_text
+        // selling_name_text,selling_num_text,selling_location_text,selling_phone_text,selling_user_name_text
+        //lo_la_text,auto_text,location_detail_text,temperature_text
+        if(Locale.getDefault().getLanguage().equals("en")){
+            brand_name_text.setText("Brand Name");
+            category_text.setText("Category");
+            selling_date.setText("Selling Date");
+            shelf_life_text.setText("Shelf Life");
+            base_text.setText("Basic Information");
+            management_text.setText("Management Information");
+            selling_text.setText("Selling Information");
+            parameter_text.setText("Parameter Information");
+            manufacturer_text.setText("Manufacturer and Warranty");
+            repair_text.setText("Repair Record");
+            phone_record_text.setText("Call Record");
+
+            back_text.setText("Back");
+            device_dateil_text.setText("Device dateil");
+            next_text.setText("Repair");
+
+            company_text.setText("Company Name");
+            deptName_text.setText("Department");
+            managementPhone_text.setText("Management Phone");
+            managementName_text.setText("Management Name");
+
+            selling_name_text.setText("Selling Name");
+            selling_num_text.setText("Selling Number");
+            selling_location_text.setText("Selling Location");
+            selling_phone_text.setText("Selling Phone");
+            selling_user_name_text.setText("Selling User Name");
+
+            lo_la_text.setText("La&lo");
+            auto_text.setText("Automatic positioning");
+            location_detail_text.setText("Address");
+            temperature_text.setText("Temperature");
+            no_data_text.setText("No Data");
+        }
     }
     private  void getBundleString(){
         Bundle getStringValue=this.getIntent().getExtras();
@@ -117,7 +167,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.104:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = "http://192.168.1.114:8080/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts+ "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -181,6 +231,34 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         selling_location=findViewById(R.id.selling_location);
         selling_phone=findViewById(R.id.selling_phone);
         selling_user_name=findViewById(R.id.selling_user_name);
+
+
+        //brand_name_text,category_text,selling_date,shelf_life_text,company_text,deptName_text,managementPhone_text,managementName_text,
+        // selling_name_text,selling_num_text,selling_location_text,selling_phone_text,selling_user_name_text
+        //lo_la_text,auto_text,location_detail_text,temperature_text
+        brand_name_text=findViewById(R.id.brand_name_text);
+        category_text=findViewById(R.id.category_text);
+        selling_date=findViewById(R.id.selling_date);
+        shelf_life_text=findViewById(R.id.shelf_life_text);
+
+        back_text=findViewById(R.id.back_text);
+        device_dateil_text=findViewById(R.id.device_detail);
+        next_text=findViewById(R.id.next);
+
+        company_text=findViewById(R.id.company_text);
+        deptName_text=findViewById(R.id.deptName_text);
+        managementPhone_text=findViewById(R.id.managementPhone_text);
+        managementName_text=findViewById(R.id.managementName_text);
+        selling_name_text=findViewById(R.id.selling_name_text);
+        selling_num_text=findViewById(R.id.selling_num_text);
+        selling_location_text=findViewById(R.id.selling_location_text);
+        selling_phone_text=findViewById(R.id.selling_phone_text);
+        selling_user_name_text=findViewById(R.id.selling_user_name_text);
+        lo_la_text=findViewById(R.id.lo_la_text);
+        auto_text=findViewById(R.id.auto_text);
+        location_detail_text=findViewById(R.id.location_detail_text);
+        temperature_text=findViewById(R.id.temperature_text);
+        no_data_text=findViewById(R.id.no_data_text);
     }
     //按钮点击事件
     @Override
@@ -288,9 +366,15 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 repair_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
                 phone_record_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
 
+                manufacturer_list=findViewById(R.id.manufacturer_list);
+
                 try {
-                    if(DataObject.getString("wnerInfoJson")!=null){
-                        System.out.println("制造商信息："+DataObject.getString("wnerInfoJson"));
+                    if(DataObject.getString("ownerInfoJson")!=null){
+                        System.out.println("制造商信息："+DataObject.getString("ownerInfoJson"));
+                        ArrayList<String> ownerInfoJson_list=new ArrayList<String>();
+                        ownerInfoJson_list.add(DataObject.getString("ownerInfoJson"));
+                        manufacturer_list.setAdapter(new ManufacturerAdapter(this,ownerInfoJson_list));
+
                     }else {
                         System.out.println("制造商无信息");
                     }
@@ -691,7 +775,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.104:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts+ "&macNo=" + device_mac;
+            String url = "http://192.168.1.114:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts+ "&macNo=" + device_mac;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证："+sign);
             String b= "{\"memId\":\""+memid+"\",\"macNo\":\""+device_mac+"\"}";//json字符串

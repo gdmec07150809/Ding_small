@@ -33,11 +33,13 @@
                     android:src="@mipmap/icon_common_back_col"/>
 
                 <TextView
+                    android:id="@+id/back_text"
                     style="@style/back_style"
                     android:layout_gravity="center_vertical"
                     android:text="返回"/>
             </LinearLayout>
             <TextView
+                android:id="@+id/device_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -192,14 +194,13 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1px"
+                    android:layout_height="30px"
                     android:background="@color/time_bg_color"/>
                 <RelativeLayout
                     android:id="@+id/management_layout"
                     android:layout_width="match_parent"
                     android:layout_height="90px"
                     android:layout_marginLeft="30px"
-                    android:layout_marginTop="30px"
                     android:layout_marginRight="30px">
                     <TextView
                         android:id="@+id/management_text"
@@ -321,8 +322,12 @@
                     android:id="@+id/manufacturer_down_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:visibility="gone">
-                    <include layout="@layout/new_detail_manufacturer"/>
+                    <ListView
+                        android:id="@+id/manufacturer_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></ListView>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -389,7 +394,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="gone">
-
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50px">
+                        <TextView
+                            android:id="@+id/no_data_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:textSize="30px"
+                            android:textColor="#C8C8C8"
+                            android:text="暂无数据"/>
+                    </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -48,19 +50,48 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
     String Msg="";
     String resultStr="";
     String code;
+    //更改语言所要更改的控件
+    private TextView back_text,reset_password_text,phone_text,code_text,send_text,new_password_text,confirm_text;
+    private Button confirm_reset;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_forgot_password);
-        findViewById(R.id.send_text).setOnClickListener(this);
-        findViewById(R.id.confirm_reset).setOnClickListener(this);
+        send_text=findViewById(R.id.send_text);
+        send_text.setOnClickListener(this);
+        confirm_reset=findViewById(R.id.confirm_reset);
+        confirm_reset.setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
+        back_text=findViewById(R.id.back_text);
         p_code=findViewById(R.id.p_code);
         phone=findViewById(R.id.phone);
         password1=findViewById(R.id.new_password);
         c_password=findViewById(R.id.c_new_password);
-    }
 
+        phone_text=findViewById(R.id.phone_text);
+        code_text=findViewById(R.id.code_text);
+        new_password_text=findViewById(R.id.new_password_text);
+        confirm_text=findViewById(R.id.confirm_text);
+        reset_password_text=findViewById(R.id.reset_password_text);
+
+        changeTextView();//更改语言
+    }
+    private void changeTextView(){
+        if(Locale.getDefault().getLanguage().equals("en")){
+            phone_text.setText("Phone");
+            confirm_reset.setText("Confirm Reset");
+            back_text.setText("Back");
+            code_text.setText("Code");
+            send_text.setText("Get");
+            new_password_text.setText("New Password");
+            reset_password_text.setText("Reset Password");
+            confirm_text.setText("Confirm");
+            phone.setHint("Enter phone");
+            p_code.setHint("Enter Code");
+            password1.setHint("Enter New PassWord");
+            c_password.setHint("Enter The PassWord Again");
+        }
+    }
     @Override
     public void onClick(View view) {
       switch (view.getId()){

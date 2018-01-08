@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.administrator.ding_small.R;
+
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2017/11/7.
  */
 
 public class SettingActivity extends Activity implements View.OnClickListener{
+    private TextView lang_text;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +24,13 @@ public class SettingActivity extends Activity implements View.OnClickListener{
 //        findViewById(R.id.come_statistics).setOnClickListener(this);
 //        findViewById(R.id.come_budget).setOnClickListener(this);
 //        findViewById(R.id.come_data_lock).setOnClickListener(this);
-       findViewById(R.id.back).setOnClickListener(this);
-      findViewById(R.id.comfir_btn).setOnClickListener(this);
+        lang_text=findViewById(R.id.lang_text);
+        findViewById(R.id.back).setOnClickListener(this);
+        findViewById(R.id.comfir_btn).setOnClickListener(this);
+
+        if(Locale.getDefault().getLanguage().equals("en")){
+            lang_text.setText("English");
+        }
     }
 
     @Override

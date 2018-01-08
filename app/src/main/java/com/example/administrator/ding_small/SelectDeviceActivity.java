@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -65,7 +66,6 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     private ArrayList<String> device_staus;
     private ArrayList<String> device_date;
     private ListView select_device_list;
-    private TextView date_text,selling_text,device_text,ssid_text;
     private EditText search_edittext;
     private Dialog mCameraDialog;
     private ImageView date_img,selling_img,device_img,uuid_img;
@@ -77,21 +77,36 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     JSONArray sortedJsonArray=null;
     String memid,token,sign,oldPass,newPass,ts,c_newPass;
     public static final int SHOW_RESPONSE = 0;
+    //更改语言所要更改的控件 销售日期、售点名称、设备名称、UUID、返回、选择设备
+    private TextView date_text,selling_text,device_text,uuid_text,back_text,select_device_text;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_new_device);
         init();//初始化控件
         //CreatJson();//构造jsonArray备用
+        changeTextView();//更改语言
         getCache();
         loading.setStatus(LoadingLayout.Loading);
     }
 
+    private  void changeTextView(){
+        if(Locale.getDefault().getLanguage().equals("en")){
+            //date_text,selling_text,device_text,uuid_text,back_text,select_device_text
+
+            date_text.setText("Date");
+            selling_text.setText("Selling");
+            device_text.setText("Device");
+            uuid_text.setText("UUID");
+            back_text.setText("Back");
+            select_device_text.setText("Select Device");
+        }
+    }
     private  void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+        String url = "http://192.168.1.114:8080/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts+ "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -112,10 +127,12 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //        findViewById(R.id.clean_text).setOnClickListener(this);//清空搜索框
 //        findViewById(R.id.search_btn).setOnClickListener(this);//查询
 
-//        date_text=findViewById(R.id.date_text);
-//        selling_text=findViewById(R.id.selling_text);
-//        device_text=findViewById(R.id.device_text);
-//        ssid_text=findViewById(R.id.uuid_text);
+        date_text=findViewById(R.id.date_text);
+        selling_text=findViewById(R.id.selling_text);
+        device_text=findViewById(R.id.device_text);
+        uuid_text=findViewById(R.id.uuid_text);
+        back_text=findViewById(R.id.back_text);
+        select_device_text=findViewById(R.id.select_device_text);
 //        search_edittext=findViewById(R.id.search_edittext);
 
         date_img=findViewById(R.id.date_img);
@@ -452,6 +469,16 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         root.findViewById(R.id.scan_layout).setOnClickListener(this);
         root.findViewById(R.id.cancel_layout).setOnClickListener(this);
 
+        TextView search_text=root.findViewById(R.id.search_text);
+        TextView scan_text=root.findViewById(R.id.scan_text);
+        TextView cancel_text=root.findViewById(R.id.cancel_text);
+
+        if(Locale.getDefault().getLanguage().equals("en")){
+            search_text.setText("Add By Search");
+            scan_text.setText("Add By Scan");
+            cancel_text.setText("Cancel");
+        }
+
 //        default_img=root.findViewById(R.id.default_img);
 //        five_img=root.findViewById(R.id.five_img);
 //        one_minute_img=root.findViewById(R.id.one_minute_img);
@@ -508,7 +535,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.114:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证："+sign);
             String b= "{}";//json字符串

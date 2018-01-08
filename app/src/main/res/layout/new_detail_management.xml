@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/company_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="公司名"
@@ -61,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/deptName_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="部门"
@@ -85,6 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/managementPhone_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="管理联系人电话"
@@ -109,6 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/managementName_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="管理联系人名称"

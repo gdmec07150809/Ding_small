@@ -47,6 +47,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true">
                     <TextView
+                        android:id="@+id/manufacturer_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="制造商"
@@ -78,6 +79,7 @@
                         android:layout_gravity="center_vertical"
                         android:src="@mipmap/icon_info_company"/>
                     <TextView
+                        android:id="@+id/company_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="广州优游文化传播有限公司"
@@ -108,6 +110,7 @@
                         android:layout_gravity="center_vertical"
                         android:src="@mipmap/icon_info_phone_after"/>
                     <TextView
+                        android:id="@+id/selling_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123545457484"
@@ -146,6 +149,7 @@
                         android:layout_gravity="center_vertical"
                         android:src="@mipmap/icon_info_phone_fix"/>
                     <TextView
+                        android:id="@+id/repair_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123545457484"
@@ -184,6 +188,7 @@
                         android:layout_gravity="center_vertical"
                         android:src="@mipmap/icon_info_address"/>
                     <TextView
+                        android:id="@+id/manufacturer_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="广州番禺大石街道新兴广场8栋307"

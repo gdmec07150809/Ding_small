@@ -13,7 +13,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.content.Intent;
 
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -25,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Locale;
 
 
 import okhttp3.Call;
@@ -49,6 +52,9 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
 
 
     private long clickTime=0;
+    //更改语言所要更改的控件
+    private TextView phone_text,password_text,forget_password,register;
+    private Button new_login;
 
     //重写onKeyDown方法,实现双击退出程序
     @Override
@@ -76,17 +82,37 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
         setContentView(R.layout.new_login);
 //        findViewById(R.id.left).setOnClickListener(this);
 //        findViewById(R.id.right).setOnClickListener(this);
-        findViewById(R.id.new_login).setOnClickListener(this);
+        new_login=findViewById(R.id.new_login);
+        new_login.setOnClickListener(this);
+        register=findViewById(R.id.register);
+        register.setOnClickListener(this);
+        forget_password=findViewById(R.id.forgot_password);
+        forget_password.setOnClickListener(this);
+        //findViewById(R.id.new_login).setOnClickListener(this);
 //        findViewById(R.id.send_text).setOnClickListener(this);
-        findViewById(R.id.register).setOnClickListener(this);
-        findViewById(R.id.forgot_password).setOnClickListener(this);
+//        findViewById(R.id.register).setOnClickListener(this);
+//        findViewById(R.id.forgot_password).setOnClickListener(this);
         findViewById(id.back).setOnClickListener(this);
+
         user_name=findViewById(R.id.user_name);
         user_password=findViewById(R.id.user_password);
+        phone_text=findViewById(R.id.phone_text);
+        password_text=findViewById(R.id.password_text);
 
+        changeTextView();//更改语言
     }
 
-
+    private void changeTextView(){
+        if(Locale.getDefault().getLanguage().equals("en")){
+            phone_text.setText("Phone");
+            password_text.setText("PassWord");
+            user_name.setHint("Enter Phone");
+            user_password.setHint("Enter PassWord");
+            forget_password.setText("Forgot?");
+            register.setText("Register");
+            new_login.setText("Login");
+        }
+    }
     @Override
     public void onClick(View v) {
         Intent  intent;
@@ -190,11 +216,11 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             // TODO
             // 在这里进行 http request.网络请求相关操作
            // String url = "http://120.76.188.131:8080/a10/api/user/login.do";192.168.1.105
-            String url = "http://192.168.1.104:8080/api/user/login.do";
+            String url = "http://192.168.1.114:8080/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass=MD5Utils.md5(login_pass);
 
-            String b= "{\"loginType\":\"2\",\"loginPwd\":\""+pass+"\",\"loginAccount\":\""+login_user+"\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\"}";//json字符串
+            String b= "{\"loginType\":\"2\",\"loginPwd\":\""+pass+"\",\"loginAccount\":\""+login_user+"\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);//请求体
             Request request = new Request.Builder()//发送请求

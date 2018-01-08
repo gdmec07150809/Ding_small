@@ -20,11 +20,13 @@
                 android:layout_gravity="center_vertical"
                 android:src="@mipmap/icon_common_back_col"/>
             <TextView
+                android:id="@+id/back_text"
                 style="@style/back_style"
                 android:layout_gravity="center_vertical"
                 android:text="返回"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/perfect_device_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/title_color"
@@ -173,6 +175,7 @@
             android:layout_alignParentRight="true"
             android:background="@color/theme_color">
             <TextView
+                android:id="@+id/comfir_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="确定"

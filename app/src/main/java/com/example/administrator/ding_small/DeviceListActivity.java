@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -81,13 +82,15 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     private Handler handler;
     private TextView count_number,using,maintenancing;
     private LoadingLayout loading;
+    //更改语言所要更改的控件 返回、设备列表、设备总数、使用中、维修中、扫码添加、搜索添加、手工输入、历史设备
+    private  TextView back_text,device_list_text,device_num_text,using_text,maintenancing_text,add_by_scan_text,add_by_search_text,enter_by_manually_text,device_history_text;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_list);
         init();//初始化控件
         //getSpnner();//下拉列表
-
+        changeTextView();//更改语言
         /*滚至顶部*/
         handler = new Handler();
         handler.postDelayed(runnable, 10);
@@ -100,11 +103,25 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         loading.setStatus(LoadingLayout.Loading);
     }
 
+    private void changeTextView(){
+        if(Locale.getDefault().getLanguage().equals("en")){
+            // back_text,device_list_text,device_num_text,using_text,maintenancing_text,add_by_scan_text,add_by_search_text,enter_by_manually_text,device_history_text;
+            back_text.setText("Back");
+            device_list_text.setText("Device List");
+            device_num_text.setText("Device Number");
+            using_text.setText("Using:");
+            maintenancing_text.setText("Maintenancing:");
+            add_by_scan_text.setText("Scan");
+            add_by_search_text.setText("Search");
+            enter_by_manually_text.setText("Manually");
+            device_history_text.setText("Device History");
+        }
+    }
     private  void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+        String url = "http://192.168.1.114:8080/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts+ "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -127,6 +144,18 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         // findViewById(R.id.personalcenter_layout).setOnClickListener(this);
         using=findViewById(R.id.using);//使用中
         maintenancing=findViewById(R.id.maintenancing);//维修中
+
+
+        // back_text,device_list_text,device_num_text,using_text,maintenancing_text,add_by_scan_text,add_by_search_text,enter_by_manually_text,device_history_text;
+        back_text=findViewById(R.id.back_text);
+        device_list_text=findViewById(R.id.device_list_text);
+        device_num_text=findViewById(R.id.device_num_text);
+        using_text=findViewById(R.id.using_text);
+        maintenancing_text=findViewById(R.id.maintenancing_text);
+        add_by_scan_text=findViewById(R.id.add_by_scan_text);
+        add_by_search_text=findViewById(R.id.add_by_search_text);
+        enter_by_manually_text=findViewById(R.id.enter_by_manually_text);
+        device_history_text=findViewById(R.id.device_history_text);
     }
     private void CreatJson(){
         jsonArray=new JSONArray();
@@ -302,7 +331,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.114:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证："+sign);
             String b= "{}";//json字符串

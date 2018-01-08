@@ -16,6 +16,7 @@ import android.text.format.Time;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,13 +53,14 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     @ViewInject(R.id.pager_position_gv)
     private GridView pager_position_gv;
     private long clickTime=0;
-    private TextView name_text;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp=null;//定义储存源，备用
     private String memid,token,sign,oldPass,newPass,ts;
 
-    //变化语言所改变的控件
-    private TextView login_text,custom_service_text,news_text;//未定完
+    //变化语言所改变的控件 登陆、客服、消息、名称、记事日历、记账日历、记事本、记账本、设备表、联系人,扫码、搜索、报修,首页,口碑服务,特供商城,我的
+    private TextView login_text,custom_service_text,news_text,name_text,notepad_calendar_text,account_calendar_text,
+                    notepad_text,account_text,device_text,contacts_text,scan_text,search_text,repair_text,home_text,reputation_service_text,mall_text,my_text;
+    private EditText user_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +68,34 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         setContentView(R.layout.main_layout);
         init();//初始化控
         // ifApm();//判断上下午
-        changeLanguage();//设置语言
         initPager();//轮播图
 
         Handler handler=new Handler();
         handler.postDelayed(runnable, 100);
+        changeLanguage();//设置语言
     }
     private void changeLanguage(){
-        Toast.makeText(MainLayoutActivity.this,"当前系统语言："+Locale.getDefault().getLanguage(),Toast.LENGTH_SHORT).show();
-        if(Locale.getDefault().getLanguage().equals("eg")){
-
+       // Toast.makeText(MainLayoutActivity.this,"当前系统语言："+Locale.getDefault().getLanguage(),Toast.LENGTH_SHORT).show();
+        if(Locale.getDefault().getLanguage().equals("en")){
+            /*login_text,custom_service_text,news_text,name_text,notepad_calendar_text,account_calendar_text,notepad_text,account_text,
+            device_text,contacts_text,scan_text,search_text,repair_text,home_text,reputation_service_text,mall_text,my_text*/
+            login_text.setText("Login");
+            custom_service_text.setText("Service");
+            news_text.setText("News");
+            notepad_calendar_text.setText("Notepad_Calendar");
+            account_calendar_text.setText("Account_Calendar");
+            notepad_text.setText("Notepad_Book");
+            account_text.setText("Account_Book");
+            device_text.setText("Device_List");
+            contacts_text.setText("Contacts");
+            scan_text.setText("Scan");
+            search_text.setText("Search");
+            repair_text.setText("Repair");
+            home_text.setText("Home");
+            reputation_service_text.setText("Rreputation Service");
+            mall_text.setText("Mall");
+            my_text.setText("My");
+            user_name.setHint("Search");
         }
     }
     private  void getCache() {
@@ -86,7 +106,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         @Override
         public void run() {
             // TODO Auto-generated method stub
-            ifApm();//判断上下午
+            ifApm(Locale.getDefault().getLanguage());//判断上下午
             System.out.println("判断上下午");
             handler.postDelayed(this, 1000*60*30);
         }
@@ -107,7 +127,29 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         findViewById(R.id.personalcenter_layout).setOnClickListener(this);
 
         findViewById(R.id.scan_layout).setOnClickListener(this);
+        /*login_text,custom_service_text,news_text,name_text,notepad_calendar_text,account_calendar_text,notepad_text,account_text,
+        device_text,contacts_text,scan_text,search_text,repair_text,home_text,reputation_service_text,mall_text,my_text*/
         name_text=findViewById(R.id.name_text);
+        login_text=findViewById(R.id.login_text);
+        custom_service_text=findViewById(R.id.custom_service_text);
+        news_text=findViewById(R.id.news_text);
+        name_text=findViewById(R.id.name_text);
+        notepad_calendar_text=findViewById(R.id.notepad_calendar_text);
+        account_calendar_text=findViewById(R.id.account_calendar_text);
+        notepad_text=findViewById(R.id.notepad_text);
+        account_text=findViewById(R.id.account_text);
+        device_text=findViewById(R.id.device_text);
+        contacts_text=findViewById(R.id.contacts_text);
+        scan_text=findViewById(R.id.scan_text);
+        search_text=findViewById(R.id.search_text);
+        repair_text=findViewById(R.id.repair_text);
+        home_text=findViewById(R.id.home_text);
+        reputation_service_text=findViewById(R.id.reputation_service_text);
+        mall_text=findViewById(R.id.mall_text);
+        my_text=findViewById(R.id.my_text);
+        user_name=findViewById(R.id.user_name);
+
+
         ViewUtils.inject(this);
     }
     private int[] images = {R.mipmap.banner, R.mipmap.banner2, R.mipmap.banner3,R.mipmap.banner4};//创建图片整形数组
@@ -382,20 +424,33 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         }
     }
     //判断是上午还是下午
-    private void ifApm(){
+    private void ifApm(String lang){
         Time localTime = new Time("Asia/Hong_Kong");
         localTime.setToNow();
         int time= Integer.parseInt(localTime.format("%H"));
         System.out.println(localTime.format("%H"));
-        if(time>0&&time<=6){
-            name_text.setText("凌晨好");
-        }else if(time>6&&time<=12){
-            name_text.setText("上午好");
-        }else if(time>12&&time<18){
-            name_text.setText("下午好");
-        }else {
-            name_text.setText("晚上好");
+        if(lang.equals("en")){
+            if(time>0&&time<=6){
+                name_text.setText("Good Morning");
+            }else if(time>6&&time<=12){
+                name_text.setText("Good Morning");
+            }else if(time>12&&time<18){
+                name_text.setText("Good Afternoon");
+            }else {
+                name_text.setText("Good Evening");
+            }
+        }else{
+            if(time>0&&time<=6){
+                name_text.setText("凌晨好");
+            }else if(time>6&&time<=12){
+                name_text.setText("上午好");
+            }else if(time>12&&time<18){
+                name_text.setText("下午好");
+            }else {
+                name_text.setText("晚上好");
+            }
         }
+
     }
     //接收扫描结果
     @Override

@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="140px">
             <TextView
+                android:id="@+id/location_parameters_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30px"
@@ -62,6 +63,45 @@
             android:layout_width="match_parent"
             android:layout_height="100px">
             <TextView
+                android:id="@+id/temperature_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30px"
+                android:layout_centerVertical="true"
+                android:textColor="@color/title_color"
+                android:text="当前温度"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/temperature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="-4"
+                        android:gravity="center_horizontal"
+                        android:textSize="30px"
+                        android:textColor="@color/list_item_color"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/hui_rule"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px">
+            <TextView
+                android:id="@+id/address_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30px"
@@ -69,6 +109,7 @@
                 android:textColor="@color/title_color"
                 android:text="具体位置"/>
             <EditText
+                android:id="@+id/address_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

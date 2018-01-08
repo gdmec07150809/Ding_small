@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/selling_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="售点名称"
@@ -37,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/selling_num_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="售点编号"
@@ -61,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/selling_location_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="售点地址"
@@ -85,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/selling_phone_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="售点联系人电话"
@@ -109,6 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="90px">
             <TextView
+                android:id="@+id/selling_user_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="售点联系人名称"
