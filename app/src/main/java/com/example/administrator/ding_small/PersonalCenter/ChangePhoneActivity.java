@@ -43,25 +43,21 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                 break;
         }
     }
-
-    //昵称底部弹出菜单
+    //更换手机底部弹出菜单
     private void setPhoneDialog() {
         LinearLayout root=null;
         mCameraDialog = new Dialog(this, R.style.Dialog);
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.change_phone_dialog, null);
         Button new_login=root.findViewById(R.id.new_login);
-
         final EditText editText=root.findViewById(R.id.newPhone_value);
-
         new_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              finish();
+                finish();
                 mCameraDialog.dismiss();
             }
         });
-
         //初始化视图
         mCameraDialog.setContentView(root);
         Window dialogWindow = mCameraDialog.getWindow();

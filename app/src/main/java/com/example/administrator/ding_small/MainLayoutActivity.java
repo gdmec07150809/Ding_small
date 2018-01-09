@@ -261,10 +261,9 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 }else{
                     Toast.makeText(getApplicationContext(), "请先登陆",  Toast.LENGTH_SHORT).show();
                 }
-
                 break;
             case R.id.contacts_layout://联系人
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
+               Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！",  Toast.LENGTH_SHORT).show();
 //                intent=new Intent(MainLayoutActivity.this,ContactsActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
@@ -332,10 +331,13 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 //                startActivity(intent);
                 break;
             case R.id.personalcenter_layout://我的
-                intent=new Intent(MainLayoutActivity.this,PersonalCenterActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
+                if(!"null".equals(memid)&&memid!=null) {
+                    intent = new Intent(MainLayoutActivity.this, PersonalCenterActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "请先登陆",  Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 break;
@@ -344,9 +346,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 
     //viewpager适配器
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
-
         private List<Fragment> list;
-
         public MyFragmentPagerAdapter(FragmentManager fm, List<Fragment> list) {
             super(fm);
             // TODO Auto-generated constructor stub
@@ -460,7 +460,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         if (result.getContents()==null){
             Toast.makeText(this,"扫描失败",Toast.LENGTH_SHORT).show();
         }else{
-            //http://www.ding-new.com/pptappdwnld.do?p1=16402&p2=03&p3=2w&p4=yy
+            //http://www.ding-new.com/pptappdwnld.do?p1=16402&p2=03&p3=2w&p4=yy  试用链接
             System.out.println("扫描结果："+result.getContents());
            // result.getContents().substring(result.getContents().indexOf("="), result.getContents().indexOf("&"));
             String mac_str=null;
