@@ -228,91 +228,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
             case R.id.new_photo_layout://备注图片事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInputFromInputMethod(view.getWindowToken(), 0); //强制显示键盘
-//                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
-
-//                findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.c6_bg);
-//                findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_parameter).setBackgroundResource(R.drawable.hui_bg);
-//                findViewById(R.id.remarks_management).setBackgroundResource(R.drawable.hui_bg);
-//
-//                findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
-//                findViewById(R.id.repair_location_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_user_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
-//                findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
-//
-//                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                photo_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-//                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//
-//                photo1=findViewById(R.id.photo1);
-//                photo2=findViewById(R.id.photo2);
-//                photo3=findViewById(R.id.photo3);
-//                photo4=findViewById(R.id.photo4);
-//                photo1.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(1);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo2.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(2);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo3.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(3);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo4.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setDialog(4);
-////                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                        startActivityForResult(intent, 0);
-//                    }
-//                });
-//                photo1.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(1);
-//                        return true;
-//                    }
-//                });
-//                photo2.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(2);
-//                        return true;
-//                    }
-//                });
-//                photo3.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(3);
-//                        return true;
-//                    }
-//                });
-//                photo4.setOnLongClickListener(new OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View view) {
-//                        showDetelePhotoDialog(4);
-//                        return true;
-//                    }
-//                });
                 findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
                 findViewById(R.id.new_repair_remarks_lay).setVisibility(View.GONE);
                 findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
@@ -333,37 +248,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-//            case R.id.btn_open_camera2://打开相机2
-//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent,12);
-//                break;
-//            case R.id.btn_open_camera3://打开相机3
-//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent, 13);
-//                break;
-//            case R.id.btn_open_camera4://打开相机4
-//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent, 14);
-//                break;
-//            case R.id.btn_cancel://上弹菜单取消事件
-//                mCameraDialog.dismiss();
-//                break;
-//            case R.id.btn_choose_img://选择相册1
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent, 21);
-//                break;
-//            case R.id.btn_choose_img2://选择相册2
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent, 22);
-//                break;
-//            case R.id.btn_choose_img3://选择相册3
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent,23 );
-//                break;
-//            case R.id.btn_choose_img4://选择相册4
-//                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(intent, 24);
-//                break;
             case R.id.location_layout://备注地址事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘

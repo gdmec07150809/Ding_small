@@ -691,7 +691,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     selling_user_edit_str=selling_user_edit_text.getText().toString().trim();//售点联系人
                     selling_phone_edit_str=selling_phone_edit_text.getText().toString().trim();//联系人电话*/
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.114:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.104:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证："+sign);
             String b= "{\"macNo\": \""+device_mac+"\",\"memFullName\": \""+repair_user_str+"\",\"Temperature\": \""+temperature_str+"\",\"userInfoJson\": {\"username\": \""+selling_user_edit_str+"\",\"pointOfSalePhone\": \""+selling_phone_edit_str+"\",\"pointOfSaleName\": \""+selling_edit_str+"\",\"addressInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \""+selling_location_edit_str+"\",\"ar\": \"\",\"pv\": \"山东\",\"te\": \"\",\"ct\": \"滨州\"}}}";//json字符串

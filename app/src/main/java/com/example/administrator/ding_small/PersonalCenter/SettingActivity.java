@@ -16,7 +16,9 @@ import java.util.Locale;
  */
 
 public class SettingActivity extends Activity implements View.OnClickListener{
-    private TextView lang_text;
+
+    //更换语言所要更改的控件
+    private TextView lang_text,back_text,setting_text,search_interval_text,language_text,next;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +29,18 @@ public class SettingActivity extends Activity implements View.OnClickListener{
         lang_text=findViewById(R.id.lang_text);
         findViewById(R.id.back).setOnClickListener(this);
         findViewById(R.id.comfir_btn).setOnClickListener(this);
-
+        back_text=findViewById(R.id.back_text);
+        setting_text=findViewById(R.id.setting_text);
+        search_interval_text=findViewById(R.id.search_interval_text);
+        language_text=findViewById(R.id.language_text);
+        next=findViewById(R.id.next);
         if(Locale.getDefault().getLanguage().equals("en")){
             lang_text.setText("English");
+            back_text.setText("Back");
+            setting_text.setText("Setting");
+            search_interval_text.setText("Search Interval");
+            language_text.setText("Language");
+            next.setText("Save");
         }
     }
 

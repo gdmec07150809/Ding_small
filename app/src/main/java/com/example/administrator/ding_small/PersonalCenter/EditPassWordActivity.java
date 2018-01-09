@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -43,6 +45,9 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
     SharedPreferences sp=null;//定义储存源，备用
     String memid,token,sign,oldPass,newPass,ts,c_newPass;
     public static final int SHOW_RESPONSE = 0;
+
+    //更改语言所要更改的控件
+    private TextView back_text,edit_password_text,old_password_text,new_password_text,confirm_text,edit_password;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +55,33 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
         password1=findViewById(R.id.password1);
         c_password=findViewById(R.id.c_password);
         c_new_password=findViewById(R.id.c_new_password);
-        findViewById(R.id.edit_password).setOnClickListener(this);
+        edit_password=findViewById(R.id.edit_password);
+        edit_password.setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
+
+        back_text=findViewById(R.id.back_text);
+        edit_password_text=findViewById(R.id.edit_password_text);
+        old_password_text=findViewById(R.id.old_password_text);
+        new_password_text=findViewById(R.id.new_password_text);
+        confirm_text=findViewById(R.id.confirm_text);
+
+        changeTextView();//更换语言
         getCache();
+    }
+    private void changeTextView(){
+        if(Locale.getDefault().getLanguage().equals("en")){
+            back_text.setText("Back");
+            edit_password_text.setText("Edit PassWord");
+
+            old_password_text.setText("Old");
+            new_password_text.setText("New");
+            confirm_text.setText("Confirm");
+
+            password1.setHint("Enter Old PassWord");
+            c_password.setHint("Enter New PassWord");
+            c_new_password.setHint("Please Reconfirm The PassWord");
+            edit_password.setText("Save");
+        }
     }
     private  void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);

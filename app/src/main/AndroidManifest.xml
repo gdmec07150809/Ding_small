@@ -65,7 +65,7 @@
 
 
         <activity android:name=".PersonalCenter.PersonalCenterActivity"/>
-        <activity android:name=".PersonalCenter.PersonalCenterPerfectActivity"/>
+        <activity android:name=".PersonalCenter.PersonalCenterPerfectActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".PersonalCenter.InstructionsActivity"/>
         <activity android:name=".PersonalCenter.SettingActivity"/>
         <activity android:name=".PersonalCenter.SatisticsSettingActivity"/>
@@ -75,6 +75,7 @@
         <activity android:name=".PersonalCenter.BindingCompanyActivity"/>
         <activity android:name=".PersonalCenter.EditPassWordActivity"/>
         <activity android:name=".PersonalCenter.AccountSecurityActivity"/>
+        <activity android:name=".PersonalCenter.ChangePhoneActivity"/>
 
         <activity android:name=".RemarksActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".SearchTimeActivity"/>

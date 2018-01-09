@@ -79,11 +79,11 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.about:
-                intent=new Intent(PersonalCenterActivity.this,AboutActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
+//            case R.id.about:
+//                intent=new Intent(PersonalCenterActivity.this,AboutActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                break;
             case R.id.security:
                 intent=new Intent(PersonalCenterActivity.this,AccountSecurityActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -216,7 +216,7 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             // TODO
             // 在这里进行 http request.网络请求相关操作
            // String url = "http://120.76.188.131:8080/a10/api/user/login.do";192.168.1.105
-            String url = "http://192.168.1.114:8080/api/user/login.do";
+            String url = "http://192.168.1.104:8080/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass=MD5Utils.md5(login_pass);
 
