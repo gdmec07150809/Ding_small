@@ -11,7 +11,7 @@ import com.example.administrator.ding_small.R;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/11/2.
+ * Created by CZK on 2017/11/2.
  */
 
 public class ContactAccountAdapter extends BaseAdapter {

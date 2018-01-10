@@ -32,7 +32,7 @@ import static com.example.administrator.ding_small.R.id.found_history_ryt;
 import static com.example.administrator.ding_small.R.id.number;
 
 /**
- * Created by Administrator on 2017/12/6.
+ * Created by CZK on 2017/12/6.
  */
 
 public class InComeAdapter extends BaseAdapter {

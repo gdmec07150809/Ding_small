@@ -17,7 +17,7 @@ import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivit
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/11/2.
+ * Created by CZK on 2017/11/2.
  */
 
 public class ContactsDetailActivity extends Activity implements View.OnClickListener{

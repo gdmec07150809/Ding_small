@@ -43,7 +43,7 @@ import static com.example.administrator.ding_small.R.id.at_action;
 import static com.example.administrator.ding_small.R.id.calendar;
 
 /**
- * Created by Administrator on 2017/10/27.
+ * Created by CZK on 2017/10/27.
  */
 
 public class PayableActivity extends FragmentActivity implements View.OnClickListener{

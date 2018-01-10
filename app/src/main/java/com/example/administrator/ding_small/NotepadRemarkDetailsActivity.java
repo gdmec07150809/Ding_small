@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/11/28.
+ * Created by CZK on 2017/11/28.
  */
 
 public class NotepadRemarkDetailsActivity extends Activity implements View.OnClickListener{

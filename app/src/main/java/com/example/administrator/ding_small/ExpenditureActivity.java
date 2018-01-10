@@ -29,7 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Administrator on 2017/12/6.
+ * Created by CZK on 2017/12/6.
  */
 
 public class ExpenditureActivity extends Activity implements View.OnClickListener{

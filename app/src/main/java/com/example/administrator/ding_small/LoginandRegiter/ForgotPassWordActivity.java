@@ -41,7 +41,7 @@ import static android.icu.lang.UScript.getCode;
 import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
 /**
- * Created by Administrator on 2017/11/16.
+ * Created by CZK on 2017/11/16.
  */
 
 public class ForgotPassWordActivity extends Activity implements View.OnClickListener{

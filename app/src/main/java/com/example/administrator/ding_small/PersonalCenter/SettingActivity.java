@@ -12,7 +12,7 @@ import com.example.administrator.ding_small.R;
 import java.util.Locale;
 
 /**
- * Created by Administrator on 2017/11/7.
+ * Created by CZK on 2017/11/7.
  */
 
 public class SettingActivity extends Activity implements View.OnClickListener{

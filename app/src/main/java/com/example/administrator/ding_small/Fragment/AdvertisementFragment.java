@@ -11,7 +11,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 /**
- * Created by Administrator on 2016/9/29.
+ * Created by CZK on 2016/9/29.
  */
 public class AdvertisementFragment extends android.support.v4.app.Fragment {
 

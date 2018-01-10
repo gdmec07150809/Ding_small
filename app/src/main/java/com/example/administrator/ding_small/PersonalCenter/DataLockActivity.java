@@ -9,7 +9,7 @@ import android.view.View;
 import com.example.administrator.ding_small.R;
 
 /**
- * Created by Administrator on 2017/11/7.
+ * Created by CZK on 2017/11/7.
  */
 
 public class DataLockActivity extends Activity implements View.OnClickListener{

@@ -14,7 +14,7 @@ import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/12/6.
+ * Created by CZK on 2017/12/6.
  */
 
 public class AccountScreenActiivity extends Activity implements View.OnClickListener{

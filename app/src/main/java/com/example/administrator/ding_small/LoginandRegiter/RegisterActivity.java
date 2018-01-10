@@ -36,7 +36,7 @@ import static com.example.administrator.ding_small.R.id.c_password;
 import static com.example.administrator.ding_small.R.id.password1;
 
 /**
- * Created by Administrator on 2017/12/28.
+ * Created by CZK on 2017/12/28.
  */
 
 public class RegisterActivity extends Activity implements View.OnClickListener{

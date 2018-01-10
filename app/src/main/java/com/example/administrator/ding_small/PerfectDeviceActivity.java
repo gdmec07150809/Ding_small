@@ -78,7 +78,7 @@ import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivit
 import static com.example.administrator.ding_small.R.id.date;
 
 /**
- * Created by Administrator on 2017/12/21.
+ * Created by CZK on 2017/12/21.
  */
 
 public class PerfectDeviceActivity extends Activity implements View.OnClickListener{
@@ -356,7 +356,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     if(arrayList.size()==10){
                         arrayList.remove(0);
                     }
-                    /*更新图片布局*/
+                    /*清空所有图片布局*/
                     found_activity_fyt.removeAllViews();
                     //加载搜索记录
                     for (int i = arrayList.size()-1; i >=0; i--) {
@@ -373,7 +373,11 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                         imageView.setLayoutParams(params);
                         found_activity_fyt = findViewById(R.id.found_activity_fyt);
                         found_activity_fyt.addView(imageView);//将内容添加到布局中
-                        imageView.setOnClickListener(new View.OnClickListener() {
+                        //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
+                        if(found_activity_fyt.getChildCount()==9){
+                            imageView.setClickable(false);
+                        }else if(i==found_activity_fyt.getChildCount()-1){
+                            imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {//添加点击事件
                                 if(found_activity_fyt.getChildCount()<10){
@@ -382,6 +386,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                                 }
                             }
                         });
+                        }
                     }
 
                     FileOutputStream b = null;

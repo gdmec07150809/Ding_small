@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.example.administrator.ding_small.R;
 
 /**
- * Created by youyou000 on 2018/1/9.
+ * Created by CZK on 2018/1/9.
  */
 
 public class ChangePhoneActivity extends Activity implements View.OnClickListener{

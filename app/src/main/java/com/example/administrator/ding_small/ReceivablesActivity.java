@@ -41,7 +41,7 @@ import java.util.Map;
 import static com.example.administrator.ding_small.R.id.at_action;
 
 /**
- * Created by Administrator on 2017/10/27.
+ * Created by CZK on 2017/10/27.
  */
 
 public class ReceivablesActivity extends FragmentActivity implements View.OnClickListener{

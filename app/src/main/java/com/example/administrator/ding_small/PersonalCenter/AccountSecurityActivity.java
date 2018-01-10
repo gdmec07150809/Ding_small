@@ -11,7 +11,7 @@ import com.example.administrator.ding_small.R;
 import java.util.Locale;
 
 /**
- * Created by youyou000 on 2018/1/2.
+ * Created by CZK on 2018/1/2.
  */
 
 public class AccountSecurityActivity extends Activity implements View.OnClickListener{

@@ -17,7 +17,7 @@ import com.example.administrator.ding_small.ReceivedActivity;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/10/27.
+ * Created by CZK on 2017/10/27.
  */
 
 public class TitleActivity extends Activity implements View.OnClickListener{

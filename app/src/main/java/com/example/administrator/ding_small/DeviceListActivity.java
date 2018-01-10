@@ -55,7 +55,7 @@ import static android.media.CamcorderProfile.get;
 import static com.example.administrator.ding_small.R.id.Right;
 
 /**
- * Created by Administrator on 2017/12/18.
+ * Created by CZK on 2017/12/18.
  */
 
 public class DeviceListActivity extends Activity implements View.OnClickListener{

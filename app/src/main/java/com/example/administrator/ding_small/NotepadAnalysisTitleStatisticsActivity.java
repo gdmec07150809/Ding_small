@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import static com.example.administrator.ding_small.R.id.ge;
 
 /**
- * Created by Administrator on 2017/11/23.
+ * Created by CZK on 2017/11/23.
  */
 
 public class NotepadAnalysisTitleStatisticsActivity extends Activity implements View.OnClickListener{

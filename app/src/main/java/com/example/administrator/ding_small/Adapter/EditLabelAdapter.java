@@ -16,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Administrator on 2017/10/31.
+ * Created by CZK on 2017/10/31.
  */
 
 public class EditLabelAdapter extends BaseAdapter implements OnClickListener {

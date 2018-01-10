@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import static android.R.id.list;
 
 /**
- * Created by Administrator on 2017/11/3.
+ * Created by CZK on 2017/11/3.
  */
 
 public class NotepadBtnAdapter extends BaseAdapter {

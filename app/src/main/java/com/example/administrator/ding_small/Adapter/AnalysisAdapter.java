@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import static com.example.administrator.ding_small.R.id.ge;
 
 /**
- * Created by Administrator on 2017/10/31.
+ * Created by CZK on 2017/10/31.
  */
 
 public class AnalysisAdapter extends BaseAdapter {

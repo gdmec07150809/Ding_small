@@ -68,7 +68,7 @@ import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddr
 import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
 /**
- * Created by Administrator on 2017/12/20.
+ * Created by CZK on 2017/12/20.
  */
 
 public class CreatRepairRemarksActivity extends Activity implements View.OnClickListener{

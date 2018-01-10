@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/10/31.
+ * Created by CZK on 2017/10/31.
  */
 
 public class EditLabelActivity extends Activity  implements View.OnClickListener,Callback {

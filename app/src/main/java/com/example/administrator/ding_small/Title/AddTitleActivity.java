@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.administrator.ding_small.R;
 
 /**
- * Created by Administrator on 2017/10/28.
+ * Created by CZK on 2017/10/28.
  */
 
 public class AddTitleActivity extends Activity implements View.OnClickListener{

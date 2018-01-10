@@ -15,7 +15,7 @@ import com.example.administrator.ding_small.R;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/11/7.
+ * Created by CZK on 2017/11/7.
  */
 
 public class BindingCompanyAdapter extends BaseAdapter implements OnClickListener {

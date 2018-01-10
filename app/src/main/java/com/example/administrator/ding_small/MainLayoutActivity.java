@@ -41,7 +41,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by Administrator on 2017/12/11.
+ * Created by CZK on 2017/12/11.
  */
 public class MainLayoutActivity extends FragmentActivity implements View.OnClickListener{
 

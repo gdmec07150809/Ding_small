@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by Administrator on 2017/12/19.
+ * Created by CZK on 2017/12/19.
  */
 
 public class DeviceSearchActivity extends Activity implements View.OnClickListener{

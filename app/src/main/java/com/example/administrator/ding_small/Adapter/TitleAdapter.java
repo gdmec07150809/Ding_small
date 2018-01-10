@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/10/27.
+ * Created by CZK on 2017/10/27.
  */
 
 public class TitleAdapter extends BaseAdapter {

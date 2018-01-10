@@ -30,7 +30,7 @@ import static com.example.administrator.ding_small.R.id.textView1;
 
 
 /**
- * Created by Administrator on 2017/11/30.
+ * Created by CZK on 2017/11/30.
  */
 
 public class Fragment1 extends Fragment {

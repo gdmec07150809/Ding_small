@@ -18,7 +18,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 
 /**
- * Created by youyou000 on 2018/1/4.
+ * Created by CZK on 2018/1/4.
  */
 
 public class SelectLocationActivity extends Activity implements View.OnClickListener{

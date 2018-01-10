@@ -35,7 +35,7 @@ import static com.example.administrator.ding_small.R.id.money;
 import static com.example.administrator.ding_small.R.id.sort;
 import static com.example.administrator.ding_small.HelpTool.JsonArrayBySort.sort;
 /**
- * Created by Administrator on 2017/11/3.
+ * Created by CZK on 2017/11/3.
  */
 
 public class NotepadBtnActivity extends Activity implements View.OnClickListener {

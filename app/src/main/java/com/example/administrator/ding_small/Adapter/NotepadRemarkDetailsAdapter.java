@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.logging.LogManager;
 
 /**
- * Created by Administrator on 2017/11/28.
+ * Created by CZK on 2017/11/28.
  */
 
     public class NotepadRemarkDetailsAdapter extends BaseAdapter {

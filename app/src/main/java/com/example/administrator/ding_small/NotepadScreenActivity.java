@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 
 /**
- * Created by Administrator on 2017/11/22.
+ * Created by CZK on 2017/11/22.
  */
 
 public class NotepadScreenActivity extends Activity implements View.OnClickListener{

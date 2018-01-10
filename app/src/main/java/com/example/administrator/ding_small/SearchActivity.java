@@ -16,7 +16,7 @@ import com.example.administrator.ding_small.Adapter.SearchAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/11/3.
+ * Created by CZK on 2017/11/3.
  */
 
 public class SearchActivity extends Activity implements View.OnClickListener{

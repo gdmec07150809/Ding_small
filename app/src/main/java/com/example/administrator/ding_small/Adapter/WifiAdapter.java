@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/12/5.
+ * Created by CZK on 2016/12/5.
  */
 public class WifiAdapter extends BaseAdapter {
 

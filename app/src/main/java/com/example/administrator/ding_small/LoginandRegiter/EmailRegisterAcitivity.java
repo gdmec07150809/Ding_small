@@ -29,7 +29,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2017/12/29.
+ * Created by CZK on 2017/12/29.
  */
 
 public class EmailRegisterAcitivity extends Activity implements View.OnClickListener{

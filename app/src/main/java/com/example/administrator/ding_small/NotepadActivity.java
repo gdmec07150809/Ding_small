@@ -1,7 +1,7 @@
 package com.example.administrator.ding_small;
 
 /**
- * Created by Administrator on 2017/10/20.
+ * Created by CZK on 2017/10/20.
  */
 import android.app.Activity;
 import android.content.Context;

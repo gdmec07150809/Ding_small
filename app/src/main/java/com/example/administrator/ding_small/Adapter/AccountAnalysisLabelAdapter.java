@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import static com.example.administrator.ding_small.R.id.label_text;
 
 /**
- * Created by Administrator on 2017/12/11.
+ * Created by CZK on 2017/12/11.
  */
 
 public class AccountAnalysisLabelAdapter extends BaseAdapter {

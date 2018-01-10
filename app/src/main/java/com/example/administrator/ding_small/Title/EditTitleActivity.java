@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import static android.media.CamcorderProfile.get;
 
 /**
- * Created by Administrator on 2017/10/28.
+ * Created by CZK on 2017/10/28.
  */
 
 public class EditTitleActivity extends Activity implements View.OnClickListener,Callback{

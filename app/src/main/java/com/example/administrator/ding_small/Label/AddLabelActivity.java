@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.example.administrator.ding_small.R;
 
 /**
- * Created by Administrator on 2017/11/16.
+ * Created by CZK on 2017/11/16.
  */
 
 public class AddLabelActivity extends Activity {

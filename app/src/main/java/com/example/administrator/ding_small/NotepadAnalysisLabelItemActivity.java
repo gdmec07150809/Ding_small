@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import static com.example.administrator.ding_small.HelpTool.JsonArrayBySort.sort;
 
 /**
- * Created by Administrator on 2017/11/29.
+ * Created by CZK on 2017/11/29.
  */
 
 public class NotepadAnalysisLabelItemActivity extends Activity {

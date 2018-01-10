@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.example.administrator.ding_small.R;
 
 /**
- * Created by Administrator on 2016/9/29.
+ * Created by CZK on 2016/9/29.
  */
 //轮播图适配器
 public class AdvertisementGvAdapter extends BaseAdapter {

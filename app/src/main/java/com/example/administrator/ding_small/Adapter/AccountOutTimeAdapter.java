@@ -22,7 +22,7 @@ import static android.R.id.list;
 import static com.example.administrator.ding_small.R.id.flow_layout;
 
 /**
- * Created by Administrator on 2017/12/9.
+ * Created by CZK on 2017/12/9.
  */
 
 public class AccountOutTimeAdapter extends BaseAdapter {

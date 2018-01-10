@@ -77,7 +77,7 @@ import static com.example.administrator.ding_small.R.id.money;
 
 
 /**
- * Created by Administrator on 2017/11/9.
+ * Created by CZK on 2017/11/9.
  */
 
 public class RemarksActivity extends Activity implements View.OnClickListener{

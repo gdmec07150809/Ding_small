@@ -10,7 +10,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 /**
- * Created by Administrator on 2017/11/13.
+ * Created by CZK on 2017/11/13.
  */
 
 public class SearchTimeActivity extends Activity {

@@ -30,7 +30,7 @@ import static com.example.administrator.ding_small.R.id.found_activity_lay;
 import static com.example.administrator.ding_small.R.id.search_btn;
 
 /**
- * Created by Administrator on 2017/11/29.
+ * Created by CZK on 2017/11/29.
  */
 
 public class NotepadTurnToSendActivity extends Activity{

@@ -32,7 +32,7 @@ import lecho.lib.hellocharts.view.ColumnChartView;
 import static com.example.administrator.ding_small.R.id.found_history_ryt;
 
 /**
- * Created by Administrator on 2017/11/21.
+ * Created by CZK on 2017/11/21.
  */
 
 public class NotepadAnalysisActivity extends Activity implements View.OnClickListener{

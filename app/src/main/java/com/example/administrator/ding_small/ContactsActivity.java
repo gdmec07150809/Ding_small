@@ -1,7 +1,7 @@
 package com.example.administrator.ding_small;
 
 /**
- * Created by Administrator on 2017/10/19.
+ * Created by CZK on 2017/10/19.
  */
 import android.app.Activity;
 import android.content.SharedPreferences;
