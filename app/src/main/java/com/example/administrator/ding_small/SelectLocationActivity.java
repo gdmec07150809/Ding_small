@@ -50,7 +50,6 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
         }).setTitleText("")
                 .setDividerColor(Color.GRAY)
                 .setTextColorCenter(Color.GRAY)
-                .setContentTextSize(13)
                 .setOutSideCancelable(false)
                 .setContentTextSize(18)//滚轮文字大小
                 .setSubmitColor(ContextCompat.getColor(this, R.color.theme_color))//确定按钮文字颜色
@@ -58,10 +57,11 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                 .setTitleBgColor(ContextCompat.getColor(this, R.color.time_bg_color))//标题背景颜色 Night mode
                 .setBgColor(ContextCompat.getColor(this, R.color.time_bg_color))//滚轮背景颜色 Night mode
                 .build();
-          /*pvOptions.setPicker(options1Items);//一级选择器
-        pvOptions.setPicker(options1Items, options2Items);//二级选择器*/
+            /*pvOptions.setPicker(options1Items);//一级选择器
+            pvOptions.setPicker(options1Items, options2Items);//二级选择器*/
         pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
         pvOptions.show();
+
     }
 
     private void initView() {
@@ -99,7 +99,6 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                 CityList.add(CityName);//添加城市
 
                 ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
-
                 //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
                 if (jsonBean.get(i).getCityList().get(c).getArea() == null
                         || jsonBean.get(i).getCityList().get(c).getArea().size() == 0) {

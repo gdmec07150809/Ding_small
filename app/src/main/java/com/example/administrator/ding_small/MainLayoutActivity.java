@@ -336,6 +336,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 //                startActivity(intent);
                 break;
             case R.id.personalcenter_layout://我的
+                getCache();
                 if (!"null".equals(memid) && memid != null) {
                     intent = new Intent(MainLayoutActivity.this, PersonalCenterActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

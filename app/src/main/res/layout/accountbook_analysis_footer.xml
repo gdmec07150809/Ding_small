@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="标签"
+            android:text="@string/label"
             android:textSize="4.5pt"/>
     </RelativeLayout>
 
@@ -47,7 +47,7 @@
             android:textSize="4.5pt"
             android:textColor="@color/green"
             android:layout_centerInParent="true"
-            android:text="汇总"/>
+            android:text="@string/summary"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/f_income"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:textSize="4.5pt"
             android:layout_centerInParent="true"
-            android:text="收入"/>
+            android:text="@string/income"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/f_expenditure"
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:textSize="4.5pt"
             android:layout_centerInParent="true"
-            android:text="支出"/>
+            android:text="@string/expenditure"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/f_outtime"
@@ -116,6 +116,6 @@
             android:layout_height="wrap_content"
             android:textSize="4.5pt"
             android:layout_centerInParent="true"
-            android:text="逾期"/>
+            android:text="@string/outtime"/>
     </RelativeLayout>
 </LinearLayout>

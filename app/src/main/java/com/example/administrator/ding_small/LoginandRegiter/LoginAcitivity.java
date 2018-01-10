@@ -188,10 +188,20 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
 //                      new Thread(sendRegister).start();//注册
 //                    }
 //                }
-                intent = new Intent(LoginAcitivity.this, RegisterActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //跳转
-                startActivity(intent);
+
+                //判断当前系统语言,进入对应注册页面
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    intent = new Intent(LoginAcitivity.this, EmailRegisterAcitivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //跳转
+                    startActivity(intent);
+                }else {
+                    intent = new Intent(LoginAcitivity.this, RegisterActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //跳转
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.forgot_password://忘记密码
                 intent = new Intent(LoginAcitivity.this, ForgotPassWordActivity.class);
@@ -217,7 +227,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
             // TODO
             // 在这里进行 http request.网络请求相关操作
             // String url = "http://120.76.188.131:8080/a10/api/user/login.do";192.168.1.105
-            String url = "http://192.168.1.104:8080/api/user/login.do";
+            String url = "http://192.168.1.103:8080/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass = MD5Utils.md5(login_pass);
 
@@ -274,6 +284,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                 SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
                                 editor.putString("tokEn", tokEn);
                                 editor.putString("memId", memId);
+                                editor.putString("phone", login_user);
                                 editor.commit();    //提交数据保存
                             }
                         }

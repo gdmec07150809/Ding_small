@@ -74,7 +74,6 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
         new_password_text = findViewById(R.id.new_password_text);
         confirm_text = findViewById(R.id.confirm_text);
         reset_password_text = findViewById(R.id.reset_password_text);
-
         changeTextView();//更改语言
     }
 
@@ -146,7 +145,8 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
             // 在这里进行 http request.网络请求相关操作
             String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
+            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"3\",\"msgLen\":\"4\"}";//json字符串
+            System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
@@ -321,17 +321,18 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
     };
 
     /**
-     * 网络操作相关的子线程okhttp框架  注册
+     * 网络操作相关的子线程okhttp框架 忘记密码
      */
     Runnable comfirPassword = new Runnable() {
         @Override
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://120.76.188.131:8080/a10/api/user/register.do";
+            String url = "http://120.76.188.131:8080/a10/api/user/forgetPassword.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass = MD5Utils.md5(p1_str);
-            String b = "{\"memPhone\":\"" + phone_str + "\",\"memPwd1\":\"" + pass + "\",\"smsVerifCode\":\"" + code_str + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
+            String b = "{\"loginAccount\":\"" + phone_str + "\",\"pwdNew\":\"" + pass + "\",\"smsVerifCode\":\"" + code_str + "\"," +
+                    "\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);//请求体
             Request request = new Request.Builder()//发送请求

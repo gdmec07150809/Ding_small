@@ -8,4 +8,10 @@
     <string name="thursday">四</string>
     <string name="friday">五</string>
     <string name="saturday">六</string>
+    <string name="income_statement">收入报表</string>
+    <string name="label">标签</string>
+    <string name="summary">汇总</string>
+    <string name="income">收入</string>
+    <string name="expenditure">支出</string>
+    <string name="outtime">逾期</string>
 </resources>

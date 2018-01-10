@@ -24,7 +24,7 @@
                     android:layout_centerInParent="true"
                     android:textSize="8pt"
                     android:textColor="@color/blank"
-                    android:text="收入报表"/>
+                    android:text="@string/income_statement"/>
             </RelativeLayout>
             <LinearLayout
                 android:id="@+id/ge"
