@@ -71,19 +71,20 @@ import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivit
  * Created by CZK on 2017/12/20.
  */
 
-public class CreatRepairRemarksActivity extends Activity implements View.OnClickListener{
-    private TextView dateT,location_text,photo_text,reimbursement_text,parameter_text,management_text,at_action,latitude,longitude,location,temperature,information_text,remarks_text,adress_text;
-    private ImageView photo1,photo2,photo3,photo4,new_information_img,new_photo_img,new_remarks_img;
-    private String atTime,title;
+public class CreatRepairRemarksActivity extends Activity implements View.OnClickListener {
+    private TextView dateT, location_text, photo_text, reimbursement_text, parameter_text, management_text, at_action, latitude, longitude, location, temperature, information_text, remarks_text, adress_text;
+    private ImageView photo1, photo2, photo3, photo4, new_information_img, new_photo_img, new_remarks_img;
+    private String atTime, title;
     InputMethodManager imm;
     private Dialog mCameraDialog;
     private int color;
     private RelativeLayout title_layout;
-    private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
-    private String str_location=null;
-    private  String latitude_str,longitude_str,province_str,temperature_str;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
+    private String str_location = null;
+    private String latitude_str, longitude_str, province_str, temperature_str;
     private FlowLayout found_activity_fyt;
-    private ArrayList<Bitmap> arrayList=new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
+
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,60 +95,66 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         //getLocation();//获取当前经纬度
         //getTemperature();//获取当前温度
         getString();//获取页面传递数据
-        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),R.mipmap.icon_fix_addimg);
+        Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
     }
 
-    private void getString(){
-        if(getIntent().getStringExtra("adress")!=null){
+    private void getString() {
+        if (getIntent().getStringExtra("adress") != null) {
             adress_text.setText(getIntent().getStringExtra("adress"));
-        };
+        }
+        ;
     }
-    private void getTemperature(){
+
+    private void getTemperature() {
         try {
-            String str= getAddress(LocationUtil.location,getApplicationContext());
+            String str = getAddress(LocationUtil.location, getApplicationContext());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        province_str=LocationUtil.province;
-        System.out.println("市："+province_str);
-        String url="https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location="+province_str+"&language=zh-Hans&unit=c";
-        sendRequestWithHttpClient(this,url);//获取温度的方法
+        province_str = LocationUtil.province;
+        System.out.println("市：" + province_str);
+        String url = "https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location=" + province_str + "&language=zh-Hans&unit=c";
+        sendRequestWithHttpClient(this, url);//获取温度的方法
     }
+
     @RequiresApi(api = VERSION_CODES.M)
-    private void getLocation(){
+    private void getLocation() {
         //获取地址
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
         } else {
             LocationUtil.initLocation(CreatRepairRemarksActivity.this);
-            System.out.println("主经度:"+Double.toString(LocationUtil.longitude)+"主纬度："+Double.toString(LocationUtil.latitude));
-            longitude_str=Double.toString(LocationUtil.longitude);
-            latitude_str=Double.toString(LocationUtil.latitude);
+            System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
+            longitude_str = Double.toString(LocationUtil.longitude);
+            latitude_str = Double.toString(LocationUtil.latitude);
         }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    str_location= getAddress(LocationUtil.location,getApplicationContext());
+                    str_location = getAddress(LocationUtil.location, getApplicationContext());
                     //位置信息-----一个字符串
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
     }
-    private void getStringValue(){
+
+    private void getStringValue() {
         Bundle bundle = this.getIntent().getExtras();
-        atTime=bundle.getString("date");
-        title=bundle.getString("at_action");
-        color=bundle.getInt("drawable");
+        atTime = bundle.getString("date");
+        title = bundle.getString("at_action");
+        color = bundle.getInt("drawable");
         dateT.setText(atTime);
         title_layout.setBackgroundColor(color);
         at_action.setText(title);
     }
-    private void init(){
+
+    private void init() {
 //        dateT=findViewById(R.id.date);
 //        dateT.setOnClickListener(this);
         findViewById(R.id.new_information_layout).setOnClickListener(this);//信息
@@ -160,31 +167,32 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         findViewById(R.id.back).setOnClickListener(this);//返回
         findViewById(R.id.new_select_layout).setOnClickListener(this);//选择地址
 
-        remarks_text=findViewById(R.id.remarks_text);
-        photo_text=findViewById(R.id.photo_text);
-        information_text=findViewById(R.id.information_text);
+        remarks_text = findViewById(R.id.remarks_text);
+        photo_text = findViewById(R.id.photo_text);
+        information_text = findViewById(R.id.information_text);
 //        reimbursement_text=findViewById(R.id.reimbursement_text);
 //        parameter_text=findViewById(R.id.parameter_text);
 //        management_text=findViewById(R.id.management_text);
 //        title_layout=findViewById(R.id.action);
 //        at_action=findViewById(R.id.at_action);
 
-       // information_img,photo_img,location_img;
-        new_information_img=findViewById(R.id.new_information_img);
-        new_photo_img=findViewById(R.id.new_photo_img);
-        new_remarks_img=findViewById(R.id.new_remarks_img);
+        // information_img,photo_img,location_img;
+        new_information_img = findViewById(R.id.new_information_img);
+        new_photo_img = findViewById(R.id.new_photo_img);
+        new_remarks_img = findViewById(R.id.new_remarks_img);
 
-        adress_text=findViewById(R.id.adress_text);
+        adress_text = findViewById(R.id.adress_text);
     }
+
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.date://选择时间事件
                 TimeSelector timeSelector = new TimeSelector(CreatRepairRemarksActivity.this, new TimeSelector.ResultHandler() {
                     @Override
                     public void handle(String time) {
-                        atTime=time;
+                        atTime = time;
                         dateT.setText(time);
                     }
 
@@ -202,9 +210,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 findViewById(R.id.repair_information_lay).setVisibility(View.VISIBLE);
 
 
-                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
-                information_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                remarks_text.setTextColor(ContextCompat.getColor(this, R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this, R.color.list_item_color));
+                information_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
 
                 new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_normal);
                 new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_normal);
@@ -216,9 +224,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 findViewById(R.id.new_repair_remarks_lay).setVisibility(View.VISIBLE);
                 findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
 
-                information_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
-                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                information_text.setTextColor(ContextCompat.getColor(this, R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this, R.color.list_item_color));
+                remarks_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
 
                 new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_normal);
                 new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_active);
@@ -232,9 +240,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 findViewById(R.id.new_repair_remarks_lay).setVisibility(View.GONE);
                 findViewById(R.id.repair_information_lay).setVisibility(View.GONE);
 
-                remarks_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
-                information_text.setTextColor(ContextCompat.getColor(this,R.color.list_item_color));
+                remarks_text.setTextColor(ContextCompat.getColor(this, R.color.list_item_color));
+                photo_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                information_text.setTextColor(ContextCompat.getColor(this, R.color.list_item_color));
 
                 new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_active);
                 new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_normal);
@@ -244,7 +252,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 break;
 
             case R.id.new_select_layout:
-                intent=new Intent(CreatRepairRemarksActivity.this,SelectLocationActivity.class);
+                intent = new Intent(CreatRepairRemarksActivity.this, SelectLocationActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -264,11 +272,11 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
                 findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                location_text.setTextColor(ContextCompat.getColor(this, R.color.green));
+                photo_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                reimbursement_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                parameter_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                management_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
                 break;
             case R.id.reimbursement_layout://备注维修人事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -286,20 +294,20 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
                 findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                location_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                photo_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                reimbursement_text.setTextColor(ContextCompat.getColor(this, R.color.green));
+                parameter_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                management_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
                 break;
             case R.id.parameter_layout://备注参数事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
 
-                longitude=findViewById(R.id.longitude);
-                latitude=findViewById(R.id.latitude);
-                location=findViewById(R.id.location);
-                temperature=findViewById(R.id.temperature);
+                longitude = findViewById(R.id.longitude);
+                latitude = findViewById(R.id.latitude);
+                location = findViewById(R.id.location);
+                temperature = findViewById(R.id.temperature);
                 findViewById(R.id.remarks_location).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_photo).setBackgroundResource(R.drawable.hui_bg);
                 findViewById(R.id.remarks_reimbursement).setBackgroundResource(R.drawable.hui_bg);
@@ -312,21 +320,21 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 findViewById(R.id.repair_parameter_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.repair_management_layout).setVisibility(View.GONE);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.green));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
+                location_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                photo_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                reimbursement_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                parameter_text.setTextColor(ContextCompat.getColor(this, R.color.green));
+                management_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
 
                 //获取地址
-                if(str_location ==null || str_location.isEmpty()){
-                    Toast.makeText(this,"请打开网络,重新进入",Toast.LENGTH_SHORT).show();
-                }else{
+                if (str_location == null || str_location.isEmpty()) {
+                    Toast.makeText(this, "请打开网络,重新进入", Toast.LENGTH_SHORT).show();
+                } else {
                     longitude.setText(longitude_str);
                     latitude.setText(latitude_str);
                     location.setText(str_location);
                 }
-                temperature.setText(temperature_str+"℃");
+                temperature.setText(temperature_str + "℃");
                 break;
             case R.id.management_layout://备注管理人事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -344,14 +352,14 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 findViewById(R.id.repair_parameter_layout).setVisibility(View.GONE);
                 findViewById(R.id.repair_management_layout).setVisibility(View.VISIBLE);
 
-                location_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                photo_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                reimbursement_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                parameter_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-                management_text.setTextColor(ContextCompat.getColor(this,R.color.green));
+                location_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                photo_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                reimbursement_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                parameter_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+                management_text.setTextColor(ContextCompat.getColor(this, R.color.green));
                 break;
             case R.id.confrim_btn:
-                intent=new Intent(CreatRepairRemarksActivity.this,CreatRepairActivity.class);
+                intent = new Intent(CreatRepairRemarksActivity.this, CreatRepairActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -371,33 +379,33 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 
         findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
         //判断那个相机回调
-        switch (requestCode){
+        switch (requestCode) {
             case 11:
                 if (resultCode == Activity.RESULT_OK) {
                     String sdStatus = Environment.getExternalStorageState();
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreatRepairRemarksActivity.this, "sd卡不可用！！！", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
                     String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
-                   // Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                    System.out.println("路径：" + name);
+                    // Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
 
                     arrayList.add(bitmap);
-                    if(arrayList.size()==10){
+                    if (arrayList.size() == 10) {
                         arrayList.remove(0);
                     }
                     /*更新图片布局*/
                     found_activity_fyt.removeAllViews();
                     //加载搜索记录
-                    for (int i = arrayList.size()-1; i >=0; i--) {
+                    for (int i = arrayList.size() - 1; i >= 0; i--) {
                         final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
-                        System.out.println("数组："+arrayList.size());
+                        System.out.println("数组：" + arrayList.size());
                         imageView.setImageBitmap(arrayList.get(i));
                         imageView.setPadding(15, 10, 15, 10);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
@@ -412,18 +420,18 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {//添加点击事件
-                                if(found_activity_fyt.getChildCount()<10){
+                                if (found_activity_fyt.getChildCount() < 10) {
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                     startActivityForResult(intent, 11);
                                 }
-                                }
-                            });
-                        }
+                            }
+                        });
+                    }
 
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
+                    String fileName = "/sdcard/Image/" + name;
 
                     try {
                         b = new FileOutputStream(fileName);
@@ -432,7 +440,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         e.printStackTrace();
                     } finally {
                         try {
-                            if(b!=null){
+                            if (b != null) {
                                 b.flush();
                                 b.close();
                             }
@@ -662,7 +670,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 
     }
 
-    private void showDetelePhotoDialog(final int number){
+    private void showDetelePhotoDialog(final int number) {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
          * @setMessage 设置对话框消息提示
@@ -677,7 +685,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //判断那个图片删除
-                        switch (number){
+                        switch (number) {
                             case 1:
                                 photo1.setImageResource(R.drawable.no_photo);
                                 break;
@@ -709,10 +717,10 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 
     //底部弹出菜单
     private void setDialog(int number) {
-        LinearLayout root=null;
+        LinearLayout root = null;
         mCameraDialog = new Dialog(this, R.style.BottomDialog);
         //判断那个相机弹出
-        switch (number){
+        switch (number) {
             case 1:
                 root = (LinearLayout) LayoutInflater.from(this).inflate(
                         R.layout.photo_menu, null);
@@ -764,7 +772,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         mCameraDialog.show();
     }
 
-    public  void   sendRequestWithHttpClient(final Context context, final String url) {
+    public void sendRequestWithHttpClient(final Context context, final String url) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -778,24 +786,24 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     //第三步：执行请求，获取服务器发还的相应对象
                     HttpResponse httpResponse = httpCient.execute(httpGet);
                     //第四步：检查相应的状态是否正常：检查状态码的值是200表示正常
-                    System.out.println("状态码："+httpResponse.getStatusLine().getStatusCode());
+                    System.out.println("状态码：" + httpResponse.getStatusLine().getStatusCode());
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         //第五步：从相应对象当中取出数据，放到entity当中
                         HttpEntity entity = httpResponse.getEntity();
-                        String result = EntityUtils.toString(entity,"utf-8");//将entity当中的数据转换为字符串
+                        String result = EntityUtils.toString(entity, "utf-8");//将entity当中的数据转换为字符串
 
 
-                        if(result!=null){
+                        if (result != null) {
                             //在子线程中将Message对象发出去
                             Message message = new Message();
                             message.what = SHOW_RESPONSE;
                             message.obj = result.toString();
-                            System.out.println("返回结果："+result);
+                            System.out.println("返回结果：" + result);
                             handler.sendMessage(message);
 
                         }
-                    }else{
-                        Toast.makeText(context,"访问失败!!!请检查服务器...",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, "访问失败!!!请检查服务器...", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
@@ -807,6 +815,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         }).start();//这个start()方法不要忘记了
 
     }
+
     private Handler handler = new Handler() {
 
         @Override
@@ -816,13 +825,13 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 case SHOW_RESPONSE:
                     String response = (String) msg.obj;
                     try {
-                        JSONObject responseObject=new JSONObject(response);
-                        System.out.println("返回："+responseObject);
-                        JSONArray jsonArray=new JSONArray(responseObject.getString("results"));
-                        JSONObject jsonObject=new JSONObject(jsonArray.get(0).toString());
-                        JSONObject jsonObject1=new JSONObject(jsonObject.getString("now"));
-                        System.out.println("温度："+jsonObject1.getString("temperature"));
-                        temperature_str=jsonObject1.getString("temperature");
+                        JSONObject responseObject = new JSONObject(response);
+                        System.out.println("返回：" + responseObject);
+                        JSONArray jsonArray = new JSONArray(responseObject.getString("results"));
+                        JSONObject jsonObject = new JSONObject(jsonArray.get(0).toString());
+                        JSONObject jsonObject1 = new JSONObject(jsonObject.getString("now"));
+                        System.out.println("温度：" + jsonObject1.getString("temperature"));
+                        temperature_str = jsonObject1.getString("temperature");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -836,11 +845,11 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 
     //图片布局方法
     private void labelFlowLayout(final ArrayList<Bitmap> arrayList) {
-        if(found_activity_fyt==null){
+        if (found_activity_fyt == null) {
             //加载搜索记录
             for (int i = 0; i < arrayList.size(); i++) {
                 final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
-                System.out.println("数组："+arrayList.size());
+                System.out.println("数组：" + arrayList.size());
                 imageView.setImageBitmap(arrayList.get(i));
                 imageView.setPadding(15, 10, 15, 10);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//设置宽高,第一个参数是宽,第二个参数是高
@@ -855,8 +864,8 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {//添加点击事件
-                           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                           startActivityForResult(intent, 11);
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 11);
 
                     }
                 });

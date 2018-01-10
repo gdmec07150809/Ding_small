@@ -41,19 +41,18 @@ import static com.example.administrator.ding_small.NotepadActivity.TAG;
 import static com.example.administrator.ding_small.R.*;
 
 
-
-public class LoginAcitivity extends Activity implements  View.OnClickListener{
-    private EditText user_name,user_password,p_code,phone,password1,c_password;
+public class LoginAcitivity extends Activity implements View.OnClickListener {
+    private EditText user_name, user_password, p_code, phone, password1, c_password;
     public static final int SHOW_RESPONSE = 0;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
-    SharedPreferences sp=null;//定义储存源，备用
-    String memId,tokEn;
-    String code_str,phone_str,p1_str,p2_str,login_user,login_pass;
+    SharedPreferences sp = null;//定义储存源，备用
+    String memId, tokEn;
+    String code_str, phone_str, p1_str, p2_str, login_user, login_pass;
 
 
-    private long clickTime=0;
+    private long clickTime = 0;
     //更改语言所要更改的控件
-    private TextView phone_text,password_text,forget_password,register;
+    private TextView phone_text, password_text, forget_password, register;
     private Button new_login;
 
     //重写onKeyDown方法,实现双击退出程序
@@ -68,7 +67,7 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
 
     private void exit() {
         if ((System.currentTimeMillis() - clickTime) > 2000) {
-            Toast.makeText(getApplicationContext(), "再次点击退出",  Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "再次点击退出", Toast.LENGTH_SHORT).show();
             clickTime = System.currentTimeMillis();
         } else {
             Log.e(TAG, "exit application");
@@ -76,17 +75,18 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             System.exit(0);
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_login);
 //        findViewById(R.id.left).setOnClickListener(this);
 //        findViewById(R.id.right).setOnClickListener(this);
-        new_login=findViewById(R.id.new_login);
+        new_login = findViewById(R.id.new_login);
         new_login.setOnClickListener(this);
-        register=findViewById(R.id.register);
+        register = findViewById(R.id.register);
         register.setOnClickListener(this);
-        forget_password=findViewById(R.id.forgot_password);
+        forget_password = findViewById(R.id.forgot_password);
         forget_password.setOnClickListener(this);
         //findViewById(R.id.new_login).setOnClickListener(this);
 //        findViewById(R.id.send_text).setOnClickListener(this);
@@ -94,16 +94,16 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
 //        findViewById(R.id.forgot_password).setOnClickListener(this);
         findViewById(id.back).setOnClickListener(this);
 
-        user_name=findViewById(R.id.user_name);
-        user_password=findViewById(R.id.user_password);
-        phone_text=findViewById(R.id.phone_text);
-        password_text=findViewById(R.id.password_text);
+        user_name = findViewById(R.id.user_name);
+        user_password = findViewById(R.id.user_password);
+        phone_text = findViewById(R.id.phone_text);
+        password_text = findViewById(R.id.password_text);
 
         changeTextView();//更改语言
     }
 
-    private void changeTextView(){
-        if(Locale.getDefault().getLanguage().equals("en")){
+    private void changeTextView() {
+        if (Locale.getDefault().getLanguage().equals("en")) {
             phone_text.setText("Phone");
             password_text.setText("PassWord");
             user_name.setHint("Enter Phone");
@@ -113,10 +113,11 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             new_login.setText("Login");
         }
     }
+
     @Override
     public void onClick(View v) {
-        Intent  intent;
-        switch(v.getId()){
+        Intent intent;
+        switch (v.getId()) {
 //            case R.id.left:
 //                findViewById(R.id.l_bottom).setBackgroundColor(getResources().getColor(color.green));
 //                findViewById(R.id.r_bottom).setBackgroundColor(getResources().getColor(color.white));
@@ -130,14 +131,14 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
 //                findViewById(R.id.register_xml).setVisibility(View.VISIBLE);
 //                break;
             case R.id.new_login:
-                login_user=user_name.getText().toString().trim();
-                login_pass=user_password.getText().toString().trim();
-                System.out.println("用户密码："+login_user+":"+login_pass);
+                login_user = user_name.getText().toString().trim();
+                login_pass = user_password.getText().toString().trim();
+                System.out.println("用户密码：" + login_user + ":" + login_pass);
                 //判断是否为空
-                if(login_user.equals("")|| login_pass.equals("")){
-                    new AlertDialog.Builder(LoginAcitivity.this).setTitle("登录提示").setMessage("用户名或密码不能为空！！！").setPositiveButton("确定",null).show();
-                }else {
-                   // Intent  intent=new Intent(LoginAcitivity.this,AccountBookActivity.class);
+                if (login_user.equals("") || login_pass.equals("")) {
+                    new AlertDialog.Builder(LoginAcitivity.this).setTitle("登录提示").setMessage("用户名或密码不能为空！！！").setPositiveButton("确定", null).show();
+                } else {
+                    // Intent  intent=new Intent(LoginAcitivity.this,AccountBookActivity.class);
 //                    Intent  intent=new Intent(LoginAcitivity.this,MainLayoutActivity.class);
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    //跳转
@@ -187,13 +188,13 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
 //                      new Thread(sendRegister).start();//注册
 //                    }
 //                }
-                    intent=new Intent(LoginAcitivity.this,RegisterActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //跳转
-                    startActivity(intent);
+                intent = new Intent(LoginAcitivity.this, RegisterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //跳转
+                startActivity(intent);
                 break;
             case R.id.forgot_password://忘记密码
-                intent=new Intent(LoginAcitivity.this,ForgotPassWordActivity.class);
+                intent = new Intent(LoginAcitivity.this, ForgotPassWordActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 //跳转
                 startActivity(intent);
@@ -215,12 +216,12 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-           // String url = "http://120.76.188.131:8080/a10/api/user/login.do";192.168.1.105
+            // String url = "http://120.76.188.131:8080/a10/api/user/login.do";192.168.1.105
             String url = "http://192.168.1.104:8080/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String pass=MD5Utils.md5(login_pass);
+            String pass = MD5Utils.md5(login_pass);
 
-            String b= "{\"loginType\":\"2\",\"loginPwd\":\""+pass+"\",\"loginAccount\":\""+login_user+"\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
+            String b = "{\"loginType\":\"2\",\"loginPwd\":\"" + pass + "\",\"loginAccount\":\"" + login_user + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);//请求体
             Request request = new Request.Builder()//发送请求
@@ -231,8 +232,8 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             Call call = okHttpClient.newCall(request);//创建回调
             try {
                 Response response = call.execute();//获取请求结果
-                String result=response.body().string();
-                if(response!=null){
+                String result = response.body().string();
+                if (response != null) {
                     //在子线程中将Message对象发出去
                     Message message = new Message();
                     message.what = SHOW_RESPONSE;
@@ -257,33 +258,33 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
                     String response = (String) msg.obj;
                     System.out.println(response);
                     try {
-                        JSONObject object=new JSONObject(response);
-                        JSONObject object1=new JSONObject(object.getString("meta"));
-                        JSONObject jsonObject=new JSONObject(object.getString("data"));
-                        memId=jsonObject.getString("memId");
-                        tokEn=jsonObject.getString("tokEn");
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        JSONObject jsonObject = new JSONObject(object.getString("data"));
+                        memId = jsonObject.getString("memId");
+                        tokEn = jsonObject.getString("tokEn");
 
-                        if(memId!=null&&tokEn!=null){
-                            if(memId.length()>0&&tokEn.length()>0){
-                                System.out.println("缓存："+memId+":"+tokEn);
+                        if (memId != null && tokEn != null) {
+                            if (memId.length() > 0 && tokEn.length() > 0) {
+                                System.out.println("缓存：" + memId + ":" + tokEn);
                                 //储存token,备用
 //                                String b= "{\"memId\":"+memId+",\"token\":"+tokEn+"}";//json字符串
 //                                System.out.println("json字符串："+b);
-                                sp=LoginAcitivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                                sp = LoginAcitivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
                                 SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
                                 editor.putString("tokEn", tokEn);
                                 editor.putString("memId", memId);
                                 editor.commit();    //提交数据保存
                             }
                         }
-                        switch (object1.getString("res")){
+                        switch (object1.getString("res")) {
                             case "00000"://登录成功
-                               Intent intent=new Intent(LoginAcitivity.this,MainLayoutActivity.class);
+                                Intent intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
                                 startActivity(intent);
                                 finish();
                                 break;
                             case "99999"://登录失败
-                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
@@ -314,18 +315,18 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             // 在这里进行 http request.网络请求相关操作
             String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b= "{\"memPhone\":"+phone_str+",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
+            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
 
             Request request = new Request.Builder()
                     .url(url)
                     .post(requestBody)
                     .build();
-                System.out.println(request.headers());
-                Call call = okHttpClient.newCall(request);
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
             try {
                 Response response = call.execute();
-                System.out.println("结果："+response.body().string()+"状态码："+ response.code());
+                System.out.println("结果：" + response.body().string() + "状态码：" + response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -341,8 +342,8 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             // 在这里进行 http request.网络请求相关操作
             String url = "http://120.76.188.131:8080/a10/api/user/register.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String pass=MD5Utils.md5(p1_str);
-            String b= "{\"memPhone\":\""+phone_str+"\",\"memPwd1\":\""+pass+"\",\"smsVerifCode\":\""+code_str+"\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
+            String pass = MD5Utils.md5(p1_str);
+            String b = "{\"memPhone\":\"" + phone_str + "\",\"memPwd1\":\"" + pass + "\",\"smsVerifCode\":\"" + code_str + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);//请求体
             Request request = new Request.Builder()//发送请求
@@ -353,8 +354,8 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
             Call call = okHttpClient.newCall(request);//创建回调
             try {
                 Response response = call.execute();//获取请求结果
-                String result=response.body().string();
-                if(response!=null){
+                String result = response.body().string();
+                if (response != null) {
                     //在子线程中将Message对象发出去
                     Message message = new Message();
                     message.what = SHOW_RESPONSE;
@@ -378,12 +379,12 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
                     String response = (String) msg.obj;
                     System.out.println(response);
                     try {
-                        JSONObject object=new JSONObject(response);
-                        JSONObject object1=new JSONObject(object.getString("meta"));
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
 
-                        switch (object1.getString("res")){
+                        switch (object1.getString("res")) {
                             case "00000"://成功
-                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回登陆").setMessage("注册成功").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回登陆").setMessage("注册成功").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         findViewById(R.id.l_bottom).setBackgroundColor(getResources().getColor(color.green));
@@ -394,7 +395,7 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
                                 }).show();
                                 break;
                             case "21001"://手机号已存在
-                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回注册").setMessage("手机号 "+phone_str+" 已存在.").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回注册").setMessage("手机号 " + phone_str + " 已存在.").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
@@ -402,7 +403,7 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
                                 }).show();
                                 break;
                             case "21003"://验证码错误
-                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回注册").setMessage("短信验证码错误, 请核对!").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回注册").setMessage("短信验证码错误, 请核对!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
@@ -410,7 +411,7 @@ public class LoginAcitivity extends Activity implements  View.OnClickListener{
                                 }).show();
                                 break;
                             case "21004"://短信验证码已失效
-                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回注册").setMessage("短信验证码已失效, 请重新发送!").setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(LoginAcitivity.this).setTitle("返回注册").setMessage("短信验证码已失效, 请重新发送!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();

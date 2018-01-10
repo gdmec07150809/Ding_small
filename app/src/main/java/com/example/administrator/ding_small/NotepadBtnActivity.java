@@ -34,6 +34,7 @@ import static android.media.CamcorderProfile.get;
 import static com.example.administrator.ding_small.R.id.money;
 import static com.example.administrator.ding_small.R.id.sort;
 import static com.example.administrator.ding_small.HelpTool.JsonArrayBySort.sort;
+
 /**
  * Created by CZK on 2017/11/3.
  */
@@ -280,14 +281,14 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
         Right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
+                switch (i) {
                     case 0:
-                        TextView tv1=(TextView) view;
+                        TextView tv1 = (TextView) view;
                         tv1.setTextSize(14.0f);
                         tv1.setTextColor(Color.parseColor("#FFFFFF"));
                         break;
                     case 1:
-                        TextView tv2=(TextView) view;
+                        TextView tv2 = (TextView) view;
                         tv2.setTextSize(14.0f);
                         tv2.setTextColor(Color.parseColor("#FFFFFF"));
                         break;

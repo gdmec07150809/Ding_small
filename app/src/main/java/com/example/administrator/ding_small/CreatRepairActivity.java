@@ -36,21 +36,21 @@ import java.util.Map;
  * Created by CZK on 2017/12/20.
  */
 
-public class CreatRepairActivity extends FragmentActivity implements View.OnClickListener{
-    LinearLayout ll,two;
+public class CreatRepairActivity extends FragmentActivity implements View.OnClickListener {
+    LinearLayout ll, two;
     Intent intent;
     RelativeLayout action;
-    private TextView day,time,action_text;
-    private String atTime,at_action;
+    private TextView day, time, action_text;
+    private String atTime, at_action;
     private GridView gridView;
     private List<Map<String, Object>> dataList;
     private SimpleAdapter adapter;
     //图标
-    int icno[] = { R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg, R.drawable.c5_bg, R.drawable.c6_bg,
-                    R.drawable.c7_bg,R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg };
+    int icno[] = {R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg, R.drawable.c5_bg, R.drawable.c6_bg,
+            R.drawable.c7_bg, R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg};
     //图标下的文字
-    String name[]={"不通电","不充电","不亮灯","不制冷","不排气","不防水",
-            "漏水", "漏电","漏气","噪音大","外观破损","其它",
+    String name[] = {"不通电", "不充电", "不亮灯", "不制冷", "不排气", "不防水",
+            "漏水", "漏电", "漏气", "噪音大", "外观破损", "其它",
     };
 
     //实现Tab滑动效果
@@ -66,6 +66,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     private FragmentManager fragmentManager;
 
     public Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,15 +74,15 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         InitFragment();//初始化流式布局
         InitViewPager();//初始化viewPager
 
-        day=findViewById(R.id.day);
+        day = findViewById(R.id.day);
         day.setOnClickListener(this);
-        action_text=findViewById(R.id.action_text);
-        action=findViewById(R.id.action);
+        action_text = findViewById(R.id.action_text);
+        action = findViewById(R.id.action);
         findViewById(R.id.footer).setOnClickListener(this);
         findViewById(R.id.remarks_layout).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
         //获取当前年月日时分
-        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+        Time t = new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
         t.setToNow(); // 取得系统时间。
         int year = t.year;
         int month = t.month;
@@ -89,12 +90,12 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         int hour = t.hour; // 0-23
         int minute = t.minute;
         //给时分赋值
-        if(minute<10){
-            String minute_text="0"+minute;
-            atTime=year+"-"+(month+1)+"-"+(date+5)+"  "+hour+":"+minute_text;
+        if (minute < 10) {
+            String minute_text = "0" + minute;
+            atTime = year + "-" + (month + 1) + "-" + (date + 5) + "  " + hour + ":" + minute_text;
             day.setText(atTime);
-        }else{
-            atTime=year+"-"+(month+1)+"-"+(date+5)+"  "+hour+":"+minute;
+        } else {
+            atTime = year + "-" + (month + 1) + "-" + (date + 5) + "  " + hour + ":" + minute;
             day.setText(atTime);
         }
     }
@@ -102,12 +103,12 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.day:
                 TimeSelector timeSelector = new TimeSelector(CreatRepairActivity.this, new TimeSelector.ResultHandler() {
                     @Override
                     public void handle(String time) {
-                        atTime=time;
+                        atTime = time;
                         day.setText(time);
                     }
 
@@ -117,21 +118,21 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                 timeSelector.show();
                 break;
             case R.id.footer:
-                    intent=new Intent(CreatRepairActivity.this,DeviceListActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                intent = new Intent(CreatRepairActivity.this, DeviceListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case R.id.remarks_layout:
-                String date_str=day.getText().toString();
-                intent=new Intent(CreatRepairActivity.this,CreatRepairRemarksActivity.class);
-                at_action=action_text.getText().toString();//获取标题
+                String date_str = day.getText().toString();
+                intent = new Intent(CreatRepairActivity.this, CreatRepairRemarksActivity.class);
+                at_action = action_text.getText().toString();//获取标题
                 //获取标题背景颜色
                 Drawable background = action.getBackground();
                 ColorDrawable colorDrawable = (ColorDrawable) background;
                 int color = colorDrawable.getColor();
-                Bundle bundle=new Bundle();
-                bundle.putString("at_action",at_action);
-                bundle.putString("date",date_str);
+                Bundle bundle = new Bundle();
+                bundle.putString("at_action", at_action);
+                bundle.putString("date", date_str);
                 bundle.putInt("drawable", color);
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -144,6 +145,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                 break;
         }
     }
+
     /**
      * 初始化页卡内容区
      */
@@ -164,12 +166,12 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     /**
      * 初始化Fragment，并添加到ArrayList中
      */
-    private void InitFragment(){
+    private void InitFragment() {
         fragmentArrayList = new ArrayList<Fragment>();
-        Fragment1 fragment1=new Fragment1();
-        Bundle bundle=new Bundle();
-        bundle.putIntArray("icon",icno);
-        bundle.putStringArray("name",name);
+        Fragment1 fragment1 = new Fragment1();
+        Bundle bundle = new Bundle();
+        bundle.putIntArray("icon", icno);
+        bundle.putStringArray("name", name);
         fragment1.setArguments(bundle);
         fragmentArrayList.add(fragment1);
         fragmentManager = getSupportFragmentManager();
@@ -178,25 +180,26 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
 
     /**
      * 页卡切换监听
+     *
      * @author CZK
      * @version 1.0
      */
-    public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
+    public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
         public void onPageSelected(int position) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            switch (position){
+            switch (position) {
                 case 0:
-                    Fragment1 fragment1=new Fragment1();
-                    Bundle bundle=new Bundle();
-                    bundle.putIntArray("icon",icno);
-                    bundle.putStringArray("name",name);
+                    Fragment1 fragment1 = new Fragment1();
+                    Bundle bundle = new Bundle();
+                    bundle.putIntArray("icon", icno);
+                    bundle.putStringArray("name", name);
                     fragment1.setArguments(bundle);
                     ft.replace(android.R.id.content, fragment1);
                     //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
-                    for (int i=0;i<ll.getChildCount();i++){
+                    for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }
                     ll.getChildAt(position).setSelected(true);
@@ -213,5 +216,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         public void onPageScrollStateChanged(int state) {
 
         }
-    };
+    }
+
+    ;
 }

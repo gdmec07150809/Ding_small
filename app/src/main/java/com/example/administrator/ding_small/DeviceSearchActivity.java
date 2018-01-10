@@ -54,9 +54,9 @@ import java.util.Locale;
  * Created by CZK on 2017/12/19.
  */
 
-public class DeviceSearchActivity extends Activity implements View.OnClickListener{
-    private List<ScanResult> scanResults=null;
-    private ListView wifiListView,blueListView;
+public class DeviceSearchActivity extends Activity implements View.OnClickListener {
+    private List<ScanResult> scanResults = null;
+    private ListView wifiListView, blueListView;
     private WifiAdapter wifiAdapter;
     private BluetoothAdapter adapter;
 
@@ -70,11 +70,11 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private WifiManager wifiManager;
 
     boolean pression = false;
-    private  LoadingLayout loading;
-    private LinearLayout wifi_buttom,bluetooth_buttom,refresh_layout;
+    private LoadingLayout loading;
+    private LinearLayout wifi_buttom, bluetooth_buttom, refresh_layout;
 
     //更改语言所要更改的控件 wifi连接、蓝牙连接、返回、附近设备、刷新频率
-    private TextView wifi_text,bluetooth_text,back_text,nearby_devices_text,refresh_text;
+    private TextView wifi_text, bluetooth_text, back_text, nearby_devices_text, refresh_text;
 
     private BluetoothAdapter mBluetoothAdapter;
     private Handler mHandler;
@@ -84,10 +84,10 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     private List<BluetoothDevice> mBleArray;
     private boolean mScanning;
     private Dialog mCameraDialog;
-    private ImageView default_img,five_img,one_minute_img;
-    private int refresh_num=1;
+    private ImageView default_img, five_img, one_minute_img;
+    private int refresh_num = 1;
 
-    private int refreshTime=30000;//默认30秒
+    private int refreshTime = 30000;//默认30秒
 
     @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -100,9 +100,9 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         blueToothUtils();//蓝牙代码类
     }
 
-    private void changeTextView(){
+    private void changeTextView() {
         //wifi_text,bluetooth_text,back_text,nearby_devices_text,refresh_text
-        if(Locale.getDefault().getLanguage().equals("en")){
+        if (Locale.getDefault().getLanguage().equals("en")) {
             wifi_text.setText("WIFI Connection");
             bluetooth_text.setText("Bluetooth Connection");
             back_text.setText("Back");
@@ -110,18 +110,19 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             refresh_text.setText("Refresh Rate");
         }
     }
-    private void init(){
+
+    private void init() {
         wifiListView = (ListView) findViewById(R.id.search_device_list);
-        loading=findViewById(R.id.loading_layout);
-        wifi_text=findViewById(R.id.wifi_text);
-        bluetooth_text=findViewById(R.id.bluetooth_text);
-        wifi_buttom=findViewById(R.id.wifi_buttom);
-        bluetooth_buttom=findViewById(R.id.bluetooth_buttom);
+        loading = findViewById(R.id.loading_layout);
+        wifi_text = findViewById(R.id.wifi_text);
+        bluetooth_text = findViewById(R.id.bluetooth_text);
+        wifi_buttom = findViewById(R.id.wifi_buttom);
+        bluetooth_buttom = findViewById(R.id.bluetooth_buttom);
 
         //wifi_text,bluetooth_text,back_text,nearby_devices_text,refresh_text
-        back_text=findViewById(R.id.back_text);
-        nearby_devices_text=findViewById(R.id.nearby_devices_text);
-        refresh_text=findViewById(R.id.refresh_text);
+        back_text = findViewById(R.id.back_text);
+        nearby_devices_text = findViewById(R.id.nearby_devices_text);
+        refresh_text = findViewById(R.id.refresh_text);
 
         findViewById(R.id.wifi_layout).setOnClickListener(this);
         findViewById(R.id.bluetooth_layout).setOnClickListener(this);
@@ -131,9 +132,9 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         wifiListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(DeviceSearchActivity.this,DeviceDetailActivity.class);
+                Intent intent = new Intent(DeviceSearchActivity.this, DeviceDetailActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                System.out.println("WIFI："+i);
+                System.out.println("WIFI：" + i);
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("activity", "DeviceSearch");
                 bundle1.putString("device_mac", scanResults.get(i).BSSID);
@@ -142,7 +143,8 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             }
         });
     }
-    private  void wifiUtils(){
+
+    private void wifiUtils() {
         //授权
         mPermissionHelper = new PermissionHelper(this);
         //wifi管理器
@@ -154,8 +156,8 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     }
 
     @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR2)
-    private void blueToothUtils(){
-        starTimer.sendEmptyMessageDelayed(0,100);
+    private void blueToothUtils() {
+        starTimer.sendEmptyMessageDelayed(0, 100);
         mHandler = new Handler();
 
         //获取iBeacon设备
@@ -177,9 +179,9 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             return;
         }
         //判断蓝牙是否启动,关闭则启动
-        if(!mBluetoothAdapter.isEnabled()){
-            Intent enableIntent=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent,REQUEST_ENABLE_BT);
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         }
         adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter == null) {
@@ -198,7 +200,8 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         mBleArray = new ArrayList<BluetoothDevice>();
         sendReceiver();//查找蓝牙
     }
-    private void sendReceiver(){
+
+    private void sendReceiver() {
         // 设置广播信息过滤
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
@@ -210,12 +213,14 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         // 寻找蓝牙设备，android会将查找到的设备以广播形式发出去
         adapter.startDiscovery();
     }
+
     //打开wifi
     private void openWifi() {
         if (!wifiManager.isWifiEnabled()) {
             wifiManager.setWifiEnabled(true);
         }
     }
+
     //扫描wifi
     public static List<ScanResult> getAllNetWorkList(Context context) {
         WifiAdmin mWifiAdmin = new WifiAdmin(context);
@@ -223,6 +228,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         mWifiAdmin.startScan();
         return mWifiAdmin.getWifiList();
     }
+
     //每隔1000*30时间刷新一次wifi列表
     private Handler one_handler = new Handler() {
         @Override
@@ -231,23 +237,23 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             scanResults = new ArrayList<>();
             loading.setStatus(LoadingLayout.Loading);
             scanResults = getAllNetWorkList(DeviceSearchActivity.this);
-            if(scanResults.size()>0){
+            if (scanResults.size() > 0) {
                 loading.setStatus(LoadingLayout.Success);
             }
             HashSet h = new HashSet(scanResults);
             scanResults.clear();
             scanResults.addAll(h);
-                Collections.sort(scanResults, new Comparator<ScanResult>() {
-                    @Override
-                    public int compare(ScanResult scanResult, ScanResult t1) {
-                        return t1.level-scanResult.level;
-                    }
-                });
-                wifiAdapter = new WifiAdapter(DeviceSearchActivity.this, scanResults);
-                wifiListView.setAdapter(wifiAdapter);
-                 System.out.println("刷新时间："+refreshTime);
-                one_handler.sendEmptyMessageDelayed(1, refreshTime);//默认30秒
-            }
+            Collections.sort(scanResults, new Comparator<ScanResult>() {
+                @Override
+                public int compare(ScanResult scanResult, ScanResult t1) {
+                    return t1.level - scanResult.level;
+                }
+            });
+            wifiAdapter = new WifiAdapter(DeviceSearchActivity.this, scanResults);
+            wifiListView.setAdapter(wifiAdapter);
+            System.out.println("刷新时间：" + refreshTime);
+            one_handler.sendEmptyMessageDelayed(1, refreshTime);//默认30秒
+        }
     };
 
     //判断wifi权限
@@ -262,7 +268,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                     //判断权限授权状态
                 } else {
                     //如果请求失败
-                    Toast.makeText(getApplicationContext(),"权限缺失，程序可能不能正常运行",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "权限缺失，程序可能不能正常运行", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case ACCESS_COARSE_LOCATION_CODE:
@@ -272,7 +278,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
 
                 } else {
                     //如果请求失败
-                    Toast.makeText(getApplicationContext(),"权限缺失，程序可能不能正常运行",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "权限缺失，程序可能不能正常运行", Toast.LENGTH_SHORT).show();
                     mPermissionHelper.startAppSettings();
                 }
                 break;
@@ -280,16 +286,18 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //如果请求成功，则进行相应的操作
-                   one_handler.sendEmptyMessage(1);
+                    one_handler.sendEmptyMessage(1);
                     pression = true;
                 } else {
                     //如果请求失败
-                    Toast.makeText(getApplicationContext(),"权限缺失，程序可能不能正常运行",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "权限缺失，程序可能不能正常运行", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
+
     boolean indexPression = false;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onPause() {
@@ -299,6 +307,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         pression = true;
         scanLeDevice(false);
     }
+
     @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onResume() {
@@ -348,7 +357,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 @Override
                 public void run() {
                     mDevListAdapter.addDevice(device);
-                    blueListView=findViewById(R.id.search_bluetooth_device_list);
+                    blueListView = findViewById(R.id.search_bluetooth_device_list);
                     blueListView.setAdapter(mDevListAdapter);
                     mDevListAdapter.notifyDataSetChanged();
                 }
@@ -360,16 +369,16 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     //按钮点击事件
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.wifi_layout://wifi
                 wifi_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                 bluetooth_text.setTextColor(ContextCompat.getColor(this, R.color.time_color));
                 wifi_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_color));
                 bluetooth_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
 
-                wifiListView=findViewById(R.id.search_device_list);
+                wifiListView = findViewById(R.id.search_device_list);
                 wifiListView.setVisibility(View.VISIBLE);
-                blueListView=findViewById(R.id.search_bluetooth_device_list);
+                blueListView = findViewById(R.id.search_bluetooth_device_list);
                 blueListView.setVisibility(View.GONE);
                 break;
             case R.id.bluetooth_layout://蓝牙
@@ -378,15 +387,15 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 wifi_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
                 bluetooth_buttom.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_color));
 
-                wifiListView=findViewById(R.id.search_device_list);
+                wifiListView = findViewById(R.id.search_device_list);
                 wifiListView.setVisibility(View.GONE);
-                blueListView=findViewById(R.id.search_bluetooth_device_list);
+                blueListView = findViewById(R.id.search_bluetooth_device_list);
                 blueListView.setVisibility(View.VISIBLE);
                 blueListView.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent=new Intent(DeviceSearchActivity.this,DeviceDetailActivity.class);
-                        System.out.println("蓝牙："+i);
+                        Intent intent = new Intent(DeviceSearchActivity.this, DeviceDetailActivity.class);
+                        System.out.println("蓝牙：" + i);
                         Bundle bundle1 = new Bundle();
                         bundle1.putString("device_mac", mBleArray.get(i).getAddress());
                         intent.putExtras(bundle1);
@@ -402,22 +411,22 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 default_img.setVisibility(View.VISIBLE);
                 five_img.setVisibility(View.GONE);
                 one_minute_img.setVisibility(View.GONE);
-                refresh_num=1;
-                refreshTime=30000;//30秒
+                refresh_num = 1;
+                refreshTime = 30000;//30秒
                 break;
             case R.id.five_layout:
                 five_img.setVisibility(View.VISIBLE);
                 default_img.setVisibility(View.GONE);
                 one_minute_img.setVisibility(View.GONE);
-                refresh_num=2;
-                refreshTime=5000;//5秒
+                refresh_num = 2;
+                refreshTime = 5000;//5秒
                 break;
             case R.id.one_minute_layout:
                 five_img.setVisibility(View.GONE);
                 default_img.setVisibility(View.GONE);
                 one_minute_img.setVisibility(View.VISIBLE);
-                refresh_num=3;
-                refreshTime=1000*60;//1分钟
+                refresh_num = 3;
+                refreshTime = 1000 * 60;//1分钟
                 break;
             case R.id.back:
                 finish();
@@ -426,21 +435,22 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 break;
         }
     }
+
     //默认30秒搜一次
-    private Handler starTimer = new Handler(){
+    private Handler starTimer = new Handler() {
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         public void handleMessage(android.os.Message msg) {
-            if(msg.what==0){
-                   scanLeDevice(true);//开始扫描ibeacon
-                   // mDevListAdapter = new DeviceListAdapter();
-                    sendReceiver();//查找蓝牙
-                    if(mDevListAdapter!=null){
-                        blueListView=findViewById(R.id.search_bluetooth_device_list);
-                        blueListView.setAdapter(mDevListAdapter);
-                        mDevListAdapter.notifyDataSetChanged();
-                    }
-                    starTimer.sendEmptyMessageDelayed(0,refreshTime);//默认30秒
+            if (msg.what == 0) {
+                scanLeDevice(true);//开始扫描ibeacon
+                // mDevListAdapter = new DeviceListAdapter();
+                sendReceiver();//查找蓝牙
+                if (mDevListAdapter != null) {
+                    blueListView = findViewById(R.id.search_bluetooth_device_list);
+                    blueListView.setAdapter(mDevListAdapter);
+                    mDevListAdapter.notifyDataSetChanged();
                 }
+                starTimer.sendEmptyMessageDelayed(0, refreshTime);//默认30秒
+            }
 
         }
     };
@@ -451,9 +461,9 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if(device!=null){
+                if (device != null) {
                     mDevListAdapter.addDevice(device);
-                    System.out.println(device.getName()+"-"+device.getAddress());
+                    System.out.println(device.getName() + "-" + device.getAddress());
                 }
             }
         }
@@ -465,21 +475,25 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         unregisterReceiver(receiver);
         System.out.println("取消广播");
     }
+
     //蓝牙适配器
     class DeviceListAdapter extends BaseAdapter {
         private ViewHolder viewHolder;
-        private String[]str=null;
+        private String[] str = null;
+
         public DeviceListAdapter() {
         }
+
         public void addDevice(BluetoothDevice device) {
-            if(device.getName()!=null){
+            if (device.getName() != null) {
                 if (!mBleArray.contains(device)) {
                     mBleArray.add(device);
                 }
             }
         }
-        public void clear(){
-            if(mBleArray!=null){
+
+        public void clear() {
+            if (mBleArray != null) {
                 mBleArray.clear();
             }
             notifyDataSetChanged();
@@ -516,45 +530,45 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                         .findViewById(R.id.ssid);
                 contentView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder)contentView.getTag();
+                viewHolder = (ViewHolder) contentView.getTag();
             }
             BluetoothDevice device = mBleArray.get(position);
             String devName = device.getName();
-            if (devName!=null&&!"".equals(devName) && devName.length() > 0) {
-                viewHolder.ssid.setText(""+devName);
+            if (devName != null && !"".equals(devName) && devName.length() > 0) {
+                viewHolder.ssid.setText("" + devName);
             } else {
-                viewHolder.ssid.setText("unknow_device"+(position+1));
+                viewHolder.ssid.setText("unknow_device" + (position + 1));
             }
             viewHolder.mac.setText(device.getAddress());
-            viewHolder.number.setText(position+1+"");
+            viewHolder.number.setText(position + 1 + "");
             return contentView;
         }
 
         class ViewHolder {
-            TextView  number,mac,ssid;
+            TextView number, mac, ssid;
         }
     }
 
     //底部弹出菜单
     private void setDialog() {
-        LinearLayout root=null;
+        LinearLayout root = null;
         mCameraDialog = new Dialog(this, R.style.BottomDialog);
         root = (LinearLayout) LayoutInflater.from(this).inflate(
-                        R.layout.refresh_item, null);
+                R.layout.refresh_item, null);
         //初始化视图
         root.findViewById(R.id.default_layout).setOnClickListener(this);
         root.findViewById(R.id.five_layout).setOnClickListener(this);
         root.findViewById(R.id.one_minute_layout).setOnClickListener(this);
 
-        default_img=root.findViewById(R.id.default_img);
-        five_img=root.findViewById(R.id.five_img);
-        one_minute_img=root.findViewById(R.id.one_minute_img);
+        default_img = root.findViewById(R.id.default_img);
+        five_img = root.findViewById(R.id.five_img);
+        one_minute_img = root.findViewById(R.id.one_minute_img);
 
-        TextView default_text=root.findViewById(R.id.default_text);
-        TextView five_text=root.findViewById(R.id.five_text);
-        TextView one_minute_text=root.findViewById(R.id.one_minute_text);
-        TextView refresh_text=root.findViewById(R.id.refresh_text);
-        if(Locale.getDefault().getLanguage().equals("en")){
+        TextView default_text = root.findViewById(R.id.default_text);
+        TextView five_text = root.findViewById(R.id.five_text);
+        TextView one_minute_text = root.findViewById(R.id.one_minute_text);
+        TextView refresh_text = root.findViewById(R.id.refresh_text);
+        if (Locale.getDefault().getLanguage().equals("en")) {
             default_text.setText("Default");
             five_text.setText("Five Second ");
             one_minute_text.setText("One Minute");
@@ -562,15 +576,15 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         }
 
         //判断哪个之前被选中
-        if(refresh_num==1){
+        if (refresh_num == 1) {
             default_img.setVisibility(View.VISIBLE);
             five_img.setVisibility(View.GONE);
             one_minute_img.setVisibility(View.GONE);
-        }else if(refresh_num==2){
+        } else if (refresh_num == 2) {
             default_img.setVisibility(View.GONE);
             five_img.setVisibility(View.VISIBLE);
             one_minute_img.setVisibility(View.GONE);
-        }else {
+        } else {
             default_img.setVisibility(View.GONE);
             five_img.setVisibility(View.GONE);
             one_minute_img.setVisibility(View.VISIBLE);

@@ -20,20 +20,21 @@ import java.util.ArrayList;
  * Created by CZK on 2017/10/31.
  */
 
-public class EditLabelActivity extends Activity  implements View.OnClickListener,Callback {
+public class EditLabelActivity extends Activity implements View.OnClickListener, Callback {
     private ListView list;
     private ArrayList<String> lists;
     public JSONArray jsonArray;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_label);
         //初始化控件
-        list=findViewById(R.id.title_list);
+        list = findViewById(R.id.title_list);
         findViewById(R.id.add_label).setOnClickListener(this);
         findViewById(R.id.edit_label).setOnClickListener(this);
-        jsonArray=new JSONArray();
-        lists=new ArrayList<String>();
+        jsonArray = new JSONArray();
+        lists = new ArrayList<String>();
         lists.add("通用");
         lists.add("住房");
         lists.add("逛街");
@@ -46,34 +47,34 @@ public class EditLabelActivity extends Activity  implements View.OnClickListener
         lists.add("夜宵");
 
         try {
-            for (int i=0;i<lists.size();i++){
+            for (int i = 0; i < lists.size(); i++) {
                 JSONObject jsonObject;
-                jsonObject=new JSONObject();
-                jsonObject.put("name",lists.get(i));
-                jsonObject.put("number","0");
+                jsonObject = new JSONObject();
+                jsonObject.put("name", lists.get(i));
+                jsonObject.put("number", "0");
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        list.setAdapter(new com.example.administrator.ding_small.Adapter.EditLabelAdapter(EditLabelActivity.this,jsonArray,this));
+        list.setAdapter(new com.example.administrator.ding_small.Adapter.EditLabelAdapter(EditLabelActivity.this, jsonArray, this));
     }
 
     @Override
     public void onClick(View view) {
         Intent intent;
-            switch (view.getId()){
-                case R.id.add_label:
-                    intent=new Intent(EditLabelActivity.this,AddLabelActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    break;
-                case R.id.edit_label:
-                    intent=new Intent(EditLabelActivity.this,EditLabelBtnActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    break;
-            }
+        switch (view.getId()) {
+            case R.id.add_label:
+                intent = new Intent(EditLabelActivity.this, AddLabelActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+            case R.id.edit_label:
+                intent = new Intent(EditLabelActivity.this, EditLabelBtnActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override

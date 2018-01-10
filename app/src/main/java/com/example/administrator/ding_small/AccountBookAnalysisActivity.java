@@ -36,22 +36,23 @@ import lecho.lib.hellocharts.view.ColumnChartView;
  * Created by CZK on 2017/11/21.
  */
 
-public class AccountBookAnalysisActivity extends Activity implements View.OnClickListener{
+public class AccountBookAnalysisActivity extends Activity implements View.OnClickListener {
     private ColumnChartView mColumnChartCc;
     private ColumnChartData data;
     private ArrayList<String> OutTimeLists;
     private ArrayList<String> lists;
     public JSONArray jsonArray;
     private ListView listView;
-    private Button received_btn,yet_btn,all_btn;
+    private Button received_btn, yet_btn, all_btn;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_analysis);
-        listView=findViewById(R.id.analasis_list);
-        received_btn= findViewById(R.id.received_btn);
-        yet_btn= findViewById(R.id.yet_btn);
-        all_btn= findViewById(R.id.all_btn);
+        listView = findViewById(R.id.analasis_list);
+        received_btn = findViewById(R.id.received_btn);
+        yet_btn = findViewById(R.id.yet_btn);
+        all_btn = findViewById(R.id.all_btn);
         received_btn.setOnClickListener(this);
         yet_btn.setOnClickListener(this);
         all_btn.setOnClickListener(this);
@@ -65,9 +66,9 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         //为柱形图添加动画
         Animation myAnimation = AnimationUtils.loadAnimation(this, R.anim.notepad_analysis_anim);
         mColumnChartCc.startAnimation(myAnimation);
-        jsonArray=new JSONArray();
-        lists=new ArrayList<String>();
-        OutTimeLists=new ArrayList<String>();
+        jsonArray = new JSONArray();
+        lists = new ArrayList<String>();
+        OutTimeLists = new ArrayList<String>();
         lists.add("12");
         lists.add("50");
         lists.add("23");
@@ -95,26 +96,27 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         OutTimeLists.add("78");
 
         try {
-            for (int i=0;i<lists.size();i++){
+            for (int i = 0; i < lists.size(); i++) {
                 JSONObject jsonObject;
-                jsonObject=new JSONObject();
-                jsonObject.put("OnTime",lists.get(i));
-                jsonObject.put("OutTime",OutTimeLists.get(i));
+                jsonObject = new JSONObject();
+                jsonObject.put("OnTime", lists.get(i));
+                jsonObject.put("OutTime", OutTimeLists.get(i));
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        listView.setAdapter(new AnalysisAdapter(AccountBookAnalysisActivity.this,jsonArray));
+        listView.setAdapter(new AnalysisAdapter(AccountBookAnalysisActivity.this, jsonArray));
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(AccountBookAnalysisActivity.this, AccountReturnByMonthActivity.class);
+                Intent intent = new Intent(AccountBookAnalysisActivity.this, AccountReturnByMonthActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
     }
+
     //绘制柱形图
     private void generateStackedData() {
 
@@ -124,10 +126,10 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         List<Column> columns = new ArrayList<Column>();
         List<SubcolumnValue> values;
-        Float[] floats = {320f, 105f, 150f, 115f,520f, 15f, 50f, 125f,720f, 195f, 520f, 115f};//结余数据
-        Float[] lists = {420f, 10f, 50f, 15f,20f, 150f, 500f, 25f,120f, 95f, 220f, 115f};//收入数据
-        Float[] outTimes = {20f, 110f, 510f, 105f,210f, 10f, 100f, 215f,12f, 915f, 205f, 15f};//支出数据
-        String[] selecedNames = {"1月", "2月", "3月", "4月","5月","6月","7月","8月","9月","10月","11月","12月"};
+        Float[] floats = {320f, 105f, 150f, 115f, 520f, 15f, 50f, 125f, 720f, 195f, 520f, 115f};//结余数据
+        Float[] lists = {420f, 10f, 50f, 15f, 20f, 150f, 500f, 25f, 120f, 95f, 220f, 115f};//收入数据
+        Float[] outTimes = {20f, 110f, 510f, 105f, 210f, 10f, 100f, 215f, 12f, 915f, 205f, 15f};//支出数据
+        String[] selecedNames = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"};
 
         for (int i = 0; i < numColumns; ++i) {
             values = new ArrayList<SubcolumnValue>();
@@ -153,7 +155,7 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.received_btn:
                 received_btn.setTextColor(getResources().getColor(R.color.white));
                 all_btn.setTextColor(getResources().getColor(R.color.green));
@@ -182,12 +184,12 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
                 yet_btn.setBackgroundColor(getResources().getColor(R.color.green));
                 break;
             case R.id.screen:
-                intent=new Intent(AccountBookAnalysisActivity.this,AccountScreenActiivity.class);
+                intent = new Intent(AccountBookAnalysisActivity.this, AccountScreenActiivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_income:
-                intent=new Intent(AccountBookAnalysisActivity.this,InComeActivity.class);
+                intent = new Intent(AccountBookAnalysisActivity.this, InComeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -201,6 +203,7 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         public void onValueSelected(int i, int i1, SubcolumnValue value) {
             // Toast.makeText(ColumnChartActivity.this, "Selected: " + value, Toast.LENGTH_SHORT).show();
         }
+
         @Override
         public void onValueDeselected() {
 

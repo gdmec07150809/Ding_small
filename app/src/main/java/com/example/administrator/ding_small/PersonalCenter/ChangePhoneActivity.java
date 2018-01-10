@@ -20,9 +20,10 @@ import com.example.administrator.ding_small.R;
  * Created by CZK on 2018/1/9.
  */
 
-public class ChangePhoneActivity extends Activity implements View.OnClickListener{
+public class ChangePhoneActivity extends Activity implements View.OnClickListener {
     private TextView back;
     private Dialog mCameraDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
@@ -43,14 +44,15 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                 break;
         }
     }
+
     //更换手机底部弹出菜单
     private void setPhoneDialog() {
-        LinearLayout root=null;
+        LinearLayout root = null;
         mCameraDialog = new Dialog(this, R.style.Dialog);
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.change_phone_dialog, null);
-        Button new_login=root.findViewById(R.id.new_login);
-        final EditText editText=root.findViewById(R.id.newPhone_value);
+        Button new_login = root.findViewById(R.id.new_login);
+        final EditText editText = root.findViewById(R.id.newPhone_value);
         new_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

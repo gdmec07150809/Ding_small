@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 public class ContactsDetailsToActivity extends Activity {
     private TextView nameView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_details_activity);
-        String name=getIntent().getStringExtra("name");
-         nameView=findViewById(R.id.name);
+        String name = getIntent().getStringExtra("name");
+        nameView = findViewById(R.id.name);
         nameView.setText(name);
     }
 }

@@ -20,25 +20,25 @@ import java.util.ArrayList;
  * Created by CZK on 2017/12/11.
  */
 
-public class AccountAnalysisLabelStatisticsActivity extends Activity implements View.OnClickListener{
+public class AccountAnalysisLabelStatisticsActivity extends Activity implements View.OnClickListener {
     private ArrayList<String> labelLists;//标签
     private ArrayList<String> numberLists;//笔数
     private ArrayList<String> outComeLists;//支出
     private ArrayList<String> inComeLists;//收入
     public JSONArray jsonArray;
     private ListView listView;
-    private TextView summary_text,label_text,income_text,expenditure_text,outtime_text;
+    private TextView summary_text, label_text, income_text, expenditure_text, outtime_text;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_analysis_label_statistics);
-        listView=findViewById(R.id.account_analysis_label_listview);
-        summary_text=findViewById(R.id.summary_text);
-        label_text=findViewById(R.id.label_text);
-        income_text=findViewById(R.id.income_text);
-        expenditure_text=findViewById(R.id.expenditure_text);
-        outtime_text=findViewById(R.id.outtime_text);
+        listView = findViewById(R.id.account_analysis_label_listview);
+        summary_text = findViewById(R.id.summary_text);
+        label_text = findViewById(R.id.label_text);
+        income_text = findViewById(R.id.income_text);
+        expenditure_text = findViewById(R.id.expenditure_text);
+        outtime_text = findViewById(R.id.outtime_text);
 
         findViewById(R.id.f_summary).setOnClickListener(this);
         findViewById(R.id.f_label).setOnClickListener(this);
@@ -52,14 +52,15 @@ public class AccountAnalysisLabelStatisticsActivity extends Activity implements 
         outtime_text.setTextColor(getResources().getColor(R.color.blank));
         expenditure_text.setTextColor(getResources().getColor(R.color.blank));
         CreatJson();//构造json备用
-        listView.setAdapter(new AccountAnalysisLabelAdapter(AccountAnalysisLabelStatisticsActivity.this,jsonArray));
+        listView.setAdapter(new AccountAnalysisLabelAdapter(AccountAnalysisLabelStatisticsActivity.this, jsonArray));
     }
-    private void CreatJson(){
-        jsonArray=new JSONArray();
-        labelLists=new ArrayList<String>();
-        numberLists=new ArrayList<String>();
-        outComeLists=new ArrayList<String>();
-        inComeLists=new ArrayList<String>();
+
+    private void CreatJson() {
+        jsonArray = new JSONArray();
+        labelLists = new ArrayList<String>();
+        numberLists = new ArrayList<String>();
+        outComeLists = new ArrayList<String>();
+        inComeLists = new ArrayList<String>();
 
         numberLists.add("12");
         numberLists.add("50");
@@ -86,13 +87,13 @@ public class AccountAnalysisLabelStatisticsActivity extends Activity implements 
         labelLists.add("背诵");
         labelLists.add("开会");
         try {
-            for (int i=0;i<labelLists.size();i++){
+            for (int i = 0; i < labelLists.size(); i++) {
                 JSONObject jsonObject;
-                jsonObject=new JSONObject();
-                jsonObject.put("label",labelLists.get(i));
-                jsonObject.put("number",numberLists.get(i));
-                jsonObject.put("outCome",outComeLists.get(i));
-                jsonObject.put("inCome",inComeLists.get(i));
+                jsonObject = new JSONObject();
+                jsonObject.put("label", labelLists.get(i));
+                jsonObject.put("number", numberLists.get(i));
+                jsonObject.put("outCome", outComeLists.get(i));
+                jsonObject.put("inCome", inComeLists.get(i));
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
@@ -103,24 +104,24 @@ public class AccountAnalysisLabelStatisticsActivity extends Activity implements 
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.f_income:
-                intent=new Intent(AccountAnalysisLabelStatisticsActivity.this,InComeActivity.class);
+                intent = new Intent(AccountAnalysisLabelStatisticsActivity.this, InComeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_summary:
-                intent=new Intent(AccountAnalysisLabelStatisticsActivity.this,AccountAnalysisLabelStatisticsActivity.class);
+                intent = new Intent(AccountAnalysisLabelStatisticsActivity.this, AccountAnalysisLabelStatisticsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_expenditure:
-                intent=new Intent(AccountAnalysisLabelStatisticsActivity.this,ExpenditureActivity.class);
+                intent = new Intent(AccountAnalysisLabelStatisticsActivity.this, ExpenditureActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_outtime:
-                intent=new Intent(AccountAnalysisLabelStatisticsActivity.this,AccountOutTimeActivity.class);
+                intent = new Intent(AccountAnalysisLabelStatisticsActivity.this, AccountOutTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

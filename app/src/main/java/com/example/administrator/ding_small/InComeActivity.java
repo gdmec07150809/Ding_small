@@ -32,29 +32,30 @@ import org.json.JSONObject;
  * Created by CZK on 2017/12/6.
  */
 
-public class InComeActivity extends Activity implements View.OnClickListener{
+public class InComeActivity extends Activity implements View.OnClickListener {
     @ViewInject(R.id.found_activity_fyt)
     private FlowLayout found_activity_fyt;
     @ViewInject(R.id.found_history_ryt)
     private LinearLayout found_history_ryt;
     private String[] strs = {"美的", "格力", "飞利浦", "方太", "西门子", "A.O.史密斯", "爱马仕", "奔腾", "TCL", "小天鹅", "三洋"};
-    private int[] number={12,54,50,20,40,45,16,56,78,123,12};
-    private int[] money={12,54,-50,20,-40,45,-16,56,78,-123,12};
-    private int [] color={R.color.bg1,R.color.bg2,R.color.bg3,R.color.bg4,R.color.bg5,R.color.bg6,R.color.bg7,R.color.bg8,R.color.bg9,R.color.bg10,R.color.bg11};
+    private int[] number = {12, 54, 50, 20, 40, 45, 16, 56, 78, 123, 12};
+    private int[] money = {12, 54, -50, 20, -40, 45, -16, 56, 78, -123, 12};
+    private int[] color = {R.color.bg1, R.color.bg2, R.color.bg3, R.color.bg4, R.color.bg5, R.color.bg6, R.color.bg7, R.color.bg8, R.color.bg9, R.color.bg10, R.color.bg11};
     private int sum;
     private ListView analasis_list;
     private JSONObject jsonObject;
     private JSONArray jsonArray;
     int viewWidth;
-    private TextView summary_text,label_text,income_text,expenditure_text,outtime_text;
-    private RelativeLayout f_summary,f_income;
-    private Button received_btn,all_btn,yet_btn;
+    private TextView summary_text, label_text, income_text, expenditure_text, outtime_text;
+    private RelativeLayout f_summary, f_income;
+    private Button received_btn, all_btn, yet_btn;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_income);
-        found_history_ryt=findViewById(R.id.found_history_ryt);
-        analasis_list=findViewById(R.id.income_list);
+        found_history_ryt = findViewById(R.id.found_history_ryt);
+        analasis_list = findViewById(R.id.income_list);
 
         findViewById(R.id.f_summary).setOnClickListener(this);
         findViewById(R.id.f_label).setOnClickListener(this);
@@ -62,14 +63,14 @@ public class InComeActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.f_expenditure).setOnClickListener(this);
         findViewById(R.id.f_outtime).setOnClickListener(this);
 
-        summary_text=findViewById(R.id.summary_text);
-        label_text=findViewById(R.id.label_text);
-        income_text=findViewById(R.id.income_text);
-        expenditure_text=findViewById(R.id.expenditure_text);
-        outtime_text=findViewById(R.id.outtime_text);
-        all_btn= findViewById(R.id.all_btn);
-        received_btn= findViewById(R.id.received_btn);
-        yet_btn= findViewById(R.id.yet_btn);
+        summary_text = findViewById(R.id.summary_text);
+        label_text = findViewById(R.id.label_text);
+        income_text = findViewById(R.id.income_text);
+        expenditure_text = findViewById(R.id.expenditure_text);
+        outtime_text = findViewById(R.id.outtime_text);
+        all_btn = findViewById(R.id.all_btn);
+        received_btn = findViewById(R.id.received_btn);
+        yet_btn = findViewById(R.id.yet_btn);
         all_btn.setOnClickListener(this);
         received_btn.setOnClickListener(this);
         yet_btn.setOnClickListener(this);
@@ -82,21 +83,21 @@ public class InComeActivity extends Activity implements View.OnClickListener{
 
         ViewUtils.inject(this);
         /*获取屏幕宽度*/
-        WindowManager  windowManager=getWindowManager();
+        WindowManager windowManager = getWindowManager();
         DisplayMetrics dm = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(dm);
-        viewWidth  = dm.widthPixels-20 ;
-        System.out.println("手机宽度："+viewWidth);
+        viewWidth = dm.widthPixels - 20;
+        System.out.println("手机宽度：" + viewWidth);
         //计算总笔数
-        for (int i:number){
-            sum+=i;
+        for (int i : number) {
+            sum += i;
         }
         CreatJson();//组合一个jsonArray备用
         //添加比例布局
         for (int i = 0; i < strs.length; i++) {
             final TextView text = new TextView(InComeActivity.this);
             text.setBackgroundResource(color[i]);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(viewWidth*number[i]/sum, LayoutParams.MATCH_PARENT);//设置宽高,第一个参数是宽,第二个参数是高
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(viewWidth * number[i] / sum, LayoutParams.MATCH_PARENT);//设置宽高,第一个参数是宽,第二个参数是高
             //设置边距
             params.topMargin = 0;
             params.bottomMargin = 0;
@@ -109,35 +110,36 @@ public class InComeActivity extends Activity implements View.OnClickListener{
         Animation myAnimation = AnimationUtils.loadAnimation(this, R.anim.income_anim);
         found_history_ryt.startAnimation(myAnimation);
 
-        analasis_list.setAdapter(new InComeAdapter(InComeActivity.this,jsonArray));
+        analasis_list.setAdapter(new InComeAdapter(InComeActivity.this, jsonArray));
 
         analasis_list.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println("点击");
-                Intent intent=new Intent(InComeActivity.this,AccountInComeItemDetailActivity.class);
+                Intent intent = new Intent(InComeActivity.this, AccountInComeItemDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("title",strs[i]);
-                bundle.putInt("number",number[i]);
-                bundle.putInt("color",color[i]);
-                bundle.putString("name","收入");
+                bundle.putString("title", strs[i]);
+                bundle.putInt("number", number[i]);
+                bundle.putInt("color", color[i]);
+                bundle.putString("name", "收入");
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
     }
-    private void CreatJson(){
-        jsonArray=new JSONArray();
-        for(int i=0;i<color.length;i++){
-            jsonObject=new JSONObject();
+
+    private void CreatJson() {
+        jsonArray = new JSONArray();
+        for (int i = 0; i < color.length; i++) {
+            jsonObject = new JSONObject();
             try {
-                jsonObject.put("color",color[i]);
-                jsonObject.put("title",strs[i]);
-                jsonObject.put("number",number[i]);
-                jsonObject.put("money",money[i]);
-                jsonObject.put("sum",sum);
-                jsonObject.put("width",viewWidth-80);
+                jsonObject.put("color", color[i]);
+                jsonObject.put("title", strs[i]);
+                jsonObject.put("number", number[i]);
+                jsonObject.put("money", money[i]);
+                jsonObject.put("sum", sum);
+                jsonObject.put("width", viewWidth - 80);
                 jsonArray.put(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -148,24 +150,24 @@ public class InComeActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.f_summary:
-                intent=new Intent(InComeActivity.this,AccountBookReportActivity.class);
+                intent = new Intent(InComeActivity.this, AccountBookReportActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_label:
-                intent=new Intent(InComeActivity.this,AccountAnalysisLabelStatisticsActivity.class);
+                intent = new Intent(InComeActivity.this, AccountAnalysisLabelStatisticsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_expenditure:
-                intent=new Intent(InComeActivity.this,ExpenditureActivity.class);
+                intent = new Intent(InComeActivity.this, ExpenditureActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_outtime:
-                intent=new Intent(InComeActivity.this,AccountOutTimeActivity.class);
+                intent = new Intent(InComeActivity.this, AccountOutTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

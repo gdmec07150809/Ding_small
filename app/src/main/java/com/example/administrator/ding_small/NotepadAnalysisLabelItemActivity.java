@@ -30,22 +30,23 @@ public class NotepadAnalysisLabelItemActivity extends Activity {
     private int titleColor[];
     public JSONArray jsonArray;
     private ListView listView;
-    private TextView acount_number,outtime_number,label_text;
+    private TextView acount_number, outtime_number, label_text;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notepad_analysis_label_item);
-        listView=findViewById(R.id.notepad_analysis_label_listview);
-        acount_number=findViewById(R.id.acount_number);
-        outtime_number=findViewById(R.id.outtime_number);
-        label_text=findViewById(R.id.label_text);
-        date=new ArrayList<String>();
-        explain=new ArrayList<String>();
-        name=new ArrayList<String>();
-        title=new ArrayList<String>();
-        label=new ArrayList<String>();
-        titleColor= new int[]{R.color.green, R.color.fen,R.color.orange,R.color.green, R.color.fen,R.color.orange,R.color.bg1,R.color.bg2,R.color.bg3,R.color.bg4,R.color.bg5};
-        time=new ArrayList<String>();
+        listView = findViewById(R.id.notepad_analysis_label_listview);
+        acount_number = findViewById(R.id.acount_number);
+        outtime_number = findViewById(R.id.outtime_number);
+        label_text = findViewById(R.id.label_text);
+        date = new ArrayList<String>();
+        explain = new ArrayList<String>();
+        name = new ArrayList<String>();
+        title = new ArrayList<String>();
+        label = new ArrayList<String>();
+        titleColor = new int[]{R.color.green, R.color.fen, R.color.orange, R.color.green, R.color.fen, R.color.orange, R.color.bg1, R.color.bg2, R.color.bg3, R.color.bg4, R.color.bg5};
+        time = new ArrayList<String>();
         date.add("2016-4-5");
         date.add("2016-4-6");
         date.add("2016-4-7");
@@ -112,26 +113,26 @@ public class NotepadAnalysisLabelItemActivity extends Activity {
         time.add("8:30");
         time.add("23:30");
         time.add("15:30");
-        jsonArray=new JSONArray();
+        jsonArray = new JSONArray();
         try {
-            for (int i=0;i<date.size();i++){
+            for (int i = 0; i < date.size(); i++) {
                 JSONObject jsonObject;
-                jsonObject=new JSONObject();
-                jsonObject.put("date",date.get(i));
-                jsonObject.put("explain",explain.get(i));
-                jsonObject.put("name",name.get(i));
-                jsonObject.put("title",title.get(i));
-                jsonObject.put("label",label.get(i));
-                jsonObject.put("time",time.get(i));
-                jsonObject.put("titleColor",titleColor[i]);
+                jsonObject = new JSONObject();
+                jsonObject.put("date", date.get(i));
+                jsonObject.put("explain", explain.get(i));
+                jsonObject.put("name", name.get(i));
+                jsonObject.put("title", title.get(i));
+                jsonObject.put("label", label.get(i));
+                jsonObject.put("time", time.get(i));
+                jsonObject.put("titleColor", titleColor[i]);
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String label_str=getIntent().getStringExtra("label");
+        String label_str = getIntent().getStringExtra("label");
         label_text.setText(label_str);
-        acount_number.setText("共"+jsonArray.length()+"条");
-        listView.setAdapter(new NotepadBtnAdapter(NotepadAnalysisLabelItemActivity.this,sort(jsonArray,"date",true)));
+        acount_number.setText("共" + jsonArray.length() + "条");
+        listView.setAdapter(new NotepadBtnAdapter(NotepadAnalysisLabelItemActivity.this, sort(jsonArray, "date", true)));
     }
 }

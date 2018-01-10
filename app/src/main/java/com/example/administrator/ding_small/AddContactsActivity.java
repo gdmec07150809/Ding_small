@@ -17,7 +17,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
  * Created by CZK on 2017/11/17.
  */
 
-public class AddContactsActivity extends Activity implements View.OnClickListener{
+public class AddContactsActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +26,7 @@ public class AddContactsActivity extends Activity implements View.OnClickListene
         findViewById(R.id.addPhone).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
     }
+
     private void showNameSetDailog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog dialog = builder.create();
@@ -51,7 +52,7 @@ public class AddContactsActivity extends Activity implements View.OnClickListene
                     findViewById(R.id.addName).setVisibility(View.GONE);
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(AddContactsActivity.this,"不能为空",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddContactsActivity.this, "不能为空", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -65,6 +66,7 @@ public class AddContactsActivity extends Activity implements View.OnClickListene
         });
         dialog.show();
     }
+
     private void showPhoneSetDailog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog dialog = builder.create();
@@ -90,7 +92,7 @@ public class AddContactsActivity extends Activity implements View.OnClickListene
                     findViewById(R.id.addPhone).setVisibility(View.GONE);
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(AddContactsActivity.this,"不能为空",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddContactsActivity.this, "不能为空", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -103,9 +105,10 @@ public class AddContactsActivity extends Activity implements View.OnClickListene
         });
         dialog.show();
     }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.addName:
                 showNameSetDailog();
                 break;

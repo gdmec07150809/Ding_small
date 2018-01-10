@@ -12,7 +12,7 @@ import com.example.administrator.ding_small.R;
  * Created by CZK on 2017/11/7.
  */
 
-public class BudgetSettingActivity extends Activity implements View.OnClickListener{
+public class BudgetSettingActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,15 +20,16 @@ public class BudgetSettingActivity extends Activity implements View.OnClickListe
         findViewById(R.id.back).setOnClickListener(this);
         findViewById(R.id.confirm).setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back:
-              finish();
+                finish();
                 break;
             case R.id.confirm:
-                intent=new Intent(BudgetSettingActivity.this,SettingActivity.class);
+                intent = new Intent(BudgetSettingActivity.this, SettingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

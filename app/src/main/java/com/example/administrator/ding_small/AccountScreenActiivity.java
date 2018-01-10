@@ -17,16 +17,17 @@ import java.util.ArrayList;
  * Created by CZK on 2017/12/6.
  */
 
-public class AccountScreenActiivity extends Activity implements View.OnClickListener{
+public class AccountScreenActiivity extends Activity implements View.OnClickListener {
     private FlowLayout inCome_flowlayout;
     private FlowLayout outCome_flowlayout;
     private FlowLayout label_flowlayout;
     private String[] inComeStrs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵"};
     private String[] labelStrs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵"};
     private String[] outComeStrs = new String[]{"通用", "住房", "逛街", "买菜", "奖金", "学费", "工资", "房租", "零食", "夜宵"};
-    private ArrayList<String> inComeList=new ArrayList<String>();
-    private ArrayList<String> outComeList=new ArrayList<String>();
-    private ArrayList<String> labelList=new ArrayList<String>();
+    private ArrayList<String> inComeList = new ArrayList<String>();
+    private ArrayList<String> outComeList = new ArrayList<String>();
+    private ArrayList<String> labelList = new ArrayList<String>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +37,14 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
         outComeflowlayout();
         labelFlowLayout();
     }
+
     //支出布局方法
     private void inComeFlowLayout() {
-        if(inCome_flowlayout==null){
+        if (inCome_flowlayout == null) {
             //加载搜索记录
             for (int i = 0; i < inComeStrs.length; i++) {
                 final TextView text = new TextView(AccountScreenActiivity.this);
-                System.out.println("数组："+inComeStrs[i]);
+                System.out.println("数组：" + inComeStrs[i]);
                 text.setText(inComeStrs[i]);//添加内容
                 text.setTextSize(12);
                 text.setTextColor(getResources().getColor(R.color.blank));
@@ -62,11 +64,11 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
                     public void onClick(View view) {//添加点击事件
                         // search_text.setText(text.getText().toString());
 
-                        if(inComeList.contains(text.getText().toString())){
+                        if (inComeList.contains(text.getText().toString())) {
                             inComeList.remove(text.getText().toString());
                             view.setBackgroundResource(R.drawable.light_button_back);
                             text.setTextColor(getResources().getColor(R.color.blank));
-                        }else {
+                        } else {
                             view.setBackgroundResource(R.drawable.green_button_back);
                             text.setTextColor(getResources().getColor(R.color.white));
                             inComeList.add(text.getText().toString());
@@ -80,11 +82,11 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
 
     //收入布局方法
     private void outComeflowlayout() {
-        if(outCome_flowlayout==null){
+        if (outCome_flowlayout == null) {
             //加载搜索记录
             for (int i = 0; i < outComeStrs.length; i++) {
                 final TextView text = new TextView(AccountScreenActiivity.this);
-                System.out.println("数组："+outComeStrs[i]);
+                System.out.println("数组：" + outComeStrs[i]);
                 text.setText(outComeStrs[i]);//添加内容
                 text.setTextSize(12);
                 text.setTextColor(getResources().getColor(R.color.blank));
@@ -103,11 +105,11 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
                     @Override
                     public void onClick(View view) {//添加点击事件
 
-                        if(outComeList.contains(text.getText().toString())){
+                        if (outComeList.contains(text.getText().toString())) {
                             outComeList.remove(text.getText().toString());
                             view.setBackgroundResource(R.drawable.light_button_back);
                             text.setTextColor(getResources().getColor(R.color.blank));
-                        }else {
+                        } else {
                             view.setBackgroundResource(R.drawable.green_button_back);
                             text.setTextColor(getResources().getColor(R.color.white));
                             outComeList.add(text.getText().toString());
@@ -119,13 +121,14 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
         }
 
     }
+
     //标签布局方法
     private void labelFlowLayout() {
-        if(label_flowlayout==null){
+        if (label_flowlayout == null) {
             //加载搜索记录
             for (int i = 0; i < labelStrs.length; i++) {
                 final TextView text = new TextView(AccountScreenActiivity.this);
-                System.out.println("数组："+labelStrs[i]);
+                System.out.println("数组：" + labelStrs[i]);
                 text.setText(labelStrs[i]);//添加内容
                 text.setTextSize(12);
                 text.setTextColor(getResources().getColor(R.color.blank));
@@ -144,11 +147,11 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
                     @Override
                     public void onClick(View view) {//添加点击事件
 
-                        if(labelList.contains(text.getText().toString())){
+                        if (labelList.contains(text.getText().toString())) {
                             labelList.remove(text.getText().toString());
                             view.setBackgroundResource(R.drawable.light_button_back);
                             text.setTextColor(getResources().getColor(R.color.blank));
-                        }else {
+                        } else {
                             view.setBackgroundResource(R.drawable.green_button_back);
                             text.setTextColor(getResources().getColor(R.color.white));
                             labelList.add(text.getText().toString());
@@ -160,20 +163,21 @@ public class AccountScreenActiivity extends Activity implements View.OnClickList
         }
 
     }
+
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.reset:
                 inCome_flowlayout.removeAllViews();
                 outCome_flowlayout.removeAllViews();
                 label_flowlayout.removeAllViews();
-                inCome_flowlayout=null;
-                outCome_flowlayout=null;
-                label_flowlayout=null;
-                outComeList=new ArrayList<String>();
-                inComeList=new ArrayList<String>();
-                labelList=new ArrayList<String>();
+                inCome_flowlayout = null;
+                outCome_flowlayout = null;
+                label_flowlayout = null;
+                outComeList = new ArrayList<String>();
+                inComeList = new ArrayList<String>();
+                labelList = new ArrayList<String>();
                 inComeFlowLayout();
                 outComeflowlayout();
                 labelFlowLayout();

@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by CZK on 2017/11/6.
  */
 
-public class NotepadSearchByCalendarActivity extends Activity implements OnClickListener,OnCellClickListener {
+public class NotepadSearchByCalendarActivity extends Activity implements OnClickListener, OnCellClickListener {
     private MylistView search_results;
     private ArrayList<String> arrayList;
     private ViewPager mViewPager;
@@ -34,12 +34,14 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
     private CalendarCard[] mShowViews;
     private CalendarViewAdapter<CalendarCard> adapter;
     private SildeDirection mDirection = SildeDirection.NO_SILDE;
+
     enum SildeDirection {
         RIGHT, LEFT, NO_SILDE;
     }
 
     private ImageButton preImgBtn, nextImgBtn;
     private TextView monthText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
         preImgBtn = (ImageButton) this.findViewById(R.id.btnPreMonth);
         nextImgBtn = (ImageButton) this.findViewById(R.id.btnNextMonth);
         monthText = (TextView) this.findViewById(R.id.tvCurrentMonth);
-        search_results=findViewById(R.id.calendar_results);
+        search_results = findViewById(R.id.calendar_results);
         preImgBtn.setOnClickListener(this);
         nextImgBtn.setOnClickListener(this);
         monthText.setOnClickListener(this);
@@ -65,11 +67,11 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
     private void setViewPager() {
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(498);
-        arrayList=new ArrayList<String>();
-        for (int i=0;i<10;i++){
-            arrayList.add(i+"");
+        arrayList = new ArrayList<String>();
+        for (int i = 0; i < 10; i++) {
+            arrayList.add(i + "");
         }
-        search_results.setAdapter(new NotepadSearchByCalendarAdapter(NotepadSearchByCalendarActivity.this,arrayList));
+        search_results.setAdapter(new NotepadSearchByCalendarAdapter(NotepadSearchByCalendarActivity.this, arrayList));
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
@@ -91,6 +93,7 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
 
 
     }
+
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -102,7 +105,7 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 break;
             case R.id.tvCurrentMonth:
-                intent=new Intent(NotepadSearchByCalendarActivity.this,SearchTimeActivity.class);
+                intent = new Intent(NotepadSearchByCalendarActivity.this, SearchTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -116,12 +119,12 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
 
     @Override
     public void clickDate(CustomDate date) {
-        Toast.makeText(this,"点击了："+date.year+"年"+date.month + "月"+date.day+"日",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "点击了：" + date.year + "年" + date.month + "月" + date.day + "日", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void changeDate(CustomDate date) {
-        monthText.setText(date.year+"年"+date.month + "月"+date.day+"日");
+        monthText.setText(date.year + "年" + date.month + "月" + date.day + "日");
     }
 
     /**
@@ -150,7 +153,6 @@ public class NotepadSearchByCalendarActivity extends Activity implements OnClick
         }
         mDirection = SildeDirection.NO_SILDE;
     }
-
 
 
 }

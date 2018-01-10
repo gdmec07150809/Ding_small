@@ -19,38 +19,39 @@ import java.util.ArrayList;
  * Created by CZK on 2017/11/7.
  */
 
-public class BindingCompanyActivity extends Activity implements View.OnClickListener,Callback {
+public class BindingCompanyActivity extends Activity implements View.OnClickListener, Callback {
     private ListView companyView;
     private ArrayList<String> list;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bind_company);
         findViewById(R.id.back).setOnClickListener(this);
-        list=new ArrayList<String>();
+        list = new ArrayList<String>();
         list.add("广州顶牛信息科技有限公司");
         list.add("广州大华家电维修部");
         list.add("广州凌飞冷气工程有限公司");
-        companyView=findViewById(R.id.company_list);
+        companyView = findViewById(R.id.company_list);
         companyView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-        companyView.setAdapter(new BindingCompanyAdapter(BindingCompanyActivity.this,list,this));
+        companyView.setAdapter(new BindingCompanyAdapter(BindingCompanyActivity.this, list, this));
     }
 
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back:
-            finish();
+                finish();
                 break;
         }
     }
 
     @Override
     public void click(View v) {
-            switch ((int)v.getTag()){
-                case 0:
-                    break;
-            }
+        switch ((int) v.getTag()) {
+            case 0:
+                break;
+        }
     }
 }

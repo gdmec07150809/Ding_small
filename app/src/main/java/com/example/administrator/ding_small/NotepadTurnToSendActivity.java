@@ -33,20 +33,21 @@ import static com.example.administrator.ding_small.R.id.search_btn;
  * Created by CZK on 2017/11/29.
  */
 
-public class NotepadTurnToSendActivity extends Activity{
-    private TextView label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text,at_action;
+public class NotepadTurnToSendActivity extends Activity {
+    private TextView label_text, repeat_text, location_text, photo_text, dateT, week, title, reimbursement_text, loan_text, privacy_text, at_action;
     private FlowLayout found_activity_lay;
 
     private ListView list;
     private JSONObject contactData;//储存第一手信息
     private JSONObject contactDatas;//储存搜索结果
     private JSONObject jsonObject;//为contactData提供对象
-    private EditText search_text,remarks_text;//搜索框
-    boolean isFlag=true;//用哪个JsonObject响应listVIEW点击事件
+    private EditText search_text, remarks_text;//搜索框
+    boolean isFlag = true;//用哪个JsonObject响应listVIEW点击事件
     private Button search_btn;
     private ImageView clean_text;
-    private     String name="";
+    private String name = "";
     private String[] ContactsStrs = new String[]{"lily/youyou", "张先生/优游", "李小龙", "郭德纲", "李维嘉", "何炅", "谢娜", "黄晓明", "张艺兴"};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,39 +55,40 @@ public class NotepadTurnToSendActivity extends Activity{
         contactsFlowLayout();
         //获取手机联系人列表
         try {
-            contactData=getContactInfo(NotepadTurnToSendActivity.this);
+            contactData = getContactInfo(NotepadTurnToSendActivity.this);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        list=findViewById(R.id.contacts_list);
-        search_btn=findViewById(R.id.search_btn);
-        clean_text=findViewById(R.id.clean_text);
-        search_text=findViewById(R.id.search_edittext);
+        list = findViewById(R.id.contacts_list);
+        search_btn = findViewById(R.id.search_btn);
+        clean_text = findViewById(R.id.clean_text);
+        search_text = findViewById(R.id.search_edittext);
 
         list.setAdapter(new com.example.administrator.ding_small.Adapter.ContactAdapter(NotepadTurnToSendActivity.this, contactData));
         //搜索联系人事件
         search_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                isFlag=false;
-                String search_val=search_text.getText().toString();
-                String ss= null;
-                contactDatas=new JSONObject();;
-                String name="";
-                int index=0;
+                isFlag = false;
+                String search_val = search_text.getText().toString();
+                String ss = null;
+                contactDatas = new JSONObject();
+                ;
+                String name = "";
+                int index = 0;
                 try {
-                    for(int i=0;i<contactData.length();i++){
-                        ss = contactData.getString("contact"+i);
-                        JSONObject obj=new JSONObject(ss);
-                        name=obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString();
-                        if(search_val.equals(name)){
-                            System.out.println("键："+name);
-                            System.out.println("值："+search_val);
-                            contactDatas.put("contact"+index, obj);
+                    for (int i = 0; i < contactData.length(); i++) {
+                        ss = contactData.getString("contact" + i);
+                        JSONObject obj = new JSONObject(ss);
+                        name = obj.getString("lastname").substring(obj.getString("lastname").length() - 1, obj.getString("lastname").length()).toString();
+                        if (search_val.equals(name)) {
+                            System.out.println("键：" + name);
+                            System.out.println("值：" + search_val);
+                            contactDatas.put("contact" + index, obj);
                             index++;
-                        }else if(search_val.equals(obj.getString("mobile"))){
-                            contactDatas.put("contact"+index, obj);
+                        } else if (search_val.equals(obj.getString("mobile"))) {
+                            contactDatas.put("contact" + index, obj);
                             index++;
                         }
                     }
@@ -101,7 +103,7 @@ public class NotepadTurnToSendActivity extends Activity{
         clean_text.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                isFlag=true;
+                isFlag = true;
                 search_text.setText("");
                 list.setAdapter(new com.example.administrator.ding_small.Adapter.ContactAdapter(NotepadTurnToSendActivity.this, contactData));
             }
@@ -110,21 +112,21 @@ public class NotepadTurnToSendActivity extends Activity{
         list.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String ss= null;
-                String phone="";
+                String ss = null;
+                String phone = "";
                 try {
-                    if(isFlag){
-                        ss = contactData.getString("contact"+i);
-                    }else {
-                        ss = contactDatas.getString("contact"+i);
+                    if (isFlag) {
+                        ss = contactData.getString("contact" + i);
+                    } else {
+                        ss = contactDatas.getString("contact" + i);
                     }
-                    JSONObject obj=new JSONObject(ss);
+                    JSONObject obj = new JSONObject(ss);
 
-                    name=obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString();
-                    phone=obj.getString("mobile");
-                    Intent intent=new Intent(NotepadTurnToSendActivity.this,NotepadRemarkDetailsActivity.class);
-                    intent.putExtra("name",name);
-                    intent.putExtra("phone",phone);
+                    name = obj.getString("lastname").substring(obj.getString("lastname").length() - 1, obj.getString("lastname").length()).toString();
+                    phone = obj.getString("mobile");
+                    Intent intent = new Intent(NotepadTurnToSendActivity.this, NotepadRemarkDetailsActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("phone", phone);
                     startActivity(intent);
 
                 } catch (JSONException e) {
@@ -133,12 +135,13 @@ public class NotepadTurnToSendActivity extends Activity{
             }
         });
     }
+
     private void contactsFlowLayout() {
-        if(found_activity_lay==null){
+        if (found_activity_lay == null) {
             //加载搜索记录
             for (int i = 0; i < ContactsStrs.length; i++) {
                 final TextView text = new TextView(NotepadTurnToSendActivity.this);
-                System.out.println("数组："+ContactsStrs[i]);
+                System.out.println("数组：" + ContactsStrs[i]);
                 text.setText(ContactsStrs[i]);//添加内容
                 text.setTextSize(12);
                 text.setTextColor(getResources().getColor(R.color.green));

@@ -12,7 +12,7 @@ import com.example.administrator.ding_small.R;
  * Created by CZK on 2017/11/7.
  */
 
-public class SatisticsSettingActivity extends Activity implements View.OnClickListener{
+public class SatisticsSettingActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,12 +24,12 @@ public class SatisticsSettingActivity extends Activity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.confirm:
-                intent=new Intent(SatisticsSettingActivity.this,SettingActivity.class);
+                intent = new Intent(SatisticsSettingActivity.this, SettingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

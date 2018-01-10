@@ -33,22 +33,23 @@ public class AccountBookReportActivity extends Activity implements View.OnClickL
     private ArrayList<String> yearLists;
     public JSONArray jsonArray;
     private ListView listView;
-    private TextView summary_text,label_text,income_text,expenditure_text,outtime_text;
+    private TextView summary_text, label_text, income_text, expenditure_text, outtime_text;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accountbook_select_report);
-        listView=findViewById(R.id.account_report_listview);
+        listView = findViewById(R.id.account_report_listview);
         findViewById(R.id.f_summary).setOnClickListener(this);
         findViewById(R.id.f_label).setOnClickListener(this);
         findViewById(R.id.f_income).setOnClickListener(this);
         findViewById(R.id.f_expenditure).setOnClickListener(this);
         findViewById(R.id.f_outtime).setOnClickListener(this);
-        summary_text=findViewById(R.id.summary_text);
-        label_text=findViewById(R.id.label_text);
-        income_text=findViewById(R.id.income_text);
-        expenditure_text=findViewById(R.id.expenditure_text);
-        outtime_text=findViewById(R.id.outtime_text);
+        summary_text = findViewById(R.id.summary_text);
+        label_text = findViewById(R.id.label_text);
+        income_text = findViewById(R.id.income_text);
+        expenditure_text = findViewById(R.id.expenditure_text);
+        outtime_text = findViewById(R.id.outtime_text);
 
         summary_text.setTextColor(getResources().getColor(R.color.green));
         label_text.setTextColor(getResources().getColor(R.color.blank));
@@ -56,10 +57,10 @@ public class AccountBookReportActivity extends Activity implements View.OnClickL
         outtime_text.setTextColor(getResources().getColor(R.color.blank));
         expenditure_text.setTextColor(getResources().getColor(R.color.blank));
 
-        jsonArray=new JSONArray();
-        expenditTureList=new ArrayList<String>();
-        yearLists=new ArrayList<String>();
-        inComeLists=new ArrayList<String>();
+        jsonArray = new JSONArray();
+        expenditTureList = new ArrayList<String>();
+        yearLists = new ArrayList<String>();
+        inComeLists = new ArrayList<String>();
         expenditTureList.add("12");
         expenditTureList.add("50");
         expenditTureList.add("23");
@@ -79,22 +80,22 @@ public class AccountBookReportActivity extends Activity implements View.OnClickL
         yearLists.add("2014");
         yearLists.add("2013");
         try {
-            for (int i=0;i<expenditTureList.size();i++){
+            for (int i = 0; i < expenditTureList.size(); i++) {
                 JSONObject jsonObject;
-                jsonObject=new JSONObject();
-                jsonObject.put("expenditTure",expenditTureList.get(i));
-                jsonObject.put("inCome",inComeLists.get(i));
-                jsonObject.put("year",yearLists.get(i));
+                jsonObject = new JSONObject();
+                jsonObject.put("expenditTure", expenditTureList.get(i));
+                jsonObject.put("inCome", inComeLists.get(i));
+                jsonObject.put("year", yearLists.get(i));
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        listView.setAdapter(new AccountBookReportAdapter(AccountBookReportActivity.this,jsonArray));
+        listView.setAdapter(new AccountBookReportAdapter(AccountBookReportActivity.this, jsonArray));
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(AccountBookReportActivity.this,AccountBookAnalysisActivity.class);
+                Intent intent = new Intent(AccountBookReportActivity.this, AccountBookAnalysisActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -104,24 +105,24 @@ public class AccountBookReportActivity extends Activity implements View.OnClickL
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.f_income:
-                intent=new Intent(AccountBookReportActivity.this,InComeActivity.class);
+                intent = new Intent(AccountBookReportActivity.this, InComeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_label:
-                intent=new Intent(AccountBookReportActivity.this,AccountAnalysisLabelStatisticsActivity.class);
+                intent = new Intent(AccountBookReportActivity.this, AccountAnalysisLabelStatisticsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_expenditure:
-                intent=new Intent(AccountBookReportActivity.this,ExpenditureActivity.class);
+                intent = new Intent(AccountBookReportActivity.this, ExpenditureActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.f_outtime:
-                intent=new Intent(AccountBookReportActivity.this,AccountOutTimeActivity.class);
+                intent = new Intent(AccountBookReportActivity.this, AccountOutTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

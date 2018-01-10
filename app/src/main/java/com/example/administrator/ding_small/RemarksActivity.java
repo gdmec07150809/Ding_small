@@ -80,14 +80,14 @@ import static com.example.administrator.ding_small.R.id.money;
  * Created by CZK on 2017/11/9.
  */
 
-public class RemarksActivity extends Activity implements View.OnClickListener{
-    private TextView contacts_text,label_text,repeat_text,location_text,photo_text,dateT,week,title,reimbursement_text,loan_text,privacy_text,at_action,date_text;
-    private static  final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION  = 100;
-    private String str_location=null;
+public class RemarksActivity extends Activity implements View.OnClickListener {
+    private TextView contacts_text, label_text, repeat_text, location_text, photo_text, dateT, week, title, reimbursement_text, loan_text, privacy_text, at_action, date_text;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
+    private String str_location = null;
     private InputMethodManager inputMethodManager;
-    private String[] strs=null;
-    private String[] ContactsStrs=null;
-    private ArrayList<String> labelList=new ArrayList<String>();
+    private String[] strs = null;
+    private String[] ContactsStrs = null;
+    private ArrayList<String> labelList = new ArrayList<String>();
     private FlowLayout found_activity_fyt;
     private FlowLayout found_activity_lay;
 
@@ -95,18 +95,18 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     private JSONObject contactData;//储存第一手信息
     private JSONObject contactDatas;//储存搜索结果
     private JSONObject jsonObject;//为contactData提供对象
-    private EditText search_text,remarks_text;//搜索框
-    boolean isFlag=true;//用哪个JsonObject响应listVIEW点击事件
+    private EditText search_text, remarks_text;//搜索框
+    boolean isFlag = true;//用哪个JsonObject响应listVIEW点击事件
     private Button search_btn;
     private ImageView clean_text;
     private Calendar cal = Calendar.getInstance();
-    boolean isInfinite=false;//是否无限次重复
-    private String atTime,at_action_text,money,t1;
-    private  ImageView photo1,photo2,photo3,photo4;
+    boolean isInfinite = false;//是否无限次重复
+    private String atTime, at_action_text, money, t1;
+    private ImageView photo1, photo2, photo3, photo4;
     private Dialog mCameraDialog;
     InputMethodManager imm;
     private LinearLayout action;
-    private  int  bg_number;
+    private int bg_number;
 
     @RequiresApi(api = VERSION_CODES.N)
     @Override
@@ -126,56 +126,56 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.back).setOnClickListener(this);
 
 
-        contacts_text= findViewById(R.id.contacts_text);
-        label_text=findViewById(R.id.label_text);
-        repeat_text=findViewById(R.id.repeat_text);
-        location_text=findViewById(R.id.location_text);
-        photo_text=findViewById(R.id.photo_text);
-        reimbursement_text=findViewById(R.id.reimbursement_text);
-        loan_text=findViewById(R.id.loan_text);
-        privacy_text=findViewById(R.id.privacy_text);
+        contacts_text = findViewById(R.id.contacts_text);
+        label_text = findViewById(R.id.label_text);
+        repeat_text = findViewById(R.id.repeat_text);
+        location_text = findViewById(R.id.location_text);
+        photo_text = findViewById(R.id.photo_text);
+        reimbursement_text = findViewById(R.id.reimbursement_text);
+        loan_text = findViewById(R.id.loan_text);
+        privacy_text = findViewById(R.id.privacy_text);
 
-        dateT=findViewById(R.id.date);
+        dateT = findViewById(R.id.date);
         dateT.setOnClickListener(this);
-        week=findViewById(R.id.week);
-        title=findViewById(R.id.title);
-        remarks_text=findViewById(R.id.remarks_text);
-        at_action=findViewById(R.id.at_action);
-        action=findViewById(R.id.action);
+        week = findViewById(R.id.week);
+        title = findViewById(R.id.title);
+        remarks_text = findViewById(R.id.remarks_text);
+        at_action = findViewById(R.id.at_action);
+        action = findViewById(R.id.action);
         //获取传过来的值
-        Bundle bundle=getIntent().getExtras();
-        if(bundle.getString("title")!=null){
-            t1=bundle.getString("title");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.getString("title") != null) {
+            t1 = bundle.getString("title");
             //记事时报销、借出功能不显示
-            if(t1.equals("记事")){
+            if (t1.equals("记事")) {
                 findViewById(R.id.loan_layout).setVisibility(View.GONE);
                 findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
                 findViewById(R.id.money).setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 findViewById(R.id.loan_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.reimbursement_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.money).setVisibility(View.VISIBLE);
-                money=bundle.getString("money");
-                TextView number=findViewById(R.id.money);
+                money = bundle.getString("money");
+                TextView number = findViewById(R.id.money);
                 number.setText(money);
             }
             title.setText(t1);
         }
 
-       if(bundle.getInt("drawable")+""!=null){
-           int drawable= bundle.getInt("drawable");
-           System.out.println("颜色值："+drawable);
-           action.setBackgroundColor(drawable);
-       }
-       if(bundle.getString("atTime")!=null){
-           atTime=bundle.getString("atTime");
-           week.setText("周"+getWeek(atTime));
-           dateT.setText(atTime);
-       }
-      if(bundle.getString("at_action")!=null){
-          at_action_text=bundle.getString("at_action");
-          at_action.setText(at_action_text);
-      }
+        if (bundle.getInt("drawable") + "" != null) {
+            int drawable = bundle.getInt("drawable");
+            System.out.println("颜色值：" + drawable);
+            action.setBackgroundColor(drawable);
+        }
+        if (bundle.getString("atTime") != null) {
+            atTime = bundle.getString("atTime");
+            week.setText("周" + getWeek(atTime));
+            dateT.setText(atTime);
+        }
+        if (bundle.getString("at_action") != null) {
+            at_action_text = bundle.getString("at_action");
+            at_action.setText(at_action_text);
+        }
 
 //        if(t1.equals("已收")||t1.equals("待收")){
 //            findViewById(R.id.loan_layout).setVisibility(View.GONE);
@@ -188,19 +188,20 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 //            findViewById(R.id.reimbursement_layout).setVisibility(View.GONE);
 //        }
         //获取地址
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
         } else {
             LocationUtil.initLocation(RemarksActivity.this);
-            System.out.println("主经度:"+Double.toString(LocationUtil.longitude)+"主纬度："+Double.toString(LocationUtil.latitude));
+            System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
         }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    str_location= LocationUtil.getAddress(LocationUtil.location,getApplicationContext());
+                    str_location = LocationUtil.getAddress(LocationUtil.location, getApplicationContext());
                     //位置信息-----一个字符串
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -211,7 +212,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.remarks_contacts:
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
@@ -248,40 +249,41 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 contactsFlowLayout();
                 //获取手机联系人列表
                 try {
-                    contactData=getContactInfo(RemarksActivity.this);
+                    contactData = getContactInfo(RemarksActivity.this);
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
-                list=findViewById(R.id.contacts_list);
-                search_btn=findViewById(R.id.search_btn);
-                clean_text=findViewById(R.id.clean_text);
-                search_text=findViewById(R.id.search_edittext);
+                list = findViewById(R.id.contacts_list);
+                search_btn = findViewById(R.id.search_btn);
+                clean_text = findViewById(R.id.clean_text);
+                search_text = findViewById(R.id.search_edittext);
                 //搜索联系人事件
                 search_btn.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         findViewById(R.id.found_history_lay).setVisibility(View.GONE);
                         findViewById(R.id.contacts_list).setVisibility(View.VISIBLE);
-                        isFlag=false;
-                        String search_val=search_text.getText().toString();
-                        String ss= null;
-                        contactDatas=new JSONObject();;
-                        String name="";
-                        int index=0;
+                        isFlag = false;
+                        String search_val = search_text.getText().toString();
+                        String ss = null;
+                        contactDatas = new JSONObject();
+                        ;
+                        String name = "";
+                        int index = 0;
                         try {
-                            for(int i=0;i<contactData.length();i++){
-                                ss = contactData.getString("contact"+i);
-                                JSONObject obj=new JSONObject(ss);
-                                name=obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString();
-                                if(search_val.equals(name)){
-                                    System.out.println("键："+name);
-                                    System.out.println("值："+search_val);
-                                    contactDatas.put("contact"+index, obj);
+                            for (int i = 0; i < contactData.length(); i++) {
+                                ss = contactData.getString("contact" + i);
+                                JSONObject obj = new JSONObject(ss);
+                                name = obj.getString("lastname").substring(obj.getString("lastname").length() - 1, obj.getString("lastname").length()).toString();
+                                if (search_val.equals(name)) {
+                                    System.out.println("键：" + name);
+                                    System.out.println("值：" + search_val);
+                                    contactDatas.put("contact" + index, obj);
                                     index++;
-                                }else if(search_val.equals(obj.getString("mobile"))){
-                                    contactDatas.put("contact"+index, obj);
+                                } else if (search_val.equals(obj.getString("mobile"))) {
+                                    contactDatas.put("contact" + index, obj);
                                     index++;
                                 }
                             }
@@ -302,7 +304,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                         findViewById(R.id.found_history_lay).setVisibility(View.GONE);
                         findViewById(R.id.contacts_list).setVisibility(View.VISIBLE);
 
-                        isFlag=true;
+                        isFlag = true;
                         search_text.setText("");
                         list.setAdapter(new com.example.administrator.ding_small.Adapter.ContactAdapter(RemarksActivity.this, contactData));
                     }
@@ -311,16 +313,16 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 list.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String ss= null;
-                        String name="";
+                        String ss = null;
+                        String name = "";
                         try {
-                            if(isFlag){
-                                ss = contactData.getString("contact"+i);
-                            }else {
-                                ss = contactDatas.getString("contact"+i);
+                            if (isFlag) {
+                                ss = contactData.getString("contact" + i);
+                            } else {
+                                ss = contactDatas.getString("contact" + i);
                             }
-                            JSONObject obj=new JSONObject(ss);
-                            name=obj.getString("lastname").substring(obj.getString("lastname").length()-1,obj.getString("lastname").length()).toString();
+                            JSONObject obj = new JSONObject(ss);
+                            name = obj.getString("lastname").substring(obj.getString("lastname").length() - 1, obj.getString("lastname").length()).toString();
                             contacts_text.setText(name);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -395,28 +397,28 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.blank));
 
-                final TextView infinite= findViewById(R.id.infinite);
-                final LinearLayout year= findViewById(R.id.year);
-                final LinearLayout month= findViewById(R.id.month);
-                final LinearLayout week= findViewById(R.id.week_layout);
-                final LinearLayout day= findViewById(R.id.day);
-                date_text=findViewById(R.id.date_text);
+                final TextView infinite = findViewById(R.id.infinite);
+                final LinearLayout year = findViewById(R.id.year);
+                final LinearLayout month = findViewById(R.id.month);
+                final LinearLayout week = findViewById(R.id.week_layout);
+                final LinearLayout day = findViewById(R.id.day);
+                date_text = findViewById(R.id.date_text);
                 date_text.setOnClickListener(this);
 
                 infinite.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(isInfinite){
-                            TextView infinite1= findViewById(R.id.infinite);
+                        if (isInfinite) {
+                            TextView infinite1 = findViewById(R.id.infinite);
                             infinite1.setTextColor(getResources().getColor(R.color.blank));
-                            EditText edit_repeat_number_text=findViewById(R.id.edit_repeat_number_text);
+                            EditText edit_repeat_number_text = findViewById(R.id.edit_repeat_number_text);
                             edit_repeat_number_text.setEnabled(true);
-                            isInfinite=!isInfinite;
-                        }else{
-                            TextView infinite1= findViewById(R.id.infinite);
+                            isInfinite = !isInfinite;
+                        } else {
+                            TextView infinite1 = findViewById(R.id.infinite);
                             infinite1.setTextColor(getResources().getColor(R.color.orange));
-                            isInfinite=!isInfinite;
-                            EditText edit_repeat_number_text=findViewById(R.id.edit_repeat_number_text);
+                            isInfinite = !isInfinite;
+                            EditText edit_repeat_number_text = findViewById(R.id.edit_repeat_number_text);
                             edit_repeat_number_text.setEnabled(false);
                         }
 
@@ -425,10 +427,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 year.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        final TextView year_text= findViewById(R.id.year_text);
-                        final TextView month_text= findViewById(R.id.month_text);
-                        final TextView week_text= findViewById(R.id.week_text);
-                        final TextView day_text= findViewById(R.id.day_text);
+                        final TextView year_text = findViewById(R.id.year_text);
+                        final TextView month_text = findViewById(R.id.month_text);
+                        final TextView week_text = findViewById(R.id.week_text);
+                        final TextView day_text = findViewById(R.id.day_text);
                         year_text.setTextColor(getResources().getColor(R.color.orange));
                         month_text.setTextColor(getResources().getColor(R.color.blank));
                         week_text.setTextColor(getResources().getColor(R.color.blank));
@@ -438,10 +440,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 week.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        final TextView year_text= findViewById(R.id.year_text);
-                        final TextView month_text= findViewById(R.id.month_text);
-                        final TextView week_text= findViewById(R.id.week_text);
-                        final TextView day_text= findViewById(R.id.day_text);
+                        final TextView year_text = findViewById(R.id.year_text);
+                        final TextView month_text = findViewById(R.id.month_text);
+                        final TextView week_text = findViewById(R.id.week_text);
+                        final TextView day_text = findViewById(R.id.day_text);
                         year_text.setTextColor(getResources().getColor(R.color.blank));
                         month_text.setTextColor(getResources().getColor(R.color.blank));
                         week_text.setTextColor(getResources().getColor(R.color.orange));
@@ -451,10 +453,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 month.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        final TextView year_text= findViewById(R.id.year_text);
-                        final TextView month_text= findViewById(R.id.month_text);
-                        final TextView week_text= findViewById(R.id.week_text);
-                        final TextView day_text= findViewById(R.id.day_text);
+                        final TextView year_text = findViewById(R.id.year_text);
+                        final TextView month_text = findViewById(R.id.month_text);
+                        final TextView week_text = findViewById(R.id.week_text);
+                        final TextView day_text = findViewById(R.id.day_text);
                         year_text.setTextColor(getResources().getColor(R.color.blank));
                         month_text.setTextColor(getResources().getColor(R.color.orange));
                         week_text.setTextColor(getResources().getColor(R.color.blank));
@@ -464,10 +466,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 day.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        final TextView year_text= findViewById(R.id.year_text);
-                        final TextView month_text= findViewById(R.id.month_text);
-                        final TextView week_text= findViewById(R.id.week_text);
-                        final TextView day_text= findViewById(R.id.day_text);
+                        final TextView year_text = findViewById(R.id.year_text);
+                        final TextView month_text = findViewById(R.id.month_text);
+                        final TextView week_text = findViewById(R.id.week_text);
+                        final TextView day_text = findViewById(R.id.day_text);
                         year_text.setTextColor(getResources().getColor(R.color.blank));
                         month_text.setTextColor(getResources().getColor(R.color.blank));
                         week_text.setTextColor(getResources().getColor(R.color.blank));
@@ -506,10 +508,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 location_text.setTextColor(getResources().getColor(R.color.blank));
                 photo_text.setTextColor(getResources().getColor(R.color.green));
 
-                photo1=findViewById(R.id.photo1);
-                photo2=findViewById(R.id.photo2);
-                photo3=findViewById(R.id.photo3);
-                photo4=findViewById(R.id.photo4);
+                photo1 = findViewById(R.id.photo1);
+                photo2 = findViewById(R.id.photo2);
+                photo3 = findViewById(R.id.photo3);
+                photo4 = findViewById(R.id.photo4);
                 photo1.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -602,12 +604,12 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 findViewById(R.id.remarks_privacy_layout).setVisibility(View.GONE);
                 findViewById(R.id.remarks_loan_layout).setVisibility(View.GONE);
 
-                TextView location=findViewById(R.id.location);
+                TextView location = findViewById(R.id.location);
 
                 //获取地址
-                if(str_location ==null || str_location.isEmpty()){
+                if (str_location == null || str_location.isEmpty()) {
                     location.setText("请打开移动网络,重试");
-                }else{
+                } else {
                     location.setText(str_location);
                 }
                 break;
@@ -708,10 +710,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 TimeSelector timeSelector = new TimeSelector(RemarksActivity.this, new TimeSelector.ResultHandler() {
                     @Override
                     public void handle(String time) {
-                        TextView week=findViewById(R.id.week);
-                        atTime=time;
+                        TextView week = findViewById(R.id.week);
+                        atTime = time;
                         dateT.setText(time);
-                        week.setText("周"+getWeek(atTime));
+                        week.setText("周" + getWeek(atTime));
                     }
 
                 }, atTime, "2500-12-31 23:59:59");
@@ -723,7 +725,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 TimeSelector timeSelector1 = new TimeSelector(RemarksActivity.this, new TimeSelector.ResultHandler() {
                     @Override
                     public void handle(String time) {
-                        atTime=time;
+                        atTime = time;
                         date_text.setText(time);
                     }
 
@@ -733,15 +735,15 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 timeSelector1.show();
                 break;
             case R.id.btn_open_camera:
-                     intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, 11);
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 11);
                 break;
             case R.id.btn_open_camera2:
                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,12);
+                startActivityForResult(intent, 12);
                 break;
             case R.id.btn_open_camera3:
-               intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 13);
                 break;
             case R.id.btn_open_camera4:
@@ -752,19 +754,19 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 mCameraDialog.dismiss();
                 break;
             case R.id.btn_choose_img:
-               intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 21);
                 break;
             case R.id.btn_choose_img2:
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 22);
                 break;
             case R.id.btn_choose_img3:
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,23 );
+                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 23);
                 break;
             case R.id.btn_choose_img4:
-                intent= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 24);
                 break;
             case R.id.back:
@@ -777,18 +779,18 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 
     //标签布局方法
     private void labelFlowLayout() {
-        if(found_activity_fyt==null){
+        if (found_activity_fyt == null) {
             //加载搜索记录
             for (int i = 0; i < strs.length; i++) {
                 final TextView text = new TextView(RemarksActivity.this);
-                System.out.println("数组："+strs[i]);
-                if(i<strs.length-1){
+                System.out.println("数组：" + strs[i]);
+                if (i < strs.length - 1) {
                     text.setText(strs[i]);//添加内容
                     text.setTextSize(12);
                     text.setTextColor(Color.rgb(102, 102, 102));
                     text.setBackgroundResource(R.drawable.light_button_back);
                     text.setPadding(15, 10, 15, 10);
-                }else {
+                } else {
                     text.setText(strs[i]);//添加内容
                     text.setTextSize(12);
                     text.setTextColor(getResources().getColor(R.color.orange));
@@ -807,16 +809,16 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {//添加点击事件
-                        if(text.getText().toString().equals("+")){
-                            Intent intent=new Intent(RemarksActivity.this,EditLabelActivity.class);
+                        if (text.getText().toString().equals("+")) {
+                            Intent intent = new Intent(RemarksActivity.this, EditLabelActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
-                        }else{
-                            if(labelList.contains(text.getText().toString())){
+                        } else {
+                            if (labelList.contains(text.getText().toString())) {
                                 labelList.remove(text.getText().toString());
                                 view.setBackgroundResource(R.drawable.light_button_back);
                                 text.setTextColor(getResources().getColor(R.color.blank));
-                            }else {
+                            } else {
                                 view.setBackgroundResource(R.drawable.green_button_back);
                                 text.setTextColor(getResources().getColor(R.color.white));
                                 labelList.add(text.getText().toString());
@@ -831,11 +833,11 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 
     //联系人布局方法
     private void contactsFlowLayout() {
-        if(found_activity_lay==null){
+        if (found_activity_lay == null) {
             //加载搜索记录
             for (int i = 0; i < ContactsStrs.length; i++) {
                 final TextView text = new TextView(RemarksActivity.this);
-                System.out.println("数组："+ContactsStrs[i]);
+                System.out.println("数组：" + ContactsStrs[i]);
                 text.setText(ContactsStrs[i]);//添加内容
                 text.setTextSize(12);
                 text.setTextColor(getResources().getColor(R.color.green));
@@ -868,13 +870,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 //    }
 
 
-
-
     /**
      * 判断当前日期是星期几
      *
-     * @param  pTime     设置的需要判断的时间  //格式如2012-09-08
-     *
+     * @param pTime 设置的需要判断的时间  //格式如2012-09-08
      * @return dayForWeek 判断结果
      * @Exception 发生异常
      */
@@ -914,6 +913,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 
         return Week;
     }
+
     //获取,处理拍照事件
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -922,19 +922,19 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         mCameraDialog.dismiss();
         findViewById(R.id.remarks_photo_layout).setVisibility(View.VISIBLE);
         //判断那个相机回调
-        switch (requestCode){
+        switch (requestCode) {
             case 11:
                 if (resultCode == Activity.RESULT_OK) {
                     String sdStatus = Environment.getExternalStorageState();
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RemarksActivity.this, "sd卡不可用！！！", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
                     String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
+                    System.out.println("路径：" + name);
                     Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
@@ -942,7 +942,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
+                    String fileName = "/sdcard/Image/" + name;
                     try {
                         b = new FileOutputStream(fileName);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
@@ -950,7 +950,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                         e.printStackTrace();
                     } finally {
                         try {
-                            if(b!=null){
+                            if (b != null) {
                                 b.flush();
                                 b.close();
                             }
@@ -958,11 +958,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                             e.printStackTrace();
                         }
                     }
-                    try
-                    {
+                    try {
                         photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
+                    } catch (Exception e) {
                         Log.e("error", e.getMessage());
                     }
                 }
@@ -973,12 +971,12 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RemarksActivity.this, "sd卡不可用！！！", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
                     String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
+                    System.out.println("路径：" + name);
                     Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
@@ -986,7 +984,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
+                    String fileName = "/sdcard/Image/" + name;
 
                     try {
                         b = new FileOutputStream(fileName);
@@ -995,7 +993,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                         e.printStackTrace();
                     } finally {
                         try {
-                            if(b!=null){
+                            if (b != null) {
                                 b.flush();
                                 b.close();
                             }
@@ -1003,11 +1001,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                             e.printStackTrace();
                         }
                     }
-                    try
-                    {
+                    try {
                         photo2.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
+                    } catch (Exception e) {
                         Log.e("error", e.getMessage());
                     }
 
@@ -1019,12 +1015,12 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RemarksActivity.this, "sd卡不可用！！！", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
                     String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
+                    System.out.println("路径：" + name);
                     Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
@@ -1032,7 +1028,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
+                    String fileName = "/sdcard/Image/" + name;
 
                     try {
                         b = new FileOutputStream(fileName);
@@ -1041,7 +1037,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                         e.printStackTrace();
                     } finally {
                         try {
-                            if(b!=null){
+                            if (b != null) {
                                 b.flush();
                                 b.close();
                             }
@@ -1049,11 +1045,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                             e.printStackTrace();
                         }
                     }
-                    try
-                    {
+                    try {
                         photo3.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
+                    } catch (Exception e) {
                         Log.e("error", e.getMessage());
                     }
 
@@ -1065,12 +1059,12 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
                         Log.i("TestFile",
                                 "SD card is not avaiable/writeable right now.");
-                        Toast.makeText(RemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RemarksActivity.this, "sd卡不可用！！！", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     new DateFormat();
                     String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-                    System.out.println("路径："+name);
+                    System.out.println("路径：" + name);
                     Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
@@ -1078,7 +1072,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/"+name;
+                    String fileName = "/sdcard/Image/" + name;
 
                     try {
                         b = new FileOutputStream(fileName);
@@ -1087,7 +1081,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                         e.printStackTrace();
                     } finally {
                         try {
-                            if(b!=null){
+                            if (b != null) {
                                 b.flush();
                                 b.close();
                             }
@@ -1095,11 +1089,9 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                             e.printStackTrace();
                         }
                     }
-                    try
-                    {
+                    try {
                         photo4.setImageBitmap(bitmap);// 将图片显示在ImageView里
-                    }catch(Exception e)
-                    {
+                    } catch (Exception e) {
                         Log.e("error", e.getMessage());
                     }
                 }
@@ -1109,7 +1101,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 // 获取返回的数据，这里是android自定义的Uri地址
                 if (resultCode == Activity.RESULT_OK) {
                     Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     // 获取选择照片的数据视图
                     Cursor cursor = getContentResolver().query(selectedImage,
                             filePathColumn, null, null, null);
@@ -1127,7 +1119,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 // 获取返回的数据，这里是android自定义的Uri地址
                 if (resultCode == Activity.RESULT_OK) {
                     Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     // 获取选择照片的数据视图
                     Cursor cursor = getContentResolver().query(selectedImage,
                             filePathColumn, null, null, null);
@@ -1145,7 +1137,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 // 获取返回的数据，这里是android自定义的Uri地址
                 if (resultCode == Activity.RESULT_OK) {
                     Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     // 获取选择照片的数据视图
                     Cursor cursor = getContentResolver().query(selectedImage,
                             filePathColumn, null, null, null);
@@ -1163,7 +1155,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 // 获取返回的数据，这里是android自定义的Uri地址
                 if (resultCode == Activity.RESULT_OK) {
                     Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     // 获取选择照片的数据视图
                     Cursor cursor = getContentResolver().query(selectedImage,
                             filePathColumn, null, null, null);
@@ -1181,7 +1173,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
     }
 
     //删除图片事件
-    private void showDetelePhotoDialog(final int number){
+    private void showDetelePhotoDialog(final int number) {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
          * @setMessage 设置对话框消息提示
@@ -1196,20 +1188,20 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //判断那个图片删除
-                      switch (number){
-                          case 1:
-                              photo1.setImageResource(R.drawable.no_photo);
-                              break;
-                          case 2:
-                              photo2.setImageResource(R.drawable.no_photo);
-                              break;
-                          case 3:
-                              photo3.setImageResource(R.drawable.no_photo);
-                              break;
-                          case 4:
-                              photo4.setImageResource(R.drawable.no_photo);
-                              break;
-                      }
+                        switch (number) {
+                            case 1:
+                                photo1.setImageResource(R.drawable.no_photo);
+                                break;
+                            case 2:
+                                photo2.setImageResource(R.drawable.no_photo);
+                                break;
+                            case 3:
+                                photo3.setImageResource(R.drawable.no_photo);
+                                break;
+                            case 4:
+                                photo4.setImageResource(R.drawable.no_photo);
+                                break;
+                        }
 
                     }
                 });
@@ -1217,7 +1209,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                     return;
+                        return;
                     }
                 });
         // 显示
@@ -1226,10 +1218,10 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
 
     //底部弹出菜单
     private void setDialog(int number) {
-        LinearLayout root=null;
+        LinearLayout root = null;
         mCameraDialog = new Dialog(this, R.style.BottomDialog);
         //判断那个相机弹出
-        switch (number){
+        switch (number) {
             case 1:
                 root = (LinearLayout) LayoutInflater.from(this).inflate(
                         R.layout.photo_menu, null);
@@ -1267,7 +1259,7 @@ public class RemarksActivity extends Activity implements View.OnClickListener{
         mCameraDialog.setContentView(root);
         Window dialogWindow = mCameraDialog.getWindow();
         dialogWindow.setGravity(Gravity.BOTTOM);
-         dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
         WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
         lp.x = 0; // 新位置X坐标
         lp.y = 0; // 新位置Y坐标

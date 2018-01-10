@@ -26,18 +26,19 @@ import java.util.ArrayList;
  * Created by CZK on 2017/11/16.
  */
 
-public class EditLabelBtnActivity extends Activity implements View.OnClickListener,Callback {
+public class EditLabelBtnActivity extends Activity implements View.OnClickListener, Callback {
     public ListView list;
     private ArrayList<String> lists;
     public JSONArray jsonArray;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_label_btn);
-        list=findViewById(R.id.label_list);
+        list = findViewById(R.id.label_list);
         findViewById(R.id.add_label).setOnClickListener(this);
-        jsonArray=new JSONArray();
-        lists=new ArrayList<String>();
+        jsonArray = new JSONArray();
+        lists = new ArrayList<String>();
         lists.add("通用");
         lists.add("住房");
         lists.add("逛街");
@@ -49,18 +50,18 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
         lists.add("零食");
         lists.add("夜宵");
         try {
-            for (int i=0;i<lists.size();i++){
+            for (int i = 0; i < lists.size(); i++) {
                 JSONObject jsonObject;
-                jsonObject=new JSONObject();
-                jsonObject.put("name",lists.get(i));
-                jsonObject.put("number","0");
+                jsonObject = new JSONObject();
+                jsonObject.put("name", lists.get(i));
+                jsonObject.put("number", "0");
                 jsonArray.put(jsonObject);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        list.setAdapter(new com.example.administrator.ding_small.Adapter.EditLabelBtnAdapter(EditLabelBtnActivity.this,jsonArray,this));
+        list.setAdapter(new com.example.administrator.ding_small.Adapter.EditLabelBtnAdapter(EditLabelBtnActivity.this, jsonArray, this));
 
         list.setOnItemClickListener(new OnItemClickListener() {
             @RequiresApi(api = VERSION_CODES.KITKAT)
@@ -74,9 +75,9 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.add_label:
-                intent=new Intent(EditLabelBtnActivity.this,AddLabelActivity.class);
+                intent = new Intent(EditLabelBtnActivity.this, AddLabelActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -85,27 +86,27 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
 
     @Override
     public void click(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.up_img:
                 try {
-                    JSONObject ob1= new JSONObject(String.valueOf(jsonArray.get((Integer) v.getTag())));
-                    JSONObject ob2= new JSONObject(String.valueOf(jsonArray.get(1)));
-                    ob1.put("number","1");
-                    jsonArray.put(1,ob1);
-                    jsonArray.put((Integer) v.getTag(),ob2);
-                    System.out.println("更改后："+ob1);
+                    JSONObject ob1 = new JSONObject(String.valueOf(jsonArray.get((Integer) v.getTag())));
+                    JSONObject ob2 = new JSONObject(String.valueOf(jsonArray.get(1)));
+                    ob1.put("number", "1");
+                    jsonArray.put(1, ob1);
+                    jsonArray.put((Integer) v.getTag(), ob2);
+                    System.out.println("更改后：" + ob1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                list.setAdapter(new com.example.administrator.ding_small.Adapter.EditLabelBtnAdapter(EditLabelBtnActivity.this,jsonArray,this));
+                list.setAdapter(new com.example.administrator.ding_small.Adapter.EditLabelBtnAdapter(EditLabelBtnActivity.this, jsonArray, this));
                 break;
             case R.id.edit_img:
-                Intent intent=new Intent(EditLabelBtnActivity.this,EditLabelItemBtnActivity.class);
-                String label= String.valueOf(v.getTag(R.id.tag_first));
-                int index= (int) v.getTag(R.id.tag_second);
-                Bundle bundle=new Bundle();
-                bundle.putString("index",index+"");
-                bundle.putString("label",label);
+                Intent intent = new Intent(EditLabelBtnActivity.this, EditLabelItemBtnActivity.class);
+                String label = String.valueOf(v.getTag(R.id.tag_first));
+                int index = (int) v.getTag(R.id.tag_second);
+                Bundle bundle = new Bundle();
+                bundle.putString("index", index + "");
+                bundle.putString("label", label);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;

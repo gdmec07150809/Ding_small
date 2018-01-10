@@ -30,21 +30,23 @@ import static com.example.administrator.ding_small.R.id.no_finish_btn;
  * Created by CZK on 2017/11/6.
  */
 
-public class AccountsSearchByCalendarActivity extends Activity implements OnClickListener,OnCellClickListener {
+public class AccountsSearchByCalendarActivity extends Activity implements OnClickListener, OnCellClickListener {
     private MylistView search_results;
     private ArrayList<String> arrayList;
     private ViewPager mViewPager;
     private int mCurrentIndex = 498;
-    private Button finished_btn,no_finished_btn;
+    private Button finished_btn, no_finished_btn;
     private AccountsCalendarCard[] mShowViews;
     private CalendarViewAdapter<AccountsCalendarCard> adapter;
     private SildeDirection mDirection = SildeDirection.NO_SILDE;
+
     enum SildeDirection {
         RIGHT, LEFT, NO_SILDE;
     }
 
     private ImageButton preImgBtn, nextImgBtn;
     private TextView monthText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +56,9 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
         preImgBtn = (ImageButton) this.findViewById(R.id.btnPreMonth);
         nextImgBtn = (ImageButton) this.findViewById(R.id.btnNextMonth);
         monthText = (TextView) this.findViewById(R.id.tvCurrentMonth);
-        finished_btn=findViewById(R.id.finished_btn);
-        no_finished_btn=findViewById(R.id.no_finish_btn);
-        search_results=findViewById(R.id.calendar_results);
+        finished_btn = findViewById(R.id.finished_btn);
+        no_finished_btn = findViewById(R.id.no_finish_btn);
+        search_results = findViewById(R.id.calendar_results);
         preImgBtn.setOnClickListener(this);
         nextImgBtn.setOnClickListener(this);
         monthText.setOnClickListener(this);
@@ -66,7 +68,7 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
 
         AccountsCalendarCard[] views = new AccountsCalendarCard[3];
         for (int i = 0; i < 3; i++) {
-            views[i]=new AccountsCalendarCard(this,this);
+            views[i] = new AccountsCalendarCard(this, this);
         }
         adapter = new CalendarViewAdapter<>(views);
         setViewPager();
@@ -75,11 +77,11 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
     private void setViewPager() {
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(498);
-        arrayList=new ArrayList<String>();
-        for (int i=0;i<10;i++){
-            arrayList.add(i+"");
+        arrayList = new ArrayList<String>();
+        for (int i = 0; i < 10; i++) {
+            arrayList.add(i + "");
         }
-        search_results.setAdapter(new AccountsSearchByCalendarAdapter(AccountsSearchByCalendarActivity.this,arrayList));
+        search_results.setAdapter(new AccountsSearchByCalendarAdapter(AccountsSearchByCalendarActivity.this, arrayList));
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
@@ -101,6 +103,7 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
 
 
     }
+
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -112,7 +115,7 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 break;
             case R.id.tvCurrentMonth:
-                intent=new Intent(AccountsSearchByCalendarActivity.this,SearchTimeActivity.class);
+                intent = new Intent(AccountsSearchByCalendarActivity.this, SearchTimeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             case R.id.back:
@@ -139,12 +142,12 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
 
     @Override
     public void clickDate(CustomDate date) {
-        Toast.makeText(this,"点击了："+date.year+"年"+date.month + "月"+date.day+"日",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "点击了：" + date.year + "年" + date.month + "月" + date.day + "日", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void changeDate(CustomDate date) {
-        monthText.setText(date.year+"年"+date.month + "月"+date.day+"日");
+        monthText.setText(date.year + "年" + date.month + "月" + date.day + "日");
     }
 
     /**
@@ -173,7 +176,6 @@ public class AccountsSearchByCalendarActivity extends Activity implements OnClic
         }
         mDirection = SildeDirection.NO_SILDE;
     }
-
 
 
 }

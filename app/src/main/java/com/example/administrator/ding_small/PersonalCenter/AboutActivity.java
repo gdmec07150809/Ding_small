@@ -12,7 +12,7 @@ import com.example.administrator.ding_small.R;
  * Created by CZK on 2017/11/7.
  */
 
-public class AboutActivity extends Activity implements View.OnClickListener{
+public class AboutActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +23,7 @@ public class AboutActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;

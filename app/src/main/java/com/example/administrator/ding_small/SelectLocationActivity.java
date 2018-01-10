@@ -21,12 +21,13 @@ import java.util.ArrayList;
  * Created by CZK on 2018/1/4.
  */
 
-public class SelectLocationActivity extends Activity implements View.OnClickListener{
+public class SelectLocationActivity extends Activity implements View.OnClickListener {
     private TextView mTvAddress;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private String adress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +35,16 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
         initView();
         initJsonData();
     }
+
     private void showPickerView() {
-        OptionsPickerView pvOptions=new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
                 String text = options1Items.get(options1).getPickerViewText() +
                         options2Items.get(options1).get(options2) +
                         options3Items.get(options1).get(options2).get(options3);
-                adress=text;
+                adress = text;
                 mTvAddress.setText(text);
             }
         }).setTitleText("")
@@ -51,10 +53,10 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                 .setContentTextSize(13)
                 .setOutSideCancelable(false)
                 .setContentTextSize(18)//滚轮文字大小
-                .setSubmitColor(ContextCompat.getColor(this,R.color.theme_color))//确定按钮文字颜色
-                .setCancelColor(ContextCompat.getColor(this,R.color.theme_color))//取消按钮文字颜色
-                .setTitleBgColor(ContextCompat.getColor(this,R.color.time_bg_color))//标题背景颜色 Night mode
-                .setBgColor(ContextCompat.getColor(this,R.color.time_bg_color))//滚轮背景颜色 Night mode
+                .setSubmitColor(ContextCompat.getColor(this, R.color.theme_color))//确定按钮文字颜色
+                .setCancelColor(ContextCompat.getColor(this, R.color.theme_color))//取消按钮文字颜色
+                .setTitleBgColor(ContextCompat.getColor(this, R.color.time_bg_color))//标题背景颜色 Night mode
+                .setBgColor(ContextCompat.getColor(this, R.color.time_bg_color))//滚轮背景颜色 Night mode
                 .build();
           /*pvOptions.setPicker(options1Items);//一级选择器
         pvOptions.setPicker(options1Items, options2Items);//二级选择器*/
@@ -144,13 +146,13 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.select_layout://选择地址提供器
                 showPickerView();
                 break;
             case R.id.comfir_btn://确定
-                intent=new Intent(SelectLocationActivity.this,CreatRepairRemarksActivity.class);
-                intent.putExtra("adress",adress);
+                intent = new Intent(SelectLocationActivity.this, CreatRepairRemarksActivity.class);
+                intent.putExtra("adress", adress);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
