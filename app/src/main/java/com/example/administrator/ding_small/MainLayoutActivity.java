@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.AdvertisementGvAdapter;
 import com.example.administrator.ding_small.Fragment.AdvertisementFragment;
+import com.example.administrator.ding_small.HelpTool.DensityUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
@@ -315,8 +316,8 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 
                 break;
             case R.id.more_layout://更多功能暂未开发
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
-
+             //   Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                System.out.println("32px:"+DensityUtil.px2sp(MainLayoutActivity.this,32));
                 break;
             case R.id.scan_layout://扫码功能
                 getCache();

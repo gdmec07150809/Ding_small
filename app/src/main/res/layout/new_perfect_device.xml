@@ -6,13 +6,13 @@
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="90px">
+        android:layout_height="@dimen/px90">
         <LinearLayout
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -31,14 +31,14 @@
             android:layout_height="wrap_content"
             android:textColor="@color/title_color"
             android:layout_centerInParent="true"
-            android:textSize="34px"
+            android:textSize="@dimen/px34"
             android:text="完善设备信息"/>
         <TextView
             android:id="@+id/leapfrog"
             style="@style/back_style"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="30px"
+            android:layout_marginRight="@dimen/px30"
             android:text="跳过"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
         android:id="@+id/head2"
         android:layout_below="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="@dimen/px400">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
     <RelativeLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
-        android:layout_height="120px"
+        android:layout_height="@dimen/px120"
         android:background="@color/white"
         android:layout_alignParentBottom="true">
         <LinearLayout
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/new_information_img"
@@ -117,7 +117,7 @@
                 android:id="@+id/information_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="@dimen/px10"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/theme_color"
                 android:text="备注"/>
@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="60px"
+            android:layout_marginLeft="@dimen/px60"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/new_photo_img"
@@ -140,7 +140,7 @@
                 android:id="@+id/photo_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="@dimen/px10"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/time_color"
                 android:text="图片"/>
@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="60px"
+            android:layout_marginLeft="@dimen/px60"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/new_remarks_img"
@@ -163,14 +163,14 @@
                 android:id="@+id/remarks_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="@dimen/px10"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/time_color"
                 android:text="位置"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/confrim_btn"
-            android:layout_width="200px"
+            android:layout_width="@dimen/px200"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@color/theme_color">
@@ -180,7 +180,7 @@
                 android:layout_height="match_parent"
                 android:text="确定"
                 android:gravity="center"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
                 />

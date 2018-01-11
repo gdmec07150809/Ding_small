@@ -7,13 +7,13 @@
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="@dimen/px100">
         <LinearLayout
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -34,20 +34,20 @@
             android:layout_centerInParent="true"
             android:text="设备列表"
             android:textColor="@color/title_color"
-            android:textSize="34px"/>
+            android:textSize="@dimen/px34"/>
         <LinearLayout
             android:id="@+id/search_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="30px"
+            android:layout_marginRight="@dimen/px30"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20px"
+                android:layout_marginRight="@dimen/px20"
                 android:src="@mipmap/icon_common_search"/>
         </LinearLayout>
     </RelativeLayout>
@@ -67,18 +67,18 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="20px"
+                android:layout_height="@dimen/px20"
                 android:background="@color/time_bg_color"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="96px">
+                android:layout_height="@dimen/px96">
                 <TextView
                     android:id="@+id/device_history_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="30px"
-                    android:textSize="32px"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:textSize="@dimen/px32"
                     android:textColor="#333333"
                     android:text="历史设备"/>
                 <ImageView
@@ -88,7 +88,7 @@
                     android:layout_alignParentRight="true"
                     android:background="@mipmap/icon_list_refresh"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40px"/>
+                    android:layout_marginRight="@dimen/px40"/>
             </RelativeLayout>
             <com.weavey.loading.lib.LoadingLayout
                 android:id="@+id/loading_layout"

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ding_small.HelpTool.CountDownTimerUtils;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
@@ -156,9 +157,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             // TODO
             // 在这里进行 http request.网络请求相关操作
             //String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
-            String url = "http://192.168.1.105:8080/a10/api/user/getSmsMsg.do";
+            String url = "http://192.168.1.103:8080/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
+            System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
@@ -168,6 +170,13 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             Call call = okHttpClient.newCall(request);
             try {
                 Response response = call.execute();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = response.toString();
+                    codeHandler.sendMessage(message);
+                }
                 System.out.println("结果：" + response.body().string() + "状态码：" + response.code());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -175,6 +184,35 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         }
     };
 
+    /*验证码处理类*/
+    private Handler codeHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+
+                        switch (object1.getString("res")) {
+                            case "00000"://成功
+                                Toast.makeText(RegisterActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
     /**
      * 网络操作相关的子线程okhttp框架  注册
      */
@@ -184,7 +222,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             // TODO
             // 在这里进行 http request.网络请求相关操作
             // String url = "http://120.76.188.131:8080/a10/api/user/register.do";
-            String url = "http://192.168.1.105:8080/a10/api/user/register.do";
+            String url = "http://192.168.1.103:8080/api/user/register.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass = MD5Utils.md5(p1_str);
             String b = "{\"memPhone\":\"" + phone_str + "\",\"memPwd1\":\"" + pass + "\",\"memName\":\"" + memName_str + "\",\"smsVerifCode\":\"" + code_str + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串

@@ -156,55 +156,19 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
             Call call = okHttpClient.newCall(request);
             try {
                 Response response = call.execute();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = response.toString();
+                    codeHandler.sendMessage(message);
+                }
                 System.out.println("结果：" + response.body().string() + "状态码：" + response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     };
-
-    //方法：获取验证码
-    private void getCode(final String phone) {
-        // System.out.println("加密密码："+MD5Utils.md5(pass1));
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                //用HttpClient发送请求，分为五步
-                //第一步：创建HttpClient对象
-                HttpClient httpCient = new DefaultHttpClient();
-                //第二步：创建代表请求的对象,参数是访问的服务器地址blMac=12:34:56:78:9A:BC&userId=1001&userName=%E5%BC%A0%E4%B8%89
-                HttpGet httpGet = new HttpGet("http://192.168.1.101:8080/appUser/appSmsMsg.do?memPhone=" + phone + "&msgType=1");
-                try {
-                    //第三步：执行请求，获取服务器发还的相应对象
-                    HttpResponse httpResponse = httpCient.execute(httpGet);
-                    //第四步：检查相应的状态是否正常：检查状态码的值是200表示正常
-                    System.out.println("状态码：" + httpResponse.getStatusLine().getStatusCode());
-                    if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                        //第五步：从相应对象当中取出数据，放到entity当中
-                        HttpEntity entity = httpResponse.getEntity();
-                        String response = EntityUtils.toString(entity, "utf-8");//将entity当中的数据转换为字符串
-                        System.out.println("返回结果：" + response);
-                        if (response != null) {
-                            //在子线程中将Message对象发出去
-                            Message message = new Message();
-                            message.what = SHOW_RESPONSE;
-                            message.obj = response.toString();
-                            codeHandler.sendMessage(message);
-                        }
-                    } else {
-                        Toast.makeText(ForgotPassWordActivity.this, "访问失败!!!请检查服务器...", Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    System.out.println("访问失败！！！");
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();//这个start()方法不要忘记了
-
-    }
 
     private Handler codeHandler = new Handler() {
 
@@ -214,14 +178,15 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
             switch (msg.what) {
                 case SHOW_RESPONSE:
                     String response = (String) msg.obj;
+                    System.out.println(response);
                     try {
-                        JSONObject responseObject = new JSONObject(response);
-                        System.out.println("返回：" + responseObject);
-                        Msg = responseObject.getString("msg");
-                        code = responseObject.getString("resCode");
-                        if (code.equals("00000")) {
-                            new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("验证码").setMessage("请查收验证码").setPositiveButton("确定", null).show();
-                            saveCode = Msg;
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+
+                        switch (object1.getString("res")) {
+                            case "00000"://成功
+                              Toast.makeText(ForgotPassWordActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                break;
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -52,12 +52,7 @@
         <item name="android:layout_marginLeft">10dp</item>
     </style>
 
-    <!-- android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"
-                                android:textSize="6pt"-->
+
     <style name="device_detail_RStyle">   <!-- 设备详情右边字体样式,报修备注右边字体样式 -->
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -67,12 +62,7 @@
         <item name="android:textColor">@color/font_hui</item>
         <item name="android:layout_marginRight">20dp</item>
     </style>
-    <!-- android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="6pt"
-            android:textColor="@color/blank"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"-->
+
     <style name="repair_remarks_LStyle">   <!-- 报修备注左边字体样式 -->
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -145,15 +135,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
-    /* android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="16px"
-    android:textSize="30px"*/
+
     <style name="back_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">16px</item>
-        <item name="android:textSize">30px</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/theme_color</item>
     </style>
 </resources>

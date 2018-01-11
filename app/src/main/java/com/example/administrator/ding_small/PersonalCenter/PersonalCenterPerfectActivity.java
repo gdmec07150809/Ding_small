@@ -163,7 +163,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://120.76.188.131:8080/a10/api/user/logout.do";
+        //String url = "http://120.76.188.131:8080/a10/api/user/logout.do";
+        String url = "http://192.168.1.103:8080/a10/api/user/logout.do";
+
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -219,7 +221,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://120.76.188.131:8080/a10/api/user/logout.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/a10/api/user/logout.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
 
             System.out.println("验证：" + sign);

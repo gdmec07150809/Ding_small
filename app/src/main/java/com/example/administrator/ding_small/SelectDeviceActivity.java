@@ -108,14 +108,16 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+      // String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+        ///app/secr9000lisSecr9000
+        String url = "http://192.168.1.103:8080/app/secr9000/findSecr9000ByKey.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("Sign:" + Sign);
         sign = MD5Utils.md5(Sign);
-
-        new Thread(networkTask).start();//获取设备列表
+        System.out.println("加密Sign:"+sign);
+       new Thread(networkTask).start();//获取设备列表
     }
 
     private void init() {
@@ -588,8 +590,6 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                             System.out.println("数据：" + object.getString("data"));
                             jsonArray = new JSONArray(object.getString("data"));
                             if (jsonArray.length() > 0) {
-
-
                                 /*按销售日期排序 */
                                 sortedJsonArray = new JSONArray();
                                 List<JSONObject> jsonValues = new ArrayList<JSONObject>();
@@ -625,6 +625,8 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                             if (sortedJsonArray != null) {
                                 select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
                                 loading.setStatus(LoadingLayout.Success);
+                            }else{
+                                Toast.makeText(SelectDeviceActivity.this,"请检查网络",Toast.LENGTH_SHORT).show();
                             }
                             select_device_list.setOnItemClickListener(new OnItemClickListener() {//列表item事件
                                 @Override
@@ -649,6 +651,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                             new AlertDialog.Builder(SelectDeviceActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    finish();
                                     dialog.dismiss();
                                 }
                             }).show();

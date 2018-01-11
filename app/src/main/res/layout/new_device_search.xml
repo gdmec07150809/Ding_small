@@ -8,13 +8,13 @@
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="@dimen/px100">
         <LinearLayout
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_centerInParent="true"
             android:text="附近设备"
             android:textColor="@color/title_color"
-            android:textSize="34px"/>
+            android:textSize="@dimen/px34"/>
     </RelativeLayout>
 
     <LinearLayout

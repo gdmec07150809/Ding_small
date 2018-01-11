@@ -19,7 +19,7 @@
             <LinearLayout
                 android:id="@+id/head"
                 android:layout_width="match_parent"
-                android:layout_height="230px"
+                android:layout_height="@dimen/px230"
                 android:orientation="horizontal"
                 android:background="#FFFFFF">
                 <LinearLayout
@@ -29,14 +29,14 @@
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="0dp"
-                        android:layout_height="130px"
+                        android:layout_height="@dimen/px130"
                         android:layout_weight="1.9"
                         android:background="@drawable/head"
                         android:src="@drawable/hend_layout"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
+                        android:layout_marginLeft="@dimen/px20"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1.5"
                         android:orientation="vertical">
@@ -44,12 +44,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="陈先生"
-                            android:textSize="40px"
+                            android:textSize="@dimen/px40"
                             android:textColor="#333333"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20px"
+                            android:layout_marginTop="@dimen/px20"
                             android:textColor="#9F9F9F"
                             android:text="最全面的资产管理平台"/>
                     </LinearLayout>
@@ -58,20 +58,20 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1.5">
                         <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toLeftOf="@+id/come"
-                            android:layout_marginRight="20px"
+                            android:layout_marginRight="@dimen/px20"
                             android:src="@mipmap/icon_my_mymessage"/>
                         <ImageView
                             android:id="@+id/come"
-                            android:layout_width="30px"
-                            android:layout_height="30px"
+                            android:layout_width="@dimen/px30"
+                            android:layout_height="@dimen/px30"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/new_come"/>
@@ -81,16 +81,16 @@
             <LinearLayout
                 android:id="@+id/head2"
                 android:layout_width="match_parent"
-                android:layout_height="200px"
-                android:layout_marginTop="26px"
+                android:layout_height="@dimen/px200"
+                android:layout_marginTop="@dimen/px26"
                 android:orientation="vertical"
                 android:layout_below="@+id/head"
                 android:background="#ffffff">
                 <RelativeLayout
                     android:id="@+id/security"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -105,16 +105,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="账号安全"
-                            android:textSize="30px"
-                            android:layout_marginLeft="30px"
+                            android:textSize="@dimen/px30"
+                            android:layout_marginLeft="@dimen/px30"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <ImageView
-                        android:layout_width="30px"
-                        android:layout_height="30px"
+                        android:layout_width="@dimen/px30"
+                        android:layout_height="@dimen/px30"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -125,8 +125,8 @@
                 <RelativeLayout
                     android:id="@+id/setting"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -141,32 +141,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="基本设置"
-                            android:textSize="30px"
-                            android:layout_marginLeft="30px"
+                            android:textSize="@dimen/px30"
+                            android:layout_marginLeft="@dimen/px30"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <ImageView
-                        android:layout_width="30px"
-                        android:layout_height="30px"
+                        android:layout_width="@dimen/px30"
+                        android:layout_height="@dimen/px30"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:src="@drawable/new_come"/>
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/head3"
                 android:layout_width="match_parent"
-                android:layout_height="300px"
-                android:layout_marginTop="26px"
+                android:layout_height="@dimen/px300"
+                android:layout_marginTop="@dimen/px26"
                 android:orientation="vertical"
                 android:layout_below="@+id/head2"
                 android:background="#ffffff">
                 <RelativeLayout
                     android:id="@+id/about"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -181,16 +181,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="关于我们"
-                            android:textSize="30px"
-                            android:layout_marginLeft="30px"
+                            android:textSize="@dimen/px30"
+                            android:layout_marginLeft="@dimen/px30"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <ImageView
-                        android:layout_width="30px"
-                        android:layout_height="30px"
+                        android:layout_width="@dimen/px30"
+                        android:layout_height="@dimen/px30"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -201,8 +201,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -217,16 +217,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="联系客服"
-                            android:textSize="30px"
-                            android:layout_marginLeft="30px"
+                            android:textSize="@dimen/px30"
+                            android:layout_marginLeft="@dimen/px30"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <ImageView
-                        android:layout_width="30px"
-                        android:layout_height="30px"
+                        android:layout_width="@dimen/px30"
+                        android:layout_height="@dimen/px30"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -237,8 +237,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -253,16 +253,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="意见反馈"
-                            android:textSize="30px"
-                            android:layout_marginLeft="30px"
+                            android:textSize="@dimen/px30"
+                            android:layout_marginLeft="@dimen/px30"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <ImageView
-                        android:layout_width="30px"
-                        android:layout_height="30px"
+                        android:layout_width="@dimen/px30"
+                        android:layout_height="@dimen/px30"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:src="@drawable/new_come"/>
                 </RelativeLayout>
             </LinearLayout>

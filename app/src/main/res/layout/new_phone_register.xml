@@ -6,14 +6,14 @@
               android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="@dimen/px100">
 
         <LinearLayout
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="horizontal">
 
             <ImageView
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="注册页面"
             android:textColor="@color/title_color"
-            android:textSize="34px"
+            android:textSize="@dimen/px34"
             android:layout_centerHorizontal="true"
             android:layout_alignTop="@+id/email" />
 
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="30px"
+            android:layout_marginRight="@dimen/px30"
             android:orientation="horizontal">
 
           <TextView
@@ -57,18 +57,18 @@
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="20px"
+        android:layout_height="@dimen/px20"
         android:background="@drawable/hui_shadow"/>
     <LinearLayout
-        android:layout_width="600px"
-        android:layout_height="555px"
+        android:layout_width="@dimen/px600"
+        android:layout_height="@dimen/px554"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50px"
+        android:layout_marginTop="@dimen/px50"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110px"
+            android:layout_height="@dimen/px110"
             android:orientation="horizontal">
 
             <TextView
@@ -79,21 +79,21 @@
                 android:layout_weight="1.5"
                 android:text="手机号"
                 android:textColor="#333333"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <EditText
                 android:id="@+id/phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50px"
+                android:layout_marginLeft="@dimen/px50"
                 android:layout_weight="6"
                 android:background="@null"
                 android:hint="请输入注册手机号"
                 android:inputType="phone"
                 android:textColor="#333333"
                 android:textColorHint="#BBBBBB"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +103,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110px"
+            android:layout_height="@dimen/px110"
             android:orientation="horizontal">
 
             <TextView
@@ -114,24 +114,24 @@
                 android:layout_weight="1.5"
                 android:text="验证码"
                 android:textColor="#333333"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <EditText
                 android:id="@+id/p_code"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50px"
+                android:layout_marginLeft="@dimen/px50"
                 android:layout_weight="4"
                 android:background="@null"
                 android:hint="请输入验证码"
                 android:textColor="#333333"
                 android:textColorHint="#BBBBBB"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <LinearLayout
                 android:layout_width="1dp"
-                android:layout_height="30px"
+                android:layout_height="@dimen/px30"
                 android:layout_gravity="center_vertical"
                 android:background="@color/hui_rule"/>
 
@@ -148,7 +148,7 @@
                     android:layout_centerInParent="true"
                     android:text="马上获取"
                     android:textColor="@color/theme_color"
-                    android:textSize="30px"/>
+                    android:textSize="@dimen/px30"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -158,7 +158,7 @@
             android:background="@color/hui_rule"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110px"
+            android:layout_height="@dimen/px110"
             android:orientation="horizontal">
 
             <TextView
@@ -169,20 +169,20 @@
                 android:layout_weight="1.5"
                 android:text="昵称"
                 android:textColor="#333333"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <EditText
                 android:id="@+id/memName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50px"
+                android:layout_marginLeft="@dimen/px50"
                 android:layout_weight="6"
                 android:background="@null"
                 android:hint="请输入用户昵称"
                 android:textColor="#333333"
                 android:textColorHint="#BBBBBB"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
         </LinearLayout>
 
         <LinearLayout
@@ -191,7 +191,7 @@
             android:background="@color/hui_rule"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110px"
+            android:layout_height="@dimen/px110"
             android:orientation="horizontal">
 
             <TextView
@@ -202,20 +202,20 @@
                 android:layout_weight="1.5"
                 android:text="密码"
                 android:textColor="#333333"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <EditText
                 android:id="@+id/password1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50px"
+                android:layout_marginLeft="@dimen/px50"
                 android:layout_weight="6"
                 android:background="@null"
                 android:hint="请输入6-12位密码"
                 android:textColor="#333333"
                 android:textColorHint="#BBBBBB"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
         </LinearLayout>
 
         <LinearLayout
@@ -225,7 +225,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110px"
+            android:layout_height="@dimen/px110"
             android:orientation="horizontal">
 
             <TextView
@@ -236,23 +236,23 @@
                 android:layout_weight="1.5"
                 android:text="确认"
                 android:textColor="#333333"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <EditText
                 android:id="@+id/c_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50px"
+                android:layout_marginLeft="@dimen/px50"
                 android:layout_weight="6"
                 android:background="@null"
                 android:hint="请再次输入密码"
                 android:textColor="#333333"
                 android:textColorHint="#BBBBBB"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
             <LinearLayout
                 android:layout_width="1dp"
-                android:layout_height="30px"
+                android:layout_height="@dimen/px30"
                 android:layout_gravity="center_vertical"
                 android:background="@color/hui_rule"/>
         </LinearLayout>
@@ -267,15 +267,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="@dimen/px30"
         android:background="@drawable/btn_theme">
         <Button
             android:id="@+id/next"
-            android:layout_width="600px"
-            android:layout_height="84px"
+            android:layout_width="@dimen/px600"
+            android:layout_height="@dimen/px84"
             android:background="@null"
             android:text="完成注册"
             android:textColor="@color/white"
-            android:textSize="32px"/>
+            android:textSize="@dimen/px32"/>
     </LinearLayout>
 </LinearLayout>

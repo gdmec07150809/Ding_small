@@ -6,8 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30px"
-        android:layout_marginRight="30px"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="@dimen/px30"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10px"
+                    android:layout_marginTop="@dimen/px10"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/icon_info_line2"/>
             </LinearLayout>
@@ -36,8 +36,8 @@
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90px"
-                android:layout_marginLeft="50px">
+                android:layout_height="@dimen/px90"
+                android:layout_marginLeft="@dimen/px50">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="制造商"
-                        android:textSize="30px"
+                        android:textSize="@dimen/px30"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/list_item_color"/>
                 </LinearLayout>
@@ -63,8 +63,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90px"
-                android:layout_marginLeft="50px">
+                android:layout_height="@dimen/px90"
+                android:layout_marginLeft="@dimen/px50">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -83,8 +83,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="广州优游文化传播有限公司"
-                        android:textSize="30px"
-                        android:layout_marginLeft="20px"
+                        android:textSize="@dimen/px30"
+                        android:layout_marginLeft="@dimen/px20"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/list_item_color"
                         android:layout_centerVertical="true" />
@@ -97,8 +97,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90px"
-                android:layout_marginLeft="50px">
+                android:layout_height="@dimen/px90"
+                android:layout_marginLeft="@dimen/px50">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -114,8 +114,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123545457484"
-                        android:textSize="30px"
-                        android:layout_marginLeft="20px"
+                        android:textSize="@dimen/px30"
+                        android:layout_marginLeft="@dimen/px20"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/list_item_color"
                         android:layout_centerVertical="true" />
@@ -123,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="   (售后电话)"
-                        android:textSize="30px"
+                        android:textSize="@dimen/px30"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/list_item_color"
                         android:layout_centerVertical="true" />
@@ -136,8 +136,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90px"
-                android:layout_marginLeft="50px">
+                android:layout_height="@dimen/px90"
+                android:layout_marginLeft="@dimen/px50">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -153,8 +153,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123545457484"
-                        android:textSize="30px"
-                        android:layout_marginLeft="20px"
+                        android:textSize="@dimen/px30"
+                        android:layout_marginLeft="@dimen/px20"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/list_item_color"
                         android:layout_centerVertical="true" />
@@ -162,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="   (报修电话)"
-                        android:textSize="30px"
+                        android:textSize="@dimen/px30"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/list_item_color"
                         android:layout_centerVertical="true" />
@@ -175,8 +175,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90px"
-                android:layout_marginLeft="50px">
+                android:layout_height="@dimen/px90"
+                android:layout_marginLeft="@dimen/px50">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -192,8 +192,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="广州番禺大石街道新兴广场8栋307"
-                        android:textSize="30px"
-                        android:layout_marginLeft="20px"
+                        android:textSize="@dimen/px30"
+                        android:layout_marginLeft="@dimen/px20"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/list_item_color"
                         android:layout_centerVertical="true" />

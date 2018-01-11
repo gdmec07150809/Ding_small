@@ -31,8 +31,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginTop="32px"
+                android:layout_marginLeft="@dimen/px40"
+                android:layout_marginTop="@dimen/px32"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="最近搜索记录"
-                        android:textSize="32px"
+                        android:textSize="@dimen/px32"
                         android:textColor="@color/title_color"/>
                 </LinearLayout>
                 <ListView
@@ -53,8 +53,8 @@
             <RelativeLayout
                 android:id="@+id/remove_cache"
                 android:layout_width="match_parent"
-                android:layout_height="50px"
-                android:layout_marginTop="36px">
+                android:layout_height="@dimen/px50"
+                android:layout_marginTop="@dimen/px36">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -68,8 +68,8 @@
                         android:id="@+id/clean_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10px"
-                        android:textSize="28px"
+                        android:layout_marginLeft="@dimen/px10"
+                        android:textSize="@dimen/px28"
                         android:layout_gravity="center_vertical"
                         android:textColor="#BBBBBB"
                         android:text="清除所有搜索记录"/>

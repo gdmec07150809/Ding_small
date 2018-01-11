@@ -6,38 +6,38 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="410px"
+        android:layout_height="@dimen/px410"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
+            android:layout_marginTop="@dimen/px10">
             <TextView
                 android:id="@+id/count_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="90px"
+                android:textSize="@dimen/px90"
                 android:layout_centerInParent="true"
                 android:textColor="#333333"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22px">
+            android:layout_marginTop="@dimen/px22">
             <TextView
                 android:id="@+id/device_num_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="设备总数"
-                android:textSize="32px"
+                android:textSize="@dimen/px32"
                 android:layout_centerInParent="true"
                 android:textColor="#333333"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px">
+            android:layout_marginTop="@dimen/px30">
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
@@ -57,13 +57,13 @@
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:text="使用中："
-                           android:textSize="30px"
+                           android:textSize="@dimen/px30"
                            android:textColor="#9F9F9F"/>
                        <TextView
                            android:id="@+id/using"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:textSize="30px"
+                           android:textSize="@dimen/px30"
                            android:textColor="#9F9F9F"
                            android:text="0"/>
                    </LinearLayout>
@@ -71,10 +71,10 @@
                </RelativeLayout>
                <LinearLayout
                    android:layout_width="2px"
-                   android:layout_height="30px"
+                   android:layout_height="@dimen/px30"
                    android:background="#E1E1E1"
-                   android:layout_marginLeft="30px"
-                   android:layout_marginRight="30px"
+                   android:layout_marginLeft="@dimen/px30"
+                   android:layout_marginRight="@dimen/px30"
                    android:layout_centerInParent="true"/>
                <RelativeLayout
                    android:layout_width="0dp"
@@ -92,13 +92,13 @@
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:text="维修中："
-                           android:textSize="30px"
+                           android:textSize="@dimen/px30"
                            android:textColor="#9F9F9F"/>
                        <TextView
                            android:id="@+id/maintenancing"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:textSize="30px"
+                           android:textSize="@dimen/px30"
                            android:textColor="#9F9F9F"
                            android:text="0"/>
                    </LinearLayout>
@@ -108,7 +108,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20px"
+            android:layout_marginTop="@dimen/px20"
             android:orientation="horizontal">
             <RelativeLayout
                 android:id="@+id/scan_list_layout"
@@ -131,15 +131,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="扫码添加"
-                        android:layout_marginTop="20px"
+                        android:layout_marginTop="@dimen/px20"
                         android:layout_gravity="center_horizontal"
-                        android:textSize="28px"
+                        android:textSize="@dimen/px28"
                         android:textColor="#888888"/>
                 </LinearLayout>
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="2px"
-                android:layout_height="40px"
+                android:layout_height="@dimen/px40"
                 android:layout_gravity="center_vertical"
                 android:background="#E1E1E1"/>
             <RelativeLayout
@@ -163,15 +163,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="搜索添加"
-                        android:layout_marginTop="20px"
+                        android:layout_marginTop="@dimen/px20"
                         android:layout_gravity="center_horizontal"
-                        android:textSize="28px"
+                        android:textSize="@dimen/px28"
                         android:textColor="#888888"/>
                 </LinearLayout>
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="2px"
-                android:layout_height="40px"
+                android:layout_height="@dimen/px40"
                 android:layout_gravity="center_vertical"
                 android:background="#E1E1E1"/>
             <RelativeLayout
@@ -194,9 +194,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="手工输入"
-                        android:layout_marginTop="20px"
+                        android:layout_marginTop="@dimen/px20"
                         android:layout_gravity="center_horizontal"
-                        android:textSize="28px"
+                        android:textSize="@dimen/px28"
                         android:textColor="#888888"/>
                 </LinearLayout>
             </RelativeLayout>

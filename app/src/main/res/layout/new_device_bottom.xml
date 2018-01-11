@@ -5,11 +5,11 @@
               android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="12px"
+            android:layout_height="@dimen/px12"
             android:background="@drawable/hui_up"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="90px">
+        android:layout_height="@dimen/px90">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,13 +20,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="刷新频率"
-                android:textSize="34px"
+                android:textSize="@dimen/px34"
                 android:textColor="#333333"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20px"
+                android:layout_marginLeft="@dimen/px20"
                 android:src="@mipmap/icon_serach_toggleup"/>
         </LinearLayout>
     </RelativeLayout>
