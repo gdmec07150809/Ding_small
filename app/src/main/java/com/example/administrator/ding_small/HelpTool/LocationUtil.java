@@ -173,8 +173,8 @@ public class LocationUtil {
                 stringBuilder.append(address.getLongitude());//维度
                 //System.out.println(stringBuilder.toString());
                // LogUtils.INSTANCE.d_debugprint("获取到的地理位置为：",stringBuilder.toString());
-                locationStr=address.getAddressLine(0);
-                //locationStr=stringBuilder.toString();
+                //locationStr=address.getAddressLine(0);
+                locationStr=address.getAdminArea()+"-"+address.getLocality()+"-"+address.getSubLocality();
                 System.out.println("详细位置："+locationStr);
                 province=address.getLocality();
             }

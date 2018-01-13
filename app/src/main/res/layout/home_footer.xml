@@ -5,12 +5,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30px"
+        android:layout_height="@dimen/px30"
         android:background="@drawable/shadow_line"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100px"
+        android:layout_height="@dimen/px100"
         android:background="#ffffff"
         android:orientation="horizontal">
         <RelativeLayout
@@ -33,9 +33,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="首页"
-                    android:layout_marginTop="10px"
+                    android:layout_marginTop="@dimen/px10"
                     android:textColor="#9F9F9F"
-                    android:textSize="26px"/>
+                    android:textSize="@dimen/px26"/>
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
@@ -57,9 +57,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的"
-                    android:layout_marginTop="10px"
+                    android:layout_marginTop="@dimen/px10"
                     android:textColor="#1CD39B"
-                    android:textSize="26px"/>
+                    android:textSize="@dimen/px26"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

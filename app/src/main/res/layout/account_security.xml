@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/head2"
         android:layout_width="match_parent"
-        android:layout_height="200px"
+        android:layout_height="@dimen/px200"
 
         android:orientation="vertical"
         android:background="#ffffff"
@@ -19,8 +19,8 @@
         <RelativeLayout
             android:id="@+id/edit_password_layout"
             android:layout_width="match_parent"
-            android:layout_height="100px"
-            android:layout_marginLeft="30px">
+            android:layout_height="@dimen/px100"
+            android:layout_marginLeft="@dimen/px30">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,11 +35,11 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="30px"
-                android:layout_height="30px"
+                android:layout_width="@dimen/px30"
+                android:layout_height="@dimen/px30"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="30px"
+                android:layout_marginRight="@dimen/px30"
                 android:src="@drawable/new_come"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,8 +51,8 @@
         <RelativeLayout
             android:id="@+id/change_layout"
             android:layout_width="match_parent"
-            android:layout_height="100px"
-            android:layout_marginLeft="30px">
+            android:layout_height="@dimen/px100"
+            android:layout_marginLeft="@dimen/px30">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,16 +63,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="更换手机"
-                    android:textSize="30px"
+                    android:textSize="@dimen/px30"
                     android:textColor="#333333"/>
             </LinearLayout>
 
             <ImageView
-                android:layout_width="30px"
-                android:layout_height="30px"
+                android:layout_width="@dimen/px30"
+                android:layout_height="@dimen/px30"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="30px"
+                android:layout_marginRight="@dimen/px30"
                 android:src="@drawable/new_come"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,7 +85,7 @@
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="100px"
+        android:layout_height="@dimen/px100"
         android:background="#ffffff"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#1CD39B"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="26px"
+                android:layout_marginLeft="@dimen/px26"
                 android:text="返回"/>
         </LinearLayout>
 
@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#333333"
-            android:textSize="38px"
+            android:textSize="@dimen/px38"
             android:text="账号安全"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />

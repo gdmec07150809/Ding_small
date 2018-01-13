@@ -6,17 +6,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30px"
-        android:layout_marginRight="30px"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/custom_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="自定义名称"/>
@@ -28,8 +28,8 @@
                 android:layout_toLeftOf="@+id/icon_equiplist_boxdelete"
                 android:hint="酒吧灯箱"
                 android:background="@null"
-                android:textSize="30px"
-                android:layout_marginRight="20px"
+                android:textSize="@dimen/px30"
+                android:layout_marginRight="@dimen/px20"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <ImageView
@@ -47,12 +47,12 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/selling_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="售点名称"/>
@@ -64,7 +64,7 @@
                 android:layout_centerVertical="true"
                 android:hint="点击输入"
                 android:background="@null"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <LinearLayout
@@ -75,12 +75,12 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/selling_location_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="售点地址"/>
@@ -92,7 +92,7 @@
                 android:layout_centerVertical="true"
                 android:hint="点击输入"
                 android:background="@null"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <LinearLayout
@@ -103,12 +103,12 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/selling_user_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="售点联系人"/>
@@ -120,7 +120,7 @@
                 android:layout_centerVertical="true"
                 android:hint="点击输入"
                 android:background="@null"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <LinearLayout
@@ -131,12 +131,12 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/selling_phone_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="联系人电话"/>
@@ -150,7 +150,7 @@
                 android:background="@null"
                 android:inputType="phone"
                 android:maxLength="11"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <LinearLayout

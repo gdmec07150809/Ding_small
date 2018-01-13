@@ -108,9 +108,8 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-      // String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+       String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
         ///app/secr9000lisSecr9000
-        String url = "http://192.168.1.103:8080/app/secr9000/findSecr9000ByKey.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -525,8 +524,6 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
             //resultNew.setText("扫描结果："+result.getContents());
         }
     }
-
-
     /**
      * 网络操作相关的子线程okhttp框架  获取设备
      */
@@ -539,6 +536,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{}";//json字符串
+            System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
@@ -564,6 +562,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
             }
         }
     };
+
     private Handler getDeviceListHandler = new Handler() {
 
         @Override

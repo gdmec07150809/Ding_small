@@ -37,6 +37,9 @@ import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.example.administrator.ding_small.CreatRepairRemarksActivity;
+import com.example.administrator.ding_small.DeviceDetailActivity;
+import com.example.administrator.ding_small.DeviceListActivity;
+import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.JsonClass.JsonBean;
@@ -164,7 +167,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         //String url = "http://120.76.188.131:8080/a10/api/user/logout.do";
-        String url = "http://192.168.1.103:8080/a10/api/user/logout.do";
+        String url = "http://192.168.1.103:8080/api/user/logout.do";
 
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
@@ -208,7 +211,24 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                 Toast.makeText(this, "保存", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.head3:
-                new Thread(networkTask).start();//登出
+                CustomDialog.Builder builder = new CustomDialog.Builder(this);
+                builder.setMessage("确认是否退出?");
+                builder.setTitle("提示");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        new Thread(networkTask).start();//登出
+                    }
+                });
+
+                builder.setNegativeButton("取消",
+                        new android.content.DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
+
                 break;
         }
     }
@@ -221,7 +241,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.103:8080/a10/api/user/logout.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/api/user/logout.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
 
             System.out.println("验证：" + sign);
@@ -269,6 +289,14 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                             new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("登出提示").setMessage("登出成功,返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
+                                    //清除本地缓存
+                                    SharedPreferences userSettings= getSharedPreferences(tokeFile, 0);
+                                    SharedPreferences.Editor editor = userSettings.edit();
+                                    editor.clear();
+                                    editor.commit();
+
+
                                     Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
                                     startActivity(intent);
                                     finish();

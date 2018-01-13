@@ -6,27 +6,27 @@
     android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100px">
+        android:layout_height="@dimen/px100">
         <LinearLayout
-            android:layout_width="560px"
-            android:layout_height="64px"
+            android:layout_width="@dimen/px560"
+            android:layout_height="@dimen/px64"
             android:background="@drawable/c_bg"
-            android:layout_marginLeft="30px"
-            android:layout_marginTop="20px">
+            android:layout_marginLeft="@dimen/px30"
+            android:layout_marginTop="@dimen/px20">
             <ImageView
                 android:id="@+id/search_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="26px"
+                android:layout_marginLeft="@dimen/px26"
                 android:src="@mipmap/icon_search_search"/>
             <EditText
                 android:id="@+id/searh_box"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="14px"
+                android:layout_marginLeft="@dimen/px14"
                 android:background="@null"
-                android:textSize="26px"
+                android:textSize="@dimen/px26"
                 android:hint="请输入关键字"
               android:textColorHint="#c3c3c3"/>
         </LinearLayout>
@@ -36,8 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="30px"
-            android:textSize="32px"
+            android:layout_marginRight="@dimen/px30"
+            android:textSize="@dimen/px32"
             android:textColor="@color/theme_color"
             android:text="取消"/>
         <LinearLayout

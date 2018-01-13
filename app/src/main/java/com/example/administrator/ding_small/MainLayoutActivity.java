@@ -246,10 +246,10 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         Intent intent;
         switch (view.getId()) {
             case R.id.notepad_layout://记事本
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
-//                intent=new Intent(MainLayoutActivity.this,NotepadBtnActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
+                //Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                intent=new Intent(MainLayoutActivity.this,NotepadBtnActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case R.id.account_layout://记账本
                 Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();

@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="horizontal">
 
             <ImageView
@@ -36,24 +36,24 @@
             android:layout_centerInParent="true"
             android:text="更换手机"
             android:textColor="@color/title_color"
-            android:textSize="34px"/>
+            android:textSize="@dimen/px34"/>
 
     </RelativeLayout>
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="20px"
+        android:layout_height="@dimen/px20"
         android:background="@drawable/hui_shadow"/>
     <LinearLayout
-        android:layout_width="600px"
-        android:layout_height="444px"
+        android:layout_width="@dimen/px600"
+        android:layout_height="@dimen/px444"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100px"
+        android:layout_marginTop="@dimen/px100"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110px"
+            android:layout_height="@dimen/px110"
             android:orientation="horizontal">
 
             <TextView
@@ -71,25 +71,26 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50px"
+                android:layout_marginLeft="@dimen/px50"
                 android:layout_weight="6"
                 android:background="@null"
                 android:hint="请输入旧手机号"
                 android:inputType="phone"
+                android:maxLength="11"
                 android:textColor="#333333"
                 android:textColorHint="#BBBBBB"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginLeft="100px"
+            android:layout_marginLeft="@dimen/px100"
             android:background="@color/hui_rule"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110px"
+            android:layout_height="@dimen/px110"
             android:orientation="horizontal">
 
             <TextView
@@ -100,24 +101,24 @@
                 android:layout_weight="1.5"
                 android:text="验证码"
                 android:textColor="#333333"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <EditText
                 android:id="@+id/p_code"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50px"
+                android:layout_marginLeft="@dimen/px50"
                 android:layout_weight="4"
                 android:background="@null"
                 android:hint="请输入验证码"
                 android:textColor="#333333"
                 android:textColorHint="#BBBBBB"
-                android:textSize="30px"/>
+                android:textSize="@dimen/px30"/>
 
             <LinearLayout
                 android:layout_width="1dp"
-                android:layout_height="30px"
+                android:layout_height="@dimen/px30"
                 android:layout_gravity="center_vertical"
                 android:background="@color/hui_rule"/>
 
@@ -134,19 +135,19 @@
                     android:layout_centerInParent="true"
                     android:text="马上获取"
                     android:textColor="@color/theme_color"
-                    android:textSize="30px"/>
+                    android:textSize="@dimen/px30"/>
             </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginLeft="100px"
+            android:layout_marginLeft="@dimen/px100"
             android:background="@color/hui_rule"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginLeft="100px"
+            android:layout_marginLeft="@dimen/px100"
             android:background="@color/hui_rule"/>
     </LinearLayout>
 
@@ -154,15 +155,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="@dimen/px30"
         android:background="@drawable/btn_theme">
         <Button
             android:id="@+id/confirm_change"
-            android:layout_width="600px"
-            android:layout_height="84px"
+            android:layout_width="@dimen/px600"
+            android:layout_height="@dimen/px84"
             android:background="@null"
             android:text="确认更换"
             android:textColor="@color/white"
-            android:textSize="32px"/>
+            android:textSize="@dimen/px32"/>
     </LinearLayout>
 </LinearLayout>

@@ -6,21 +6,21 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300px"
-        android:layout_marginLeft="50px"
-        android:layout_marginRight="50px"
+        android:layout_height="@dimen/px300"
+        android:layout_marginLeft="@dimen/px50"
+        android:layout_marginRight="@dimen/px50"
         android:orientation="vertical">
         <RelativeLayout
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/search_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="@color/title_color"
                 android:text="搜索添加设备"/>
             <LinearLayout
@@ -32,7 +32,7 @@
         <RelativeLayout
             android:id="@+id/scan_layout"
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/scan_text"
                 android:layout_width="wrap_content"
@@ -40,20 +40,20 @@
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:text="扫码添加设备"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/cancel_layout"
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/cancel_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="@color/time_color"
                 android:text="取消"/>
             <LinearLayout

@@ -5,17 +5,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30px"
-        android:layout_marginRight="30px"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="140px">
+            android:layout_height="@dimen/px140">
             <TextView
                 android:id="@+id/location_parameters_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="当前位置参数"/>
@@ -36,7 +36,7 @@
                        android:layout_height="wrap_content"
                        android:text="1213,  454545"
                        android:gravity="center_horizontal"
-                       android:textSize="30px"
+                       android:textSize="@dimen/px30"
                        android:textColor="@color/list_item_color"/>
                </LinearLayout>
                <LinearLayout
@@ -49,7 +49,7 @@
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="广东省广州市番禺区"
-                       android:textSize="28px"
+                       android:textSize="@dimen/px28"
                        android:textColor="@color/list_item_color"/>
                </LinearLayout>
            </LinearLayout>
@@ -61,12 +61,12 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/temperature_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="当前温度"/>
@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:text="-4"
                         android:gravity="center_horizontal"
-                        android:textSize="30px"
+                        android:textSize="@dimen/px30"
                         android:textColor="@color/list_item_color"/>
                 </LinearLayout>
             </LinearLayout>
@@ -99,12 +99,12 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/address_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="具体位置"/>
@@ -116,7 +116,7 @@
                 android:layout_centerVertical="true"
                 android:hint="点击输入"
                 android:background="@null"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <LinearLayout
@@ -127,11 +127,11 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="28px"
+                android:textSize="@dimen/px28"
                 android:layout_centerVertical="true"
                 android:textColor="@color/time_color"
                 android:text="示例：售点2楼厨房内"/>

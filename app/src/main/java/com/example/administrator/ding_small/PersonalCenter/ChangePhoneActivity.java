@@ -49,7 +49,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, sign, newPass, ts, phone_str;
+    String memid, token, sign, newPass, ts, phone_str,save_phone;
     private TextView send_text;
     public static final int SHOW_RESPONSE = 0;
 
@@ -60,11 +60,28 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
         findViewById(R.id.back).setOnClickListener(this);
         findViewById(R.id.confirm_change).setOnClickListener(this);
         phone = findViewById(R.id.phone);
-
         send_text = findViewById(R.id.send_text);
         send_text.setOnClickListener(this);
+        getCache();
 
 
+    }
+
+    private void getCache() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        save_phone=sp.getString("phone","null");
+        // String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+        ///app/secr9000lisSecr9000
+        String url = "http://192.168.1.107:8080/app/secr9000/deleteSecr9000ByKey.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("Sign:" + Sign);
+        sign = MD5Utils.md5(Sign);
+        System.out.println("加密Sign:"+sign);
+        new Thread(networkTask).start();//获取设备列表
     }
 
     @Override
@@ -75,7 +92,13 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                 finish();
                 break;
             case R.id.confirm_change://确认修改
-                setPhoneDialog();
+                phone_str=phone.getText().toString().trim();
+                String send_str=send_text.getText().toString().trim();
+                if(phone_str.equals("")||send_str.equals("")){
+                    new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("注册提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+                }else{
+                    setPhoneDialog();
+                }
                 break;
             case R.id.send_text://发送验证码
                 phone_str = phone.getText().toString();
@@ -83,10 +106,14 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                 if (phone_str.equals("")) {
                     new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("注册提示").setMessage("手机号不能为空").setPositiveButton("确定", null).show();
                 } else {
-                    TextView send_text = findViewById(R.id.send_text);
-                    CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
-                    mCountDownTimerUtils.start();
-                    new Thread(networkTask).start();//发送验证码
+                    if(!phone_str.equals(save_phone)){
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("注册提示").setMessage("必须输入旧手机").setPositiveButton("确定", null).show();
+                    }else{
+                        TextView send_text = findViewById(R.id.send_text);
+                        CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
+                        mCountDownTimerUtils.start();
+                        new Thread(networkTask).start();//发送验证码
+                    }
                 }
                 break;
         }
@@ -102,7 +129,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
             // TODO
             // 在这里进行 http request.网络请求相关操作
             //String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
-            String url = "http://192.168.1.105:8080/a10/api/user/getSmsMsg.do";
+            String url = "http://192.168.1.107:8080/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"3\",\"msgLen\":\"4\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
@@ -142,7 +169,6 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONObject object1 = new JSONObject(object.getString("meta"));
-
                         switch (object1.getString("res")) {
                             case "00000"://成功
                                 Toast.makeText(ChangePhoneActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
@@ -170,9 +196,8 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
         new_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //判断输入的手机号是否和上次一样
-                if (phone.getText().toString().equals(editText.getText().toString())) {
+                if (save_phone.equals(editText.getText().toString())) {
                     new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("更换手机").setMessage("不能跟上次手机一样").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

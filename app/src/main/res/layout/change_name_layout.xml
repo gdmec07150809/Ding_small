@@ -5,13 +5,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300px"
-        android:layout_margin="50px"
+        android:layout_height="@dimen/px300"
+        android:layout_margin="@dimen/px50"
         android:background="@color/white">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="50px"
+            android:layout_margin="@dimen/px50"
             android:layout_centerInParent="true"
             android:orientation="vertical">
             <EditText
@@ -19,30 +19,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/title_color"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:maxLength="30"
                 android:background="@null"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginTop="10px"
-                android:layout_marginBottom="20px"
+                android:layout_marginTop="@dimen/px10"
+                android:layout_marginBottom="@dimen/px20"
                 android:background="@color/theme_color"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="@dimen/px30"
                 android:background="@drawable/btn_theme">
                 <Button
                     android:id="@+id/new_login"
-                    android:layout_width="200px"
-                    android:layout_height="60px"
+                    android:layout_width="@dimen/px200"
+                    android:layout_height="@dimen/px60"
                     android:background="@null"
                     android:text="保存"
                     android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="32px"/>
+                    android:textSize="@dimen/px32"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

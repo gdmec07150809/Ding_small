@@ -7,13 +7,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50px"
-        android:layout_marginRight="50px"
+        android:layout_marginLeft="@dimen/px50"
+        android:layout_marginRight="@dimen/px50"
         android:orientation="vertical">
         <RelativeLayout
             android:id="@+id/default_layout"
             android:layout_width="match_parent"
-            android:layout_height="80px">
+            android:layout_height="@dimen/px80">
             <TextView
                 android:id="@+id/default_text"
                 android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         <RelativeLayout
             android:id="@+id/five_layout"
             android:layout_width="match_parent"
-            android:layout_height="80px">
+            android:layout_height="@dimen/px80">
             <TextView
                 android:id="@+id/five_text"
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
         <RelativeLayout
             android:id="@+id/one_minute_layout"
             android:layout_width="match_parent"
-            android:layout_height="80px">
+            android:layout_height="@dimen/px80">
             <TextView
                 android:id="@+id/one_minute_text"
                 android:layout_width="wrap_content"
@@ -90,11 +90,11 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="12px"
+        android:layout_height="@dimen/px12"
         android:background="@drawable/hui_up"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="90px">
+        android:layout_height="@dimen/px90">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,14 +105,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="刷新频率"
-                android:textSize="34px"
+                android:textSize="@dimen/px34"
                 android:textColor="#333333"/>
             <ImageView
                 android:id="@+id/refresh_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20px"
+                android:layout_marginLeft="@dimen/px20"
                 android:src="@mipmap/icon_serach_toggle"/>
         </LinearLayout>
     </RelativeLayout>

@@ -15,7 +15,7 @@
             <LinearLayout
                 android:id="@+id/head2"
                 android:layout_width="match_parent"
-                android:layout_height="654px"
+                android:layout_height="@dimen/px654"
                 android:orientation="vertical"
                 android:background="#ffffff"
                 android:layout_below="@+id/head"
@@ -23,8 +23,8 @@
                 android:layout_alignParentStart="true">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="154px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px154"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -35,23 +35,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="修改头像"
-                            android:textSize="30px"
+                            android:textSize="@dimen/px30"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <ImageView
                         android:id="@+id/head_img"
-                        android:layout_width="120px"
-                        android:layout_height="120px"
+                        android:layout_width="@dimen/px120"
+                        android:layout_height="@dimen/px120"
                         android:layout_toLeftOf="@+id/photo_head"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:src="@drawable/head"/>
                     <ImageView
                         android:id="@+id/photo_head"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:layout_centerVertical="true"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
@@ -63,8 +63,8 @@
                 <RelativeLayout
                     android:id="@+id/nickname_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="昵称"
-                            android:textSize="30px"
+                            android:textSize="@dimen/px30"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <TextView
@@ -84,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:textSize="30px"
+                        android:textSize="@dimen/px30"
                         android:textColor="#9F9F9F"
                         android:layout_marginRight="14px"
                         android:text="陈先生"/>
@@ -93,7 +93,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:layout_centerVertical="true"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
@@ -106,8 +106,8 @@
                 <RelativeLayout
                     android:id="@+id/sex_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="性别"
-                            android:textSize="28px"
+                            android:textSize="@dimen/px28"
                             android:textColor="#333333"/>
                     </LinearLayout>
                     <TextView
@@ -127,7 +127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:textSize="30px"
+                        android:textSize="@dimen/px30"
                         android:textColor="#C8C8C8"
                         android:layout_marginRight="14px"
                         android:text="男"/>
@@ -136,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:layout_centerVertical="true"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
@@ -149,8 +149,8 @@
                 <RelativeLayout
                     android:id="@+id/location_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:layout_centerVertical="true"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
@@ -182,7 +182,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="28px"
+                        android:textSize="@dimen/px28"
                         android:textColor="#C8C8C8"
                         android:text="广东广州"
                         android:layout_alignTop="@+id/linearLayout3"
@@ -193,8 +193,8 @@
                 <RelativeLayout
                     android:id="@+id/address_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:id="@+id/address"
                         android:layout_width="wrap_content"
@@ -215,10 +215,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:textSize="28px"
+                        android:textSize="@dimen/px28"
                         android:gravity="right"
                         android:textColor="#C8C8C8"
-                        android:layout_marginLeft="20px"
+                        android:layout_marginLeft="@dimen/px20"
                         android:maxLines="2"
                         android:text="广东省广州市番禺区大石新兴广场8栋307"/>
                     <ImageView
@@ -226,7 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="30px"
+                    android:layout_marginRight="@dimen/px30"
                     android:layout_centerVertical="true"
                     android:src="@drawable/new_come"/>
                     <LinearLayout
@@ -238,8 +238,8 @@
                 <RelativeLayout
                     android:id="@+id/signature_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="100px"
-                    android:layout_marginLeft="30px">
+                    android:layout_height="@dimen/px100"
+                    android:layout_marginLeft="@dimen/px30">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -258,7 +258,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:textSize="30px"
+                        android:textSize="@dimen/px30"
                         android:textColor="#C8C8C8"
                         android:layout_marginRight="14px"
                         android:text="暂无签名"/>
@@ -267,7 +267,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="@dimen/px30"
                         android:layout_centerVertical="true"
                         android:src="@drawable/new_come"/>
                     <LinearLayout
@@ -281,9 +281,9 @@
             <RelativeLayout
                 android:id="@+id/head3"
                 android:layout_width="match_parent"
-                android:layout_height="100px"
+                android:layout_height="@dimen/px100"
                 android:layout_below="@id/head2"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="@dimen/px30"
                 android:background="#ffffff">
 
                 <LinearLayout
@@ -295,10 +295,10 @@
                         android:id="@+id/switch_account_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="34px"
+                        android:textSize="@dimen/px34"
                         android:layout_gravity="center_vertical"
                         android:textColor="#1CD39B"
-                        android:layout_marginRight="12px"
+                        android:layout_marginRight="@dimen/px30"
                         android:text="切换账号"/>
                     <ImageView
                         android:layout_width="wrap_content"
@@ -311,7 +311,7 @@
             <RelativeLayout
                 android:id="@+id/head"
                 android:layout_width="match_parent"
-                android:layout_height="100px"
+                android:layout_height="@dimen/px100"
                 android:background="#ffffff"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
@@ -321,7 +321,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="30px"
+                    android:layout_marginLeft="@dimen/px30"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="wrap_content"
@@ -334,7 +334,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="#1CD39B"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="26px"
+                        android:layout_marginLeft="@dimen/px26"
                         android:text="返回"/>
                 </LinearLayout>
                 <TextView
@@ -343,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:textColor="#333333"
-                    android:textSize="38px"
+                    android:textSize="@dimen/px38"
                     android:text="完善个人信息"/>
                 <LinearLayout
                     android:layout_width="match_parent"

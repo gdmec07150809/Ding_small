@@ -14,7 +14,7 @@
         <LinearLayout
             android:id="@+id/date_layout"
             android:layout_width="match_parent"
-            android:layout_height="60px"
+            android:layout_height="@dimen/px60"
             android:background="@color/time_bg_color"
             android:orientation="horizontal">
 
@@ -22,11 +22,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="10px"
+                android:layout_marginLeft="@dimen/px30"
+                android:layout_marginRight="@dimen/px10"
                 android:text="销售日期"
                 android:textColor="@color/time_color"
-                android:textSize="26px"/>
+                android:textSize="@dimen/px26"/>
 
             <TextView
                 android:id="@+id/device_date"
@@ -35,13 +35,13 @@
                 android:layout_gravity="center_vertical"
                 android:text="2017/12/25"
                 android:textColor="@color/time_color"
-                android:textSize="26px"
+                android:textSize="@dimen/px26"
                 />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200px">
+            android:layout_height="@dimen/px200">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,9 +54,9 @@
                     android:layout_gravity="center_vertical"
                     android:orientation="vertical">
                     <ImageView
-                        android:layout_width="124px"
-                        android:layout_height="124px"
-                        android:layout_marginLeft="30px"
+                        android:layout_width="@dimen/px124"
+                        android:layout_height="@dimen/px124"
+                        android:layout_marginLeft="@dimen/px30"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/device_head_img"/>
                 </LinearLayout>
@@ -65,7 +65,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30px"
+                    android:layout_marginLeft="@dimen/px30"
                     android:layout_weight="1"
                     android:orientation="vertical">
                     <LinearLayout
@@ -80,12 +80,12 @@
                             android:text="落地展示柜-1664"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/title_color"
-                            android:textSize="34px"/>
+                            android:textSize="@dimen/px34"/>
                         <ImageView
                             android:id="@+id/stauts_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                           android:layout_marginLeft="20px"
+                           android:layout_marginLeft="@dimen/px20"
                             android:layout_gravity="center_vertical"
                             android:src="@mipmap/icon_list_fixing"/>
                     </LinearLayout>
@@ -95,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="2"
-                        android:layout_marginTop="10px"
+                        android:layout_marginTop="@dimen/px10"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -110,7 +110,7 @@
                                 android:layout_weight="0.3"
                                 android:text="售点:"
                                 android:textColor="@color/time_color"
-                                android:textSize="28px"
+                                android:textSize="@dimen/px28"
                                 />
 
                             <TextView
@@ -120,13 +120,13 @@
                                 android:layout_weight="1"
                                 android:text="大夫山百乐门酒吧"
                                 android:textColor="@color/time_color"
-                                android:textSize="28px"/>
+                                android:textSize="@dimen/px28"/>
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_marginTop="10px"
+                            android:layout_marginTop="@dimen/px10"
                             android:layout_weight="1">
 
                             <TextView
@@ -135,7 +135,7 @@
                                 android:layout_weight="0.3"
                                 android:text="UUID:"
                                 android:textColor="@color/time_color"
-                                android:textSize="28px"
+                                android:textSize="@dimen/px28"
                                 />
 
                             <TextView
@@ -145,7 +145,7 @@
                                 android:layout_weight="1"
                                 android:text="66232654646"
                                 android:textColor="@color/time_color"
-                                android:textSize="28px"
+                                android:textSize="@dimen/px28"
                                 />
                         </LinearLayout>
                     </LinearLayout>
@@ -161,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="51dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="40px"
+                        android:layout_marginRight="@dimen/px40"
                         android:src="@mipmap/icon_maintain_connected"/>
                 </LinearLayout>
             </LinearLayout>
@@ -170,6 +170,6 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/hui_rule"
-            android:layout_marginLeft="168px"/>
+            android:layout_marginLeft="@dimen/px168"/>
     </LinearLayout>
 </LinearLayout>

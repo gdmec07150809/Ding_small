@@ -213,30 +213,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONObject object1 = new JSONObject(object.getString("meta"));
-                        JSONObject jsonObject = new JSONObject(object.getString("data"));
-                        memId = jsonObject.getString("memId");
-                        tokEn = jsonObject.getString("tokEn");
-
-                        if (memId != null && tokEn != null) {
-                            if (memId.length() > 0 && tokEn.length() > 0) {
-                                System.out.println("缓存：" + memId + ":" + tokEn);
-                                //储存token,备用
-//                                String b= "{\"memId\":"+memId+",\"token\":"+tokEn+"}";//json字符串
-//                                System.out.println("json字符串："+b);
-                                sp = LoginAcitivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
-                                SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
-                                editor.putString("tokEn", tokEn);
-                                editor.putString("memId", memId);
-                                editor.putString("phone", login_user);
-                                editor.commit();    //提交数据保存
-                            }
-                        }
                         switch (object1.getString("res")) {
-                            case "00000"://登录成功
-                                Intent intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
-                                startActivity(intent);
-                                finish();
-                                break;
                             case "99999"://登录失败
                                 new AlertDialog.Builder(LoginAcitivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
@@ -244,6 +221,33 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                         dialog.dismiss();
                                     }
                                 }).show();
+                                break;
+                            case "00000"://登录成功
+                                if(object.getString("data")!=null||object.getString("data").equals("null")){
+                                    JSONObject jsonObject = new JSONObject(object.getString("data"));
+                                    memId = jsonObject.getString("memId");
+                                    tokEn = jsonObject.getString("tokEn");
+
+                                    if (memId != null && tokEn != null) {
+                                        if (memId.length() > 0 && tokEn.length() > 0) {
+                                            System.out.println("缓存：" + memId + ":" + tokEn);
+                                            //储存token,备用
+//                                String b= "{\"memId\":"+memId+",\"token\":"+tokEn+"}";//json字符串
+//                                System.out.println("json字符串："+b);
+                                            sp = LoginAcitivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                                            SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                                            editor.putString("tokEn", tokEn);
+                                            editor.putString("memId", memId);
+                                            editor.putString("phone", login_user);
+                                            editor.commit();    //提交数据保存
+                                        }
+                                    }
+                                }
+
+                                Toast.makeText(LoginAcitivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
+                                startActivity(intent);
+                                finish();
                                 break;
                             default:
                                 break;

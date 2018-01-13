@@ -7,14 +7,14 @@
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="100px"
+        android:layout_height="@dimen/px100"
         android:background="#ffffff">
         <LinearLayout
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="@dimen/px30"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#1CD39B"
-                android:layout_marginLeft="26px"
+                android:layout_marginLeft="@dimen/px26"
                 android:layout_gravity="center_vertical"
                 android:text="返回"/>
         </LinearLayout>
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="#333333"
-            android:textSize="38px"
+            android:textSize="@dimen/px38"
             android:text="基本设置"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
     <LinearLayout
         android:id="@+id/head2"
         android:layout_width="match_parent"
-        android:layout_height="200px"
+        android:layout_height="@dimen/px200"
 
         android:orientation="vertical"
         android:background="#ffffff"
@@ -57,8 +57,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px"
-            android:layout_marginLeft="30px">
+            android:layout_height="@dimen/px100"
+            android:layout_marginLeft="@dimen/px30">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,6 +68,7 @@
                     android:id="@+id/search_interval_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/px30"
                     android:text="搜索间隔"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -76,16 +77,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="#C8C8C8"
                 android:text="30秒"/>
             <ImageView
                 android:id="@+id/time"
-                android:layout_width="30px"
-                android:layout_height="30px"
+                android:layout_width="@dimen/px30"
+                android:layout_height="@dimen/px30"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="30px"
+                android:layout_marginRight="@dimen/px30"
                 android:src="@drawable/come"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -96,8 +97,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px"
-            android:layout_marginLeft="30px">
+            android:layout_height="@dimen/px100"
+            android:layout_marginLeft="@dimen/px30">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="语言设置"
-                    android:textSize="30px"
+                    android:textSize="@dimen/px30"
                     android:textColor="#333333"/>
             </LinearLayout>
             <TextView
@@ -117,16 +118,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:textColor="#C8C8C8"
                 android:text="中文"/>
             <ImageView
                 android:id="@+id/lang"
-                android:layout_width="30px"
-                android:layout_height="30px"
+                android:layout_width="@dimen/px30"
+                android:layout_height="@dimen/px30"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="30px"
+                android:layout_marginRight="@dimen/px30"
                 android:src="@drawable/come"/>
         </RelativeLayout>
     </LinearLayout>

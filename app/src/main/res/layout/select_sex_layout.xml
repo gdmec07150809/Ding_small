@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300px"
-        android:layout_margin="50px"
+        android:layout_height="@dimen/px300"
+        android:layout_margin="@dimen/px50"
         android:orientation="vertical"
         android:background="@color/white">
 
@@ -13,13 +13,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_margin="30px"
+            android:layout_margin="@dimen/px30"
             android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/title_color"
-                android:textSize="40px"
+                android:textSize="@dimen/px40"
                 android:text="性别"/>
             <RadioGroup
                 android:id="@+id/group"
@@ -30,12 +30,12 @@
                 <RadioButton
                     android:id="@+id/button1"
                     android:layout_width="fill_parent"
-                    android:layout_height="100px"
+                    android:layout_height="@dimen/px100"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
-                    android:paddingLeft="30px"
+                    android:paddingLeft="@dimen/px30"
                     android:text="男"
-                    android:textSize="30px" />
+                    android:textSize="@dimen/px30" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,12 +45,12 @@
                 <RadioButton
                     android:id="@+id/button2"
                     android:layout_width="fill_parent"
-                    android:layout_height="100px"
+                    android:layout_height="@dimen/px100"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
-                    android:paddingLeft="30px"
+                    android:paddingLeft="@dimen/px30"
                     android:text="女"
-                    android:textSize="30px" />
+                    android:textSize="@dimen/px30" />
             </RadioGroup>
 
         </LinearLayout>

@@ -8,7 +8,7 @@
 
         android:startColor="#dddddd"
 
-        android:endColor="#ffffff"
+        android:endColor="#F8F8F8"
 
         android:angle="90"/><!-- 90阴影冲上，－90，阴影冲下-->
 
