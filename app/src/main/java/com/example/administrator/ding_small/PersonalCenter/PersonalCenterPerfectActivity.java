@@ -298,6 +298,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 
 
                                     Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
+                                    intent.putExtra("back","out");
                                     startActivity(intent);
                                     finish();
                                 }

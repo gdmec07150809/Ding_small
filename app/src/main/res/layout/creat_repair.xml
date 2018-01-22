@@ -60,11 +60,8 @@
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/white"
                 android:text="不通电"
-                android:layout_alignBaseline="@+id/textView"
-                android:layout_alignBottom="@+id/textView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-            <EditText
+               android:layout_centerVertical="true"/>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -74,10 +71,10 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:hint="请输入报修人"
+                android:hint="报修人"
                 android:background="@null"
                 android:textColorHint="#F5FFFA"
-                android:id="@+id/textView" />
+                android:id="@+id/repair_user" />
         </RelativeLayout>
         <ScrollView
             android:layout_width="match_parent"
@@ -114,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/px10"
+                        android:textSize="@dimen/px30"
                         android:textColor="@color/title_color"
                         android:text="要求完工日期"/>
                     <TextView
@@ -123,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                        android:layout_toLeftOf="@+id/date"
-                        android:text="10月12日"
+                        android:text="2017-8-1"
                         android:textColor="@color/list_item_color"
                         android:textSize="6pt"/>
                     <ImageView

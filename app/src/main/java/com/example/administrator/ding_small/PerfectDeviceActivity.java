@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.weavey.loading.lib.LoadingLayout;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -91,7 +92,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     int nowYear, nowMonth, nowDay;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
     private String str_location = null;
-    private String latitude_str, longitude_str, province_str, temperature_str, result, device_mac;
+    private String latitude_str, longitude_str, province_str, temperature_str, result, device_mac,device_id;
     private FlowLayout found_activity_fyt;
     private ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
     private EditText repair_user;
@@ -104,6 +105,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     SharedPreferences sp = null;//定义储存源，备用
     String memid, token, sign, oldPass, newPass, ts, c_newPass;
     // longitude_str,latitude_str,str_location,temperature_str
+    private JSONObject DataObject;
     String repair_user_str, selling_edit_str, selling_location_edit_str, selling_user_edit_str, selling_phone_edit_str, address_edit_str;
 
     @RequiresApi(api = VERSION_CODES.M)
@@ -119,8 +121,22 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         getTemperature();//获取当前温度
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
+        getCache1();//获取设备eqpId
     }
 
+    private void getCache1() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://192.168.1.103:8080/app/ppt6000/dataPpt6000Is.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("Sign:" + Sign);
+        sign = MD5Utils.md5(Sign);
+
+        new Thread(getDeta).start();//获取该设备详情
+    }
     private void changeTextView() {
         // back_text,perfect_device_information,custom_name_text,selling_name_text,selling_location_text,selling_user_name_text,selling_phone_text,location_parameters_text,address_text
         if (Locale.getDefault().getLanguage().equals("en")) {
@@ -152,6 +168,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         Bundle getStringValue = this.getIntent().getExtras();
         if (getStringValue.getString("device_mac") != null) {
             device_mac = getStringValue.getString("device_mac");
+            device_id = getStringValue.getString("device_id");
         }
     }
 
@@ -245,7 +262,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 selling_phone_edit_str = selling_phone_edit_text.getText().toString().trim();//联系人电话
                 address_edit_str = address_edit_text.getText().toString().trim();//详细地址
                 // longitude_str,latitude_str,str_location,temperature_str
-                if (repair_user_str.equals("") || selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
+                if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
                     Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
                 } else {
                     getCache();
@@ -393,6 +410,15 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                                     }
                                 }
                             });
+                           if(found_activity_fyt.getChildCount()>1){
+                               imageView.setOnLongClickListener(new OnLongClickListener() {
+                                   @Override
+                                   public boolean onLongClick(View view) {
+                                       //showDetelePhotoDialog();长按 删除图片
+                                       return true;
+                                   }
+                               });
+                           }
                         }
                     }
 
@@ -684,7 +710,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.114:8080/app/ppt6000/updateDate.do";
+        String url = "http://192.168.1.103:8080/app/ppt6000/updateDate.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -694,7 +720,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     }
 
     /**
-     * 网络操作相关的子线程okhttp框架  获取设备
+     * 网络操作相关的子线程okhttp框架  获取设备详情
      */
     Runnable networkTask = new Runnable() {
         @Override
@@ -706,11 +732,14 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     selling_location_edit_str=selling_location_edit_text.getText().toString().trim();//售点地址
                     selling_user_edit_str=selling_user_edit_text.getText().toString().trim();//售点联系人
                     selling_phone_edit_str=selling_phone_edit_text.getText().toString().trim();//联系人电话*/
+
+            String pc[]=str_location.split("-");
+
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.104:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
-            String b = "{\"macNo\": \"" + device_mac + "\",\"memFullName\": \"" + repair_user_str + "\",\"Temperature\": \"" + temperature_str + "\",\"userInfoJson\": {\"username\": \"" + selling_user_edit_str + "\",\"pointOfSalePhone\": \"" + selling_phone_edit_str + "\",\"pointOfSaleName\": \"" + selling_edit_str + "\",\"addressInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + selling_location_edit_str + "\",\"ar\": \"\",\"pv\": \"山东\",\"te\": \"\",\"ct\": \"滨州\"}}}";//json字符串
+            String b = "{\"macNo\": \"" + device_mac + "\",\"eqpId\": \"" + device_id + "\",\"memFullName\": \"" + repair_user_str + "\",\"Temperature\": \"" + temperature_str + "\",\"userInfoJson\": {\"username\": \"" + selling_user_edit_str + "\",\"pointOfSalePhone\": \"" + selling_phone_edit_str + "\",\"pointOfSaleName\": \"" + selling_edit_str + "\",\"addressInfoJson\": {\"dt\": \""+pc[2]+"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \""+pc[0]+"\",\"la\": \"\",\"fa\": \"" + selling_location_edit_str + "\",\"ar\": \"\",\"pv\": \"山东\",\"te\": \"" + temperature_str + "\",\"ct\": \""+pc[1]+"\"}}}";//json字符串
             System.out.println("完善设备json:" + b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
@@ -728,7 +757,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     Message message = new Message();
                     message.what = SHOW_RESPONSE;
                     message.obj = result.toString();
-                    //getDeviceListHandler.sendMessage(message);
+                    upDateHandler.sendMessage(message);
                 }
                 System.out.println("结果：" + result + "状态码：" + response.code());
                 //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
@@ -736,5 +765,133 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+    };
+
+    private Handler upDateHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
+                        if (object1.getString("res").equals("00000")) {
+                            Intent intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("device_mac", device_mac);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                            } else {
+                                new AlertDialog.Builder(PerfectDeviceActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                }).show();
+                            }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
+    /**
+     * 网络操作相关的子线程okhttp框架  获取设备详情
+     */
+    Runnable getDeta = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://192.168.1.103:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            OkHttpClient okHttpClient = new OkHttpClient();
+            System.out.println("验证：" + sign);
+            String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
+            System.out.println("设备详情参数：" + b);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn", sign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result = response.body().string();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    if (response.code() == 200) {
+                        Message message = new Message();
+                        message.what = SHOW_RESPONSE;
+                        message.obj = result.toString();
+                        getDeviceHandler.sendMessage(message);
+                    } else {
+                        System.out.println("结果：" + result);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    private Handler getDeviceHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
+                        if (object1.getString("res").equals("00000")) {
+                            if (object.getString("data") != null && !object.getString("data").equals("null")) {
+                                DataObject = new JSONObject(object.getString("data"));//该设备数据
+                                //loading.setStatus(LoadingLayout.Success);
+                                JSONObject FAObject = new JSONObject(DataObject.getString("eqpAddressJson"));//该设备数据
+                                //System.out.println("data:  " + DataObject);
+                                repair_user.setHint(DataObject.getString("eqpName"));
+                                //System.out.println(DataObject.getString("eqpName"));
+                                device_id=DataObject.getString("eqpId");
+                            } else {
+                                new AlertDialog.Builder(PerfectDeviceActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                }).show();
+                            }
+                        } else {
+                            new AlertDialog.Builder(PerfectDeviceActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
     };
 }

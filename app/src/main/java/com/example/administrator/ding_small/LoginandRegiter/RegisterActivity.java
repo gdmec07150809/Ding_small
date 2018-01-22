@@ -156,8 +156,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            //String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
-            String url = "http://192.168.1.103:8080/api/user/getSmsMsg.do";
+            String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
+           // String url = "http://192.168.1.103:8080/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
             System.out.println(b);

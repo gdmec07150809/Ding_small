@@ -92,7 +92,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac;
+    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id;
     public static final int SHOW_RESPONSE = 0;
     private ScrollView scrollview;
     private JSONObject DataObject;//设备数据
@@ -171,7 +171,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.104:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = "http://192.168.1.103:8080/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -580,6 +580,10 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     }).show();
                 } else {
                     intent = new Intent(DeviceDetailActivity.this, CreatRepairActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("explain", "detail");
+                    bundle.putString("device_id", device_id);
+                    intent.putExtras(bundle);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
@@ -639,6 +643,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 intent = new Intent(DeviceDetailActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", device_mac);
+                bundle.putString("device_id", device_id);
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -784,10 +789,10 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.104:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            String url = "http://192.168.1.103:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
-            String b = "{\"memId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
+            String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
             System.out.println("设备详情参数：" + b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
@@ -836,6 +841,13 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 JSONObject FAObject = new JSONObject(DataObject.getString("eqpAddressJson"));//该设备数据
                                 System.out.println("data:  " + DataObject);
                                 device_name.setText(DataObject.getString("eqpName"));
+                                device_id=DataObject.getString("eqpId");
+
+                                sp = DeviceDetailActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                                SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                                editor.putString("device_id", device_id);
+                                editor.commit();    //提交数据保存
+
                                 if (DataObject.getString("eqpFlag").equals("0")) {
                                     eqpFlag.setImageResource(R.mipmap.icon_equiplist_scan);
                                 } else if (DataObject.getString("eqpFlag").equals("1")) {
@@ -844,7 +856,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                     eqpFlag.setImageResource(R.mipmap.icon_info_bluetooth_active);
                                 }
 
-                                fa_location.setText(FAObject.getString("fa"));
+                             fa_location.setText(FAObject.getString("fa"));
                             } else {
                                 new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override

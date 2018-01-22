@@ -32,6 +32,7 @@
         android:layout_marginTop="@dimen/px10"
         android:orientation="vertical">
        <EditText
+           android:id="@+id/remark_text"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:textColorHint="@color/hint_color"

@@ -288,6 +288,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 break;
             case R.id.login_layout://登陆
                 intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                intent.putExtra("back","in");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

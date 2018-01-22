@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -43,6 +44,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.Label.EditLabelActivity;
+import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -81,10 +83,15 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     private RelativeLayout title_layout;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
     private String str_location = null;
-    private String latitude_str, longitude_str, province_str, temperature_str;
+    private String latitude_str, longitude_str, province_str, temperature_str,location_str;
     private FlowLayout found_activity_fyt;
     private ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
 
+    private EditText repair_user,repair_phone,remark_text;
+
+    public static final int SHOW_RESPONSE = 0;
+    private static final String tokeFile = "repairFile";//定义保存的文件的名称
+    SharedPreferences sp = null;//定义储存源，备用
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,13 +102,25 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         //getLocation();//获取当前经纬度
         //getTemperature();//获取当前温度
         getString();//获取页面传递数据
+        getCache();
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
     }
-
+    private void  getCache(){
+        /*    editor.putString("opName", user_str);
+                    editor.putString("memPhone", phone_str);
+                    editor.putString("repireDescription", remark_str);*/
+        //repair_user,repair_phone,remark_text
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        repair_user.setText(sp.getString("opName", ""));
+        repair_phone.setText(sp.getString("memPhone", ""));
+        remark_text.setText(sp.getString("repireDescription", ""));
+    }
     private void getString() {
         if (getIntent().getStringExtra("adress") != null) {
             adress_text.setText(getIntent().getStringExtra("adress"));
+            String locationValue=getIntent().getStringExtra("adress")+getIntent().getStringExtra("location");
+            location_str=locationValue;
         }
         ;
     }
@@ -170,11 +189,11 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         remarks_text = findViewById(R.id.remarks_text);
         photo_text = findViewById(R.id.photo_text);
         information_text = findViewById(R.id.information_text);
-//        reimbursement_text=findViewById(R.id.reimbursement_text);
-//        parameter_text=findViewById(R.id.parameter_text);
-//        management_text=findViewById(R.id.management_text);
-//        title_layout=findViewById(R.id.action);
-//        at_action=findViewById(R.id.at_action);
+
+        //repair_user,repair_phone,remark_text
+        repair_user=findViewById(R.id.repair_user);
+        repair_phone=findViewById(R.id.repair_phone);
+        remark_text=findViewById(R.id.remark_text);
 
         // information_img,photo_img,location_img;
         new_information_img = findViewById(R.id.new_information_img);
@@ -360,8 +379,37 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 break;
             case R.id.confrim_btn:
                 intent = new Intent(CreatRepairRemarksActivity.this, CreatRepairActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                //repair_user,repair_phone,remark_text
+                String user_str=repair_user.getText().toString().trim();
+                String phone_str=repair_phone.getText().toString().trim();
+                String remark_str=remark_text.getText().toString().trim();
+                if(user_str.equals("")||phone_str.equals("")||remark_str.equals("")){
+                    Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
+                }else{
+                    Bundle bundle = new Bundle();
+                    String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + location_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
+                    String otherInfoJson_str="{\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"\" + location_str + \"\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}";
+                    System.out.println("报修  "+jsonString);
+
+
+                    sp = CreatRepairRemarksActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                    SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                    editor.putString("opName", user_str);
+                    editor.putString("memPhone", phone_str);
+                    editor.putString("repireDescription", remark_str);
+                    editor.commit();    //提交数据保存
+
+                    bundle.putString("opName", user_str);
+                    bundle.putString("memPhone", phone_str);
+                    bundle.putString("repireDescription", remark_str);
+                    bundle.putString("fa", location_str);
+
+                    bundle.putString("explain","repair");
+                    intent.putExtras(bundle);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.back:
                 finish();
@@ -448,224 +496,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                             e.printStackTrace();
                         }
                     }
-//                    try
-//                    {
-//                        photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
-//                    }catch(Exception e)
-//                    {
-//                        Log.e("error", e.getMessage());
-//                    }
                 }
-                break;
-//            case 12:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    String sdStatus = Environment.getExternalStorageState();
-//                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-//                        Log.i("TestFile",
-//                                "SD card is not avaiable/writeable right now.");
-//                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    new DateFormat();
-//                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-//                    System.out.println("路径："+name);
-//                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-//                    Bundle bundle = data.getExtras();
-//                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-//
-//                    FileOutputStream b = null;
-//                    File file = new File("/sdcard/Image/");
-//                    file.mkdirs();// 创建文件夹
-//                    String fileName = "/sdcard/Image/"+name;
-//
-//                    try {
-//                        b = new FileOutputStream(fileName);
-//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    } finally {
-//                        try {
-//                            if(b!=null){
-//                                b.flush();
-//                                b.close();
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    try
-//                    {
-//                        photo2.setImageBitmap(bitmap);// 将图片显示在ImageView里
-//                    }catch(Exception e)
-//                    {
-//                        Log.e("error", e.getMessage());
-//                    }
-//
-//                }
-//                break;
-//            case 13:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    String sdStatus = Environment.getExternalStorageState();
-//                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-//                        Log.i("TestFile",
-//                                "SD card is not avaiable/writeable right now.");
-//                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    new DateFormat();
-//                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-//                    System.out.println("路径："+name);
-//                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-//                    Bundle bundle = data.getExtras();
-//                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-//
-//                    FileOutputStream b = null;
-//                    File file = new File("/sdcard/Image/");
-//                    file.mkdirs();// 创建文件夹
-//                    String fileName = "/sdcard/Image/"+name;
-//
-//                    try {
-//                        b = new FileOutputStream(fileName);
-//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    } finally {
-//                        try {
-//                            if(b!=null){
-//                                b.flush();
-//                                b.close();
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    try
-//                    {
-//                        photo3.setImageBitmap(bitmap);// 将图片显示在ImageView里
-//                    }catch(Exception e)
-//                    {
-//                        Log.e("error", e.getMessage());
-//                    }
-//
-//                }
-//                break;
-//            case 14:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    String sdStatus = Environment.getExternalStorageState();
-//                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-//                        Log.i("TestFile",
-//                                "SD card is not avaiable/writeable right now.");
-//                        Toast.makeText(CreatRepairRemarksActivity.this,"sd卡不可用！！！",Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    new DateFormat();
-//                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
-//                    System.out.println("路径："+name);
-//                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-//                    Bundle bundle = data.getExtras();
-//                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-//
-//                    FileOutputStream b = null;
-//                    File file = new File("/sdcard/Image/");
-//                    file.mkdirs();// 创建文件夹
-//                    String fileName = "/sdcard/Image/"+name;
-//
-//                    try {
-//                        b = new FileOutputStream(fileName);
-//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    } finally {
-//                        try {
-//                            if(b!=null){
-//                                b.flush();
-//                                b.close();
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    try
-//                    {
-//                        photo4.setImageBitmap(bitmap);// 将图片显示在ImageView里
-//                    }catch(Exception e)
-//                    {
-//                        Log.e("error", e.getMessage());
-//                    }
-//                }
-//                break;
-//            case 21:
-//                //打开相册并选择照片，这个方式选择单张
-//                // 获取返回的数据，这里是android自定义的Uri地址
-//                if (resultCode == Activity.RESULT_OK) {
-//                    Uri selectedImage = data.getData();
-//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//                    // 获取选择照片的数据视图
-//                    Cursor cursor = getContentResolver().query(selectedImage,
-//                            filePathColumn, null, null, null);
-//                    cursor.moveToFirst();
-//                    // 从数据视图中获取已选择图片的路径
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    String picturePath = cursor.getString(columnIndex);
-//                    cursor.close();
-//                    // 将图片显示到界面上
-//                    photo1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//                }
-//                break;
-//            case 22:
-//                //打开相册并选择照片，这个方式选择单张
-//                // 获取返回的数据，这里是android自定义的Uri地址
-//                if (resultCode == Activity.RESULT_OK) {
-//                    Uri selectedImage = data.getData();
-//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//                    // 获取选择照片的数据视图
-//                    Cursor cursor = getContentResolver().query(selectedImage,
-//                            filePathColumn, null, null, null);
-//                    cursor.moveToFirst();
-//                    // 从数据视图中获取已选择图片的路径
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    String picturePath = cursor.getString(columnIndex);
-//                    cursor.close();
-//                    // 将图片显示到界面上
-//                    photo2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//                }
-//                break;
-//            case 23:
-//                //打开相册并选择照片，这个方式选择单张
-//                // 获取返回的数据，这里是android自定义的Uri地址
-//                if (resultCode == Activity.RESULT_OK) {
-//                    Uri selectedImage = data.getData();
-//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//                    // 获取选择照片的数据视图
-//                    Cursor cursor = getContentResolver().query(selectedImage,
-//                            filePathColumn, null, null, null);
-//                    cursor.moveToFirst();
-//                    // 从数据视图中获取已选择图片的路径
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    String picturePath = cursor.getString(columnIndex);
-//                    cursor.close();
-//                    // 将图片显示到界面上
-//                    photo3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//                }
-//                break;
-//            case 24:
-//                //打开相册并选择照片，这个方式选择单张
-//                // 获取返回的数据，这里是android自定义的Uri地址
-//                if (resultCode == Activity.RESULT_OK) {
-//                    Uri selectedImage = data.getData();
-//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//                    // 获取选择照片的数据视图
-//                    Cursor cursor = getContentResolver().query(selectedImage,
-//                            filePathColumn, null, null, null);
-//                    cursor.moveToFirst();
-//                    // 从数据视图中获取已选择图片的路径
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    String picturePath = cursor.getString(columnIndex);
-//                    cursor.close();
-//                    // 将图片显示到界面上
-//                    photo4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//                }
-//                break;
         }
 
     }

@@ -3,6 +3,7 @@ package com.example.administrator.ding_small;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,17 +16,22 @@ import android.support.v4.view.ViewPager;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.MFragmentPagerAdapter;
 import com.example.administrator.ding_small.Fragment.Fragment1;
 import com.example.administrator.ding_small.Fragment.Fragment2;
+import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 
 import org.feezu.liuli.timeselector.TimeSelector;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +61,8 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
 
     //实现Tab滑动效果
     private ViewPager mViewPager;
+    private  String jsonString;
+    String date_str;
 
     //当前页卡编号
     private int currIndex = 0;
@@ -64,8 +72,16 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
 
     //管理Fragment
     private FragmentManager fragmentManager;
+    private TextView confirmation;
+    private TextView repair_user;
 
     public Context context;
+    private String opName,memPhone,repireDescription,fa;
+
+    private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+    SharedPreferences sp = null;//定义储存源，备用
+    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id;
+    public static final int SHOW_RESPONSE = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +89,6 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         setContentView(R.layout.creat_repair);
         InitFragment();//初始化流式布局
         InitViewPager();//初始化viewPager
-
         day = findViewById(R.id.day);
         day.setOnClickListener(this);
         action_text = findViewById(R.id.action_text);
@@ -81,6 +96,10 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         findViewById(R.id.footer).setOnClickListener(this);
         findViewById(R.id.remarks_layout).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
+        confirmation=findViewById(R.id.confirmation);
+        repair_user=findViewById(R.id.repair_user);
+
+        getBundleString();
         //获取当前年月日时分
         Time t = new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
         t.setToNow(); // 取得系统时间。
@@ -92,20 +111,37 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         //给时分赋值
         if (minute < 10) {
             String minute_text = "0" + minute;
-            atTime = year + "-" + (month + 1) + "-" + (date + 5) + "  " + hour + ":" + minute_text;
+            atTime = year + "-" + (month + 1) + "-" + (date+5)+ "  " + hour + ":" + minute_text;
             day.setText(atTime);
         } else {
-            atTime = year + "-" + (month + 1) + "-" + (date + 5) + "  " + hour + ":" + minute;
+            atTime = year + "-" + (month + 1) + "-" + (date+5) + "  " + hour + ":" + minute;
             day.setText(atTime);
         }
+
     }
 
+    private void getBundleString() {
+        Bundle getStringValue = this.getIntent().getExtras();
+        if (getStringValue.getString("explain") != null) {
+          if(getStringValue.getString("explain").equals("repair")){
+                /* opName,memPhone,repireDescription,fa;*/
+              opName=getStringValue.getString("opName");
+              memPhone=getStringValue.getString("memPhone");
+              repireDescription=getStringValue.getString("repireDescription");
+              fa=getStringValue.getString("fa");
+              sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+              device_id = sp.getString("device_id", "null");
+              confirmation.setText("已填写");
+              repair_user.setText(opName);
+          }
+        }
+    }
     @Override
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
             case R.id.day:
-                TimeSelector timeSelector = new TimeSelector(CreatRepairActivity.this, new TimeSelector.ResultHandler() {
+                TimeSelector timeSelector1 = new TimeSelector(CreatRepairActivity.this, new TimeSelector.ResultHandler() {
                     @Override
                     public void handle(String time) {
                         atTime = time;
@@ -113,17 +149,33 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                     }
 
                 }, atTime, "2500-12-31 23:59:59");
-                timeSelector.setIsLoop(false);//设置不循环,true循环
-                timeSelector.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
-                timeSelector.show();
+                timeSelector1.setIsLoop(false);//设置不循环,true循环
+                timeSelector1.setMode(TimeSelector.MODE.YMDHM);//显示 年月日时分（默认）
+                timeSelector1.show();
                 break;
             case R.id.footer:
-                intent = new Intent(CreatRepairActivity.this, DeviceListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+
+                //action_text.getText().toString(); repair_user date_str
+                String setValue=confirmation.getText().toString().trim();
+                if(setValue.equals("未填写")){
+                    Toast.makeText(CreatRepairActivity.this,"请填写信息",Toast.LENGTH_SHORT).show();
+                }else{
+
+                   String date= day.getText().toString();
+                    String a=date.split("")[0];
+                    String title=action_text.getText().toString();
+                    intent = new Intent(CreatRepairActivity.this, DeviceListActivity.class);
+                    String upIsonStr="{\"repireDescription\": \""+repireDescription+"\",\"opName\": \""+opName+"\",\"updateDate\": \""+a+"\",\"repireTitle\": \""+title+"\",\"eqpId\": \""+device_id+"\"," +
+                            "\"memPhone\": \""+memPhone+"\",\"otherInfoJson\": {\"lo\": \"\"," +
+                                "\"dt\": \"\",\"da\": \"\",\"pc\": \"\",\"sq\": \"\",\"la\": \"\",\"fa\": \""+fa+"\",\"te\": \"\",\"pv\": \"\",\"ar\": \"\",\"ct\": \"\"}}";
+                    System.out.println("提交："+upIsonStr);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.remarks_layout:
-                String date_str = day.getText().toString();
+                date_str = day.getText().toString();
                 intent = new Intent(CreatRepairActivity.this, CreatRepairRemarksActivity.class);
                 at_action = action_text.getText().toString();//获取标题
                 //获取标题背景颜色

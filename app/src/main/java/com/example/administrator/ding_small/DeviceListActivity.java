@@ -123,7 +123,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
+        String url = "http://192.168.1.103:8080/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -336,10 +336,10 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts ;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
-            String b = "{}";//json字符串
+            String b = "{\"parentId\":\"" + memid +"\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)

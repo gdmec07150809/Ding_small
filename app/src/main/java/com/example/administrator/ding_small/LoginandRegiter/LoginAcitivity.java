@@ -47,7 +47,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     String memId, tokEn;
-    String code_str, phone_str, p1_str, p2_str, login_user, login_pass;
+    String code_str, phone_str, p1_str, p2_str, login_user, login_pass,back_str;
 
 
     private long clickTime = 0;
@@ -64,14 +64,14 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
         }
         return super.onKeyDown(keyCode, event);
     }
-
+    //两秒内点击两次退出,则退出
     private void exit() {
         if ((System.currentTimeMillis() - clickTime) > 2000) {
             Toast.makeText(getApplicationContext(), "再次点击退出", Toast.LENGTH_SHORT).show();
             clickTime = System.currentTimeMillis();
         } else {
             Log.e(TAG, "exit application");
-            this.finish();
+           this.finish();
             System.exit(0);
         }
     }
@@ -80,18 +80,12 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_login);
-//        findViewById(R.id.left).setOnClickListener(this);
-//        findViewById(R.id.right).setOnClickListener(this);
         new_login = findViewById(R.id.new_login);
         new_login.setOnClickListener(this);
         register = findViewById(R.id.register);
         register.setOnClickListener(this);
         forget_password = findViewById(R.id.forgot_password);
         forget_password.setOnClickListener(this);
-        //findViewById(R.id.new_login).setOnClickListener(this);
-//        findViewById(R.id.send_text).setOnClickListener(this);
-//        findViewById(R.id.register).setOnClickListener(this);
-//        findViewById(R.id.forgot_password).setOnClickListener(this);
         findViewById(id.back).setOnClickListener(this);
 
         user_name = findViewById(R.id.user_name);
@@ -112,6 +106,8 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
             register.setText("Register");
             new_login.setText("Login");
         }
+
+        back_str=getIntent().getStringExtra("back");
     }
 
     @Override
@@ -153,12 +149,23 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case id.back:
-                finish();
+                //判断返回页面
+                if(back_str.equals("out")){
+                     intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
+                    startActivity(intent);
+                }else {
+                    finish();
+                }
                 break;
             default:
                 break;
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     /**
@@ -169,7 +176,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            // String url = "http://120.76.188.131:8080/a10/api/user/login.do";192.168.1.105
+           // String url = "http://120.76.188.131:8080/a10/api/user/login.do";
             String url = "http://192.168.1.103:8080/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass = MD5Utils.md5(login_pass);
@@ -225,6 +232,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                             case "00000"://登录成功
                                 if(object.getString("data")!=null||object.getString("data").equals("null")){
                                     JSONObject jsonObject = new JSONObject(object.getString("data"));
+                                    System.out.println(jsonObject);
                                     memId = jsonObject.getString("memId");
                                     tokEn = jsonObject.getString("tokEn");
 
@@ -232,8 +240,6 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                         if (memId.length() > 0 && tokEn.length() > 0) {
                                             System.out.println("缓存：" + memId + ":" + tokEn);
                                             //储存token,备用
-//                                String b= "{\"memId\":"+memId+",\"token\":"+tokEn+"}";//json字符串
-//                                System.out.println("json字符串："+b);
                                             sp = LoginAcitivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
                                             SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
                                             editor.putString("tokEn", tokEn);

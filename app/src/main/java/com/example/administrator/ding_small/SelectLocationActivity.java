@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.example.administrator.ding_small.JsonClass.JsonBean;
@@ -27,6 +29,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private String adress;
+    private EditText location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
         mTvAddress = (TextView) findViewById(R.id.tv_address);
         findViewById(R.id.select_layout).setOnClickListener(this);
         findViewById(R.id.comfir_btn).setOnClickListener(this);
+        location=findViewById(R.id.location);
     }
 
 
@@ -151,9 +155,17 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                 break;
             case R.id.comfir_btn://确定
                 intent = new Intent(SelectLocationActivity.this, CreatRepairRemarksActivity.class);
-                intent.putExtra("adress", adress);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                String location_str=location.getText().toString().trim();
+                if(adress.equals("")||adress==null||location_str.equals("")||location_str==null){
+                    Toast.makeText(SelectLocationActivity.this,"地址不能为空",Toast.LENGTH_SHORT).show();
+                }else{
+                    String detailStr=adress+location_str;
+                    intent.putExtra("adress", detailStr);
+                    intent.putExtra("location",location_str);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
                 break;
             default:
                 break;
