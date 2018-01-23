@@ -739,7 +739,11 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             String url = "http://192.168.1.103:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
-            String b = "{\"macNo\": \"" + device_mac + "\",\"eqpId\": \"" + device_id + "\",\"memFullName\": \"" + repair_user_str + "\",\"Temperature\": \"" + temperature_str + "\",\"userInfoJson\": {\"username\": \"" + selling_user_edit_str + "\",\"pointOfSalePhone\": \"" + selling_phone_edit_str + "\",\"pointOfSaleName\": \"" + selling_edit_str + "\",\"addressInfoJson\": {\"dt\": \""+pc[2]+"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \""+pc[0]+"\",\"la\": \"\",\"fa\": \"" + selling_location_edit_str + "\",\"ar\": \"\",\"pv\": \"山东\",\"te\": \"" + temperature_str + "\",\"ct\": \""+pc[1]+"\"}}}";//json字符串
+            String b = "{\"macNo\": \"" + device_mac + "\",\"eqpId\": \"" + device_id + "\",\"memFullName\": \"" + repair_user_str + "\"," +
+                    "\"Temperature\": \"" + temperature_str + "\",\"userInfoJson\": {\"username\": \"" + selling_user_edit_str + "\"," +
+                    "\"pointOfSalePhone\": \"" + selling_phone_edit_str + "\",\"pointOfSaleName\": \"" + selling_edit_str + "\"," +
+                    "\"addressInfoJson\": {\"dt\": \""+pc[2]+"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \""+pc[0]+"\"," +
+                    "\"la\": \"\",\"fa\": \"" + selling_location_edit_str + "\",\"ar\": \"\",\"pv\": \"山东\",\"te\": \"" + temperature_str + "\",\"ct\": \""+pc[1]+"\"}}}";//json字符串
             System.out.println("完善设备json:" + b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
@@ -881,6 +885,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
+                                    finish();
                                 }
                             }).show();
                         }

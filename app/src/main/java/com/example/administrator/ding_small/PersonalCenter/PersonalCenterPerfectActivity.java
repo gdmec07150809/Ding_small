@@ -42,6 +42,7 @@ import com.example.administrator.ding_small.DeviceListActivity;
 import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.example.administrator.ding_small.JsonClass.JsonBean;
 import com.example.administrator.ding_small.JsonClass.JsonFileReader;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
@@ -74,7 +75,7 @@ import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddr
 public class PersonalCenterPerfectActivity extends Activity implements View.OnClickListener {
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, sign, oldPass, newPass, ts, c_newPass;
+    String memid, token, UserSign, oldPass, newPass, ts, c_newPass,sign,nameStr;
     public static final int SHOW_RESPONSE = 0;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
 
@@ -121,12 +122,40 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         nickname_value_text = findViewById(R.id.nickname_value_text);
         address_value = findViewById(R.id.address_value);
         signature_value = findViewById(R.id.signature_value);
+
+        getCacheUser();//获取用户信息
         getLocation();//获取地址
         changeTextView();//更改语言
-        getCache();
-        initJsonData();
+        initJsonData();//地址数据
     }
 
+    private void getCacheUser() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do";
+        //String url = "http://192.168.1.103:8080/api/user/logout.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("UserSign:" + Sign);
+        UserSign = MD5Utils.md5(Sign);
+        new Thread(getUserTask).start();//获取用户信息,启动
+    }
+
+    private void setUser() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://120.76.188.131:8080/a10/api/secr/user/amendPersonalInfo.do";
+        //String url = "http://192.168.1.103:8080/api/user/logout.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("UserSign:" + Sign);
+        UserSign = MD5Utils.md5(Sign);
+        new Thread(setUserTask).start();//获取用户信息,启动
+    }
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getLocation() {
         //获取地址
@@ -166,8 +195,8 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        //String url = "http://120.76.188.131:8080/a10/api/user/logout.do";
-        String url = "http://192.168.1.103:8080/api/user/logout.do";
+        String url = "http://120.76.188.131:8080/a10/api/user/logout.do";
+       // String url = "http://192.168.1.103:8080/api/user/logout.do";
 
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
@@ -183,36 +212,37 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             case R.id.back:
                 finish();
                 break;
-            case R.id.confirm:
-                intent = new Intent(PersonalCenterPerfectActivity.this, PersonalCenterActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.head_img:
+//            case R.id.confirm:
+//                intent = new Intent(PersonalCenterPerfectActivity.this, PersonalCenterActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                break;
+            case R.id.head_img://头像
                 intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 21);
                 break;
             case R.id.sex_layout:
-                setDialog();
+                setDialog();//性别弹出框
                 break;
             case R.id.nickname_layout:
-                setNichNameDialog();
+                setNichNameDialog();//昵称弹出框
                 break;
             case R.id.location_layout:
-                showPickerView();
+                showPickerView();//地址弹出框
                 break;
             case R.id.address_layout:
-                setAdressDialog();
+                setAdressDialog();//具体地址弹出框
                 break;
             case R.id.signature_layout:
-                setSignatureDialog();
+                setSignatureDialog();//个性签名弹出框
                 break;
             case R.id.save_layout:
-                Toast.makeText(this, "保存", Toast.LENGTH_SHORT).show();
+                setUser();//修改用户信息
                 break;
-            case R.id.head3:
+            case R.id.head3://退出
+                getCache();//退出
                 CustomDialog.Builder builder = new CustomDialog.Builder(this);
-                builder.setMessage("确认是否退出?");
+                builder.setMessage("是否确认退出?");
                 builder.setTitle("提示");
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -241,7 +271,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.103:8080/api/user/logout.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://120.76.188.131:8080/a10/api/user/logout.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
 
             System.out.println("验证：" + sign);
@@ -289,13 +319,11 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                             new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("登出提示").setMessage("登出成功,返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
                                     //清除本地缓存
                                     SharedPreferences userSettings= getSharedPreferences(tokeFile, 0);
                                     SharedPreferences.Editor editor = userSettings.edit();
                                     editor.clear();
                                     editor.commit();
-
 
                                     Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
                                     intent.putExtra("back","out");
@@ -322,7 +350,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 
     };
 
-    //获取,处理拍照事件
+
+
+    //获取手机相册选择的图片
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
@@ -347,12 +377,12 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     cursor.close();
                     // 将图片显示到界面上
                     head_img.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                   // UploadUtil.uploadFile(picturePath,);上传图片方法
                 }
                 break;
             default:
                 break;
         }
-
     }
 
     //性别底部弹出菜单
@@ -603,4 +633,163 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         }
         return detail;
     }
+
+    /**
+     * 网络操作相关的子线程okhttp框架  获取用户信息
+     */
+    Runnable getUserTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do?memId=" + memid + "&ts=" + ts;
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            System.out.println("验证：" + UserSign);
+            String b = "{}";//json字符串
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn", UserSign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result = response.body().string();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = result.toString();
+                    getUserHandler.sendMessage(message);
+                }
+                System.out.println("结果：" + result + "状态码：" + response.code());
+                //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+
+    private Handler getUserHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        JSONObject objectData = new JSONObject(object.getString("data"));
+                        //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
+                        if (object1.getString("res").equals("00000")) {
+                            nameStr=objectData.getString("nick");
+                            nickname_value_text.setText(nameStr);
+                            if(objectData.getString("sex")==null||objectData.getString("sex").equals("")||objectData.getString("sex").equals("null")){
+                                sex_value.setText("");
+                            }else{
+                                sex_value.setText(objectData.getString("sex"));
+                            }
+
+                        } else {
+                            new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
+    /**
+     * 网络操作相关的子线程okhttp框架  修改用户信息
+     */
+    Runnable setUserTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://120.76.188.131:8080/a10/api/secr/user/amendPersonalInfo.do?memId=" + memid + "&ts=" + ts;
+            OkHttpClient okHttpClient = new OkHttpClient();
+            String nickValue=nickname_value_text.getText().toString();
+            String sexValue=sex_value.getText().toString();
+            System.out.println("验证：" + UserSign);
+            String b = "{\"nick\":\""+nickValue+"\",\"sex\":\""+sexValue+"\"}";//json字符串
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn", UserSign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result = response.body().string();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = result.toString();
+                    setUserHandler.sendMessage(message);
+                }
+                System.out.println("结果：" + result + "状态码：" + response.code());
+                //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    private Handler setUserHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
+                        if (object1.getString("res").equals("00000")) {
+                            Toast.makeText(PersonalCenterPerfectActivity.this, "保存", Toast.LENGTH_SHORT).show();
+                            Intent   intent = new Intent(PersonalCenterPerfectActivity.this, MainLayoutActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        } else {
+                            new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
 }

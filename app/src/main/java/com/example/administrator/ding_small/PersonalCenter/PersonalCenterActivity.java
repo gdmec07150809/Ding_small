@@ -1,8 +1,13 @@
 package com.example.administrator.ding_small.PersonalCenter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,15 +15,27 @@ import android.widget.TextView;
 
 import com.example.administrator.ding_small.AccountBookActivity;
 import com.example.administrator.ding_small.ContactsActivity;
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.NotepadActivity;
 import com.example.administrator.ding_small.NotepadBtnActivity;
 import com.example.administrator.ding_small.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.Locale;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by CZK on 2017/11/6.
@@ -27,7 +44,12 @@ import java.util.Locale;
 public class PersonalCenterActivity extends Activity implements View.OnClickListener {
     private ImageView f_account, f_contacts, f_center, f_notepad;
     //更改语言所要更改的控件
-    private TextView security_text, setting_text, about_text, custom_text, feedback_text, home_text, my_text;
+    private TextView security_text, setting_text, about_text, custom_text, feedback_text, home_text, my_text,name_text;
+    private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+    SharedPreferences sp = null;//定义储存源，备用
+    String memid, token, UserSign, oldPass, newPass, ts, c_newPass,sign,nick;
+    public static final int SHOW_RESPONSE = 0;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,9 +69,17 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         feedback_text = findViewById(R.id.feedback_text);
         home_text = findViewById(R.id.home_text);
         my_text = findViewById(R.id.my_text);
+        name_text=findViewById(R.id.name_text);
         changeTextView();//更改语言
+        getCacheUser();//获取缓存
     }
 
+    private void getCacheUser() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        nick = sp.getString("nameStr", "");
+        name_text.setText(nick);
+
+    }
     private void changeTextView() {
         if (Locale.getDefault().getLanguage().equals("en")) {
             security_text.setText("Account Security");
@@ -61,7 +91,6 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
             my_text.setText("My");
         }
     }
-
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -71,21 +100,11 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-//            case R.id.instructions:
-//                intent=new Intent(PersonalCenterActivity.this,InstructionsActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
             case R.id.setting:
                 intent = new Intent(PersonalCenterActivity.this, SettingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-//            case R.id.about:
-//                intent=new Intent(PersonalCenterActivity.this,AboutActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
             case R.id.security:
                 intent = new Intent(PersonalCenterActivity.this, AccountSecurityActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -96,43 +115,10 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-//            case R.id.binding_company:
-//                intent=new Intent(PersonalCenterActivity.this,BindingCompanyActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
-//            case R.id.add:
-//                intent=new Intent(PersonalCenterActivity.this,NotepadActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
-//            case R.id.f_account:
-//                intent=new Intent(PersonalCenterActivity.this,AccountBookActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
-//            case R.id.f_notepad:
-//                intent=new Intent(PersonalCenterActivity.this,NotepadBtnActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
-//            case R.id.f_contacts:
-//                intent=new Intent(PersonalCenterActivity.this,ContactsActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
-//            case R.id.exit:
-//                intent=new Intent(PersonalCenterActivity.this, LoginAcitivity.class);
-//                startActivity(intent);
-//                System.exit(0);
-//                break;
-//            case R.id.edit_pass:
-//                intent=new Intent(PersonalCenterActivity.this,EditPassWordActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
+
             default:
                 break;
         }
     }
+
 }

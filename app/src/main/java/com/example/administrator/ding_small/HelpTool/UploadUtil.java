@@ -45,8 +45,8 @@ public class UploadUtil {
     }
 
     private static final String TAG = "UploadUtil";
-    private int readTimeOut = 10 * 1000; // 读取超时
-    private int connectTimeout = 10 * 1000; // 超时时间
+    private static int readTimeOut = 10 * 1000; // 读取超时
+    private static int connectTimeout = 10 * 1000; // 超时时间
     /***
      * 请求使用多长时间
      */
@@ -79,7 +79,7 @@ public class UploadUtil {
      * @param RequestURL
      *            请求的URL
      */
-    public void uploadFile(String filePath, String fileKey, String RequestURL,
+    public static void uploadFile(String filePath, String fileKey, String RequestURL,
                            Map<String, String> param) {
         if (filePath == null) {
             sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
@@ -105,8 +105,8 @@ public class UploadUtil {
      * @param RequestURL
      *            请求的URL
      */
-    public void uploadFile(final File file, final String fileKey,
-                           final String RequestURL, final Map<String, String> param) {
+    public static void uploadFile(final File file, final String fileKey,
+                                  final String RequestURL, final Map<String, String> param) {
         if (file == null || (!file.exists())) {
             sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
             return;
@@ -124,8 +124,8 @@ public class UploadUtil {
 
     }
 
-    private void toUploadFile(File file, String fileKey, String RequestURL,
-                              Map<String, String> param) {
+    private static void toUploadFile(File file, String fileKey, String RequestURL,
+                                     Map<String, String> param) {
         String result = null;
         requestTime= 0;
 
@@ -215,7 +215,7 @@ public class UploadUtil {
              */
             int res = conn.getResponseCode();
             responseTime = System.currentTimeMillis();
-            this.requestTime = (int) ((responseTime-requestTime)/1000);
+            UploadUtil.requestTime = (int) ((responseTime-requestTime)/1000);
             Log.e(TAG, "response code:" + res);
             if (res == 200) {
                 Log.e(TAG, "request success");
@@ -251,7 +251,7 @@ public class UploadUtil {
      * @param responseCode
      * @param responseMessage
      */
-    private void sendMessage(int responseCode,String responseMessage)
+    private static void sendMessage(int responseCode, String responseMessage)
     {
         onUploadProcessListener.onUploadDone(responseCode, responseMessage);
     }
@@ -280,7 +280,7 @@ public class UploadUtil {
          */
         void initUpload(int fileSize);
     }
-    private OnUploadProcessListener onUploadProcessListener;
+    private static OnUploadProcessListener onUploadProcessListener;
 
 
 

@@ -59,20 +59,20 @@
 
             <Button
                 android:id="@+id/positiveButton"
-                style="@style/text_15_ffffff_sdw"
+                style="@style/text_15_666666_sdw"
                 android:layout_width="114.0dip"
                 android:layout_height="40.0dip"
-                android:background="@drawable/btn_green"
+                android:background="@drawable/btn_orage"
                 android:gravity="center"
                 android:text="确定" />
 
             <Button
                 android:id="@+id/negativeButton"
-                style="@style/text_15_666666_sdw"
+                style="@style/text_15_ffffff_sdw"
                 android:layout_width="114.0dip"
                 android:layout_height="40.0dip"
                 android:layout_marginLeft="20.0dip"
-                android:background="@drawable/btn_orage"
+                android:background="@drawable/btn_green"
                 android:gravity="center"
                 android:text="取消" />
         </LinearLayout>

@@ -148,7 +148,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                 //跳转
                 startActivity(intent);
                 break;
-            case id.back:
+            case R.id.back:
                 //判断返回页面
                 if(back_str.equals("out")){
                      intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
@@ -176,8 +176,8 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-           // String url = "http://120.76.188.131:8080/a10/api/user/login.do";
-            String url = "http://192.168.1.103:8080/api/user/login.do";
+            String url = "http://120.76.188.131:8080/a10/api/user/login.do";
+            //String url = "http://192.168.1.108:8080/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String pass = MD5Utils.md5(login_pass);
 

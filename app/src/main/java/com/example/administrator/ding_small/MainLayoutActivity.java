@@ -27,6 +27,7 @@ import com.example.administrator.ding_small.HelpTool.DensityUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 import com.example.administrator.ding_small.Utils.utils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -34,12 +35,23 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by CZK on 2017/12/11.
@@ -56,24 +68,27 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     private long clickTime = 0;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    private String memid, token, sign, oldPass, newPass, ts;
-
+    String memid, token, UserSign, oldPass, newPass, ts, nameStr,sign;
     //变化语言所改变的控件 登陆、客服、消息、名称、记事日历、记账日历、记事本、记账本、设备表、联系人,扫码、搜索、报修,首页,口碑服务,特供商城,我的
     private TextView login_text, custom_service_text, news_text, name_text, notepad_calendar_text, account_calendar_text,
             notepad_text, account_text, device_text, contacts_text, scan_text, search_text, repair_text, home_text, reputation_service_text, mall_text, my_text;
     private EditText user_name;
+    public static final int SHOW_RESPONSE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         init();//初始化控
+        getCacheUser();//获取用户信息
         // ifApm();//判断上下午
         initPager();//轮播图
 
         Handler handler = new Handler();
         handler.postDelayed(runnable, 100);
         changeLanguage();//设置语言
+        getCache();//获取轮播图
+
     }
 
     private void changeLanguage() {
@@ -101,9 +116,31 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         }
     }
 
+    private void getCacheUser() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do";
+        //String url = "http://192.168.1.103:8080/api/user/logout.do";
+
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("UserSign:" + Sign);
+        UserSign = MD5Utils.md5(Sign);
+        new Thread(getUserTask).start();//获取用户信息，启动
+    }
     private void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("Sign:" + Sign);
+        sign = MD5Utils.md5(Sign);
+        //new Thread(networkTask).start();//获取设备列表
     }
 
     Runnable runnable = new Runnable() {
@@ -341,6 +378,9 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 getCache();
                 if (!"null".equals(memid) && memid != null) {
                     intent = new Intent(MainLayoutActivity.this, PersonalCenterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("nameStr", nameStr);
+                    intent.putExtras(bundle);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
@@ -442,23 +482,56 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         System.out.println(localTime.format("%H"));
         if (lang.equals("en")) {
             if (time > 0 && time <= 6) {
-                name_text.setText("Good Morning");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" Good Morning");
+                }else{
+                    name_text.setText("Good Morning");
+                }
             } else if (time > 6 && time <= 12) {
-                name_text.setText("Good Morning");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" Good Morning");
+                }else{
+                    name_text.setText("Good Morning");
+                }
             } else if (time > 12 && time < 18) {
-                name_text.setText("Good Afternoon");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" Good Afternoon");
+                }else{
+                    name_text.setText("Good Afternoon");
+                }
             } else {
-                name_text.setText("Good Evening");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" Good Evening");
+                }else{
+                    name_text.setText("Good Evening");
+                }
+
             }
         } else {
             if (time > 0 && time <= 6) {
-                name_text.setText("凌晨好");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" 凌晨好");
+                }else {
+                    name_text.setText("凌晨好");
+                }
             } else if (time > 6 && time <= 12) {
-                name_text.setText("上午好");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" 上午好");
+                }else {
+                    name_text.setText("上午好");
+                }
             } else if (time > 12 && time < 18) {
-                name_text.setText("下午好");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" 下午好");
+                }else {
+                    name_text.setText("下午好");
+                }
             } else {
-                name_text.setText("晚上好");
+                if(nameStr!=null&&!nameStr.equals("")){
+                    name_text.setText(nameStr+" 晚上好");
+                }else {
+                    name_text.setText("晚上好");
+                }
             }
         }
 
@@ -492,4 +565,124 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             //resultNew.setText("扫描结果："+result.getContents());
         }
     }
+
+    /**
+     * 网络操作相关的子线程okhttp框架  获取图片
+     */
+    Runnable networkTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+
+            //System.out.println("图片："+getBitmap.getBitmapPhoto("https://avatar.csdn.net/C/3/5/1_hmyang314.jpg"));
+            String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do?memId=" + memid + "&ts=" + ts ;
+            OkHttpClient okHttpClient = new OkHttpClient();
+            String b = "{\"advType\":\"0\",\"dateNow \":\""+ts+"\"}";//json字符串
+            System.out.println("验证：" + sign +" "+b);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn", sign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result = response.body().string();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = result.toString();
+                   // getDeviceListHandler.sendMessage(message);
+                }
+                System.out.println("结果：" + result + "状态码：" + response.code());
+                //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /**
+     * 网络操作相关的子线程okhttp框架  获取用户信息
+     */
+    Runnable getUserTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do?memId=" + memid + "&ts=" + ts;
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            System.out.println("验证：" + UserSign);
+            String b = "{}";//json字符串
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn", UserSign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result = response.body().string();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = result.toString();
+                    getUserHandler.sendMessage(message);
+                }
+                System.out.println("结果：" + result + "状态码：" + response.code());
+                //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private Handler getUserHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        JSONObject objectData = new JSONObject(object.getString("data"));
+                        //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
+                        if (object1.getString("res").equals("00000")) {
+                            nameStr=objectData.getString("nick");
+                            //储存token,备用
+                            sp = MainLayoutActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                            SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                            editor.putString("nameStr", nameStr);
+                            editor.commit();    //提交数据保存
+                        } else {
+                            new AlertDialog.Builder(MainLayoutActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
 }

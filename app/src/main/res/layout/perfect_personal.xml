@@ -358,6 +358,6 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <include layout="@layout/save_edit_footer"/>
+        <include layout="@layout/edit_perfect"/>
     </LinearLayout>
 </RelativeLayout>
