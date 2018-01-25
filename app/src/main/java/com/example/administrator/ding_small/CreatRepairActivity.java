@@ -52,12 +52,13 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     private List<Map<String, Object>> dataList;
     private SimpleAdapter adapter;
     //图标
-    int icno[] = {R.drawable.c1_bg, R.drawable.c2_bg, R.drawable.c3_bg, R.drawable.c4_bg, R.drawable.c5_bg, R.drawable.c6_bg,
-            R.drawable.c7_bg, R.drawable.c8_bg, R.drawable.c9_bg, R.drawable.c10_bg, R.drawable.c11_bg, R.drawable.c12_bg};
+    int icno[] = {R.mipmap.fix_icon_noele_normal, R.mipmap.fix_icon_nocharge_normal, R.mipmap.fix_icon_nolight_normal,
+            R.mipmap.fix_icon_nocold_normal, R.mipmap.fix_icon_paiqi_normal, R.mipmap.fix_icon_umbrella_normal,R.mipmap.fix_icon_paishui_normal,
+            R.mipmap.fix_icon_loushui_normal, R.mipmap.fix_icon_loudian_normal, R.mipmap.fix_icon_louqi_normal,
+            R.mipmap.fix_icon_noise_normal, R.mipmap.fix_icon_surface_normal, R.mipmap.fix_icon_print_normal, R.mipmap.fix_icon_others_normal};
     //图标下的文字
-    String name[] = {"不通电", "不充电", "不亮灯", "不制冷", "不排气", "不防水",
-            "漏水", "漏电", "漏气", "噪音大", "外观破损", "其它",
-    };
+    String name[] = {"不通电", "不充电", "不发光", "不制冷", "不排气", "不防水", "不排气",
+            "漏水", "漏电", "漏气", "噪音大", "外观破损","印刷错误", "其它"};
 
     //实现Tab滑动效果
     private ViewPager mViewPager;
@@ -129,8 +130,9 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
               memPhone=getStringValue.getString("memPhone");
               repireDescription=getStringValue.getString("repireDescription");
               fa=getStringValue.getString("fa");
+
               sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
-              device_id = sp.getString("device_id", "null");
+              device_id = sp.getString("device_id", "");
               confirmation.setText("已填写");
               repair_user.setText(opName);
           }
@@ -154,25 +156,22 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                 timeSelector1.show();
                 break;
             case R.id.footer:
-
                 //action_text.getText().toString(); repair_user date_str
                 String setValue=confirmation.getText().toString().trim();
                 if(setValue.equals("未填写")){
                     Toast.makeText(CreatRepairActivity.this,"请填写信息",Toast.LENGTH_SHORT).show();
                 }else{
-
-                   String date= day.getText().toString();
-                    String a=date.split("")[0];
                     String title=action_text.getText().toString();
                     intent = new Intent(CreatRepairActivity.this, DeviceListActivity.class);
-                    String upIsonStr="{\"repireDescription\": \""+repireDescription+"\",\"opName\": \""+opName+"\",\"updateDate\": \""+a+"\",\"repireTitle\": \""+title+"\",\"eqpId\": \""+device_id+"\"," +
-                            "\"memPhone\": \""+memPhone+"\",\"otherInfoJson\": {\"lo\": \"\"," +
-                                "\"dt\": \"\",\"da\": \"\",\"pc\": \"\",\"sq\": \"\",\"la\": \"\",\"fa\": \""+fa+"\",\"te\": \"\",\"pv\": \"\",\"ar\": \"\",\"ct\": \"\"}}";
+                    //"parentId":"34e6af429fff444f911611fa2c9f5ecd"
+                    String upIsonStr="{\"repireDescription\": \""+repireDescription+"\",\"opName\": \""+opName+"\",\"parentId\": \""+memid+"\"," +
+                                    "\"handleDate\": \""+atTime+"\",\"repireTitle\": \""+title+"\",\"eqpId\": \""+device_id+"\"," +
+                                    "\"memPhone\": \""+memPhone+"\",\"otherInfoJson\": {\"lo\": \"\"," +
+                                    "\"dt\": \"\",\"da\": \"\",\"pc\": \"\",\"sq\": \"\",\"la\": \"\",\"fa\": \""+fa+"\",\"te\": \"\",\"pv\": \"\",\"ar\": \"\",\"ct\": \"\"}}";
                     System.out.println("提交："+upIsonStr);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-
                 break;
             case R.id.remarks_layout:
                 date_str = day.getText().toString();

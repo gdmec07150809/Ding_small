@@ -39,6 +39,7 @@
     <color name="dialog_bg">#145895</color>
 
 
+
     <!--新的颜色方案-->
     <color name="theme_color">#1cd39b</color><!--主题色-->
     <color name="theme_bg">#f8f8f8</color><!--背景色-->
@@ -49,4 +50,15 @@
     <color name="hui_rule">#EFEFEF</color>
     <color name="hint_color">#9f9f9f</color>
 
+    <color name="repair_bg1">#FF8D69</color><!--噪音,不通电-->
+    <color name="repair_bg2">#F8756D</color><!--漏电-->
+    <color name="repair_bg3">#81C14C</color><!--漏气-->
+    <color name="repair_bg4">#7CA0EA</color><!--漏水-->
+    <color name="repair_bg5">#4DABF5</color><!--不制冷-->
+    <color name="repair_bg6">#FFC233</color><!--不发光-->
+    <color name="repair_bg7">#BC6CC9</color><!--排气-->
+    <color name="repair_bg8">#33C9DD</color><!--不排水,不充电-->
+    <color name="repair_bg9">#A2CF6E</color><!--不印刷-->
+    <color name="repair_bg10">#F27573</color><!--外观,防水-->
+    <color name="repair_bg11">#4DA2EF</color><!--其他-->
 </resources>

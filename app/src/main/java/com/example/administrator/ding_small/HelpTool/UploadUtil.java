@@ -68,6 +68,7 @@ public class UploadUtil {
     public static final int UPLOAD_SERVER_ERROR_CODE = 3;
     protected static final int WHAT_TO_UPLOAD = 1;
     protected static final int WHAT_UPLOAD_DONE = 2;
+    private static final int TIME_OUT = 10*1000;   //超时时间
 
     /**
      * android上传文件到服务器
@@ -79,7 +80,7 @@ public class UploadUtil {
      * @param RequestURL
      *            请求的URL
      */
-    public static void uploadFile(String filePath, String fileKey, String RequestURL,
+    public static void uploadFile(String filePath, String fileKey, String RequestURL,String sign,
                            Map<String, String> param) {
         if (filePath == null) {
             sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
@@ -87,7 +88,7 @@ public class UploadUtil {
         }
         try {
             File file = new File(filePath);
-            uploadFile(file, fileKey, RequestURL, param);
+            uploadFile(file, fileKey, RequestURL,sign, param);
         } catch (Exception e) {
             sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
             e.printStackTrace();
@@ -106,7 +107,7 @@ public class UploadUtil {
      *            请求的URL
      */
     public static void uploadFile(final File file, final String fileKey,
-                                  final String RequestURL, final Map<String, String> param) {
+                                  final String RequestURL, final String sign ,final Map<String, String> param) {
         if (file == null || (!file.exists())) {
             sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
             return;
@@ -118,13 +119,13 @@ public class UploadUtil {
         new Thread(new Runnable() {  //开启线程上传文件
             @Override
             public void run() {
-                toUploadFile(file, fileKey, RequestURL, param);
+                toUploadFile(file, fileKey, RequestURL, sign,param);
             }
         }).start();
 
     }
 
-    private static void toUploadFile(File file, String fileKey, String RequestURL,
+    private static void toUploadFile(File file, String fileKey, String RequestURL,String sign,
                                      Map<String, String> param) {
         String result = null;
         requestTime= 0;
@@ -143,6 +144,7 @@ public class UploadUtil {
             conn.setRequestMethod("POST"); // 请求方式
             conn.setRequestProperty("Charset", CHARSET); // 设置编码
             conn.setRequestProperty("connection", "keep-alive");
+            conn.setRequestProperty("sign", sign);
             conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
             conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
 //          conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -183,8 +185,8 @@ public class UploadUtil {
              */
             sb.append(PREFIX).append(BOUNDARY).append(LINE_END);
             sb.append("Content-Disposition:form-data; name=\"" + fileKey
-                    + "\"; filename=\"" + file.getName() + "\"" + LINE_END);
-            sb.append("Content-Type:image/pjpeg" + LINE_END); // 这里配置的Content-type很重要的 ，用于服务器端辨别文件的类型的
+                    + "\"; file-name=\"" + file.getName() + "\"" + LINE_END);
+            sb.append("Content-Type:image/jpeg" + LINE_END); // 这里配置的Content-type很重要的 ，用于服务器端辨别文件的类型的
             sb.append(LINE_END);
             params = sb.toString();
             sb = null;
@@ -316,7 +318,89 @@ public class UploadUtil {
 
     }
 
+    /**
+     * android上传文件到服务器
+     * @param file  需要上传的文件
+     * @param RequestURL  请求的rul
+     * @return  返回响应的内容
+     */
+    public static String uploadFile(File file,String RequestURL){
+        String result = null;
+        String  BOUNDARY =  UUID.randomUUID().toString();  //边界标识   随机生成
+        String PREFIX = "--" , LINE_END = "\r\n";
+        String CONTENT_TYPE = "multipart/form-data";   //内容类型
 
+        try {
+            URL url = new URL(RequestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(TIME_OUT);
+            conn.setConnectTimeout(TIME_OUT);
+            conn.setDoInput(true);  //允许输入流
+            conn.setDoOutput(true); //允许输出流
+            conn.setUseCaches(false);  //不允许使用缓存
+            conn.setRequestMethod("POST");  //请求方式
+            conn.setRequestProperty("Charset", CHARSET);  //设置编码
+            conn.setRequestProperty("connection", "keep-alive");
+            conn.setRequestProperty("sign", "3b8feee93126f446a9937e90366ae6a4");//签名
+            conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
+            conn.connect();
+
+            if(file!=null){
+                /**
+                 * 当文件不为空，把文件包装并且上传
+                 */
+                DataOutputStream dos = new DataOutputStream( conn.getOutputStream());
+                StringBuffer sb = new StringBuffer();
+                sb.append(PREFIX);
+                sb.append(BOUNDARY);
+                sb.append(LINE_END);
+                /**
+                 * 这里重点注意：
+                 * name里面的值为服务器端需要key   只有这个key 才可以得到对应的文件
+                 * filename是文件的名字，包含后缀名的   比如:abc.png
+                 */
+
+                System.out.println("文件名："+file.getName());
+                sb.append("Content-Disposition: form-data; name=\"file9\"; filename=\""+file.getName()+"\""+LINE_END);
+                sb.append("Content-Type:image/pjpeg; charset="+CHARSET+LINE_END);
+                sb.append(LINE_END);
+                dos.write(sb.toString().getBytes());
+                InputStream is = new FileInputStream(file);
+                byte[] bytes = new byte[1024];
+                int len = 0;
+                while((len=is.read(bytes))!=-1){
+                    dos.write(bytes, 0, len);
+                }
+                is.close();
+                dos.write(LINE_END.getBytes());
+                byte[] end_data = (PREFIX+BOUNDARY+PREFIX+LINE_END).getBytes();
+                dos.write(end_data);
+                dos.flush();
+                /**
+                 * 获取响应码  200=成功
+                 * 当响应成功，获取响应的流
+                 */
+                int res = conn.getResponseCode();
+                if(res==200){
+                    InputStream input =  conn.getInputStream();
+                    StringBuffer sb1= new StringBuffer();
+                    int ss ;
+                    while((ss=input.read())!=-1){
+                        sb1.append((char)ss);
+                    }
+                    result = sb1.toString();
+                    System.out.println(result);
+                }
+            }
+        } catch (MalformedURLException e) {
+            sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 
 }

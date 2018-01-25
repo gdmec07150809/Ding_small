@@ -128,7 +128,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.103:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = "http://192.168.1.108:8080/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -710,7 +710,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.103:8080/app/ppt6000/updateDate.do";
+        String url = "http://192.168.1.108:8080/app/ppt6000/updateDate.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -736,7 +736,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             String pc[]=str_location.split("-");
 
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.103:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.108:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"macNo\": \"" + device_mac + "\",\"eqpId\": \"" + device_id + "\",\"memFullName\": \"" + repair_user_str + "\"," +
@@ -818,7 +818,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.103:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            String url = "http://192.168.1.108:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串

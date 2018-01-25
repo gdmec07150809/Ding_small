@@ -1,16 +1,19 @@
 package com.example.administrator.ding_small.Fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
@@ -27,12 +30,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.administrator.ding_small.R.id.textView1;
+import static com.example.administrator.ding_small.R.id.zxing_viewfinder_view;
 
 
 /**
  * Created by CZK on 2017/11/30.
  */
-
+    /*用于报修*/
 public class Fragment1 extends Fragment {
     private GridView gridView;
     private List<Map<String, Object>> dataList;
@@ -40,7 +44,10 @@ public class Fragment1 extends Fragment {
     private LinearLayout layout;
     LinearLayout ll,two;
     RelativeLayout action;
+    ImageView title_img,img;
     private String atTime,at_action;
+
+
     //图标
     int icno[] =null;
     //图标下的文字
@@ -85,86 +92,667 @@ public class Fragment1 extends Fragment {
                     startActivity(intent);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }else{
+
                    TextView action_text=getActivity().findViewById(R.id.action_text);
                     action=getActivity().findViewById(R.id.action);
+                    title_img=getActivity().findViewById(R.id.title_img);
                     at_action=dataList.get(arg2).get("text").toString();
                     action_text.setText(at_action);
                     /*该方法待考虑*/
                     switch (arg2){
                         case 0:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg1));
+                           // icno[arg2]=R.mipmap.fix_icon_noele_active;
+
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg1));
+                            title_img.setImageResource(R.mipmap.fix_icon_noele_active);
+
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_active);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
+
                             break;
                         case 1:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg2));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg8));
+                            title_img.setImageResource(R.mipmap.fix_icon_nocharge_active);
+
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
 
                             break;
                         case 2:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg3));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg6));
+                            title_img.setImageResource(R.mipmap.fix_icon_nolight_active);
+
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
+
                             break;
                         case 3:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg4));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg5));
+                            title_img.setImageResource(R.mipmap.fix_icon_nocold_active);
 
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 4:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg5));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg7));
+                            title_img.setImageResource(R.mipmap.fix_icon_paiqi_active);
 
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 5:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg6));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg10));
+                            title_img.setImageResource(R.mipmap.fix_icon_umbrella_active);
 
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 6:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg7));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg8));
+                            title_img.setImageResource(R.mipmap.fix_icon_paishui_active);
+                           // arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_paishui_active);
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
 
                             break;
                         case 7:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg8));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg4));
+                            title_img.setImageResource(R.mipmap.fix_icon_loushui_active);
+                            //arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_loushui_active);
 
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 8:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg9));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg2));
+                            title_img.setImageResource(R.mipmap.fix_icon_loudian_active);
+                            //arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_loudian_active);
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 9:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg10));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg3));
+                            title_img.setImageResource(R.mipmap.fix_icon_louqi_active);
+                            //arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_louqi_active);
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 10:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg11));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg1));
+                            title_img.setImageResource(R.mipmap.fix_icon_noise_active);
+                            //arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_noise_active);
+
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noise_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 11:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg12));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg10));
+                            title_img.setImageResource(R.mipmap.fix_icon_surface_active);
+                            //arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_surface_active);
+
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noise_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 12:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg13));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg9));
+                            title_img.setImageResource(R.mipmap.fix_icon_print_active);//标题图片
+                            //arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_print_active);//item图片
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_active);
+                            /*设置未激活item*/
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noise_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(13).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_normal);
                             break;
                         case 13:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg14));
-                            break;
-                        case 14:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg1));
-                            break;
-                        case 15:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg2));
-                            break;
-                        case 16:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg3));
-                            break;
-                        case 17:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg4));
-                            break;
-                        case 18:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg5));
-                            break;
-                        case 19:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg6));
-                            break;
-                        case 20:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg7));
-                            break;
-                        case 21:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg8));
-                            break;
-                        case 22:
-                            action.setBackgroundColor(getResources().getColor(R.color.bg9));
+                            action.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.repair_bg11));
+                            title_img.setImageResource(R.mipmap.fix_icon_others_active);
+                            //arg0.findViewById(R.id.img).setBackgroundResource(R.mipmap.fix_icon_others_active);
+
+                            img=arg0.getChildAt(arg2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_others_active);
+
+                            img=arg0.getChildAt(0).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noele_normal);
+
+                            img=arg0.getChildAt(1).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocharge_normal);
+
+                            img=arg0.getChildAt(2).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nolight_normal);
+
+                            img=arg0.getChildAt(3).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_nocold_normal);
+
+                            img=arg0.getChildAt(4).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paiqi_normal);
+
+                            img=arg0.getChildAt(5).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_umbrella_normal);
+
+                            img=arg0.getChildAt(6).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_paishui_normal);
+
+                            img=arg0.getChildAt(7).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loushui_normal);
+
+                            img=arg0.getChildAt(8).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_loudian_normal);
+
+                            img=arg0.getChildAt(9).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_louqi_normal);
+
+                            img=arg0.getChildAt(10).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_noise_normal);
+
+                            img=arg0.getChildAt(11).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_surface_normal);
+
+                            img=arg0.getChildAt(12).findViewById(R.id.img);
+                            img.setImageResource(R.mipmap.fix_icon_print_active);
                             break;
                     }
                 }

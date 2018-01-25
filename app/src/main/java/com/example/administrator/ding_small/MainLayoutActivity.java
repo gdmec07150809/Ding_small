@@ -80,7 +80,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         init();//初始化控
-        getCacheUser();//获取用户信息
+        //getCacheUser();//获取用户信息
         // ifApm();//判断上下午
         initPager();//轮播图
 
@@ -128,19 +128,21 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         String Sign = url + memid + token + ts;
         System.out.println("UserSign:" + Sign);
         UserSign = MD5Utils.md5(Sign);
-        new Thread(getUserTask).start();//获取用户信息，启动
+      //  new Thread(getUserTask).start();//获取用户信息，启动
     }
     private void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";
+       // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";轮播图
+        String url = "http://192.168.1.108:8080/app/ppt7000/memberImgUpload.do";
         ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        System.out.println("首页：memId" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("Sign:" + Sign);
         sign = MD5Utils.md5(Sign);
-        //new Thread(networkTask).start();//获取设备列表
+        System.out.println("加密sign:" + sign);
+      // new Thread(networkTask).start();//获取轮播图
     }
 
     Runnable runnable = new Runnable() {
@@ -576,9 +578,11 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             // 在这里进行 http request.网络请求相关操作
 
             //System.out.println("图片："+getBitmap.getBitmapPhoto("https://avatar.csdn.net/C/3/5/1_hmyang314.jpg"));
-            String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do?memId=" + memid + "&ts=" + ts ;
+           // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do?memId=" + memid + "&ts=" + ts ;轮播图
+            String url = "http://192.168.1.117:8080/app/secr9000/statisticsSummarySecr9000.do?memId=" + memid + "&ts=" + ts ;
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b = "{\"advType\":\"0\",\"dateNow \":\""+ts+"\"}";//json字符串
+          //  String b = "{\"advType\":\"0\",\"dateNow \":\""+ts+"\"}";//轮播图json字符串
+            String b = "{\"dateFm\":\"2017-12-01\",\"dateTo\":\"2018-03-01\",\"memId\":\""+memid+"\"}";//json字符串
             System.out.println("验证：" + sign +" "+b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()

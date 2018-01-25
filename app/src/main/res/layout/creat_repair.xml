@@ -51,16 +51,36 @@
             android:layout_below="@+id/head"
             android:layout_marginTop="10dp"
             android:background="@color/action">
-            <TextView
-                android:id="@+id/action_text"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="8pt"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:textColor="@color/white"
-                android:text="不通电"
-               android:layout_centerVertical="true"/>
+                android:orientation="horizontal">
+                    <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/c_shadow">
+                    <ImageView
+                        android:id="@+id/title_img"
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                       android:layout_centerInParent="true"
+                        android:src="@mipmap/fix_icon_loushui_active"/>
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/action_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="8pt"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/white"
+                    android:text="不通电"
+                    android:layout_centerVertical="true"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +110,7 @@
                     android:id="@+id/c_btn"
                     android:layout_below="@+id/action"
                     android:layout_width="match_parent"
-                    android:background="@color/time_bg_color"
+                    android:background="@color/white"
                     android:layout_height="300dp">
                     <android.support.v4.view.ViewPager
                         android:id="@+id/viewPager"
@@ -99,6 +119,10 @@
                         android:layout_height="wrap_content">
                     </android.support.v4.view.ViewPager>
                 </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px30"
+                    android:background="@drawable/shadow_line"/>
                 <RelativeLayout
                     android:id="@+id/time_day"
                     android:layout_width="match_parent"
@@ -185,7 +209,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
-           <include layout="@layout/confirm_submit"/>
+
+            <include layout="@layout/confirm_submit"/>
         </LinearLayout>
     </RelativeLayout>
 

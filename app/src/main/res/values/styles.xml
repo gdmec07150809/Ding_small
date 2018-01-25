@@ -143,4 +143,9 @@
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/theme_color</item>
     </style>
+
+    <!-- CustomCheckBox theme -->
+      <style name="CheckBoxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+         <item name="android:button">@drawable/new_checkbox_style</item>
+      </style>
 </resources>

@@ -54,10 +54,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -89,7 +92,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
-    private String adress, str_location;
+    private String adress, str_location,path;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -124,6 +127,8 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         signature_value = findViewById(R.id.signature_value);
 
         getCacheUser();//获取用户信息
+        getCachePhoto();
+        //upPhoto();
         getLocation();//获取地址
         changeTextView();//更改语言
         initJsonData();//地址数据
@@ -140,7 +145,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         String Sign = url + memid + token + ts;
         System.out.println("UserSign:" + Sign);
         UserSign = MD5Utils.md5(Sign);
-        new Thread(getUserTask).start();//获取用户信息,启动
+       // new Thread(getUserTask).start();//获取用户信息,启动
     }
 
     private void setUser() {
@@ -205,6 +210,20 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         sign = MD5Utils.md5(Sign);
     }
 
+    private void getCachePhoto() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";轮播图
+        String url = "http://192.168.1.108:8080/app/ppt7000/memberImgUpload.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：memId" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("Sign:" + Sign);
+        sign = MD5Utils.md5(Sign);
+        System.out.println("加密sign:" + sign);
+        // new Thread(networkTask).start();//获取轮播图
+    }
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -373,11 +392,17 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String picturePath = cursor.getString(columnIndex);
                     Toast.makeText(this, picturePath, Toast.LENGTH_SHORT).show();
+
                     System.out.println(picturePath);
                     cursor.close();
                     // 将图片显示到界面上
+                    path=picturePath;
+
+                     new Thread(run).start();
+
+
                     head_img.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                   // UploadUtil.uploadFile(picturePath,);上传图片方法
+
                 }
                 break;
             default:
@@ -385,16 +410,27 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         }
     }
 
+
+    /**
+     * 网络操作相关的子线程okhttp框架  获取用户信息
+     */
+    Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            String url="http://192.168.1.108:8080/app/ppt7000/memberImgUpload.do?memId=34e6af429fff444f911611fa2c9f5ecd&ts=1516868805051";
+            File file = new File(path);
+            System.out.println("路径："+path+"  :  "+file);
+            UploadUtil.uploadFile(file,url);
+        }
+    };
     //性别底部弹出菜单
     private void setDialog() {
         LinearLayout root = null;
         mCameraDialog = new Dialog(this, R.style.Dialog);
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.select_sex_layout, null);
-
-        RadioGroup radioGroup = root.findViewById(R.id.group);
-
-
+             RadioGroup radioGroup = root.findViewById(R.id.group);
         if (sex_value.getText().toString().equals("男")) {
             RadioButton radioButton = root.findViewById(R.id.button1);
             radioButton.setChecked(true);
@@ -791,5 +827,4 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         }
 
     };
-
 }

@@ -445,7 +445,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
 
                     arrayList.add(bitmap);
-                    if (arrayList.size() == 10) {
+                    if (arrayList.size() == 5) {
                         arrayList.remove(0);
                     }
                     /*更新图片布局*/
@@ -465,15 +465,20 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         imageView.setLayoutParams(params);
                         found_activity_fyt = findViewById(R.id.found_activity_fyt);
                         found_activity_fyt.addView(imageView);//将内容添加到布局中
-                        imageView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {//添加点击事件
-                                if (found_activity_fyt.getChildCount() < 10) {
-                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(intent, 11);
+
+                            System.out.println("图片数2："+ found_activity_fyt.getChildCount()+":"+i);
+                            imageView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {//添加点击事件
+                                    System.out.println("图片数：" + found_activity_fyt.getChildCount());
+                                    //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
+                                    if (found_activity_fyt.getChildCount() < 5) {
+                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        startActivityForResult(intent, 11);
+                                    }
                                 }
-                            }
-                        });
+                            });
+
                     }
 
                     FileOutputStream b = null;
@@ -695,6 +700,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {//添加点击事件
+                      for(int i=0;i<found_activity_fyt.getChildCount();i++){
+                          found_activity_fyt.getChildAt(i).setClickable(false);
+                      }
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(intent, 11);
 

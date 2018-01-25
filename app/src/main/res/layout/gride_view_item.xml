@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/img"
         style="@style/cStyle"
-        android:background="@drawable/c9_bg"
+        android:src="@drawable/c9_bg"
         />
     <TextView
         android:id="@+id/text"
