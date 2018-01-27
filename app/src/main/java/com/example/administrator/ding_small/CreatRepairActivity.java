@@ -1,12 +1,16 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,16 +31,27 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.Adapter.MFragmentPagerAdapter;
 import com.example.administrator.ding_small.Fragment.Fragment1;
 import com.example.administrator.ding_small.Fragment.Fragment2;
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 
 import org.feezu.liuli.timeselector.TimeSelector;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by CZK on 2017/12/20.
@@ -99,7 +114,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         findViewById(R.id.back).setOnClickListener(this);
         confirmation=findViewById(R.id.confirmation);
         repair_user=findViewById(R.id.repair_user);
-
+        getCache();//获取缓存
         getBundleString();
         //获取当前年月日时分
         Time t = new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
@@ -121,6 +136,18 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
 
     }
 
+    private void getCache() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://192.168.1.113:8080/app/ppt7000/intsertPpt7000.do";//报修
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("提交报修：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("Sign:" + Sign);
+        sign = MD5Utils.md5(Sign);
+        //new Thread(repairTask).start();//提交报修
+    }
     private void getBundleString() {
         Bundle getStringValue = this.getIntent().getExtras();
         if (getStringValue.getString("explain") != null) {
@@ -161,16 +188,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                 if(setValue.equals("未填写")){
                     Toast.makeText(CreatRepairActivity.this,"请填写信息",Toast.LENGTH_SHORT).show();
                 }else{
-                    String title=action_text.getText().toString();
-                    intent = new Intent(CreatRepairActivity.this, DeviceListActivity.class);
-                    //"parentId":"34e6af429fff444f911611fa2c9f5ecd"
-                    String upIsonStr="{\"repireDescription\": \""+repireDescription+"\",\"opName\": \""+opName+"\",\"parentId\": \""+memid+"\"," +
-                                    "\"handleDate\": \""+atTime+"\",\"repireTitle\": \""+title+"\",\"eqpId\": \""+device_id+"\"," +
-                                    "\"memPhone\": \""+memPhone+"\",\"otherInfoJson\": {\"lo\": \"\"," +
-                                    "\"dt\": \"\",\"da\": \"\",\"pc\": \"\",\"sq\": \"\",\"la\": \"\",\"fa\": \""+fa+"\",\"te\": \"\",\"pv\": \"\",\"ar\": \"\",\"ct\": \"\"}}";
-                    System.out.println("提交："+upIsonStr);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    new Thread(repairTask).start();
                 }
                 break;
             case R.id.remarks_layout:
@@ -197,6 +215,92 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         }
     }
 
+    /**
+     * 网络操作相关的子线程okhttp框架  获取设备
+     */
+    Runnable repairTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+
+            String title=action_text.getText().toString();
+            String url = "http://192.168.1.113:8080/app/ppt7000/intsertPpt7000.do?memId=" + memid + "&ts=" + ts ;
+            OkHttpClient okHttpClient = new OkHttpClient();
+            System.out.println("验证：" + sign);
+            String b="{\"repireDescription\": \""+repireDescription+"\",\"opName\": \""+opName+"\",\"parentId\": \""+memid+"\"," +
+                    "\"handleDate\": \""+atTime+"\",\"repireTitle\": \""+title+"\",\"eqpId\": \""+device_id+"\"," +
+                    "\"memPhone\": \""+memPhone+"\",\"otherInfoJson\": {\"lo\": \"\"," +
+                    "\"dt\": \"\",\"da\": \"\",\"pc\": \"\",\"sq\": \"\",\"la\": \"\",\"fa\": \""+fa+"\",\"te\": \"\",\"pv\": \"\",\"ar\": \"\",\"ct\": \"\"}}";
+
+            System.out.println("提交："+b);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn", sign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result = response.body().string();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    Message message = new Message();
+                    message.what = SHOW_RESPONSE;
+                    message.obj = result.toString();
+                    getReqirHandler.sendMessage(message);
+                }
+                System.out.println("结果：" + result + "状态码：" + response.code());
+                //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private Handler getReqirHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
+                        if (object1.getString("res").equals("00000")) {
+                            new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage("已报修").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    Intent intent=new Intent(CreatRepairActivity.this,DeviceListActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                }
+                            }).show();
+                        } else {
+                            new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
     /**
      * 初始化页卡内容区
      */

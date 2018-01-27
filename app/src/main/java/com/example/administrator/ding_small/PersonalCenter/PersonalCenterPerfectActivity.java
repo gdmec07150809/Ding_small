@@ -78,7 +78,7 @@ import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddr
 public class PersonalCenterPerfectActivity extends Activity implements View.OnClickListener {
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, UserSign, oldPass, newPass, ts, c_newPass,sign,nameStr;
+    String memid, token, UserSign, oldPass, newPass, ts, photoSign,c_newPass,sign,nameStr;
     public static final int SHOW_RESPONSE = 0;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
 
@@ -145,7 +145,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         String Sign = url + memid + token + ts;
         System.out.println("UserSign:" + Sign);
         UserSign = MD5Utils.md5(Sign);
-       // new Thread(getUserTask).start();//获取用户信息,启动
+        new Thread(getUserTask).start();//获取用户信息,启动
     }
 
     private void setUser() {
@@ -204,7 +204,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
        // String url = "http://192.168.1.103:8080/api/user/logout.do";
 
         ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        System.out.println("登出：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("Sign:" + Sign);
         sign = MD5Utils.md5(Sign);
@@ -215,13 +215,13 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";轮播图
-        String url = "http://192.168.1.108:8080/app/ppt7000/memberImgUpload.do";
+        String url = "http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do";
         ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：memId" + memid + "  ts:" + ts + "  token:" + token);
+        System.out.println("上传图片：memId" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("Sign:" + Sign);
-        sign = MD5Utils.md5(Sign);
-        System.out.println("加密sign:" + sign);
+        photoSign = MD5Utils.md5(Sign);
+        System.out.println("加密sign:" + photoSign);
         // new Thread(networkTask).start();//获取轮播图
     }
     @Override
@@ -397,10 +397,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     cursor.close();
                     // 将图片显示到界面上
                     path=picturePath;
-
-                     new Thread(run).start();
-
-
+                     //new Thread(run).start();
                     head_img.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
                 }
@@ -412,16 +409,16 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 
 
     /**
-     * 网络操作相关的子线程okhttp框架  获取用户信息
+     * 网络操作相关的子线程okhttp框架 上传头像
      */
     Runnable run = new Runnable() {
         @Override
         public void run() {
             // TODO
-            String url="http://192.168.1.108:8080/app/ppt7000/memberImgUpload.do?memId=34e6af429fff444f911611fa2c9f5ecd&ts=1516868805051";
+            String url="http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
             File file = new File(path);
-            System.out.println("路径："+path+"  :  "+file);
-            UploadUtil.uploadFile(file,url);
+            System.out.println("路径："+path+"  :  "+file+" : "+photoSign+" : "+url);
+            UploadUtil.uploadFile(file,url,photoSign);
         }
     };
     //性别底部弹出菜单

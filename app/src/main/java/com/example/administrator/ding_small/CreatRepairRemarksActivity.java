@@ -43,8 +43,11 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.example.administrator.ding_small.Label.EditLabelActivity;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
+import com.weavey.loading.lib.LoadingLayout;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -64,8 +67,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
+import static android.R.attr.path;
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
 import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
@@ -86,12 +91,15 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     private String latitude_str, longitude_str, province_str, temperature_str,location_str;
     private FlowLayout found_activity_fyt;
     private ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
+    private ArrayList<String> photoPath=new ArrayList<String>();
 
     private EditText repair_user,repair_phone,remark_text;
 
     public static final int SHOW_RESPONSE = 0;
     private static final String tokeFile = "repairFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
+    String memid,token,ts,upPhotoSign;
+    private LoadingLayout loading;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +120,17 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     editor.putString("repireDescription", remark_str);*/
         //repair_user,repair_phone,remark_text
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do";
+        //String url = "http://192.168.1.103:8080/api/user/logout.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("上传图片：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("upPhotoSign:" + Sign);
+        upPhotoSign = MD5Utils.md5(Sign);
+
+
         repair_user.setText(sp.getString("opName", ""));
         repair_phone.setText(sp.getString("memPhone", ""));
         remark_text.setText(sp.getString("repireDescription", ""));
@@ -201,6 +220,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         new_remarks_img = findViewById(R.id.new_remarks_img);
 
         adress_text = findViewById(R.id.adress_text);
+
+
+        loading = findViewById(R.id.loading_layout);
     }
 
     @Override
@@ -386,6 +408,11 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 if(user_str.equals("")||phone_str.equals("")||remark_str.equals("")){
                     Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
                 }else{
+                    if(photoPath!=null&&photoPath.size()>0){
+                        loading.setStatus(LoadingLayout.Loading);
+                        new Thread(upPhotoTask).start();
+                        loading.setStatus(LoadingLayout.Success);//状态取消
+                    }
                     Bundle bundle = new Bundle();
                     String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + location_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
                     String otherInfoJson_str="{\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"\" + location_str + \"\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}";
@@ -486,6 +513,8 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     file.mkdirs();// 创建文件夹
                     String fileName = "/sdcard/Image/" + name;
 
+                    photoPath.add(fileName);
+
                     try {
                         b = new FileOutputStream(fileName);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
@@ -505,6 +534,23 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         }
 
     }
+
+    /**
+     * 网络操作相关的子线程okhttp框架 上传多图片
+     */
+    Runnable upPhotoTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            String url="http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
+            for(int i=0;i<photoPath.size();i++){
+              File file = new File(photoPath.get(i));
+              System.out.println("路径"+i+"："+photoPath.get(i)+"  :  "+file+" : "+upPhotoSign+" : "+url);
+              UploadUtil.uploadFile(file,url,upPhotoSign);
+            }
+
+        }
+    };
 
     private void showDetelePhotoDialog(final int number) {
         /* @setIcon 设置对话框图标

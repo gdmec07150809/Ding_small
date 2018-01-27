@@ -93,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="100px">
             <TextView
+                android:id="@+id/location_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30px"
@@ -106,7 +107,10 @@
                android:layout_toLeftOf="@+id/location_img"
                 android:layout_centerVertical="true"
                 android:hint="未选择"
+                android:layout_marginLeft="14dp"
+                android:layout_toRightOf="@+id/location_text"
                 android:background="@null"
+                android:gravity="right"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <ImageView

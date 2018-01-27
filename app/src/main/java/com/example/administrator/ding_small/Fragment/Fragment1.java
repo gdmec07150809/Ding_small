@@ -752,7 +752,7 @@ public class Fragment1 extends Fragment {
                             img.setImageResource(R.mipmap.fix_icon_surface_normal);
 
                             img=arg0.getChildAt(12).findViewById(R.id.img);
-                            img.setImageResource(R.mipmap.fix_icon_print_active);
+                            img.setImageResource(R.mipmap.fix_icon_print_normal);
                             break;
                     }
                 }

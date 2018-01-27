@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.weavey.loading.lib.LoadingLayout;
 
 import org.apache.http.HttpEntity;
@@ -103,11 +104,12 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, sign, oldPass, newPass, ts, c_newPass;
+    String memid, token, sign, oldPass, newPass, ts, c_newPass,upPhotoSign;
     // longitude_str,latitude_str,str_location,temperature_str
     private JSONObject DataObject;
     String repair_user_str, selling_edit_str, selling_location_edit_str, selling_user_edit_str, selling_phone_edit_str, address_edit_str;
-
+    private ArrayList<String>  upPhotoPath=new ArrayList<String>();
+    private LoadingLayout loading;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,7 +130,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.108:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -136,6 +138,16 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         sign = MD5Utils.md5(Sign);
 
         new Thread(getDeta).start();//获取该设备详情
+    }
+
+    private void UpPhotoCache(){
+        String url = "http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do";
+        //String url = "http://192.168.1.103:8080/api/user/logout.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("上传图片：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("upPhotoSign:" + Sign);
+        upPhotoSign = MD5Utils.md5(Sign);
     }
     private void changeTextView() {
         // back_text,perfect_device_information,custom_name_text,selling_name_text,selling_location_text,selling_user_name_text,selling_phone_text,location_parameters_text,address_text
@@ -248,6 +260,8 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
         address_edit_text = findViewById(R.id.address_edit_text);
         temperature = findViewById(R.id.temperature);
+
+        loading = findViewById(R.id.loading_layout);
     }
 
     @Override
@@ -265,6 +279,11 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
                     Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
                 } else {
+                    if(upPhotoPath.size()>0&&upPhotoPath!=null){
+                        UpPhotoCache();//获取签名,id,ts,token
+                        loading.setStatus(LoadingLayout.Loading);
+                        new Thread(upPhotoTask).start();
+                    }
                     getCache();
                 }
 //                   intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
@@ -377,8 +396,9 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
 
                     arrayList.add(bitmap);
-                    if (arrayList.size() == 10) {
+                    if (arrayList.size() == 5) {
                         arrayList.remove(0);
+                        found_activity_fyt.setClickable(false);
                     }
                     /*清空所有图片布局*/
                     found_activity_fyt.removeAllViews();
@@ -398,13 +418,11 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                         found_activity_fyt = findViewById(R.id.found_activity_fyt);
                         found_activity_fyt.addView(imageView);//将内容添加到布局中
                         //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
-                        if (found_activity_fyt.getChildCount() == 9) {
-                            imageView.setClickable(false);
-                        } else if (i == found_activity_fyt.getChildCount() - 1) {
+
                             imageView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {//添加点击事件
-                                    if (found_activity_fyt.getChildCount() < 10) {
+                                    if (found_activity_fyt.getChildCount() < 5) {
                                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                         startActivityForResult(intent, 11);
                                     }
@@ -419,13 +437,14 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                                    }
                                });
                            }
-                        }
                     }
 
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
                     String fileName = "/sdcard/Image/" + name;
+
+                    upPhotoPath.add(fileName);
 
                     try {
                         b = new FileOutputStream(fileName);
@@ -455,6 +474,23 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
     }
 
+
+    /**
+     * 网络操作相关的子线程okhttp框架 上传多图片
+     */
+    Runnable upPhotoTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            String url="http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
+            for(int i=0;i<upPhotoPath.size();i++){
+                File file = new File(upPhotoPath.get(i));
+                System.out.println("路径"+i+"："+upPhotoPath.get(i)+"  :  "+file+" : "+upPhotoSign+" : "+url);
+                UploadUtil.uploadFile(file,url,upPhotoSign);
+            }
+
+        }
+    };
     private void showDetelePhotoDialog(final int number) {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
@@ -785,13 +821,14 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
+                            loading.setStatus(LoadingLayout.Success);//状态取消
                             Intent intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("device_mac", device_mac);
                             intent.putExtras(bundle);
                             startActivity(intent);
                             } else {
-                                new AlertDialog.Builder(PerfectDeviceActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(PerfectDeviceActivity.this).setTitle("完善设备提示").setMessage("更新失败,请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         finish();
@@ -818,7 +855,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.108:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串

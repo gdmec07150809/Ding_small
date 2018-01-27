@@ -88,7 +88,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
             selling_phone, selling_user_name, lo_la_text, auto_text, location_detail_text, temperature_text, no_data_text;
 
     private String str_location = null;
-    private String latitude_str, longitude_str, province_str, temperature_str;
+    private String latitude_str, longitude_str, province_str, temperature_str,eqpStatus;
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
@@ -171,7 +171,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.108:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -571,7 +571,14 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 String selling_phone_str = selling_name.getText().toString().trim();
                 String selling_user_name_str = selling_name.getText().toString().trim();
 
-                if (selling_name_str.equals("") || selling_num_str.equals("") || selling_location_str.equals("") || selling_phone_str.equals("") || selling_user_name_str.equals("")) {
+                if(eqpStatus.equals("1")){
+                    new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("该设备已在维修中！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                           dialog.dismiss();
+                        }
+                    }).show();
+                }else if (selling_name_str.equals("") || selling_num_str.equals("") || selling_location_str.equals("") || selling_phone_str.equals("") || selling_user_name_str.equals("")) {
                     new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("请完善设备信息,再报修！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -788,7 +795,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.108:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
@@ -841,6 +848,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 System.out.println("data:  " + DataObject);
                                 device_name.setText(DataObject.getString("eqpName"));
                                 device_id=DataObject.getString("eqpId");
+                                eqpStatus=DataObject.getString("eqpStatus");
 
                                 sp = DeviceDetailActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
                                 SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态

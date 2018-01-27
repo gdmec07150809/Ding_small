@@ -322,9 +322,10 @@ public class UploadUtil {
      * android上传文件到服务器
      * @param file  需要上传的文件
      * @param RequestURL  请求的rul
+         * * @param sign  签名
      * @return  返回响应的内容
      */
-    public static String uploadFile(File file,String RequestURL){
+    public static String uploadFile(File file,String RequestURL,String sign){
         String result = null;
         String  BOUNDARY =  UUID.randomUUID().toString();  //边界标识   随机生成
         String PREFIX = "--" , LINE_END = "\r\n";
@@ -341,7 +342,7 @@ public class UploadUtil {
             conn.setRequestMethod("POST");  //请求方式
             conn.setRequestProperty("Charset", CHARSET);  //设置编码
             conn.setRequestProperty("connection", "keep-alive");
-            conn.setRequestProperty("sign", "3b8feee93126f446a9937e90366ae6a4");//签名
+            conn.setRequestProperty("sign", sign);//签名
             conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
             conn.connect();
 

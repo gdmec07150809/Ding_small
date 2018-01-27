@@ -73,13 +73,22 @@
                     android:textColor="#333333"/>
             </LinearLayout>
             <TextView
+                android:id="@+id/time_text"
                 android:layout_toLeftOf="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="#C8C8C8"
-                android:text="30秒"/>
+                android:text="30"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/px30"
+                android:textColor="#C8C8C8"
+                android:layout_toRightOf="@+id/time_text"
+                android:text="秒"/>
             <ImageView
                 android:id="@+id/time"
                 android:layout_width="@dimen/px30"

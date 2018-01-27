@@ -80,14 +80,14 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         init();//初始化控
-        //getCacheUser();//获取用户信息
+        getCacheUser();//获取用户信息
         // ifApm();//判断上下午
         initPager();//轮播图
 
         Handler handler = new Handler();
         handler.postDelayed(runnable, 100);
         changeLanguage();//设置语言
-        getCache();//获取轮播图
+        //getCache();//获取轮播图
 
     }
 
@@ -121,14 +121,13 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do";
-        //String url = "http://192.168.1.103:8080/api/user/logout.do";
 
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("UserSign:" + Sign);
         UserSign = MD5Utils.md5(Sign);
-      //  new Thread(getUserTask).start();//获取用户信息，启动
+         new Thread(getUserTask).start();//获取用户信息,启动
     }
     private void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
@@ -269,6 +268,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         task = new TimerTask() {
+            @Override
             public void run() {
                 if (mPager != null && nowPosition >= 0) {
                     mPager.setCurrentItem(nowPosition);
@@ -357,7 +357,11 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 break;
             case R.id.more_layout://更多功能暂未开发
              //   Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
-                System.out.println("32px:"+DensityUtil.px2sp(MainLayoutActivity.this,32));
+                //System.out.println("32px:"+DensityUtil.px2sp(MainLayoutActivity.this,32));
+                intent = new Intent(MainLayoutActivity.this, TestActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
                 break;
             case R.id.scan_layout://扫码功能
                 getCache();

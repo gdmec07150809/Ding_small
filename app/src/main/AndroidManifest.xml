@@ -127,6 +127,8 @@
 
         <activity android:name=".SelectLocationActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".SearchBoxActiivty"/>
+        <!--测试页面-->
+        <activity android:name=".TestActivity"/>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.WifiAdapter;
+import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.HelpTool.PermissionHelper;
 import com.example.administrator.ding_small.HelpTool.WifiAdmin;
 import com.weavey.loading.lib.LoadingLayout;
@@ -46,6 +48,7 @@ import com.weavey.loading.lib.LoadingLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -89,17 +92,26 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
 
     private int refreshTime = 30000;//默认30秒
 
+    private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+    SharedPreferences sp = null;//定义储存源，备用
+    String memid, token, UserSign, oldPass, newPass, ts, nameStr,sign;
+
     @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_search);
+        getTimeCache();//获取修改的时间
         init();//初始化控件
         changeTextView();//更改语言
         wifiUtils();//wifi代码类
         blueToothUtils();//蓝牙代码类
     }
 
+    private void getTimeCache() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        refreshTime = Integer.parseInt(sp.getString("time", "30"))*1000;
+    }
     private void changeTextView() {
         //wifi_text,bluetooth_text,back_text,nearby_devices_text,refresh_text
         if (Locale.getDefault().getLanguage().equals("en")) {
