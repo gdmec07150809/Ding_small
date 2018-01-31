@@ -46,6 +46,7 @@ import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.HelpTool.UploadUtil;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 import com.weavey.loading.lib.LoadingLayout;
 
 import org.apache.http.HttpEntity;
@@ -59,14 +60,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -77,13 +88,14 @@ import okhttp3.Response;
 
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
 import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
+import static com.example.administrator.ding_small.R.id.add;
 import static com.example.administrator.ding_small.R.id.date;
 
 /**
  * Created by CZK on 2017/12/21.
  */
 
-public class PerfectDeviceActivity extends Activity implements View.OnClickListener {
+public class PerfectDeviceActivity extends Activity implements View.OnClickListener ,View.OnLongClickListener{
     //private TextView location_text,photo_text,reimbursement_text,parameter_text,management_text,date_text,latitude,longitude,location,temperature,location_detail;
     private TextView dateT, location_text, photo_text, reimbursement_text, parameter, management_text, at_action, latitude, longitude, location, temperature, information_text, remarks_text, adress_text, leapfrog;
     private ImageView new_information_img, new_photo_img, new_remarks_img;
@@ -110,6 +122,9 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     String repair_user_str, selling_edit_str, selling_location_edit_str, selling_user_edit_str, selling_phone_edit_str, address_edit_str;
     private ArrayList<String>  upPhotoPath=new ArrayList<String>();
     private LoadingLayout loading;
+    List<File> fileList=new ArrayList<File>();
+    String fileName;
+    private ImageView addimg;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,8 +136,9 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         //getTimeNow();//获取当前时间
         getLocation();//获取当前经纬度
         getTemperature();//获取当前温度
-        Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
-        arrayList.add(icon);
+//        Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
+//        arrayList.add(icon);
+        loading.setStatus(LoadingLayout.Loading);
         getCache1();//获取设备eqpId
     }
 
@@ -130,7 +146,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = "http://192.168.1.105:8080/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -141,13 +157,14 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     }
 
     private void UpPhotoCache(){
-        String url = "http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do";
+        String url = "http://192.168.1.105:8080/app/ppt6000/ppt6000MemberImgUpload.do";
         //String url = "http://192.168.1.103:8080/api/user/logout.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("上传图片：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("upPhotoSign:" + Sign);
         upPhotoSign = MD5Utils.md5(Sign);
+        System.out.println("加密upPhotoSign:" + upPhotoSign);
     }
     private void changeTextView() {
         // back_text,perfect_device_information,custom_name_text,selling_name_text,selling_location_text,selling_user_name_text,selling_phone_text,location_parameters_text,address_text
@@ -260,6 +277,9 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
         address_edit_text = findViewById(R.id.address_edit_text);
         temperature = findViewById(R.id.temperature);
+        addimg=findViewById(R.id.addimg);
+        addimg.setOnClickListener(this);
+        addimg.setOnLongClickListener((OnLongClickListener) this);
 
         loading = findViewById(R.id.loading_layout);
     }
@@ -268,6 +288,10 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.addimg:
+                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 11);
+                break;
             case R.id.confrim_btn://确定
                 repair_user_str = repair_user.getText().toString().trim();//自定义名称
                 selling_edit_str = selling_edit_text.getText().toString().trim();//售点名称
@@ -279,19 +303,13 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
                     Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
                 } else {
-                    if(upPhotoPath.size()>0&&upPhotoPath!=null){
-                        UpPhotoCache();//获取签名,id,ts,token
-                        loading.setStatus(LoadingLayout.Loading);
-                        new Thread(upPhotoTask).start();
+                    if(fileList!=null&&fileList.size()>0){
+                        getCache();
+                    }else{
+                        System.out.println("没图片");
                     }
-                    getCache();
+
                 }
-//                   intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
-//                   Bundle bundle = new Bundle();
-//                   bundle.putString("device_mac", device_mac);
-//                   intent.putExtras(bundle);
-//                   intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                   startActivity(intent);
                 break;
             case R.id.icon_equiplist_boxdelete:
                 repair_user.setText("");
@@ -363,7 +381,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_active);
                 new_remarks_img.setBackgroundResource(R.mipmap.icon_equiplist_location_normal);
                 new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
-                labelFlowLayout(arrayList);
+              //  labelFlowLayout(arrayList);
                 break;
 
             default:
@@ -395,57 +413,18 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
 
-                    arrayList.add(bitmap);
-                    if (arrayList.size() == 5) {
-                        arrayList.remove(0);
-                        found_activity_fyt.setClickable(false);
-                    }
-                    /*清空所有图片布局*/
-                    found_activity_fyt.removeAllViews();
-                    //加载搜索记录
-                    for (int i = arrayList.size() - 1; i >= 0; i--) {
-                        final ImageView imageView = new ImageView(PerfectDeviceActivity.this);
-                        System.out.println("数组：" + arrayList.size());
-                        imageView.setImageBitmap(arrayList.get(i));
-                        imageView.setPadding(15, 10, 15, 10);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
-                        //设置边距
-                        params.topMargin = 30;
-                        params.bottomMargin = 5;
-                        params.leftMargin = 0;
-                        params.rightMargin = 8;
-                        imageView.setLayoutParams(params);
-                        found_activity_fyt = findViewById(R.id.found_activity_fyt);
-                        found_activity_fyt.addView(imageView);//将内容添加到布局中
-                        //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
-
-                            imageView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {//添加点击事件
-                                    if (found_activity_fyt.getChildCount() < 5) {
-                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                        startActivityForResult(intent, 11);
-                                    }
-                                }
-                            });
-                           if(found_activity_fyt.getChildCount()>1){
-                               imageView.setOnLongClickListener(new OnLongClickListener() {
-                                   @Override
-                                   public boolean onLongClick(View view) {
-                                       //showDetelePhotoDialog();长按 删除图片
-                                       return true;
-                                   }
-                               });
-                           }
-                    }
-
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
-                    String fileName = "/sdcard/Image/" + name;
+                    fileName = "/sdcard/Image/" + name;
+                    addimg.setClickable(false);
+                    addimg.setImageBitmap(bitmap);
 
-                    upPhotoPath.add(fileName);
-
+                    //upPhotoPath.add(fileName);
+                    File file1=new File(fileName);
+                    fileList.add(file1);
+                    UpPhotoCache();//获取签名,id,ts,token
+                    new Thread(upPhotoTask).start();
                     try {
                         b = new FileOutputStream(fileName);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
@@ -482,21 +461,23 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         @Override
         public void run() {
             // TODO
-            String url="http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
-            for(int i=0;i<upPhotoPath.size();i++){
-                File file = new File(upPhotoPath.get(i));
-                System.out.println("路径"+i+"："+upPhotoPath.get(i)+"  :  "+file+" : "+upPhotoSign+" : "+url);
-                UploadUtil.uploadFile(file,url,upPhotoSign);
-            }
+                String url="http://192.168.1.105:8080/app/ppt6000/ppt6000MemberImgUpload.do?memId="+memid+"&ts="+ts+"&eqpId="+device_id;
+                //String url="http://192.168.1.110:8080/app/ppt6000/ppt6000MemberImgUpload.do?memId="+memid+"&ts="+ts;
+                System.out.println("路径"+upPhotoPath+" : "+upPhotoSign+" : "+url+" : "+device_id);
+                String name="file14";
+                uploadFile(fileList,url,upPhotoSign,name,device_id,PerfectDeviceActivity.this);
+               // UploadUtil.uploadFile(fileList,url,upPhotoSign,name,device_id,PerfectDeviceActivity.this);
+
 
         }
     };
-    private void showDetelePhotoDialog(final int number) {
+    private void showDetelePhotoDialog() {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
          * @setMessage 设置对话框消息提示
          * setXXX方法返回Dialog对象，因此可以链式设置属性
          */
+        final Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(PerfectDeviceActivity.this);
         normalDialog.setTitle("删除");
@@ -506,23 +487,9 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //判断那个图片删除
-                        switch (number) {
-                            case 1:
-                                photo1.setImageResource(R.drawable.no_photo);
-                                break;
-                            case 2:
-                                photo2.setImageResource(R.drawable.no_photo);
-                                break;
-                            case 3:
-                                photo3.setImageResource(R.drawable.no_photo);
-                                break;
-                            case 4:
-                                photo4.setImageResource(R.drawable.no_photo);
-                                break;
-                            default:
-                                break;
-                        }
 
+                        addimg.setImageBitmap(icon);
+                        addimg.setClickable(true);
                     }
                 });
         normalDialog.setNegativeButton("关闭",
@@ -746,7 +713,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.108:8080/app/ppt6000/updateDate.do";
+        String url = "http://192.168.1.105:8080/app/ppt6000/updateDate.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -772,7 +739,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             String pc[]=str_location.split("-");
 
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.108:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.105:8080/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"macNo\": \"" + device_mac + "\",\"eqpId\": \"" + device_id + "\",\"memFullName\": \"" + repair_user_str + "\"," +
@@ -855,7 +822,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            String url = "http://192.168.1.105:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
@@ -904,11 +871,22 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                             if (object.getString("data") != null && !object.getString("data").equals("null")) {
                                 DataObject = new JSONObject(object.getString("data"));//该设备数据
                                 //loading.setStatus(LoadingLayout.Success);
-                                JSONObject FAObject = new JSONObject(DataObject.getString("eqpAddressJson"));//该设备数据
-                                //System.out.println("data:  " + DataObject);
-                                repair_user.setHint(DataObject.getString("eqpName"));
+                                JSONObject FAObject = new JSONObject(DataObject.getString("userInfoJson"));//该设备数据
+                                System.out.println("data数据:  " + FAObject);
+                                //"userInfoJson":{"username":"都在","userId":null,
+                                // "addressInfoJson":{"na":null,"ar":"","pc":"广东省","pv":"山东","ct":"广州市","dt":"番禺区","da":"dsagvx","fa":"笨猪","lo":"","la":"","te":"18"},
+                                // "pointOfSalePhone":"53666","pointOfSaleName":"哦哦YY"}
+                                //selling_edit_text, selling_location_edit_text, selling_user_edit_text, selling_phone_edit_text,;
+                                JSONObject faObject= new JSONObject(FAObject.getString("addressInfoJson"));
+
+                                selling_phone_edit_text.setText(FAObject.getString("pointOfSalePhone"));//售点手机号
+                                selling_location_edit_text.setText(faObject.getString("fa"));//售点地址
+                                repair_user.setHint(DataObject.getString("eqpName"));//设备名称
+                                selling_edit_text.setText(FAObject.getString("pointOfSaleName"));
+                                selling_user_edit_text.setText(FAObject.getString("username"));//售点联系人
                                 //System.out.println(DataObject.getString("eqpName"));
                                 device_id=DataObject.getString("eqpId");
+                                loading.setStatus(LoadingLayout.Success);
                             } else {
                                 new AlertDialog.Builder(PerfectDeviceActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
@@ -935,5 +913,137 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             }
         }
 
+    };
+
+    @Override
+    public boolean onLongClick(View view) {
+        switch (view.getId()){
+            case R.id.addimg:
+                showDetelePhotoDialog();
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * android上传文件到服务器
+     * @param file  需要上传的文件
+     * @param RequestURL  请求的rul
+     * @param sign  签名
+     * @param name  文件名
+     * @return  返回响应的内容
+     */
+    public  String uploadFile(List<File> file, String RequestURL, String sign, String name, String id, Context context){
+        String result = null;
+        String  BOUNDARY =  UUID.randomUUID().toString();  //边界标识   随机生成
+        String PREFIX = "--" , LINE_END = "\r\n";
+        String CONTENT_TYPE = "multipart/form-data";   //内容类型
+
+        try {
+            URL url = new URL(RequestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(100000);
+            conn.setConnectTimeout(100000);
+            conn.setDoInput(true);  //允许输入流
+            conn.setDoOutput(true); //允许输出流
+            conn.setUseCaches(false);  //不允许使用缓存
+            conn.setRequestMethod("POST");  //请求方式
+            conn.setRequestProperty("Charset", "utf-8");  //设置编码
+            conn.setRequestProperty("connection", "keep-alive");
+            conn.setRequestProperty("sign", sign);//签名
+            // conn.setRequestProperty("eqpId", id);//id
+            conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
+            conn.connect();
+
+            if(file!=null){
+                /**
+                 * 当文件不为空，把文件包装并且上传
+                 */
+
+                for(File file1:file){
+                    System.out.println("图片上传："+file1);
+                    DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+                    StringBuffer sb = new StringBuffer();
+                    sb.append(PREFIX);
+                    sb.append(BOUNDARY);
+                    sb.append(LINE_END);
+                    /**
+                     * 这里重点注意：
+                     * name里面的值为服务器端需要key   只有这个key 才可以得到对应的文件
+                     * filename是文件的名字，包含后缀名的   比如:abc.png
+                     */
+
+                    System.out.println("文件名："+file1.getName()+" : "+name);
+                    sb.append("Content-Disposition: form-data; name=\""+name+"\"; filename=\""+file1.getName()+"\""+"; eqpId=\""+id+"\""+LINE_END);
+                    sb.append("Content-Type:image/pjpeg; charset=utf-8"+LINE_END);
+                    sb.append(LINE_END);
+                    dos.write(sb.toString().getBytes());
+                    InputStream is = new FileInputStream(file1);
+                    byte[] bytes = new byte[1024];
+                    int len = 0;
+                    while((len=is.read(bytes))!=-1){
+                        dos.write(bytes, 0, len);
+                    }
+
+                    is.close();
+                    dos.write(LINE_END.getBytes());
+                    byte[] end_data = (PREFIX+BOUNDARY+PREFIX+LINE_END).getBytes();
+                    dos.write(end_data);
+                    dos.flush();
+                    /**
+                     * 获取响应码  200=成功
+                     * 当响应成功，获取响应的流
+                     */
+                    //conn.getResponseMessage();
+                    int res = conn.getResponseCode();
+                    if(res==200){
+                        InputStream input =  conn.getInputStream();
+                        StringBuffer sb1= new StringBuffer();
+                        int ss ;
+                        while((ss=input.read())!=-1){
+                            sb1.append((char)ss);
+                        }
+                        result = sb1.toString();
+                        Message message = new Message();
+                        message.what = 0;
+                        upPhotoHandler1.sendMessage(message);
+                        System.out.println("上传图片"+result);
+                       // Toast.makeText(context,"图片上传成功",Toast.LENGTH_SHORT).show();
+                    }else{
+                        //Toast.makeText(context,"图片上传失败",Toast.LENGTH_SHORT).show();
+                        Message message = new Message();
+                        message.what = 1;
+                        upPhotoHandler1.sendMessage(message);
+                        System.out.println("res"+conn.getResponseMessage()+res);
+                    }
+                }
+            }
+        } catch (MalformedURLException e) {
+            // sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            System.out.println("上传失败");
+            e.printStackTrace();
+        } catch (IOException e) {
+            //sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            System.out.println("上传失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private Handler upPhotoHandler1 = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    Toast.makeText(PerfectDeviceActivity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    Toast.makeText(PerfectDeviceActivity.this,"图片上传失败,请重新上传",Toast.LENGTH_SHORT).show();
+                    break;
+                default:break;
+            }
+        }
     };
 }

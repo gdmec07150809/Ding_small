@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,9 +59,14 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -93,6 +101,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private String adress, str_location,path;
+    Bitmap bitmap;
+
+    List<File> fileList=new ArrayList<File>();//图片集合
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -127,7 +138,8 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         signature_value = findViewById(R.id.signature_value);
 
         getCacheUser();//获取用户信息
-        getCachePhoto();
+
+       // getCachePhoto();//上传图片
         //upPhoto();
         getLocation();//获取地址
         changeTextView();//更改语言
@@ -139,7 +151,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do";
-        //String url = "http://192.168.1.103:8080/api/user/logout.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -147,7 +158,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         UserSign = MD5Utils.md5(Sign);
         new Thread(getUserTask).start();//获取用户信息,启动
     }
-
     private void setUser() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
@@ -161,6 +171,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         UserSign = MD5Utils.md5(Sign);
         new Thread(setUserTask).start();//获取用户信息,启动
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getLocation() {
         //获取地址
@@ -215,7 +226,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";轮播图
-        String url = "http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do";
+        String url = "http://192.168.1.105:8080/api/user/userAvatarUpload.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("上传图片：memId" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -391,14 +402,18 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     // 从数据视图中获取已选择图片的路径
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String picturePath = cursor.getString(columnIndex);
-                    Toast.makeText(this, picturePath, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, picturePath, Toast.LENGTH_SHORT).show();
 
                     System.out.println(picturePath);
                     cursor.close();
                     // 将图片显示到界面上
-                    path=picturePath;
-                     //new Thread(run).start();
-                    head_img.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    File file=new File(picturePath);
+                    fileList.add(file);
+                  //  path=picturePath;
+                     new Thread(run).start();
+
+                    Drawable drawable = new BitmapDrawable(BitmapFactory.decodeFile(picturePath));
+                    head_img.setBackground(drawable);
 
                 }
                 break;
@@ -415,10 +430,14 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         @Override
         public void run() {
             // TODO
-            String url="http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
-            File file = new File(path);
-            System.out.println("路径："+path+"  :  "+file+" : "+photoSign+" : "+url);
-            UploadUtil.uploadFile(file,url,photoSign);
+
+                //System.out.println("图片："+file);
+                String url="http://192.168.1.105:8080/api/user/userAvatarUpload.do?memId="+memid+"&ts="+ts;
+                System.out.println("路径："+path+"  :  "+fileList+" : "+photoSign+" : "+url);
+                String name="file1";
+                UploadUtil.uploadFile(fileList,url,photoSign,name,"",PersonalCenterPerfectActivity.this);
+
+         ;
         }
     };
     //性别底部弹出菜单
@@ -724,6 +743,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                         if (object1.getString("res").equals("00000")) {
                             nameStr=objectData.getString("nick");
                             nickname_value_text.setText(nameStr);
+                            String img=objectData.getString("imgUrl");
+                            //String img="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
+                            returnBitMap(img);//获取网络图片，并转化为Bitmap格式  设备图片
                             if(objectData.getString("sex")==null||objectData.getString("sex").equals("")||objectData.getString("sex").equals("null")){
                                 sex_value.setText("");
                             }else{
@@ -823,5 +845,51 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             }
         }
 
+    };
+
+    public Bitmap returnBitMap(final String url){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageurl = null;
+
+                try {
+                    imageurl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
+                    conn.setDoInput(true);
+                    conn.setConnectTimeout(10000);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                    Message message = new Message();
+                    message.what = 0;
+                    DeviceImgHandler.sendMessage(message);
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+        return bitmap;
+    }
+    private Handler DeviceImgHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    Drawable drawable = new BitmapDrawable(bitmap);
+                    head_img.setBackground(drawable);
+                    break;
+                default:
+                    break;
+            }
+        }
     };
 }

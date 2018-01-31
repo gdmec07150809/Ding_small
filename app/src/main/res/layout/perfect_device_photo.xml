@@ -14,11 +14,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.example.administrator.ding_small.HelpTool.FlowLayout
-                android:id="@+id/found_activity_fyt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.example.administrator.ding_small.HelpTool.FlowLayout>
+           <ImageView
+               android:id="@+id/addimg"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@mipmap/icon_fix_addimg"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

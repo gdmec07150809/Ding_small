@@ -22,12 +22,14 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.R;
+import com.weavey.loading.lib.LoadingLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 import okhttp3.Call;
@@ -54,6 +56,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
     //更改语言所要更改的控件
     private TextView phone_text, password_text, forget_password, register;
     private Button new_login;
+    private LoadingLayout loading;
 
     //重写onKeyDown方法,实现双击退出程序
     @Override
@@ -92,6 +95,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
         user_password = findViewById(R.id.user_password);
         phone_text = findViewById(R.id.phone_text);
         password_text = findViewById(R.id.password_text);
+        loading = findViewById(R.id.loading_layout);
 
         changeTextView();//更改语言
     }
@@ -123,6 +127,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                     new AlertDialog.Builder(LoginAcitivity.this).setTitle("登录提示").setMessage("用户名或密码不能为空！！！").setPositiveButton("确定", null).show();
                 } else {
                     //访问服务器
+                    loading.setStatus(LoadingLayout.Loading);
                     new Thread(loginRun).start();//登录
                 }
                 break;
@@ -176,9 +181,9 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-           // String url = "http://120.76.188.131:8080/a10/api/user/login.do";
+            //String url = "http://120.76.188.131:8080/a10/api/user/login.do";
             String url = "http://192.168.1.105:8080/api/user/login.do";
-            OkHttpClient okHttpClient = new OkHttpClient();
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(120, TimeUnit.SECONDS).build();
             String pass = MD5Utils.md5(login_pass);
 
             String b = "{\"loginType\":\"2\",\"loginPwd\":\"" + pass + "\",\"loginAccount\":\"" + login_user + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
@@ -230,6 +235,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                 }).show();
                                 break;
                             case "00000"://登录成功
+                                loading.setStatus(LoadingLayout.Success);
                                 if(object.getString("data")!=null||object.getString("data").equals("null")){
                                     JSONObject jsonObject = new JSONObject(object.getString("data"));
                                     System.out.println(jsonObject);

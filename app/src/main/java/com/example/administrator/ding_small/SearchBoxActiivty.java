@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.SearchBoxAdapter;
@@ -86,7 +87,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.113:8080/app/ppt6000/dateList.do";
+        String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -199,7 +200,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.113:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\": \""+memid+"\"}";//json字符串
@@ -266,6 +267,9 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                             }
                             if (sortedJsonArray != null) {
                                 select_device_list.setAdapter(new DeviceListAdapter(SearchBoxActiivty.this, sortedJsonArray));//设置适配器
+                                loading.setStatus(LoadingLayout.Success);
+                            }else{
+                                Toast.makeText(SearchBoxActiivty.this,"找不到该设备",Toast.LENGTH_SHORT).show();
                                 loading.setStatus(LoadingLayout.Success);
                             }
                             select_device_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {//列表item事件

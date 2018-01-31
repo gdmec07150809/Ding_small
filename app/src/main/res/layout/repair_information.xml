@@ -80,6 +80,7 @@
                 android:background="@null"
                 android:inputType="phone"
                 android:maxLength="11"
+                android:maxLines="1"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <LinearLayout

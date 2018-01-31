@@ -3,6 +3,7 @@ package com.example.administrator.ding_small.HelpTool;
 /**
  * Created by youyou000 on 2018/1/22.
  */
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +16,35 @@ public class DateUtils {
         return format.format(new Date());
     }
 
+    /**
+     * 得到一个时间延后或前移几天的时间,nowdate为时间,delay为前移或后延的天数
+     */
+    public static String getNextDay(String nowdate, String delay) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String mdate = "";
+            Date d = strToDate(nowdate);
+            long myTime = (d.getTime() / 1000) + Integer.parseInt(delay) * 24 * 60 * 60;
+            d.setTime(myTime * 1000);
+            mdate = format.format(d);
+            return mdate;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
+        * 将短时间格式字符串转换为时间 yyyy-MM-dd
+        *
+        * @param strDate
+        * @return
+        */
+    public static Date strToDate(String strDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        ParsePosition pos = new ParsePosition(0);
+        Date strtodate = formatter.parse(strDate, pos);
+        return strtodate;
+    }
     /**
      * 掉此方法输入所要转换的时间输入例如（"2014年06月14日16时09分00秒"）返回时间戳
      *

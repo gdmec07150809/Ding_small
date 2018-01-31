@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,10 +18,12 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.ManufacturerAdapter;
+import com.example.administrator.ding_small.Adapter.RepairRecordAdapter;
 import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
@@ -43,12 +48,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -76,7 +86,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
 
     private LinearLayout call_record_layout, management_layout, manufacturer_layout, parameter_layout, selling_point_layout, record_layout, base_layout, phone_record_layout;
-    private ImageView management_img, selling_point_img, parameter_img, manufacturer_img, record_img, call_record_img, repair_img, base_img, eqpFlag, phone_record_img;
+    private ImageView management_img, selling_point_img, parameter_img, manufacturer_img, record_img, call_record_img, repair_img, base_img, eqpFlag, phone_record_img,device_detail_img;
     private EditText selling_point_name, selling_point_number, selling_point_location, selling_point_phone, selling_point_user, parameter_location;
     //fa_location,ssid,macNo,eqpBrand,eqpStyle,startDate,protectDateTo
     //详细地址,uuid,MAC,品牌名称,品类,销售日期,保修期
@@ -96,6 +106,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     public static final int SHOW_RESPONSE = 0;
     private ScrollView scrollview;
     private JSONObject DataObject;//设备数据
+    private JSONArray DataArray;//记录数据
     private LoadingLayout loading;
 
     private ListView manufacturer_list;//制造商与报修
@@ -103,6 +114,10 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     //更改语言所要更改的控件 品牌名称、品类、销售日期、保质期、返回、设备信息、一键报修，管理公司名、部门、管理联系人电话、管理联系人名称、售点名称、售点编号、售点地址、售点联系人电话、售点联系人名称
     private TextView brand_name_text, category_text, selling_date, shelf_life_text, back_text, device_dateil_text, next_text,
             company_text, deptName_text, managementPhone_text, managementName_text, selling_name_text, selling_num_text, selling_location_text, selling_phone_text, selling_user_name_text;
+
+    private ListView repair_record_listView;
+
+    Bitmap bitmap=null;
 
     //private Handler handler;
     @RequiresApi(api = VERSION_CODES.M)
@@ -117,6 +132,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         getCache();//获取缓存
         getLocation();//获取当前地址
         getTemperature();//获取当前温度
+        getRepairRecordCache();//获取缓存,报修记录
 
     }
 
@@ -171,7 +187,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = "http://192.168.1.105:8080/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -181,6 +197,19 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         new Thread(networkTask).start();//获取该设备详情
     }
 
+    private void getRepairRecordCache() {
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        memid = sp.getString("memId", "null");
+        token = sp.getString("tokEn", "null");
+        String url = "http://192.168.1.105:8080/app/ppt7000/equipmentLog.do";
+        ts = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String Sign = url + memid + token + ts;
+        System.out.println("Sign:" + Sign);
+        sign = MD5Utils.md5(Sign);
+
+        new Thread(getRepairRecordTask).start();//获取该设备维修记录
+    }
     private void init() {
         device_name = findViewById(R.id.device_name);//设备名
         fa_location = findViewById(R.id.fa_location);//详细地址
@@ -264,6 +293,10 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         location_detail_text = findViewById(R.id.location_detail_text);
         temperature_text = findViewById(R.id.temperature_text);
         no_data_text = findViewById(R.id.no_data_text);
+
+        repair_record_listView=findViewById(R.id.repair_record_listview);
+
+        device_detail_img=findViewById(R.id.device_detail_img);
     }
 
     //按钮点击事件
@@ -519,7 +552,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     macNo.setText(DataObject.getString("macNo"));
                     eqpBrand.setText(DataObject.getString("eqpBrand"));
                     eqpStyle.setText(DataObject.getString("eqpStyle"));
-                    startDate.setText(DataObject.getString("startDate"));
+                    startDate.setText(DataObject.getString("insertDate"));
                     protectDateTo.setText(DataObject.getString("protectDateTo"));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -552,6 +585,8 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 repair_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                 phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+
+
 
 //                if(isRecord){
 //                    record_layout.setVisibility(View.VISIBLE);
@@ -795,8 +830,8 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.113:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
-            OkHttpClient okHttpClient = new OkHttpClient();
+            String url = "http://192.168.1.105:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).build();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
             System.out.println("设备详情参数：" + b);
@@ -850,6 +885,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 device_id=DataObject.getString("eqpId");
                                 eqpStatus=DataObject.getString("eqpStatus");
 
+                                String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
+                                //DataObject.getString("imsPci")
+                                returnBitMap(imgUrl);//获取网络图片，并转化为Bitmap格式  设备图片
+
+
                                 sp = DeviceDetailActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
                                 SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
                                 editor.putString("device_id", device_id);
@@ -890,4 +930,158 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         }
 
     };
+
+    /**
+     * 网络操作相关的子线程okhttp框架  获取设备报修记录
+     */
+    Runnable getRepairRecordTask = new Runnable() {
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            String url = "http://192.168.1.105:8080/app/ppt7000/equipmentLog.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60,TimeUnit.SECONDS).build();
+            System.out.println("验证：" + sign);
+            String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
+            System.out.println("设备维修记录参数：" + b);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .addHeader("sIgn", sign)
+                    .build();
+            System.out.println(request.headers());
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                String result = response.body().string();
+                if (response != null) {
+                    //在子线程中将Message对象发出去
+                    if (response.code() == 200) {
+                        Message message = new Message();
+                        message.what = SHOW_RESPONSE;
+                        message.obj = result.toString();
+                        getRepairRecordHandler.sendMessage(message);
+                    } else {
+                        System.out.println("记录结果：" + result);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    private Handler getRepairRecordHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SHOW_RESPONSE:
+                    String response = (String) msg.obj;
+                    System.out.println(response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject object1 = new JSONObject(object.getString("meta"));
+                        //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
+
+                        if (object1.getString("res").equals("00000")) {
+                            if (object.getString("data") != null && !object.getString("data").equals("null")) {
+                                DataArray = new JSONArray(object.getString("data"));//该设备数据
+                                System.out.println("数据json:"+DataArray);
+                                repair_record_listView.setAdapter(new RepairRecordAdapter(DeviceDetailActivity.this,DataArray));
+                                setListViewHeightBasedOnChildren(repair_record_listView);
+                            } else {
+                                new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                }).show();
+                            }
+                        } else {
+                            new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
+    public Bitmap returnBitMap(final String url){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageurl = null;
+
+                try {
+                    imageurl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
+                    conn.setDoInput(true);
+                    conn.setConnectTimeout(10000);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                    Message message = new Message();
+                    message.what = 0;
+                    DeviceImgHandler.sendMessage(message);
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+        return bitmap;
+    }
+    private Handler DeviceImgHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    device_detail_img.setImageBitmap(bitmap);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        // 获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
+            // listAdapter.getCount()返回数据项的数目
+            View listItem = listAdapter.getView(i, null, listView);
+            // 计算子项View 的宽高
+            listItem.measure(0, 0);
+            // 统计所有子项的总高度
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
+    }
 }

@@ -43,6 +43,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -123,7 +124,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.113:8080/app/ppt6000/dateList.do";
+        String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -284,6 +285,8 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.refresh_img:
+                maintenancing_num=0;
+                using_num=0;
                 loading.setStatus(LoadingLayout.Loading);
                 getCache();
                 break;
@@ -336,8 +339,8 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.113:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts ;
-            OkHttpClient okHttpClient = new OkHttpClient();
+            String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts ;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(120,TimeUnit.SECONDS).build();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid +"\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
@@ -425,7 +428,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                     sortedJsonArray.put(jsonValues.get(i));
                                     if (jsonValues.get(i).getString("eqpStatus").equals("1")) {
                                         maintenancing_num += 1;
-                                    } else if (jsonValues.get(i).getString("eqpStatus").equals("2")) {
+                                    } else{
                                         using_num += 1;
                                     }
                                 }

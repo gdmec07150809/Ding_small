@@ -68,7 +68,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     private long clickTime = 0;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, UserSign, oldPass, newPass, ts, nameStr,sign;
+    String memid, token, UserSign, oldPass, newPass, ts, nameStr,sign,imgUrl;
     //变化语言所改变的控件 登陆、客服、消息、名称、记事日历、记账日历、记事本、记账本、设备表、联系人,扫码、搜索、报修,首页,口碑服务,特供商城,我的
     private TextView login_text, custom_service_text, news_text, name_text, notepad_calendar_text, account_calendar_text,
             notepad_text, account_text, device_text, contacts_text, scan_text, search_text, repair_text, home_text, reputation_service_text, mall_text, my_text;
@@ -84,10 +84,11 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         // ifApm();//判断上下午
         initPager();//轮播图
 
-        Handler handler = new Handler();
-        handler.postDelayed(runnable, 100);
+
         changeLanguage();//设置语言
         //getCache();//获取轮播图
+
+
 
     }
 
@@ -121,7 +122,6 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do";
-
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -129,6 +129,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         UserSign = MD5Utils.md5(Sign);
          new Thread(getUserTask).start();//获取用户信息,启动
     }
+
     private void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
@@ -285,10 +286,10 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         Intent intent;
         switch (view.getId()) {
             case R.id.notepad_layout://记事本
-                //Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
-                intent=new Intent(MainLayoutActivity.this,NotepadBtnActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+//                intent=new Intent(MainLayoutActivity.this,NotepadBtnActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
                 break;
             case R.id.account_layout://记账本
                 Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
@@ -356,11 +357,11 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 
                 break;
             case R.id.more_layout://更多功能暂未开发
-             //   Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
                 //System.out.println("32px:"+DensityUtil.px2sp(MainLayoutActivity.this,32));
-                intent = new Intent(MainLayoutActivity.this, TestActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+//                intent = new Intent(MainLayoutActivity.this, TestActivity.class);//测试接口类
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
 
                 break;
             case R.id.scan_layout://扫码功能
@@ -669,10 +670,14 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
                             nameStr=objectData.getString("nick");
+                            imgUrl=objectData.getString("imgUrl");
+                            Handler handler = new Handler();
+                            handler.postDelayed(runnable, 100);
                             //储存token,备用
                             sp = MainLayoutActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
                             SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
                             editor.putString("nameStr", nameStr);
+                            editor.putString("imgUrl", imgUrl);
                             editor.commit();    //提交数据保存
                         } else {
                             new AlertDialog.Builder(MainLayoutActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {

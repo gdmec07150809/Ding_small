@@ -40,11 +40,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -95,8 +99,11 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     private String opName,memPhone,repireDescription,fa;
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+    //private static final String repairFile = "repairFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id;
+    SharedPreferences repairSp = null;//定义储存源，备用
+    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id,picPath;
+    String path=null;
     public static final int SHOW_RESPONSE = 0;
 
     @Override
@@ -124,29 +131,63 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         int date = t.monthDay;
         int hour = t.hour; // 0-23
         int minute = t.minute;
+       String dateStr=year + "-" + (month + 1) + "-" + (date);
         //给时分赋值
         if (minute < 10) {
             String minute_text = "0" + minute;
-            atTime = year + "-" + (month + 1) + "-" + (date+5)+ "  " + hour + ":" + minute_text;
+            atTime = getNextDay(dateStr,"5")+ "  " + hour + ":" + minute_text;
             day.setText(atTime);
         } else {
-            atTime = year + "-" + (month + 1) + "-" + (date+5) + "  " + hour + ":" + minute;
+            atTime = getNextDay(dateStr,"5") + "  " + hour + ":" + minute;
             day.setText(atTime);
         }
 
+      //  System.out.println("时间5"+getNextDay(dateStr,"5"));
     }
+
+    /**
+     * 得到一个时间延后或前移几天的时间,nowdate为时间,delay为前移或后延的天数
+     */
+    public static String getNextDay(String nowdate, String delay) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String mdate = "";
+            Date d = strToDate(nowdate);
+            long myTime = (d.getTime() / 1000) + Integer.parseInt(delay) * 24 * 60 * 60;
+            d.setTime(myTime * 1000);
+            mdate = format.format(d);
+            return mdate;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
+        * 将短时间格式字符串转换为时间 yyyy-MM-dd
+        *
+        * @param strDate
+        * @return
+        */
+        public static Date strToDate(String strDate) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            ParsePosition pos = new ParsePosition(0);
+            Date strtodate = formatter.parse(strDate, pos);
+            return strtodate;
+        }
 
     private void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.113:8080/app/ppt7000/intsertPpt7000.do";//报修
+        String url = "http://192.168.1.105:8080/app/ppt7000/intsertPpt7000.do";//报修
         ts = String.valueOf(new Date().getTime());
         System.out.println("提交报修：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("Sign:" + Sign);
         sign = MD5Utils.md5(Sign);
-        //new Thread(repairTask).start();//提交报修
+       // new Thread(repairTask).start();//提交报修
+
+
     }
     private void getBundleString() {
         Bundle getStringValue = this.getIntent().getExtras();
@@ -157,6 +198,22 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
               memPhone=getStringValue.getString("memPhone");
               repireDescription=getStringValue.getString("repireDescription");
               fa=getStringValue.getString("fa");
+              if(getStringValue.getString("path")!=null){
+                  path =getStringValue.getString("path");
+                  String str[]=getStringValue.getString("path").split("\\\\");
+                  picPath="";
+                  for(int i=0;i<str.length;i++){
+                      System.out.println("上传路径："+str[i]);
+
+                      if(i==str.length-1){
+                          picPath+=str[i];
+                      }else{
+                          picPath+=str[i]+"\\\\";
+                      }
+
+                  }
+                  System.out.println("json:"+picPath);
+              }
 
               sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
               device_id = sp.getString("device_id", "");
@@ -225,10 +282,10 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
             // 在这里进行 http request.网络请求相关操作
 
             String title=action_text.getText().toString();
-            String url = "http://192.168.1.113:8080/app/ppt7000/intsertPpt7000.do?memId=" + memid + "&ts=" + ts ;
-            OkHttpClient okHttpClient = new OkHttpClient();
+            String url = "http://192.168.1.105:8080/app/ppt7000/intsertPpt7000.do?memId=" + memid + "&ts=" + ts ;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(120, TimeUnit.SECONDS).build();;
             System.out.println("验证：" + sign);
-            String b="{\"repireDescription\": \""+repireDescription+"\",\"opName\": \""+opName+"\",\"parentId\": \""+memid+"\"," +
+            String b="{\"repireDescription\": \""+repireDescription+"\",\"opName\": \""+opName+"\",\"filePicJson\": \""+picPath+"\",\"parentId\": \""+memid+"\"," +
                     "\"handleDate\": \""+atTime+"\",\"repireTitle\": \""+title+"\",\"eqpId\": \""+device_id+"\"," +
                     "\"memPhone\": \""+memPhone+"\",\"otherInfoJson\": {\"lo\": \"\"," +
                     "\"dt\": \"\",\"da\": \"\",\"pc\": \"\",\"sq\": \"\",\"la\": \"\",\"fa\": \""+fa+"\",\"te\": \"\",\"pv\": \"\",\"ar\": \"\",\"ct\": \"\"}}";
@@ -330,7 +387,6 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         fragment1.setArguments(bundle);
         fragmentArrayList.add(fragment1);
         fragmentManager = getSupportFragmentManager();
-
     }
 
     /**

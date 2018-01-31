@@ -47,6 +47,7 @@ import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.example.administrator.ding_small.Label.EditLabelActivity;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
+import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 import com.weavey.loading.lib.LoadingLayout;
 
 import org.apache.http.HttpEntity;
@@ -60,15 +61,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import static android.R.attr.path;
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
@@ -96,9 +104,12 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     private EditText repair_user,repair_phone,remark_text;
 
     public static final int SHOW_RESPONSE = 0;
-    private static final String tokeFile = "repairFile";//定义保存的文件的名称
+    //private static final String repairFile = "repairFile";//定义保存的文件的名称
+
+    private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid,token,ts,upPhotoSign;
+    String memid,token,ts,upPhotoSign,path;
+    String user_str,phone_str,remark_str;
     private LoadingLayout loading;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
@@ -122,7 +133,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do";
+        String url = "http://192.168.1.105:8080/app/ppt7000/memberImgUpload.do";
         //String url = "http://192.168.1.103:8080/api/user/logout.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("上传图片：" + memid + "  ts:" + ts + "  token:" + token);
@@ -402,39 +413,41 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
             case R.id.confrim_btn:
                 intent = new Intent(CreatRepairRemarksActivity.this, CreatRepairActivity.class);
                 //repair_user,repair_phone,remark_text
-                String user_str=repair_user.getText().toString().trim();
-                String phone_str=repair_phone.getText().toString().trim();
-                String remark_str=remark_text.getText().toString().trim();
+                 user_str=repair_user.getText().toString().trim();
+                phone_str=repair_phone.getText().toString().trim();
+                remark_str=remark_text.getText().toString().trim();
                 if(user_str.equals("")||phone_str.equals("")||remark_str.equals("")){
                     Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
                 }else{
                     if(photoPath!=null&&photoPath.size()>0){
                         loading.setStatus(LoadingLayout.Loading);
                         new Thread(upPhotoTask).start();
-                        loading.setStatus(LoadingLayout.Success);//状态取消
+
+                    }else{
+                        Bundle bundle = new Bundle();
+                        String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + location_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
+                        String otherInfoJson_str="{\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"\" + location_str + \"\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}";
+                        System.out.println("报修  "+jsonString);
+
+
+                        sp = CreatRepairRemarksActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                        SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                        editor.putString("opName", user_str);
+                        editor.putString("memPhone", phone_str);
+                        editor.putString("repireDescription", remark_str);
+                        editor.commit();    //提交数据保存
+
+                        bundle.putString("opName", user_str);
+                        bundle.putString("memPhone", phone_str);
+                        bundle.putString("repireDescription", remark_str);
+                        bundle.putString("fa", location_str);
+                        bundle.putString("path", path);
+                        bundle.putString("explain","repair");
+                        intent.putExtras(bundle);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
-                    Bundle bundle = new Bundle();
-                    String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + location_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
-                    String otherInfoJson_str="{\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"\" + location_str + \"\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}";
-                    System.out.println("报修  "+jsonString);
 
-
-                    sp = CreatRepairRemarksActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
-                    SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
-                    editor.putString("opName", user_str);
-                    editor.putString("memPhone", phone_str);
-                    editor.putString("repireDescription", remark_str);
-                    editor.commit();    //提交数据保存
-
-                    bundle.putString("opName", user_str);
-                    bundle.putString("memPhone", phone_str);
-                    bundle.putString("repireDescription", remark_str);
-                    bundle.putString("fa", location_str);
-
-                    bundle.putString("explain","repair");
-                    intent.putExtras(bundle);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
                 }
 
                 break;
@@ -505,7 +518,17 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                                     }
                                 }
                             });
-
+                             if(found_activity_fyt.getChildCount()<4){
+                                 found_activity_fyt.getChildAt(0).setLongClickable(false);
+                            }else {
+                                 imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                                     @Override
+                                     public boolean onLongClick(View view) {
+                                        found_activity_fyt.removeView(view);
+                                         return true;
+                                     }
+                                 });
+                             }
                     }
 
                     FileOutputStream b = null;
@@ -542,13 +565,20 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         @Override
         public void run() {
             // TODO
-            String url="http://192.168.1.113:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
+            String url="http://192.168.1.105:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
+            List<File> fileList=new ArrayList<>();
             for(int i=0;i<photoPath.size();i++){
               File file = new File(photoPath.get(i));
+                fileList.add(file);
               System.out.println("路径"+i+"："+photoPath.get(i)+"  :  "+file+" : "+upPhotoSign+" : "+url);
-              UploadUtil.uploadFile(file,url,upPhotoSign);
             }
+            ArrayList<String> name=new ArrayList<>();
+            name.add("file10");
+            name.add("file11");
+            name.add("file12");
+            name.add("file13");
 
+           uploadCrepqirFile(fileList,url,upPhotoSign,name,"",CreatRepairRemarksActivity.this);
         }
     };
 
@@ -758,4 +788,159 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         }
     }
 
+    /**
+     * android上传文件到服务器
+     * @param file  需要上传的文件
+     * @param RequestURL  请求的rul
+     * @param sign  签名
+     * @param name  文件名
+     * @return  返回响应的内容
+     */
+    public  String uploadCrepqirFile(List<File> file, String RequestURL, String sign, ArrayList<String> name, String id, Context context){
+        String result = null;
+        String  BOUNDARY =  UUID.randomUUID().toString();  //边界标识   随机生成
+        String PREFIX = "--" , LINE_END = "\r\n";
+        String CONTENT_TYPE = "multipart/form-data";   //内容类型
+
+        try {
+            URL url = new URL(RequestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(60000);
+            conn.setConnectTimeout(60000);
+            conn.setDoInput(true);  //允许输入流
+            conn.setDoOutput(true); //允许输出流
+            conn.setUseCaches(false);  //不允许使用缓存
+            conn.setRequestMethod("POST");  //请求方式
+            conn.setRequestProperty("Charset", "utf-8");  //设置编码
+            conn.setRequestProperty("connection", "keep-alive");
+            conn.setRequestProperty("sign", sign);//签名
+            // conn.setRequestProperty("eqpId", id);//id
+            conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
+            conn.connect();
+
+            if(file!=null){
+                /**
+                 * 当文件不为空，把文件包装并且上传
+                 */
+                DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+                for(int i=0;i<file.size();i++){
+                    System.out.println("图片上传："+file.get(i));
+
+                    StringBuffer sb = new StringBuffer();
+                    sb.append(PREFIX);
+                    sb.append(BOUNDARY);
+                    sb.append(LINE_END);
+                    /**
+                     * 这里重点注意：
+                     * name里面的值为服务器端需要key   只有这个key 才可以得到对应的文件
+                     * filename是文件的名字，包含后缀名的   比如:abc.png
+                     */
+
+                    System.out.println("文件名："+file.get(i).getName()+" : "+name);
+                    sb.append("Content-Disposition: form-data; name=\""+name.get(i)+"\"; filename=\""+file.get(i).getName()+"\""+"; eqpId=\""+id+"\""+LINE_END);
+                    sb.append("Content-Type:image/pjpeg; charset=utf-8"+LINE_END);
+                    sb.append(LINE_END);
+                    dos.write(sb.toString().getBytes());
+                    InputStream is = new FileInputStream(file.get(i));
+                    byte[] bytes = new byte[1024];
+                    int len = 0;
+                    while((len=is.read(bytes))!=-1){
+                        dos.write(bytes, 0, len);
+                    }
+
+                    is.close();
+                    dos.write(LINE_END.getBytes());
+                    /**
+                     * 获取响应码  200=成功
+                     * 当响应成功，获取响应的流
+                     */
+                    //conn.getResponseMessage();
+                }
+
+                byte[] end_data = (PREFIX+BOUNDARY+PREFIX+LINE_END).getBytes();
+                dos.write(end_data);
+                dos.flush();
+                int res = conn.getResponseCode();
+                if(res==200){
+                    InputStream input =  conn.getInputStream();
+                    StringBuffer sb1= new StringBuffer();
+                    int ss ;
+                    while((ss=input.read())!=-1){
+                        sb1.append((char)ss);
+                    }
+                    result = sb1.toString();
+                    System.out.println("上传图片"+result);
+                    Message message = new Message();
+                    message.obj = result;
+                    message.what = 0;
+                    upPhotoHandler1.sendMessage(message);
+                }else{
+                    Message message = new Message();
+                    message.what = 1;
+                    upPhotoHandler1.sendMessage(message);
+                    System.out.println("res"+conn.getResponseMessage()+res);
+                }
+            }
+        } catch (MalformedURLException e) {
+            // sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            System.out.println("上传失败");
+            e.printStackTrace();
+        } catch (IOException e) {
+            //sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            System.out.println("上传失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+    private Handler upPhotoHandler1 = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    String response = (String) msg.obj;
+                    try {
+                        JSONObject res=new JSONObject(response);
+                        JSONObject meta=new JSONObject(res.getString("meta"));
+                        System.out.println("图片路径："+meta.getString("msg"));
+                        path=meta.getString("msg");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    loading.setStatus(LoadingLayout.Success);//状态取消
+                    Toast.makeText(CreatRepairRemarksActivity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(CreatRepairRemarksActivity.this, CreatRepairActivity.class);
+                    Bundle bundle = new Bundle();
+                    String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + location_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
+                    String otherInfoJson_str="{\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"\" + location_str + \"\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}";
+                    System.out.println("报修  "+jsonString);
+
+
+                    sp = CreatRepairRemarksActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                    SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                    editor.putString("opName", user_str);
+                    editor.putString("memPhone", phone_str);
+                    editor.putString("repireDescription", remark_str);
+                    editor.commit();    //提交数据保存
+
+                    bundle.putString("opName", user_str);
+                    bundle.putString("memPhone", phone_str);
+                    bundle.putString("repireDescription", remark_str);
+                    bundle.putString("fa", location_str);
+                    bundle.putString("path", path);
+                    bundle.putString("explain","repair");
+                    intent.putExtras(bundle);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    loading.setStatus(LoadingLayout.Success);//状态取消
+                    Toast.makeText(CreatRepairRemarksActivity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
+                    break;
+                default:break;
+            }
+        }
+    };
 }
