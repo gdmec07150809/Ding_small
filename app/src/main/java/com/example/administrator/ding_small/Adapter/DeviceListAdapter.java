@@ -2,8 +2,10 @@ package com.example.administrator.ding_small.Adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
+import android.util.LruCache;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -39,6 +41,8 @@ public class DeviceListAdapter extends BaseAdapter {
     private JSONArray list=null;
     private String date;
     Bitmap bitmap=null;
+    JSONObject obj;
+    private LruCache<String, BitmapDrawable> mImageCache;
     public DeviceListAdapter(Context context, JSONArray list) {
         this.context = context;
         holder = new ViewHolder();
@@ -63,7 +67,8 @@ public class DeviceListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View contentView = null;
-        if (contentView == null ){
+
+        if(contentView==null){
             contentView = LayoutInflater.from(context).inflate(R.layout.select_new_device_item,viewGroup,false);
             holder.device_name = contentView.findViewById(R.id.device_name);
             holder.location =contentView.findViewById(R.id.location);
@@ -75,20 +80,21 @@ public class DeviceListAdapter extends BaseAdapter {
             holder.device_img=contentView.findViewById(R.id.device_head_img);
             contentView.setTag(holder);
         }else{
-            holder = (ViewHolder) contentView.getTag();
+            holder = (ViewHolder) contentView.getTag ( ) ;
         }
+
+
         try {
-            JSONObject obj=new JSONObject(String.valueOf(list.get(i)));
+             obj=new JSONObject(String.valueOf(list.get(i)));
             System.out.println("adapter:"+String.valueOf(list.get(i)));
             holder.device_name.setText( obj.getString("eqpName"));
-
-            if(obj.getString("imsPci")!=null){
-                System.out.println("路劲:"+obj.getString("imsPci"));
-                //String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
-                returnBitMap(obj.getString("imsPci"));//获取网络图片，并转化为Bitmap格式  设备图片
-            }
-            if(bitmap!=null){
-                holder.device_img.setImageBitmap(bitmap);
+            holder.device_img.setTag(obj.getString("imsPci"));
+            synchronized(this) {
+                if (obj.getString("imsPci") != null && !obj.getString("imsPci").equals("null")) {
+                    System.out.println("路劲:" + obj.getString("imsPci"));
+                    //String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
+                    new Thread(urlPhoto).start();
+                }
             }
             if(obj.getString("eqpAddressJson")==null||obj.getString("eqpAddressJson").equals("null")){
                 holder.location.setText("");
@@ -134,14 +140,17 @@ public class DeviceListAdapter extends BaseAdapter {
         return sDateFormat.format(new Date(dateTime + 0));
     }
 
-    public Bitmap returnBitMap(final String url){
-        new Thread(new Runnable() {
+
+       Runnable urlPhoto=new Runnable() {
             @Override
             public void run() {
                 URL imageurl = null;
                 try {
-                    imageurl = new URL(url);
+
+                    imageurl = new URL(obj.getString("imsPci"));
                 } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 try {
@@ -160,9 +169,8 @@ public class DeviceListAdapter extends BaseAdapter {
                 }
 
             }
-        }).start();
-        return bitmap;
-    }
+        };
+
     private Handler handler = new Handler() {
 
         @Override
@@ -170,8 +178,15 @@ public class DeviceListAdapter extends BaseAdapter {
             super.handleMessage(msg);
            switch (msg.what){
                case 0:
-                   System.out.println("图片bitmap:"+bitmap);
-                   holder.device_img.setImageBitmap(bitmap);
+                   try {
+                       if(holder.device_img.getTag() != null && holder.device_img.getTag().equals(obj.getString("imsPci"))){
+                           System.out.println("图片bitmap:"+bitmap);
+                           holder.device_img.setImageBitmap(bitmap);
+                       }
+
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
                    break;
                default:break;
            }

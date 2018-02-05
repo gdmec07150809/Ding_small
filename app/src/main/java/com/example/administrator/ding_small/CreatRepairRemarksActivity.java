@@ -24,6 +24,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -48,6 +49,7 @@ import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.example.administrator.ding_small.Label.EditLabelActivity;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
+import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
 import org.apache.http.HttpEntity;
@@ -111,19 +113,26 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     String memid,token,ts,upPhotoSign,path;
     String user_str,phone_str,remark_str;
     private LoadingLayout loading;
+
+    private ArrayList<String> photoList=null;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_repair_layout);
         init();//初始化控件
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
         //getStringValue();//获取前页传来的数据
         //getLocation();//获取当前经纬度
         //getTemperature();//获取当前温度
         getString();//获取页面传递数据
+
         getCache();
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
+
     }
     private void  getCache(){
         /*    editor.putString("opName", user_str);
@@ -133,7 +142,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.105:8080/app/ppt7000/memberImgUpload.do";
+        String url = utils.url+"/app/ppt7000/memberImgUpload.do";
         //String url = "http://192.168.1.103:8080/api/user/logout.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("上传图片：" + memid + "  ts:" + ts + "  token:" + token);
@@ -145,12 +154,21 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         repair_user.setText(sp.getString("opName", ""));
         repair_phone.setText(sp.getString("memPhone", ""));
         remark_text.setText(sp.getString("repireDescription", ""));
+        //adress_text.setText(sp.getString("cacheAdress",""));
     }
     private void getString() {
         if (getIntent().getStringExtra("adress") != null) {
             adress_text.setText(getIntent().getStringExtra("adress"));
             String locationValue=getIntent().getStringExtra("adress")+getIntent().getStringExtra("location");
             location_str=locationValue;
+        }
+        Bundle bundle=this.getIntent().getExtras();
+        photoList= (ArrayList<String>) bundle.getSerializable("pathList");
+        if(photoList!=null&&photoList.size()>0){
+            for(int i=0;i<photoList.size();i++){
+                photoPath.add(photoList.get(i));
+                arrayList.add(BitmapFactory.decodeFile(photoList.get(i)));
+            }
         }
         ;
     }
@@ -304,6 +322,14 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 break;
 
             case R.id.new_select_layout:
+                sp = CreatRepairRemarksActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+
+                user_str=repair_user.getText().toString().trim();
+                phone_str=repair_phone.getText().toString().trim();
+                editor.putString("opName", user_str);
+                editor.putString("memPhone", phone_str);
+                editor.commit();
                 intent = new Intent(CreatRepairRemarksActivity.this, SelectLocationActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -419,11 +445,11 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 if(user_str.equals("")||phone_str.equals("")||remark_str.equals("")){
                     Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
                 }else{
-                    if(photoPath!=null&&photoPath.size()>0){
-                        loading.setStatus(LoadingLayout.Loading);
-                        new Thread(upPhotoTask).start();
-
-                    }else{
+//                    if(photoPath!=null&&photoPath.size()>0){
+//                        loading.setStatus(LoadingLayout.Loading);
+//                        new Thread(upPhotoTask).start();
+//
+//                    }else{
                         Bundle bundle = new Bundle();
                         String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + location_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
                         String otherInfoJson_str="{\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"\" + location_str + \"\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}";
@@ -431,22 +457,23 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 
 
                         sp = CreatRepairRemarksActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
-                        SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
-                        editor.putString("opName", user_str);
-                        editor.putString("memPhone", phone_str);
-                        editor.putString("repireDescription", remark_str);
-                        editor.commit();    //提交数据保存
+                        SharedPreferences.Editor editor1 = sp.edit(); //使处于可编辑状态
+                        editor1.putString("opName", user_str);
+                        editor1.putString("memPhone", phone_str);
+                        editor1.putString("repireDescription", remark_str);
+                        editor1.commit();    //提交数据保存
 
                         bundle.putString("opName", user_str);
                         bundle.putString("memPhone", phone_str);
                         bundle.putString("repireDescription", remark_str);
                         bundle.putString("fa", location_str);
-                        bundle.putString("path", path);
+                       // bundle.putString("path", path);
                         bundle.putString("explain","repair");
+                        bundle.putSerializable("pathList",photoPath);
                         intent.putExtras(bundle);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                    }
+                //    }
 
                 }
 
@@ -565,7 +592,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         @Override
         public void run() {
             // TODO
-            String url="http://192.168.1.105:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
+            String url=utils.url+"/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
             List<File> fileList=new ArrayList<>();
             for(int i=0;i<photoPath.size();i++){
               File file = new File(photoPath.get(i));
@@ -578,7 +605,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
             name.add("file12");
             name.add("file13");
 
-           uploadCrepqirFile(fileList,url,upPhotoSign,name,"",CreatRepairRemarksActivity.this);
+           uploadCrepairFile(fileList,url,upPhotoSign,name,"",CreatRepairRemarksActivity.this);
         }
     };
 
@@ -796,7 +823,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
      * @param name  文件名
      * @return  返回响应的内容
      */
-    public  String uploadCrepqirFile(List<File> file, String RequestURL, String sign, ArrayList<String> name, String id, Context context){
+    public  String uploadCrepairFile(List<File> file, String RequestURL, String sign, ArrayList<String> name, String id, Context context){
         String result = null;
         String  BOUNDARY =  UUID.randomUUID().toString();  //边界标识   随机生成
         String PREFIX = "--" , LINE_END = "\r\n";
@@ -920,9 +947,11 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 
                     sp = CreatRepairRemarksActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
                     SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                    String cacheAdress=adress_text.getText().toString().trim();
                     editor.putString("opName", user_str);
                     editor.putString("memPhone", phone_str);
                     editor.putString("repireDescription", remark_str);
+                    editor.putString("adress", cacheAdress);
                     editor.commit();    //提交数据保存
 
                     bundle.putString("opName", user_str);
@@ -931,6 +960,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     bundle.putString("fa", location_str);
                     bundle.putString("path", path);
                     bundle.putString("explain","repair");
+                    bundle.putSerializable("pathList",photoPath);
                     intent.putExtras(bundle);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

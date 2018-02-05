@@ -49,7 +49,8 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:orientation="vertical">
@@ -57,9 +58,9 @@
                         android:id="@+id/device_head_img"
                         android:layout_width="@dimen/px124"
                         android:layout_height="@dimen/px124"
-                        android:layout_marginLeft="@dimen/px30"
+                        android:layout_marginLeft="@dimen/px10"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/device_head_img"/>
+                        android:src="@drawable/defult_no_img"/>
                 </LinearLayout>
 
 

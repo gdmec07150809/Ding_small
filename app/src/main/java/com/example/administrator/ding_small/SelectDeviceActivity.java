@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.Utils.utils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.weavey.loading.lib.LoadingLayout;
@@ -42,6 +43,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -77,8 +79,12 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     JSONArray sortedJsonArray = null;
     String memid, token, sign, oldPass, newPass, ts, c_newPass;
     public static final int SHOW_RESPONSE = 0;
+    private LinearLayout default_lay;
     //更改语言所要更改的控件 销售日期、售点名称、设备名称、UUID、返回、选择设备
     private TextView date_text, selling_text, device_text, uuid_text, back_text, select_device_text;
+
+    private int date_sort=1;//初始正序
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,7 +114,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-       String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do";
+       String url = utils.url+"/app/ppt6000/dateList.do";
         ///app/secr9000lisSecr9000
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
@@ -144,6 +150,8 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         device_img = findViewById(R.id.device_img);
         uuid_img = findViewById(R.id.uuid_img);
         loading = findViewById(R.id.loading_layout);
+
+        default_lay=findViewById(R.id.default_lay);
     }
 
     private void CreatJson() {
@@ -221,15 +229,20 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 //                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 
-                date_img.setImageResource(R.mipmap.icon_common_sort_down);
-                selling_img.setImageResource(R.mipmap.icon_common_sort_up);
-                device_img.setImageResource(R.mipmap.icon_common_sort_up);
-                uuid_img.setImageResource(R.mipmap.icon_common_sort_up);
-
-
+                if(date_sort==1){
+                    date_img.setImageResource(R.mipmap.icon_common_sort_up);
+                    selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                    device_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                    uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                    date_sort=2;
+                }else{
+                    date_img.setImageResource(R.mipmap.icon_common_sort_down);
+                    selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                    device_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                    uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                    date_sort=1;
+                }
                 if (jsonArray.length() > 0) {
-                    loading.setStatus(LoadingLayout.Success);
-
                                 /*按销售日期排序 */
                     sortedJsonArray = new JSONArray();
                     List<JSONObject> jsonValues = new ArrayList<JSONObject>();
@@ -255,8 +268,12 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                             } catch (JSONException e) {
                                 //do something
                             }
+                            if(date_sort==2){
+                                return valA.compareTo(valB);
 
-                            return valA.compareTo(valB);
+                            }else{
+                                return -valA.compareTo(valB);
+                            }
                             //if you want to change the sort order, simply use the following:
                             //return -valA.compareTo(valB);
                         }
@@ -264,6 +281,13 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                     for (int i = 0; i < jsonArray.length(); i++) {
                         sortedJsonArray.put(jsonValues.get(i));
                     }
+                    loading.setStatus(LoadingLayout.Success);
+                    default_lay.setVisibility(View.GONE);
+                    select_device_list.setVisibility(View.VISIBLE);
+                }else{
+                    loading.setStatus(LoadingLayout.Success);
+                    default_lay.setVisibility(View.VISIBLE);
+                    select_device_list.setVisibility(View.GONE);
                 }
                 select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
                 break;
@@ -273,15 +297,14 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 //                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 
-                date_img.setImageResource(R.mipmap.icon_common_sort_up);
+                date_img.setImageResource(R.mipmap.icon_common_sort_normal);
                 selling_img.setImageResource(R.mipmap.icon_common_sort_down);
-                device_img.setImageResource(R.mipmap.icon_common_sort_up);
-                uuid_img.setImageResource(R.mipmap.icon_common_sort_up);
+                device_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
 
 
                 if (jsonArray.length() > 0) {
                     loading.setStatus(LoadingLayout.Success);
-
                     /*按售点名称排序 */
                     sortedJsonArray = new JSONArray();
                     List<JSONObject> jsonValues = new ArrayList<JSONObject>();
@@ -326,10 +349,10 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //                device_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
 //                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 
-                date_img.setImageResource(R.mipmap.icon_common_sort_up);
-                selling_img.setImageResource(R.mipmap.icon_common_sort_up);
+                date_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
                 device_img.setImageResource(R.mipmap.icon_common_sort_down);
-                uuid_img.setImageResource(R.mipmap.icon_common_sort_up);
+                uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
 
                 if (jsonArray.length() > 0) {
                     loading.setStatus(LoadingLayout.Success);
@@ -377,9 +400,9 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 //                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
 
-                date_img.setImageResource(R.mipmap.icon_common_sort_up);
-                selling_img.setImageResource(R.mipmap.icon_common_sort_up);
-                device_img.setImageResource(R.mipmap.icon_common_sort_up);
+                date_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                device_img.setImageResource(R.mipmap.icon_common_sort_normal);
                 uuid_img.setImageResource(R.mipmap.icon_common_sort_down);
 
 
@@ -518,6 +541,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 Intent intent = new Intent(SelectDeviceActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", mac_str);
+                bundle.putString("activity", "1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -532,8 +556,8 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
-            OkHttpClient okHttpClient = new OkHttpClient();
+            String url = utils.url+"/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(5, TimeUnit.SECONDS).build();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\""+memid+"\"}";//json字符串
             System.out.println(b);
@@ -548,12 +572,28 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
             try {
                 Response response = call.execute();
                 String result = response.body().string();
+
                 if (response != null) {
                     //在子线程中将Message对象发出去
-                    Message message = new Message();
-                    message.what = SHOW_RESPONSE;
-                    message.obj = result.toString();
-                    getDeviceListHandler.sendMessage(message);
+                    if(response.code()==200){
+                        Message message = new Message();
+                        message.what = SHOW_RESPONSE;
+                        message.obj = result.toString();
+                        getDeviceListHandler.sendMessage(message);
+                    }else{
+                        loading.setStatus(LoadingLayout.No_Network);
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("无网络连接，请检查您的网络···");
+                        default_lay.setVisibility(View.VISIBLE);
+                        select_device_list.setVisibility(View.GONE);
+                        new AlertDialog.Builder(SelectDeviceActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).show();
+                    }
+
                 }
                 System.out.println("结果：" + result + "状态码：" + response.code());
                 //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
@@ -620,12 +660,21 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                                     sortedJsonArray.put(jsonValues.get(i));
                                 }
 
+                            }else{
+                                loading.setStatus(LoadingLayout.Empty);
+                                LoadingLayout.getConfig()
+                                        .setEmptyText("抱歉，暂无数据");
+                               default_lay.setVisibility(View.VISIBLE);
+                                select_device_list.setVisibility(View.GONE);
                             }
                             if (sortedJsonArray != null) {
                                 select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
                                 loading.setStatus(LoadingLayout.Success);
                             }else{
-                                Toast.makeText(SelectDeviceActivity.this,"请检查网络",Toast.LENGTH_SHORT).show();
+                                //loading.setStatus(LoadingLayout.Success);
+                                loading.setStatus(LoadingLayout.Empty);
+                                LoadingLayout.getConfig()
+                                        .setEmptyText("抱歉，暂无数据");
                             }
                             select_device_list.setOnItemClickListener(new OnItemClickListener() {//列表item事件
                                 @Override
@@ -647,6 +696,9 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                             // setListViewHeightBasedOnChildren(device_listview);//计算listview的item个数,并完整显示
 
                         } else {
+                            loading.setStatus(LoadingLayout.Error);
+                            LoadingLayout.getConfig()
+                                    .setErrorText("出错啦~请稍后重试！");
                             new AlertDialog.Builder(SelectDeviceActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

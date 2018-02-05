@@ -84,15 +84,18 @@ public class RepairRecordAdapter extends BaseAdapter {
 
         try {
             JSONObject jsonObject=new JSONObject(list.get(i)+"");
-         JSONArray picArray=new JSONArray(jsonObject.getString("picJson"));
+            JSONArray picArray=new JSONArray(jsonObject.getString("picJson"));
             //String[] picArray={"http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=161e332af4246b607b5bba70dec8367a/8326cffc1e178a82111612d9f403738da977e8a5.jpg"};
            if(picArray.length()>0){
                for(int t=0;t<picArray.length();t++) {
                    System.out.println("图片路径："+picArray.get(t));
-                   returnBitMap(String.valueOf(picArray.get(t)),t);
+                   if(picArray.get(t)!=null&&!picArray.get(t).equals("null")){
+                       returnBitMap(String.valueOf(picArray.get(t)),t);
+                   }
+
                }
            }else{
-               holder.img_layout.setVisibility(View.GONE);
+             //  holder.img_layout.setVisibility(View.GONE);
            }
             if(jsonObject.getString("equipmenUserName")!=null&&!jsonObject.getString("equipmenUserName").equals("null")){
                 holder.repair_name.setText(jsonObject.getString("equipmenUserName"));
@@ -111,7 +114,7 @@ public class RepairRecordAdapter extends BaseAdapter {
         LinearLayout img_layout;
     }
 
-    public Bitmap returnBitMap(final String url,final int t){
+    public void returnBitMap(final String url,final int t){
 
         new Thread(new Runnable() {
             @Override
@@ -139,7 +142,11 @@ public class RepairRecordAdapter extends BaseAdapter {
                 }
             }
         }).start();
-        return bitmap;
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     private Handler handler = new Handler() {
 

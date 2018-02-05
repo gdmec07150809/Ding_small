@@ -90,11 +90,12 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:orientation="vertical">
+
                             <ImageView
                                 android:id="@+id/device_detail_img"
                                 android:layout_width="@dimen/px180"
                                 android:layout_height="@dimen/px180"
-                                android:layout_marginLeft="@dimen/px30"
+                                android:layout_marginLeft="@dimen/px10"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/device_head_img"/>
                         </LinearLayout>
@@ -122,17 +123,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="@dimen/px20"
                                     android:layout_centerVertical="true"
-                                    android:layout_toLeftOf="@+id/finished"
+                                    android:layout_alignParentRight="true"
                                     android:src="@mipmap/icon_info_bluetooth_active" />
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="@dimen/px30"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:src="@mipmap/icon_info_connect_active"
-                                    android:id="@+id/finished" />
                             </RelativeLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -176,7 +169,7 @@
                         android:text="基本信息"
                         android:textSize="@dimen/px34"
                         android:layout_centerVertical="true"
-                        android:textColor="@color/theme_color"/>
+                        android:textColor="@color/title_color"/>
                     <ImageView
                         android:id="@+id/base_img"
                         android:layout_width="wrap_content"

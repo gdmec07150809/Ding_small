@@ -25,6 +25,7 @@ import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.LoginandRegiter.RegisterActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,7 +75,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
         save_phone=sp.getString("phone","null");
         // String url = "http://192.168.1.104:8080/app/ppt6000/dateList.do";
         ///app/secr9000lisSecr9000
-        String url = "http://192.168.1.107:8080/app/secr9000/deleteSecr9000ByKey.do";
+        String url = utils.url+"/app/secr9000/deleteSecr9000ByKey.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -129,7 +130,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
             // TODO
             // 在这里进行 http request.网络请求相关操作
             //String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
-            String url = "http://192.168.1.107:8080/api/user/getSmsMsg.do";
+            String url = utils.url+"/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
             String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"3\",\"msgLen\":\"4\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);

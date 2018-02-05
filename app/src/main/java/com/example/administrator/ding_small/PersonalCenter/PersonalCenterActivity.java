@@ -140,7 +140,6 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
             @Override
             public void run() {
                 URL imageurl = null;
-
                 try {
                     imageurl = new URL(url);
                 } catch (MalformedURLException e) {

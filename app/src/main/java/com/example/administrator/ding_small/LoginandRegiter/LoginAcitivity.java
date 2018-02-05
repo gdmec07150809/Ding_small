@@ -22,7 +22,9 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
+import com.weavey.loading.lib.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +85,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_login);
+
         new_login = findViewById(R.id.new_login);
         new_login.setOnClickListener(this);
         register = findViewById(R.id.register);
@@ -156,10 +159,13 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
             case R.id.back:
                 //判断返回页面
                 if(back_str.equals("out")){
+                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                      intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
                     startActivity(intent);
+
                 }else {
                     finish();
+                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
             default:
@@ -181,9 +187,9 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            //String url = "http://120.76.188.131:8080/a10/api/user/login.do";
-            String url = "http://192.168.1.105:8080/api/user/login.do";
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(120, TimeUnit.SECONDS).build();
+            String url = utils.url+"/api/user/login.do";
+            //String url = "http://192.168.1.105:8080/api/user/login.do";
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.SECONDS).build();
             String pass = MD5Utils.md5(login_pass);
 
             String b = "{\"loginType\":\"2\",\"loginPwd\":\"" + pass + "\",\"loginAccount\":\"" + login_user + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
@@ -227,6 +233,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         switch (object1.getString("res")) {
                             case "99999"://登录失败
+                                loading.setStatus(LoadingLayout.Success);
                                 new AlertDialog.Builder(LoginAcitivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -265,7 +272,9 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                 break;
                         }
                     } catch (JSONException e) {
+
                         e.printStackTrace();
+
                     }
                     break;
                 default:

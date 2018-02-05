@@ -81,6 +81,8 @@ public class Fragment1 extends Fragment {
 
         gridView.setAdapter(adapter);
 
+
+
         gridView.setOnItemClickListener(new OnItemClickListener() {
             @RequiresApi(api = VERSION_CODES.JELLY_BEAN)
             @Override
@@ -758,6 +760,7 @@ public class Fragment1 extends Fragment {
                 }
             }
         });
+       gridView.setSelection(0);
         return view;
     }
     void initData() {

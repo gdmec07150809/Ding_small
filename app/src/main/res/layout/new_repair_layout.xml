@@ -36,6 +36,7 @@
                 android:visibility="gone">
                 <include layout="@layout/new_repair_remarks"/>
             </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px120"

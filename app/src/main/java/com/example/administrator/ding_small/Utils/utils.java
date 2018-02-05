@@ -25,7 +25,8 @@ import java.util.Map;
  * Created by Administrator on 2016/9/29.
  */
 public class utils {
-
+        public final static String url="http://120.76.188.131:8080/a10";
+        //public final static String url="http://192.168.1.112:8080";
     /**
      * 设置gridview固定宽度
      */

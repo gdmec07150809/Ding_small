@@ -24,6 +24,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +109,16 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         blueToothUtils();//蓝牙代码类
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(DeviceSearchActivity.this, MainLayoutActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     private void getTimeCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         refreshTime = Integer.parseInt(sp.getString("time", "30"))*1000;
@@ -264,6 +275,8 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             wifiAdapter = new WifiAdapter(DeviceSearchActivity.this, scanResults);
             wifiListView.setAdapter(wifiAdapter);
             System.out.println("刷新时间：" + refreshTime);
+            int time=refreshTime/1000;
+            //Toast.makeText(DeviceSearchActivity.this,"刷新时间：" + time,Toast.LENGTH_SHORT).show();
             one_handler.sendEmptyMessageDelayed(1, refreshTime);//默认30秒
         }
     };
@@ -425,6 +438,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 one_minute_img.setVisibility(View.GONE);
                 refresh_num = 1;
                 refreshTime = 30000;//30秒
+                mCameraDialog.dismiss();
                 break;
             case R.id.five_layout:
                 five_img.setVisibility(View.VISIBLE);
@@ -432,6 +446,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 one_minute_img.setVisibility(View.GONE);
                 refresh_num = 2;
                 refreshTime = 5000;//5秒
+                mCameraDialog.dismiss();
                 break;
             case R.id.one_minute_layout:
                 five_img.setVisibility(View.GONE);
@@ -439,9 +454,12 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 one_minute_img.setVisibility(View.VISIBLE);
                 refresh_num = 3;
                 refreshTime = 1000 * 60;//1分钟
+                mCameraDialog.dismiss();
                 break;
             case R.id.back:
-                finish();
+                Intent intent = new Intent(DeviceSearchActivity.this, MainLayoutActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             default:
                 break;

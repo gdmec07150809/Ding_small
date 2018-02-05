@@ -1,16 +1,23 @@
 package com.example.administrator.ding_small;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
 import android.view.KeyEvent;
@@ -23,11 +30,10 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.AdvertisementGvAdapter;
 import com.example.administrator.ding_small.Fragment.AdvertisementFragment;
-import com.example.administrator.ding_small.HelpTool.DensityUtil;
+import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
-import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 import com.example.administrator.ding_small.Utils.utils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -45,6 +51,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -68,18 +75,22 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     private long clickTime = 0;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, UserSign, oldPass, newPass, ts, nameStr,sign,imgUrl;
+    String memid, token, UserSign, oldPass, newPass, ts,sign,imgUrl;
+    String nameStr="";
     //变化语言所改变的控件 登陆、客服、消息、名称、记事日历、记账日历、记事本、记账本、设备表、联系人,扫码、搜索、报修,首页,口碑服务,特供商城,我的
     private TextView login_text, custom_service_text, news_text, name_text, notepad_calendar_text, account_calendar_text,
             notepad_text, account_text, device_text, contacts_text, scan_text, search_text, repair_text, home_text, reputation_service_text, mall_text, my_text;
     private EditText user_name;
     public static final int SHOW_RESPONSE = 0;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 设置contentFeature,可使用切换动画
         setContentView(R.layout.main_layout);
         init();//初始化控
+        getLocation();//获取地址
         getCacheUser();//获取用户信息
         // ifApm();//判断上下午
         initPager();//轮播图
@@ -89,9 +100,90 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         //getCache();//获取轮播图
 
 
-
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void getLocation() {
+//        if(Build.VERSION.SDK_INT>=23){
+//            System.out.println("版本号："+Build.VERSION.SDK_INT);
+//            //获取地址
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                // requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+//                if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)){
+//                    //如果没勾选“不再询问”，向用户发起权限请求
+//                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+//                }
+//                if("0.0".equals(Double.toString(LocationUtil.longitude))){
+//                    new AlertDialog.Builder(MainLayoutActivity.this).setTitle("权限提示").setMessage("请手动打开定位权限").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                            startActivityForResult(intent, 10);
+//                        }
+//                    }).show();
+//
+//                }
+//
+//
+////            // 转到手机设置界面，用户设置GPS
+////            Intent intent = new Intent(
+////                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+////            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+//            }
+//        }else{
+//            System.out.println("版本号："+Build.VERSION.SDK_INT);
+//            LocationUtil.initLocation(MainLayoutActivity.this);
+//            System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
+////            longitude_str=Double.toString(LocationUtil.longitude);
+////            latitude_str=Double.toString(LocationUtil.latitude);
+//            if("0.0".equals(Double.toString(LocationUtil.longitude))){
+//                new AlertDialog.Builder(MainLayoutActivity.this).setTitle("权限提示").setMessage("请手动打开定位权限").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                        startActivityForResult(intent, 10);
+//                    }
+//                }).show();
+//
+//            }
+//
+//        }
+        if(Build.VERSION.SDK_INT==23){
+            System.out.println("版本号："+Build.VERSION.SDK_INT);
+            int checkCallPhonePermission =
+                    ContextCompat.checkSelfPermission(MainLayoutActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+                //ActivityCompat.requestPermissions(MainLayoutActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+
+
+            }else {
+                if ("0.0".equals(Double.toString(LocationUtil.longitude))) {
+                    new AlertDialog.Builder(MainLayoutActivity.this).setTitle("权限提示").setMessage("请手动打开定位权限").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(intent, 10);
+                        }
+                    }).show();
+                }
+            }
+        }else if (Build.VERSION.SDK_INT > 23) {
+            System.out.println("版本号："+Build.VERSION.SDK_INT);
+            int checkCallPhonePermission =
+                    ContextCompat.checkSelfPermission(MainLayoutActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+                //ActivityCompat.requestPermissions(MainLayoutActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+
+
+
+            }
+        }else{
+            System.out.println("版本号："+Build.VERSION.SDK_INT);
+        }
+    }
     private void changeLanguage() {
         // Toast.makeText(MainLayoutActivity.this,"当前系统语言："+Locale.getDefault().getLanguage(),Toast.LENGTH_SHORT).show();
         if (Locale.getDefault().getLanguage().equals("en")) {
@@ -121,13 +213,18 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do";
+        String url = utils.url+"/api/secr/user/getPersonalInfo.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("UserSign:" + Sign);
         UserSign = MD5Utils.md5(Sign);
-         new Thread(getUserTask).start();//获取用户信息,启动
+        if(memid!=null&&!memid.equals("null")){
+            new Thread(getUserTask).start();//获取用户信息,启动
+        }else{
+            Handler handler1 = new Handler();
+            handler1.postDelayed(runnable, 100);
+        }
     }
 
     private void getCache() {
@@ -135,13 +232,13 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
        // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";轮播图
-        String url = "http://192.168.1.108:8080/app/ppt7000/memberImgUpload.do";
-        ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：memId" + memid + "  ts:" + ts + "  token:" + token);
-        String Sign = url + memid + token + ts;
-        System.out.println("Sign:" + Sign);
-        sign = MD5Utils.md5(Sign);
-        System.out.println("加密sign:" + sign);
+//        String url = "http://192.168.1.108:8080/app/ppt7000/memberImgUpload.do";
+//       // ts = String.valueOf(new Date().getTime());
+//        System.out.println("首页：memId" + memid + "  ts:" + ts + "  token:" + token);
+//        String Sign = url + memid + token + ts;
+//        System.out.println("Sign:" + Sign);
+//        sign = MD5Utils.md5(Sign);
+//        System.out.println("加密sign:" + sign);
       // new Thread(networkTask).start();//获取轮播图
     }
 
@@ -172,7 +269,6 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         findViewById(R.id.scan_layout).setOnClickListener(this);
         /*login_text,custom_service_text,news_text,name_text,notepad_calendar_text,account_calendar_text,notepad_text,account_text,
         device_text,contacts_text,scan_text,search_text,repair_text,home_text,reputation_service_text,mall_text,my_text*/
-        name_text = findViewById(R.id.name_text);
         login_text = findViewById(R.id.login_text);
         custom_service_text = findViewById(R.id.custom_service_text);
         news_text = findViewById(R.id.news_text);
@@ -305,7 +401,27 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "请先登陆", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(this).setTitle("请登陆")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                    intent.putExtra("back","in");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
                 }
                 break;
             case R.id.contacts_layout://联系人
@@ -331,6 +447,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 intent.putExtra("back","in");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 break;
             case R.id.repair_layout://报修
                 getCache();
@@ -340,7 +457,27 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "请先登陆", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(this).setTitle("请登陆")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                    intent.putExtra("back","in");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
                 }
 
                 break;
@@ -352,7 +489,27 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "请先登陆", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(this).setTitle("请登陆")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                    intent.putExtra("back","in");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
                 }
 
                 break;
@@ -365,17 +522,64 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 
                 break;
             case R.id.scan_layout://扫码功能
+
                 getCache();
                 System.out.println(memid);
                 if (!"null".equals(memid) && memid != null) {
-                    IntentIntegrator integrator = new IntentIntegrator(MainLayoutActivity.this);
-                    integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                    integrator.setPrompt("扫描二维码/条形码");
-                    integrator.setCameraId(0);
-                    integrator.setBeepEnabled(true);
-                    integrator.initiateScan();
+
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        int checkCallPhonePermission =
+                                ContextCompat.checkSelfPermission(MainLayoutActivity.this,Manifest.permission.CAMERA);
+                        if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(MainLayoutActivity.this, new String[]{Manifest.permission.CAMERA}, 222);
+                            IntentIntegrator integrator = new IntentIntegrator(MainLayoutActivity.this);
+                            integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                            integrator.setPrompt("扫描二维码/条形码");
+                            integrator.setCameraId(0);
+                            integrator.setBeepEnabled(true);
+                            integrator.initiateScan();
+                            return;
+                        } else {
+                            IntentIntegrator integrator = new IntentIntegrator(MainLayoutActivity.this);
+                            integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                            integrator.setPrompt("扫描二维码/条形码");
+                            integrator.setCameraId(0);
+                            integrator.setBeepEnabled(true);
+                            integrator.initiateScan();
+                        }
+                    } else {
+                        IntentIntegrator integrator = new IntentIntegrator(MainLayoutActivity.this);
+                        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                        integrator.setPrompt("扫描二维码/条形码");
+                        integrator.setCameraId(0);
+                        integrator.setBeepEnabled(true);
+                        integrator.initiateScan();
+                    }
+
+
                 } else {
-                    Toast.makeText(getApplicationContext(), "请先登陆", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(this).setTitle("请登陆")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                    intent.putExtra("back","in");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+
                 }
 
 //                 intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
@@ -391,7 +595,27 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "请先登陆", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(this).setTitle("请登陆")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                    intent.putExtra("back","in");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
                 }
                 break;
             default:
@@ -548,8 +772,13 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result.getContents() == null) {
+        if(resultCode==10){
+            Toast.makeText(this, "返回", Toast.LENGTH_SHORT).show();
+        }
+        if (result== null) {
             Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
         } else {
             //http://www.ding-new.com/pptappdwnld.do?p1=16402&p2=03&p3=2w&p4=yy  试用链接
@@ -566,6 +795,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 Intent intent = new Intent(MainLayoutActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", mac_str);
+                bundle.putString("activity", "1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -623,8 +853,8 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do?memId=" + memid + "&ts=" + ts;
-            OkHttpClient okHttpClient = new OkHttpClient();
+            String url = utils.url+"/api/secr/user/getPersonalInfo.do?memId=" + memid + "&ts=" + ts;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(10,TimeUnit.SECONDS).build();
 
             System.out.println("验证：" + UserSign);
             String b = "{}";//json字符串
@@ -642,7 +872,7 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 if (response != null) {
                     //在子线程中将Message对象发出去
                     Message message = new Message();
-                    message.what = SHOW_RESPONSE;
+                    message.what = 0;
                     message.obj = result.toString();
                     getUserHandler.sendMessage(message);
                 }
@@ -660,34 +890,38 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case SHOW_RESPONSE:
+                case 0:
                     String response = (String) msg.obj;
                     System.out.println(response);
+
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         JSONObject objectData = new JSONObject(object.getString("data"));
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
-                        if (object1.getString("res").equals("00000")) {
-                            nameStr=objectData.getString("nick");
-                            imgUrl=objectData.getString("imgUrl");
-                            Handler handler = new Handler();
-                            handler.postDelayed(runnable, 100);
-                            //储存token,备用
-                            sp = MainLayoutActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
-                            SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
-                            editor.putString("nameStr", nameStr);
-                            editor.putString("imgUrl", imgUrl);
-                            editor.commit();    //提交数据保存
-                        } else {
-                            new AlertDialog.Builder(MainLayoutActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
-                        }
+
+                            if (object1.getString("res").equals("00000")) {
+                                nameStr=objectData.getString("nick");
+                                imgUrl=objectData.getString("imgUrl");
+                                Handler handler = new Handler();
+                                handler.postDelayed(runnable, 100);
+                                //储存token,备用
+                                sp = MainLayoutActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                                SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                                editor.putString("nameStr", nameStr);
+                                editor.putString("imgUrl", imgUrl);
+                                editor.commit();    //提交数据保存
+                            } else {
+                                new AlertDialog.Builder(MainLayoutActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                            }
+                        
                     } catch (JSONException e) {
+
                         e.printStackTrace();
                     }
                     break;

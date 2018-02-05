@@ -4,20 +4,20 @@
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="90px">
+        android:layout_height="@dimen/px90">
         <ImageView
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_fix_cancel"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30px"/>
+            android:layout_marginLeft="@dimen/px30"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
             android:textColor="@color/title_color"
             android:layout_centerInParent="true"
-            android:textSize="34px"
+            android:textSize="@dimen/px34"
             android:text="维修信息 (必填)"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,16 +29,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30px"
-        android:layout_marginRight="30px"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="报修人"/>
@@ -50,7 +50,8 @@
                 android:layout_centerVertical="true"
                 android:hint="请填写报修人姓名"
                 android:background="@null"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
+                android:gravity="right"
                 android:textColor="@color/title_color"
                 android:textColorHint="@color/time_color"/>
             <LinearLayout
@@ -61,11 +62,11 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="报修电话"/>
@@ -76,7 +77,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:hint="请填写报修人电话"
-                android:textSize="30px"
+                android:gravity="right"
+                android:textSize="@dimen/px30"
                 android:background="@null"
                 android:inputType="phone"
                 android:maxLength="11"
@@ -92,12 +94,12 @@
         <RelativeLayout
             android:id="@+id/new_select_layout"
             android:layout_width="match_parent"
-            android:layout_height="100px">
+            android:layout_height="@dimen/px100">
             <TextView
                 android:id="@+id/location_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="@dimen/px30"
                 android:layout_centerVertical="true"
                 android:textColor="@color/title_color"
                 android:text="报修地址"/>

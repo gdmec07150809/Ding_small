@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import com.example.administrator.ding_small.Adapter.RepairRecordAdapter;
 import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
 import org.apache.http.HttpEntity;
@@ -102,7 +104,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id;
+    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id,repairTs,repairSign;
     public static final int SHOW_RESPONSE = 0;
     private ScrollView scrollview;
     private JSONObject DataObject;//设备数据
@@ -119,6 +121,8 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
     Bitmap bitmap=null;
 
+    private int f1=1,f2=1,f3=1,f4=1,f5=1,f6=1,f7=1;
+
     //private Handler handler;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
@@ -130,8 +134,8 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         loading.setStatus(LoadingLayout.Loading);
         getBundleString();//获取bundle数据
         getCache();//获取缓存
-        getLocation();//获取当前地址
-        getTemperature();//获取当前温度
+        //getLocation();//获取当前地址
+        //getTemperature();//获取当前温度
         getRepairRecordCache();//获取缓存,报修记录
 
     }
@@ -187,7 +191,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.105:8080/app/ppt6000/dataPpt6000Is.do";
+        String url = utils.url+"/app/ppt6000/dataPpt6000Is.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -201,14 +205,14 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.105:8080/app/ppt7000/equipmentLog.do";
-        ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
+        String url = utils.url+"/app/ppt7000/equipmentLog.do";
+        repairTs = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + repairTs + "  token:" + token);
         String Sign = url + memid + token + ts;
         System.out.println("Sign:" + Sign);
-        sign = MD5Utils.md5(Sign);
+        repairSign = MD5Utils.md5(Sign);
 
-        new Thread(getRepairRecordTask).start();//获取该设备维修记录
+
     }
     private void init() {
         device_name = findViewById(R.id.device_name);//设备名
@@ -305,13 +309,25 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         final Intent intent;
         switch (view.getId()) {
             case R.id.phone_record_lay://调拨记录
+
+                if(f7==1){
+                    phone_record_layout.setVisibility(View.VISIBLE);
+                    phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                    phone_record_img.setImageResource(R.mipmap.icon_info_up);
+                    f7=2;
+                }else{
+                    f7=1;
+                    phone_record_layout.setVisibility(View.GONE);
+                    phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+                    phone_record_img.setImageResource(R.mipmap.icon_info_down);
+                }
                 management_layout.setVisibility(View.GONE);
                 base_layout.setVisibility(View.GONE);
                 manufacturer_layout.setVisibility(View.GONE);
                 parameter_layout.setVisibility(View.GONE);
                 selling_point_layout.setVisibility(View.GONE);
                 record_layout.setVisibility(View.GONE);
-                phone_record_layout.setVisibility(View.VISIBLE);
+
 
                 management_img.setImageResource(R.mipmap.icon_info_down);
                 selling_point_img.setImageResource(R.mipmap.icon_info_down);
@@ -319,7 +335,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 manufacturer_img.setImageResource(R.mipmap.icon_info_down);
                 base_img.setImageResource(R.mipmap.icon_info_down);
                 repair_img.setImageResource(R.mipmap.icon_info_down);
-                phone_record_img.setImageResource(R.mipmap.icon_info_up);
+
 
                 //base_text,management_text,selling_text,parameter_text,manufacturer_text
                 base_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
@@ -328,11 +344,21 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 parameter_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 repair_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
-                phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+
 
                 break;
             case R.id.management_layout://管理信息
-                management_layout.setVisibility(View.VISIBLE);
+                if(f2==1){
+                    f2=2;
+                    management_layout.setVisibility(View.VISIBLE);
+                    management_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                    management_img.setImageResource(R.mipmap.icon_info_up);
+                }else{
+                    f2=1;
+                    management_layout.setVisibility(View.GONE);
+                    management_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+                    management_img.setImageResource(R.mipmap.icon_info_down);
+                }
                 base_layout.setVisibility(View.GONE);
                 manufacturer_layout.setVisibility(View.GONE);
                 parameter_layout.setVisibility(View.GONE);
@@ -340,7 +366,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 record_layout.setVisibility(View.GONE);
                 phone_record_layout.setVisibility(View.GONE);
 
-                management_img.setImageResource(R.mipmap.icon_info_up);
+
                 selling_point_img.setImageResource(R.mipmap.icon_info_down);
                 parameter_img.setImageResource(R.mipmap.icon_info_down);
                 manufacturer_img.setImageResource(R.mipmap.icon_info_down);
@@ -350,7 +376,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
                 //base_text,management_text,selling_text,parameter_text,manufacturer_text
                 base_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
-                management_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+
                 selling_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 parameter_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
@@ -381,9 +407,21 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.new_manufacturer_layout://制造商
+                if(f5==1){
+                    manufacturer_layout.setVisibility(View.VISIBLE);
+                    manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                    manufacturer_img.setImageResource(R.mipmap.icon_info_up);
+                    f5=2;
+                }else{
+                    f5=1;
+                    manufacturer_layout.setVisibility(View.GONE);
+                    manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+                    manufacturer_img.setImageResource(R.mipmap.icon_info_down);
+                }
+
                 management_layout.setVisibility(View.GONE);
                 base_layout.setVisibility(View.GONE);
-                manufacturer_layout.setVisibility(View.VISIBLE);
+
                 parameter_layout.setVisibility(View.GONE);
                 selling_point_layout.setVisibility(View.GONE);
                 record_layout.setVisibility(View.GONE);
@@ -392,7 +430,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 management_img.setImageResource(R.mipmap.icon_info_down);
                 selling_point_img.setImageResource(R.mipmap.icon_info_down);
                 parameter_img.setImageResource(R.mipmap.icon_info_down);
-                manufacturer_img.setImageResource(R.mipmap.icon_info_up);
+
                 base_img.setImageResource(R.mipmap.icon_info_down);
                 repair_img.setImageResource(R.mipmap.icon_info_down);
                 phone_record_img.setImageResource(R.mipmap.icon_info_down);
@@ -401,7 +439,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 management_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 selling_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 parameter_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
-                manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+
                 repair_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
 
@@ -422,17 +460,29 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.new_parameter_layout://参数信息
+
+                if(f4==1){
+                    parameter_layout.setVisibility(View.VISIBLE);
+                    parameter_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                    parameter_img.setImageResource(R.mipmap.icon_info_up);
+                    f4=2;
+                }else{
+                    f4=1;
+                    parameter_layout.setVisibility(View.GONE);
+                    parameter_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+                    parameter_img.setImageResource(R.mipmap.icon_info_down);
+                }
                 management_layout.setVisibility(View.GONE);
                 base_layout.setVisibility(View.GONE);
                 manufacturer_layout.setVisibility(View.GONE);
-                parameter_layout.setVisibility(View.VISIBLE);
+
                 selling_point_layout.setVisibility(View.GONE);
                 record_layout.setVisibility(View.GONE);
                 phone_record_layout.setVisibility(View.GONE);
 
                 management_img.setImageResource(R.mipmap.icon_info_down);
                 selling_point_img.setImageResource(R.mipmap.icon_info_down);
-                parameter_img.setImageResource(R.mipmap.icon_info_up);
+
                 manufacturer_img.setImageResource(R.mipmap.icon_info_down);
                 base_img.setImageResource(R.mipmap.icon_info_down);
                 repair_img.setImageResource(R.mipmap.icon_info_down);
@@ -442,7 +492,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 base_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 management_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 selling_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
-                parameter_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+
                 manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 repair_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
@@ -456,6 +506,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
                 try {
                     if (DataObject.getString("eqpAddressJson") != null) {
+
                         JSONObject jsonObject = new JSONObject(DataObject.getString("eqpAddressJson"));
                         location_detail.setText(jsonObject.getString("fa"));
                         latitude.setText(jsonObject.getString("la"));
@@ -472,16 +523,27 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.new_selling_layout://售点信息
+                if(f3==1){
+                    selling_point_layout.setVisibility(View.VISIBLE);
+                    selling_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                    selling_point_img.setImageResource(R.mipmap.icon_info_up);
+                    f3=2;
+                }else{
+                    f3=1;
+                    selling_point_layout.setVisibility(View.GONE);
+                    selling_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+                    selling_point_img.setImageResource(R.mipmap.icon_info_down);
+                }
                 management_layout.setVisibility(View.GONE);
                 base_layout.setVisibility(View.GONE);
                 manufacturer_layout.setVisibility(View.GONE);
                 parameter_layout.setVisibility(View.GONE);
-                selling_point_layout.setVisibility(View.VISIBLE);
+
                 record_layout.setVisibility(View.GONE);
                 phone_record_layout.setVisibility(View.GONE);
 
                 management_img.setImageResource(R.mipmap.icon_info_down);
-                selling_point_img.setImageResource(R.mipmap.icon_info_up);
+
                 parameter_img.setImageResource(R.mipmap.icon_info_down);
                 manufacturer_img.setImageResource(R.mipmap.icon_info_down);
                 base_img.setImageResource(R.mipmap.icon_info_down);
@@ -490,7 +552,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
                 base_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 management_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
-                selling_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+
                 parameter_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 repair_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
@@ -515,8 +577,19 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.base_layout://基本信息
+                if(f1==1){
+                    base_layout.setVisibility(View.VISIBLE);
+                    base_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                    base_img.setImageResource(R.mipmap.icon_info_up);
+                    f1=2;
+                }else{
+                    f1=1;
+                    base_layout.setVisibility(View.GONE);
+                    base_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+                    base_img.setImageResource(R.mipmap.icon_info_down);
+                }
                 management_layout.setVisibility(View.GONE);
-                base_layout.setVisibility(View.VISIBLE);
+
                 manufacturer_layout.setVisibility(View.GONE);
                 parameter_layout.setVisibility(View.GONE);
                 selling_point_layout.setVisibility(View.GONE);
@@ -527,11 +600,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 selling_point_img.setImageResource(R.mipmap.icon_info_down);
                 parameter_img.setImageResource(R.mipmap.icon_info_down);
                 manufacturer_img.setImageResource(R.mipmap.icon_info_down);
-                base_img.setImageResource(R.mipmap.icon_info_up);
+
                 repair_img.setImageResource(R.mipmap.icon_info_down);
                 phone_record_img.setImageResource(R.mipmap.icon_info_down);
 
-                base_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+
                 management_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 selling_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 parameter_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
@@ -560,12 +633,24 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.repair_record_layout://维修记录
 
+                if(f6==1){
+                    record_layout.setVisibility(View.VISIBLE);
+                    repair_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+                    repair_img.setImageResource(R.mipmap.icon_info_up);
+                    f6=2;
+                }else{
+                    f6=1;
+                    record_layout.setVisibility(View.GONE);
+                    repair_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
+                    repair_img.setImageResource(R.mipmap.icon_info_down);
+                }
+
                 management_layout.setVisibility(View.GONE);
                 base_layout.setVisibility(View.GONE);
                 manufacturer_layout.setVisibility(View.GONE);
                 parameter_layout.setVisibility(View.GONE);
                 selling_point_layout.setVisibility(View.GONE);
-                record_layout.setVisibility(View.VISIBLE);
+
                 phone_record_layout.setVisibility(View.GONE);
 
 
@@ -574,7 +659,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 parameter_img.setImageResource(R.mipmap.icon_info_down);
                 manufacturer_img.setImageResource(R.mipmap.icon_info_down);
                 base_img.setImageResource(R.mipmap.icon_info_down);
-                repair_img.setImageResource(R.mipmap.icon_info_up);
+
                 phone_record_img.setImageResource(R.mipmap.icon_info_down);
 
 
@@ -583,7 +668,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 selling_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 parameter_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
-                repair_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
+
                 phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
 
 
@@ -685,6 +770,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", device_mac);
                 bundle.putString("device_id", device_id);
+                bundle.putString("activity", "2");
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -721,8 +807,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     private void getLocation() {
         //获取地址
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+            LocationUtil.initLocation(DeviceDetailActivity.this);
+            System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
+            longitude_str = Double.toString(LocationUtil.longitude);
+            latitude_str = Double.toString(LocationUtil.latitude);
         } else {
             LocationUtil.initLocation(DeviceDetailActivity.this);
             System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
@@ -817,8 +906,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         }
         province_str = LocationUtil.province;
         System.out.println("市：" + province_str);
-        String url = "https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location=" + province_str + "&language=zh-Hans&unit=c";
-        sendRequestWithHttpClient(this, url);//获取温度的方法
+        if(province_str!=null){
+            String url = "https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location=" + province_str + "&language=zh-Hans&unit=c";
+            sendRequestWithHttpClient(this, url);//获取温度的方法
+        }
+
 
     }
 
@@ -830,8 +922,8 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.105:8080/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).build();
+            String url = utils.url+"/app/ppt6000/dataPpt6000Is.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).build();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
             System.out.println("设备详情参数：" + b);
@@ -854,6 +946,9 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                         message.obj = result.toString();
                         getDeviceListHandler.sendMessage(message);
                     } else {
+                        loading.setStatus(LoadingLayout.No_Network);
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("无网络连接，请检查您的网络···");
                         System.out.println("结果：" + result);
                     }
                 }
@@ -877,6 +972,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
                             if (object.getString("data") != null && !object.getString("data").equals("null")) {
+                                new Thread(getRepairRecordTask).start();//获取该设备维修记录
                                 DataObject = new JSONObject(object.getString("data"));//该设备数据
                                 loading.setStatus(LoadingLayout.Success);
                                 JSONObject FAObject = new JSONObject(DataObject.getString("eqpAddressJson"));//该设备数据
@@ -885,10 +981,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 device_id=DataObject.getString("eqpId");
                                 eqpStatus=DataObject.getString("eqpStatus");
 
-                                String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
-                                //DataObject.getString("imsPci")
-                                returnBitMap(imgUrl);//获取网络图片，并转化为Bitmap格式  设备图片
+                                //String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
 
+                                if(DataObject.getString("imsPci")!=null&&!DataObject.getString("imsPci").equals("null")){
+                                    returnBitMap(DataObject.getString("imsPci"));//获取网络图片，并转化为Bitmap格式  设备图片
+                                }
 
                                 sp = DeviceDetailActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
                                 SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
@@ -908,15 +1005,19 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                      Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
                                     }
                                 }).show();
                             }
                         } else {
-                            new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
+                                    Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
                                 }
                             }).show();
                         }
@@ -939,16 +1040,16 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.105:8080/app/ppt7000/equipmentLog.do?memId=" + memid + "&ts=" + ts + "&macNo=" + device_mac;
+            String url = utils.url+"/app/ppt7000/equipmentLog.do?memId=" + memid + "&ts=" + repairTs + "&macNo=" + device_mac;
             OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60,TimeUnit.SECONDS).build();
-            System.out.println("验证：" + sign);
+            System.out.println("验证：" + repairSign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
             System.out.println("设备维修记录参数：" + b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
                     .post(requestBody)
-                    .addHeader("sIgn", sign)
+                    .addHeader("sIgn", repairSign)
                     .build();
             System.out.println(request.headers());
             Call call = okHttpClient.newCall(request);
@@ -991,21 +1092,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 System.out.println("数据json:"+DataArray);
                                 repair_record_listView.setAdapter(new RepairRecordAdapter(DeviceDetailActivity.this,DataArray));
                                 setListViewHeightBasedOnChildren(repair_record_listView);
-                            } else {
-                                new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                    }
-                                }).show();
                             }
-                        } else {
-                            new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1032,7 +1119,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 try {
                     HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
                     conn.setDoInput(true);
-                    conn.setConnectTimeout(10000);
+                    conn.setConnectTimeout(20000);
                     conn.connect();
                     InputStream is = conn.getInputStream();
                     bitmap = BitmapFactory.decodeStream(is);

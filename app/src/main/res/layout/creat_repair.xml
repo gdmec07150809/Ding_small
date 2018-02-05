@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <com.weavey.loading.lib.LoadingLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/type"
+        android:layout_above="@+id/footer"
+        app:isFirstVisible="true"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -50,7 +59,7 @@
             android:layout_height="50dp"
             android:layout_below="@+id/head"
             android:layout_marginTop="10dp"
-            android:background="@color/action">
+            android:background="@color/repair_bg1">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,7 +75,7 @@
                         android:layout_width="39dp"
                         android:layout_height="39dp"
                        android:layout_centerInParent="true"
-                        android:src="@mipmap/fix_icon_loushui_active"/>
+                        android:src="@mipmap/fix_icon_noele_active"/>
                 </RelativeLayout>
                 <TextView
                     android:id="@+id/action_text"
@@ -213,5 +222,5 @@
             <include layout="@layout/confirm_submit"/>
         </LinearLayout>
     </RelativeLayout>
-
+</com.weavey.loading.lib.LoadingLayout>
 </RelativeLayout>

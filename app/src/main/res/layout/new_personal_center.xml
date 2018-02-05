@@ -7,6 +7,15 @@
     android:orientation="vertical"
     android:background="#F8F8F8">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <include layout="@layout/home_footer"/>
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +41,7 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/px130"
                         android:layout_weight="1.9"
-                        android:background="@drawable/head1"
+                        android:background="@drawable/tou"
                         android:src="@drawable/hend_layout"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -270,13 +279,4 @@
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <include layout="@layout/home_footer"/>
-    </LinearLayout>
 </RelativeLayout>

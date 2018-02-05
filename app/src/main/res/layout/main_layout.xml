@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
-            android:text="张先生，上午好"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="14pt"/>
     </RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.administrator.ding_small;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -31,14 +32,22 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     private String adress;
     private EditText location;
 
+    private static final String tokeFile = "selectAdressFile";//定义保存的文件的名称
+    SharedPreferences sp = null;//定义储存源，备用
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_location);
         initView();
         initJsonData();
+        getCache();
     }
-
+    private void getCache(){
+        sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
+        mTvAddress.setText(sp.getString("adress", ""));
+        location.setText(sp.getString("location", ""));
+    }
     private void showPickerView() {
         OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
@@ -156,16 +165,24 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
             case R.id.comfir_btn://确定
                 intent = new Intent(SelectLocationActivity.this, CreatRepairRemarksActivity.class);
                 String location_str=location.getText().toString().trim();
+                String adress=mTvAddress.getText().toString().trim();
                 if(adress.equals("")||adress==null||location_str.equals("")||location_str==null){
                     Toast.makeText(SelectLocationActivity.this,"地址不能为空",Toast.LENGTH_SHORT).show();
                 }else{
+                    sp = SelectLocationActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                    SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+
+                    editor.putString("adress", adress);
+                    editor.putString("location", location_str);
+                    editor.commit();    //提交数据保存
+
+
                     String detailStr=adress+location_str;
                     intent.putExtra("adress", detailStr);
                     intent.putExtra("location",location_str);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-
                 break;
             default:
                 break;

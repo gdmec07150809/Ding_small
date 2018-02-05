@@ -116,6 +116,7 @@
                         android:inputType="numberPassword"
                         android:hint="请输入登录密码"
                         android:textColor="#333333"
+                        android:maxLength="12"
                         android:textColorHint="#BBBBBB"
                         android:textSize="@dimen/px30"/>
                     <LinearLayout

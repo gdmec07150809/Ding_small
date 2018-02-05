@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.SearchBoxAdapter;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
 import org.json.JSONArray;
@@ -62,6 +64,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
     //更改语言所要更改的控件
     private TextView cancel_text, recent_search_record_text, clean_text;
 
+    private LinearLayout defult_lay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +90,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do";
+        String url = utils.url+"/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -120,7 +123,10 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
     private void setCache() {
         search_str = search_text.getText().toString().trim();
         System.out.println(search_str);
-        search_record_lists.add(search_str);
+        if(!search_record_lists.contains(search_str)){
+            search_record_lists.add(search_str);
+        }
+
 
         SharedPreferences.Editor editor = getSharedPreferences("SearchDataList", MODE_PRIVATE).edit();
         editor.putInt("SearchNums", search_record_lists.size());
@@ -143,6 +149,9 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
         clean_text = findViewById(R.id.clean_text);
         cancel_text = findViewById(R.id.cancel_btn);
         cancel_text.setOnClickListener(this);
+
+        defult_lay=findViewById(R.id.defult_lay);
+        defult_lay.setVisibility(View.GONE);
     }
 
     @Override
@@ -200,7 +209,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
+            String url = utils.url+"/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\": \""+memid+"\"}";//json字符串
@@ -243,19 +252,11 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
-//                            new AlertDialog.Builder(DeviceListActivity.this).setTitle("修改密码").setMessage("修改成功,返回首页").setPositiveButton("确定",new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    Intent intent=new Intent(DeviceListActivity.this,MainLayoutActivity.class);
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                            }).show();
+                            defult_lay.setVisibility(View.GONE);
                             // JSONObject jsonObject=new JSONObject(object.getString("data"));
                             System.out.println("数据：" + object.getString("data"));
                             jsonArray = new JSONArray(object.getString("data"));
                             if (jsonArray.length() > 0) {
-
                                 /*模糊查询*/
                                 sortedJsonArray = new JSONArray();
                                 //List<JSONObject> jsonValues = new ArrayList<JSONObject>();
@@ -264,13 +265,23 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                                         sortedJsonArray.put(jsonArray.getJSONObject(i));
                                     }
                                 }
+                            }else{
+                                loading.setStatus(LoadingLayout.Empty);//无数据
+                                LoadingLayout.getConfig()
+                                        .setEmptyText("抱歉，暂无数据");
+//                                loading.setStatus(LoadingLayout.Success);
+//                                defult_lay.setVisibility(View.VISIBLE);
+//                                select_device_list.setVisibility(View.GONE);
                             }
-                            if (sortedJsonArray != null) {
+                            if (sortedJsonArray != null&&sortedJsonArray.length()>0) {
                                 select_device_list.setAdapter(new DeviceListAdapter(SearchBoxActiivty.this, sortedJsonArray));//设置适配器
                                 loading.setStatus(LoadingLayout.Success);
                             }else{
-                                Toast.makeText(SearchBoxActiivty.this,"找不到该设备",Toast.LENGTH_SHORT).show();
-                                loading.setStatus(LoadingLayout.Success);
+                                loading.setStatus(LoadingLayout.Empty);//无数据
+                                LoadingLayout.getConfig()
+                                        .setEmptyText("抱歉，无此设备");
+                               // Toast.makeText(SearchBoxActiivty.this,"找不到该设备",Toast.LENGTH_SHORT).show();
+                                //loading.setStatus(LoadingLayout.Success);
                             }
                             select_device_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {//列表item事件
                                 @Override
@@ -288,16 +299,14 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                                     startActivity(intent);
                                 }
                             });
-
                             setListViewHeightBasedOnChildren(select_device_list);//计算listview的item个数,并完整显示
+                        } else{
+                            loading.setStatus(LoadingLayout.Error);
+                            LoadingLayout.getConfig()
+                                    .setErrorText("出错啦~请稍后重试！");
+                              Toast.makeText(SearchBoxActiivty.this,"请检查网络",Toast.LENGTH_SHORT).show();
+                                select_device_list.setVisibility(View.GONE);
 
-                        } else {
-                            new AlertDialog.Builder(SearchBoxActiivty.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

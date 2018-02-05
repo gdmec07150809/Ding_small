@@ -22,11 +22,23 @@
                 android:layout_width="match_parent"
                 app:isFirstVisible="true"
                 android:layout_height="match_parent">
-            <ListView
-                android:id="@+id/select_device_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null" ></ListView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ListView
+                        android:id="@+id/select_device_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null" ></ListView>
+                    <LinearLayout
+                        android:id="@+id/defult_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <include layout="@layout/defult_layout"/>
+                    </LinearLayout>
+                </LinearLayout>
+
             </com.weavey.loading.lib.LoadingLayout>
             <LinearLayout
                 android:layout_width="match_parent"

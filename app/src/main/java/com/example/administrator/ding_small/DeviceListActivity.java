@@ -28,6 +28,8 @@ import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.PersonalCenter.EditPassWordActivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
+import com.example.administrator.ding_small.Utils.Data;
+import com.example.administrator.ding_small.Utils.utils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.weavey.loading.lib.LoadingLayout;
@@ -83,8 +85,10 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     private Handler handler;
     private TextView count_number, using, maintenancing;
     private LoadingLayout loading;
+    private LinearLayout default_lay;
     //更改语言所要更改的控件 返回、设备列表、设备总数、使用中、维修中、扫码添加、搜索添加、手工输入、历史设备
     private TextView back_text, device_list_text, device_num_text, using_text, maintenancing_text, add_by_scan_text, add_by_search_text, enter_by_manually_text, device_history_text;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,7 +128,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do";
+        String url = utils.url+"/app/ppt6000/dateList.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -148,6 +152,8 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         // findViewById(R.id.personalcenter_layout).setOnClickListener(this);
         using = findViewById(R.id.using);//使用中
         maintenancing = findViewById(R.id.maintenancing);//维修中
+
+        default_lay=findViewById(R.id.default_lay);
 
 
         // back_text,device_list_text,device_num_text,using_text,maintenancing_text,add_by_scan_text,add_by_search_text,enter_by_manually_text,device_history_text;
@@ -323,6 +329,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 Intent intent = new Intent(DeviceListActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", mac_str);
+                bundle.putString("activity", "1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -339,8 +346,8 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.105:8080/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts ;
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(120,TimeUnit.SECONDS).build();
+            String url = utils.url+"/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts ;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(10,TimeUnit.SECONDS).build();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\"" + memid +"\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
@@ -355,11 +362,18 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 Response response = call.execute();
                 String result = response.body().string();
                 if (response != null) {
-                    //在子线程中将Message对象发出去
-                    Message message = new Message();
-                    message.what = SHOW_RESPONSE;
-                    message.obj = result.toString();
-                    getDeviceListHandler.sendMessage(message);
+                    if(response.code()==200){
+                        //在子线程中将Message对象发出去
+                        Message message = new Message();
+                        message.what = SHOW_RESPONSE;
+                        message.obj = result.toString();
+                        getDeviceListHandler.sendMessage(message);
+                    }else{
+                        loading.setStatus(LoadingLayout.No_Network);
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("无网络连接，请检查您的网络···");
+                    }
+
                 }
                 System.out.println("结果：" + result + "状态码：" + response.code());
                 //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
@@ -393,8 +407,10 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                             // JSONObject jsonObject=new JSONObject(object.getString("data"));
                             System.out.println("数据：" + object.getString("data"));
                             jsonArray = new JSONArray(object.getString("data"));
-                            if (jsonArray.length() > 0) {
 
+                            if (jsonArray.length() > 0) {
+                                default_lay.setVisibility(View.GONE);
+                                device_listview.setVisibility(View.VISIBLE);
                                 System.out.println(jsonArray.length());
                                 count_number.setText(jsonArray.length() + "");
                                 /*按销售日期排序 */
@@ -433,6 +449,12 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                     }
                                 }
 
+                            }else{
+                                loading.setStatus(LoadingLayout.Empty);
+                                LoadingLayout.getConfig()
+                                        .setEmptyText("抱歉，暂无数据");
+                                default_lay.setVisibility(View.VISIBLE);
+                                device_listview.setVisibility(View.GONE);
                             }
                             if (sortedJsonArray != null) {
                                 using.setText(using_num + "");
@@ -458,6 +480,11 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                             });
                             setListViewHeightBasedOnChildren(device_listview);//计算listview的item个数,并完整显示
                         } else {
+                            loading.setStatus(LoadingLayout.Error);
+                            LoadingLayout.getConfig()
+                                    .setErrorText("出错啦~请稍后重试！");
+                            default_lay.setVisibility(View.VISIBLE);
+                            device_listview.setVisibility(View.GONE);
                             new AlertDialog.Builder(DeviceListActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

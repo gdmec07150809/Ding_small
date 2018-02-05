@@ -4,6 +4,8 @@ package com.example.administrator.ding_small.HelpTool;
  * Created by Administrator on 2017/11/15.
  */
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +16,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -95,14 +99,23 @@ public class LocationUtil {
             //是否为网络位置控制器
             provider = LocationManager.NETWORK_PROVIDER;
         } else {
-            Toast.makeText(context, "请检查网络或GPS是否打开",
-                    Toast.LENGTH_LONG).show();
+            if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_COARSE_LOCATION)){
+                //如果没勾选“不再询问”，向用户发起权限请求
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+            }
+//            Toast.makeText(context, "请检查网络或GPS是否打开",
+//                    Toast.LENGTH_LONG).show();
+
             return;
         }
 
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_COARSE_LOCATION)){
+                //如果没勾选“不再询问”，向用户发起权限请求
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+            }
             return  ;
         }
 
@@ -174,13 +187,19 @@ public class LocationUtil {
                 //System.out.println(stringBuilder.toString());
                // LogUtils.INSTANCE.d_debugprint("获取到的地理位置为：",stringBuilder.toString());
                 //locationStr=address.getAddressLine(0);
-                locationStr=address.getAdminArea()+"-"+address.getLocality()+"-"+address.getSubLocality();
-                System.out.println("详细位置："+locationStr);
-                province=address.getLocality();
+                if(Build.VERSION.SDK_INT>23){
+                    locationStr=address.getAdminArea()+"-"+address.getSubAdminArea()+"-"+address.getLocality();
+                    System.out.println("详细位置："+locationStr);
+                    province=address.getSubAdminArea();
+                }else{
+                    locationStr=address.getAdminArea()+"-"+address.getLocality()+"-"+address.getSubLocality();
+                    System.out.println("详细位置："+locationStr);
+                    province=address.getLocality();
+                }
+
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            Toast.makeText(context, "报错", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         return locationStr;

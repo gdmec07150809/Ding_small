@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,8 +21,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.test.ServiceTestCase;
 import android.view.Gravity;
@@ -50,25 +53,33 @@ import com.example.administrator.ding_small.JsonClass.JsonBean;
 import com.example.administrator.ding_small.JsonClass.JsonFileReader;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.MainLayoutActivity;
+import com.example.administrator.ding_small.PerfectDeviceActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.utils;
 import com.google.gson.Gson;
+import com.weavey.loading.lib.LoadingLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -86,7 +97,7 @@ import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddr
 public class PersonalCenterPerfectActivity extends Activity implements View.OnClickListener {
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, UserSign, oldPass, newPass, ts, photoSign,c_newPass,sign,nameStr;
+    String memid, token, UserSign, setUserSign,oldPass, newPass, ts,getTs, photoSign,c_newPass,sign,nameStr,setTs,photoTs;
     public static final int SHOW_RESPONSE = 0;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
 
@@ -102,8 +113,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private String adress, str_location,path;
     Bitmap bitmap;
+    private LoadingLayout loading;
 
-    List<File> fileList=new ArrayList<File>();//图片集合
+    List<File> fileList=null;//图片集合
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -136,10 +148,13 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         nickname_value_text = findViewById(R.id.nickname_value_text);
         address_value = findViewById(R.id.address_value);
         signature_value = findViewById(R.id.signature_value);
+        loading = findViewById(R.id.loading_layout);
 
         getCacheUser();//获取用户信息
-
-       // getCachePhoto();//上传图片
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
+        getCachePhoto();//上传图片
         //upPhoto();
         getLocation();//获取地址
         changeTextView();//更改语言
@@ -150,10 +165,10 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do";
-        ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
-        String Sign = url + memid + token + ts;
+        String url = utils.url+"/api/secr/user/getPersonalInfo.do";
+        getTs = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + getTs + "  token:" + token);
+        String Sign = url + memid + token + getTs;
         System.out.println("UserSign:" + Sign);
         UserSign = MD5Utils.md5(Sign);
         new Thread(getUserTask).start();//获取用户信息,启动
@@ -162,18 +177,19 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://120.76.188.131:8080/a10/api/secr/user/amendPersonalInfo.do";
+        String url = utils.url+"/api/secr/user/amendPersonalInfo.do";
         //String url = "http://192.168.1.103:8080/api/user/logout.do";
-        ts = String.valueOf(new Date().getTime());
-        System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
-        String Sign = url + memid + token + ts;
-        System.out.println("UserSign:" + Sign);
-        UserSign = MD5Utils.md5(Sign);
+        setTs = String.valueOf(new Date().getTime());
+        System.out.println("首页：" + memid + "  ts:" + setTs + "  token:" + token);
+        String Sign = url + memid + token + setTs;
+        System.out.println("setUserSign:" + Sign);
+        setUserSign = MD5Utils.md5(Sign);
         new Thread(setUserTask).start();//获取用户信息,启动
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getLocation() {
+
         //获取地址
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
@@ -181,17 +197,41 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         } else {
             LocationUtil.initLocation(PersonalCenterPerfectActivity.this);
             System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
-//            longitude_str=Double.toString(LocationUtil.longitude);
-//            latitude_str=Double.toString(LocationUtil.latitude);
-            try {
-                str_location = getAddress(LocationUtil.location, getApplicationContext());
-                location_value.setText(str_location);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    str_location = getAddress(LocationUtil.location, getApplicationContext());
+                    Message message = new Message();
+                    message.what = 0;
+
+                    locationHandler.sendMessage(message);
+
+                    //位置信息-----一个字符串
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
+
+    private Handler locationHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    if(str_location!=null&&!str_location.equals("")){
+                        location_value.setText(str_location);
+                    }
+                    break;
+                default:break;
+            }
+        }
+    };
     private void changeTextView() {
         if (Locale.getDefault().getLanguage().equals("en")) {
             back_text.setText("Back");
@@ -211,7 +251,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://120.76.188.131:8080/a10/api/user/logout.do";
+        String url = utils.url+"/api/user/logout.do";
        // String url = "http://192.168.1.103:8080/api/user/logout.do";
 
         ts = String.valueOf(new Date().getTime());
@@ -226,10 +266,10 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";轮播图
-        String url = "http://192.168.1.105:8080/api/user/userAvatarUpload.do";
-        ts = String.valueOf(new Date().getTime());
-        System.out.println("上传图片：memId" + memid + "  ts:" + ts + "  token:" + token);
-        String Sign = url + memid + token + ts;
+        String url = utils.url+"/api/user/userAvatarUpload.do";
+        photoTs = String.valueOf(new Date().getTime());
+        System.out.println("上传图片：memId" + memid + "  ts:" + photoTs + "  token:" + token);
+        String Sign = url + memid + token + photoTs;
         System.out.println("Sign:" + Sign);
         photoSign = MD5Utils.md5(Sign);
         System.out.println("加密sign:" + photoSign);
@@ -248,6 +288,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 //                startActivity(intent);
 //                break;
             case R.id.head_img://头像
+
                 intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 21);
                 break;
@@ -267,28 +308,49 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                 setSignatureDialog();//个性签名弹出框
                 break;
             case R.id.save_layout:
-                setUser();//修改用户信息
+                new AlertDialog.Builder(this).setTitle("确认保存？")
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(fileList!=null&&fileList.size()>0){
+                                    loading.setStatus(LoadingLayout.Loading);//状态取消
+                                    new Thread(run).start();
+                                }else{
+                                    setUser();//修改用户信息
+                                }
+                            }
+                        })
+                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 点击“返回”后的操作,这里不设置没有任何操作
+                                dialog.dismiss();
+                            }
+                        }).show();
+
                 break;
             case R.id.head3://退出
                 getCache();//退出
-                CustomDialog.Builder builder = new CustomDialog.Builder(this);
-                builder.setMessage("是否确认退出?");
-                builder.setTitle("提示");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        new Thread(networkTask).start();//登出
-                    }
-                });
+                new AlertDialog.Builder(this).setTitle("确认退出？")
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
-                builder.setNegativeButton("取消",
-                        new android.content.DialogInterface.OnClickListener() {
+                            @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                new Thread(networkTask).start();//登出
+                            }
+                        })
+                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 点击“返回”后的操作,这里不设置没有任何操作
                                 dialog.dismiss();
                             }
-                        });
-                builder.create().show();
-
+                        }).show();
                 break;
         }
     }
@@ -301,7 +363,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://120.76.188.131:8080/a10/api/user/logout.do?memId=" + memid + "&ts=" + ts;
+            String url = utils.url+"/api/user/logout.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
 
             System.out.println("验证：" + sign);
@@ -408,14 +470,16 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     cursor.close();
                     // 将图片显示到界面上
                     File file=new File(picturePath);
+                    fileList=new ArrayList<File>();
                     fileList.add(file);
                   //  path=picturePath;
-                     new Thread(run).start();
-
                     Drawable drawable = new BitmapDrawable(BitmapFactory.decodeFile(picturePath));
                     head_img.setBackground(drawable);
 
                 }
+                break;
+            case 10:
+                    Toast.makeText(this,"返回",Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -432,10 +496,10 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             // TODO
 
                 //System.out.println("图片："+file);
-                String url="http://192.168.1.105:8080/api/user/userAvatarUpload.do?memId="+memid+"&ts="+ts;
+                String url=utils.url+"/api/user/userAvatarUpload.do?memId="+memid+"&ts="+photoTs;
                 System.out.println("路径："+path+"  :  "+fileList+" : "+photoSign+" : "+url);
                 String name="file1";
-                UploadUtil.uploadFile(fileList,url,photoSign,name,"",PersonalCenterPerfectActivity.this);
+                uploadFile(fileList,url,photoSign,name,"",PersonalCenterPerfectActivity.this);
 
          ;
         }
@@ -694,9 +758,8 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://120.76.188.131:8080/a10/api/secr/user/getPersonalInfo.do?memId=" + memid + "&ts=" + ts;
-            OkHttpClient okHttpClient = new OkHttpClient();
-
+            String url = utils.url+"/api/secr/user/getPersonalInfo.do?memId=" + memid + "&ts=" + getTs;
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().readTimeout(10, TimeUnit.SECONDS).connectTimeout(10,TimeUnit.SECONDS).build();
             System.out.println("验证：" + UserSign);
             String b = "{}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
@@ -713,7 +776,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                 if (response != null) {
                     //在子线程中将Message对象发出去
                     Message message = new Message();
-                    message.what = SHOW_RESPONSE;
+                    message.what = 0;
                     message.obj = result.toString();
                     getUserHandler.sendMessage(message);
                 }
@@ -732,7 +795,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case SHOW_RESPONSE:
+                case 0:
                     String response = (String) msg.obj;
                     System.out.println(response);
                     try {
@@ -745,7 +808,10 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                             nickname_value_text.setText(nameStr);
                             String img=objectData.getString("imgUrl");
                             //String img="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
-                            returnBitMap(img);//获取网络图片，并转化为Bitmap格式  设备图片
+                            if(img!=null&&!img.equals("null")){
+                                returnBitMap(img);//获取网络图片，并转化为Bitmap格式  设备图片
+                            }
+
                             if(objectData.getString("sex")==null||objectData.getString("sex").equals("")||objectData.getString("sex").equals("null")){
                                 sex_value.setText("");
                             }else{
@@ -779,17 +845,17 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://120.76.188.131:8080/a10/api/secr/user/amendPersonalInfo.do?memId=" + memid + "&ts=" + ts;
+            String url = utils.url+"/api/secr/user/amendPersonalInfo.do?memId=" + memid + "&ts=" + setTs;
             OkHttpClient okHttpClient = new OkHttpClient();
             String nickValue=nickname_value_text.getText().toString();
             String sexValue=sex_value.getText().toString();
-            System.out.println("验证：" + UserSign);
+            System.out.println("验证：" + setUserSign);
             String b = "{\"nick\":\""+nickValue+"\",\"sex\":\""+sexValue+"\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
                     .post(requestBody)
-                    .addHeader("sIgn", UserSign)
+                    .addHeader("sIgn", setUserSign)
                     .build();
             System.out.println(request.headers());
             Call call = okHttpClient.newCall(request);
@@ -824,11 +890,15 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
-                            Toast.makeText(PersonalCenterPerfectActivity.this, "保存", Toast.LENGTH_SHORT).show();
+                            loading.setStatus(LoadingLayout.Loading);//状态取消
+                            Toast.makeText(PersonalCenterPerfectActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                             Intent   intent = new Intent(PersonalCenterPerfectActivity.this, MainLayoutActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         } else {
+                            loading.setStatus(LoadingLayout.Error);
+                            LoadingLayout.getConfig()
+                                    .setErrorText("出错啦~请稍后重试！");
                             new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -889,6 +959,161 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     break;
                 default:
                     break;
+            }
+        }
+    };
+
+    /**
+     * android上传文件到服务器
+     * @param file  需要上传的文件
+     * @param RequestURL  请求的rul
+     * @param sign  签名
+     * @param name  文件名
+     * @return  返回响应的内容
+     */
+    public  String uploadFile(List<File> file, String RequestURL, String sign, String name, String id, Context context){
+        String result = null;
+        String  BOUNDARY =  UUID.randomUUID().toString();  //边界标识   随机生成
+        String PREFIX = "--" , LINE_END = "\r\n";
+        String CONTENT_TYPE = "multipart/form-data";   //内容类型
+
+        try {
+            URL url = new URL(RequestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(100000);
+            conn.setConnectTimeout(100000);
+            conn.setDoInput(true);  //允许输入流
+            conn.setDoOutput(true); //允许输出流
+            conn.setUseCaches(false);  //不允许使用缓存
+            conn.setRequestMethod("POST");  //请求方式
+            conn.setRequestProperty("Charset", "utf-8");  //设置编码
+            conn.setRequestProperty("connection", "keep-alive");
+            conn.setRequestProperty("sign", sign);//签名
+            // conn.setRequestProperty("eqpId", id);//id
+            conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
+            conn.connect();
+
+            if(file!=null){
+                /**
+                 * 当文件不为空，把文件包装并且上传
+                 */
+
+                for(File file1:file){
+                    System.out.println("图片上传："+file1);
+                    DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+                    StringBuffer sb = new StringBuffer();
+                    sb.append(PREFIX);
+                    sb.append(BOUNDARY);
+                    sb.append(LINE_END);
+                    /**
+                     * 这里重点注意：
+                     * name里面的值为服务器端需要key   只有这个key 才可以得到对应的文件
+                     * filename是文件的名字，包含后缀名的   比如:abc.png
+                     */
+
+                    System.out.println("文件名："+file1.getName()+" : "+name);
+                    sb.append("Content-Disposition: form-data; name=\""+name+"\"; filename=\""+file1.getName()+"\""+"; eqpId=\""+id+"\""+LINE_END);
+                    sb.append("Content-Type:image/pjpeg; charset=utf-8"+LINE_END);
+                    sb.append(LINE_END);
+                    dos.write(sb.toString().getBytes());
+                    InputStream is = new FileInputStream(file1);
+                    byte[] bytes = new byte[1024];
+                    int len = 0;
+                    while((len=is.read(bytes))!=-1){
+                        dos.write(bytes, 0, len);
+                    }
+
+                    is.close();
+                    dos.write(LINE_END.getBytes());
+                    byte[] end_data = (PREFIX+BOUNDARY+PREFIX+LINE_END).getBytes();
+                    dos.write(end_data);
+                    dos.flush();
+                    /**
+                     * 获取响应码  200=成功
+                     * 当响应成功，获取响应的流
+                     */
+                    //conn.getResponseMessage();
+                    int res = conn.getResponseCode();
+                    if(res==200){
+                        InputStream input =  conn.getInputStream();
+                        StringBuffer sb1= new StringBuffer();
+                        int ss ;
+                        while((ss=input.read())!=-1){
+                            sb1.append((char)ss);
+                        }
+                        result = sb1.toString();
+                        Message message = new Message();
+                        message.what = 0;
+                        upPhotoHandler1.sendMessage(message);
+                        message.obj = result;
+                        System.out.println("上传图片"+URLDecoder.decode(result, "utf-8"));
+                        // Toast.makeText(context,"图片上传成功",Toast.LENGTH_SHORT).show();
+                    }else{
+                        //Toast.makeText(context,"图片上传失败",Toast.LENGTH_SHORT).show();
+                        Message message = new Message();
+                        message.what = 1;
+
+                        upPhotoHandler1.sendMessage(message);
+                        System.out.println("res"+conn.getResponseMessage()+res);
+                    }
+                }
+            }
+        } catch (MalformedURLException e) {
+            // sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            System.out.println("上传失败");
+            e.printStackTrace();
+        } catch (IOException e) {
+            //sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            System.out.println("上传失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private Handler upPhotoHandler1 = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    String response = (String) msg.obj;
+                    JSONObject object = null;
+                    try {
+                        if(response!=null){
+                            object = new JSONObject(response);
+                            JSONObject object1 = new JSONObject(object.getString("meta"));
+                            if(object1.getString("res").equals("00000")){
+                                System.out.println(object1.getString("msg"));
+                               // loading.setStatus(LoadingLayout.Success);//状态取消
+                                setUser();//修改用户信息
+                               // Toast.makeText(PersonalCenterPerfectActivity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
+                            }else{
+                                System.out.println(object1.getString("msg"));
+                                loading.setStatus(LoadingLayout.Success);//状态取消
+                                Toast.makeText(PersonalCenterPerfectActivity.this,"图片上传失败,请重新上传",Toast.LENGTH_SHORT).show();
+                                fileList=null;
+                                Bitmap icon = BitmapFactory.decodeResource(PersonalCenterPerfectActivity.this.getResources(), R.drawable.tou);
+                                Drawable drawable = new BitmapDrawable(icon);
+                                head_img.setBackground(drawable);
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    break;
+                case 1:
+                    loading.setStatus(LoadingLayout.Success);//状态取消
+                    fileList=null;
+                    Bitmap icon = BitmapFactory.decodeResource(PersonalCenterPerfectActivity.this.getResources(), R.drawable.tou);
+                    Drawable drawable = new BitmapDrawable(icon);
+                    head_img.setBackground(drawable);
+                    Toast.makeText(PersonalCenterPerfectActivity.this,"图片上传失败,请重新上传",Toast.LENGTH_SHORT).show();
+                    break;
+                default:break;
             }
         }
     };

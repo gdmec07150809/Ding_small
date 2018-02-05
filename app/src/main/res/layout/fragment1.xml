@@ -10,8 +10,8 @@
         android:columnWidth="50dp"
         android:gravity="center"
         android:layout_marginTop="10dp"
-        android:verticalSpacing="5px"
+        android:verticalSpacing="@dimen/px20"
         android:stretchMode="spacingWidthUniform"
-        android:numColumns="6"
+        android:numColumns="5"
         />
 </LinearLayout>

@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.PerfectDeviceActivity;
 
+import org.apache.http.util.EntityUtils;
+
 /**
  *
  * 上传文件工具类
@@ -406,6 +408,7 @@ public class UploadUtil {
                         sb1.append((char)ss);
                     }
                     result = sb1.toString();
+                    //String result1 = EntityUtils.toString(result, "utf-8");//将entity当中的数据转换为字符串
                     System.out.println("上传图片"+result);
 
                 }else{
