@@ -145,7 +145,7 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
             // 在这里进行 http request.网络请求相关操作
             String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"start3\",\"msgLen\":\"start4\"}";//json字符串
+            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"3\",\"msgLen\":\"4\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
@@ -210,7 +210,7 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
                 //第一步：创建HttpClient对象
                 HttpClient httpCient = new DefaultHttpClient();
                 //第二步：创建代表请求的对象,参数是访问的服务器地址blMac=12:34:56:78:9A:BC&userId=1001&userName=%E5%BC%A0%E4%B8%89
-                HttpGet httpGet = new HttpGet("http://192.168.start1.101:8080/appUser/appUserRegister.do?opCode=" + phone + "&opPwd=" + password + "&smsVerifCode=" + code);
+                HttpGet httpGet = new HttpGet("http://192.168.1.101:8080/appUser/appUserRegister.do?opCode=" + phone + "&opPwd=" + password + "&smsVerifCode=" + code);
                 try {
                     //第三步：执行请求，获取服务器发还的相应对象
                     HttpResponse httpResponse = httpCient.execute(httpGet);

@@ -74,7 +74,7 @@ public class TitleActivity extends Activity implements View.OnClickListener {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.start1.103:8080/app/secr6000/lisSecr6000.do";
+        String url = "http://192.168.1.103:8080/app/secr6000/lisSecr6000.do";
         ///app/secr9000lisSecr9000
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
@@ -133,7 +133,7 @@ public class TitleActivity extends Activity implements View.OnClickListener {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.start1.103:8080/app/secr6000/lisSecr6000.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/app/secr6000/lisSecr6000.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
             String b = "{}";//json字符串

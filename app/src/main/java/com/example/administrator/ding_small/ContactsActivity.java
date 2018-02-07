@@ -97,7 +97,7 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url1 = "http://192.168.start1.103:8080/a10/app/ppt6000/dataList.do";//测试链接,未通
+        String url1 = "http://192.168.1.103:8080/a10/app/ppt6000/dataList.do";//测试链接,未通
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url1 + memid + token + ts;
@@ -183,7 +183,7 @@ public class ContactsActivity extends Activity implements ListView.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.start1.103:8080/a10/app/ppt6000/dataList.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/a10/app/ppt6000/dataList.do?memId=" + memid + "&ts=" + ts;
             System.out.println("URL:" + url);
             OkHttpClient okHttpClient = new OkHttpClient();
             String b = "{\"eqpId\":\"198dbe33682548f4a92a864dca3ac5a9\"}";//json字符串

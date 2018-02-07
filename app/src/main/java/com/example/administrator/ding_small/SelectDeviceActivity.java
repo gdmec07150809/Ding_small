@@ -197,20 +197,20 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         device_ssids.add("156848184654564");
         device_ssids.add("574575762425112");
 
-        device_staus.add("start1");
-        device_staus.add("start1");
+        device_staus.add("1");
+        device_staus.add("1");
         device_staus.add("0");
         device_staus.add("0");
-        device_staus.add("start1");
+        device_staus.add("1");
         device_staus.add("0");
-        device_staus.add("start1");
+        device_staus.add("1");
 
         device_date.add("2017/12/5");
         device_date.add("2017/5/6");
         device_date.add("2017/6/8");
         device_date.add("2017/6/8");
-        device_date.add("2017/6/start4");
-        device_date.add("2017/start2/6");
+        device_date.add("2017/6/4");
+        device_date.add("2017/2/6");
         device_date.add("2017/6/9");
         try {
             for (int i = 0; i < device_names.size(); i++) {
@@ -551,7 +551,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 Intent intent = new Intent(SelectDeviceActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", mac_str);
-                bundle.putString("activity", "start1");
+                bundle.putString("activity", "1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

@@ -96,7 +96,7 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.start1.103:8080/app/secr6000/deleteSecr6000ByKey.do";
+        String url = "http://192.168.1.103:8080/app/secr6000/deleteSecr6000ByKey.do";
         ///app/secr9000lisSecr9000
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
@@ -126,7 +126,7 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
                 try {
                     JSONObject ob1 = new JSONObject(String.valueOf(jsonArray.get((Integer) v.getTag())));
                     JSONObject ob2 = new JSONObject(String.valueOf(jsonArray.get(1)));
-                    ob1.put("number", "start1");
+                    ob1.put("number", "1");
                     jsonArray.put(1, ob1);
                     jsonArray.put((Integer) v.getTag(), ob2);
                     System.out.println("更改后：" + ob1);
@@ -159,10 +159,10 @@ public class EditLabelBtnActivity extends Activity implements View.OnClickListen
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.start1.103:8080/app/secr6000/deleteSecr6000ByKey.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.1.103:8080/app/secr6000/deleteSecr6000ByKey.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
-            String b = "{\"onlyId\" : \"start1\"}";//json字符串
+            String b = "{\"onlyId\" : \"1\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()

@@ -246,7 +246,7 @@ public class CalendarCard extends View {
         public int j;
         // 绘制文字
         String content;
-        String text = "start3(start2)";
+        String text = "3(2)";
 
         public Cell(CustomDate date, State state, int i, int j) {
             super();

@@ -156,7 +156,7 @@ public class UploadUtil {
             conn.setRequestProperty("Charset", CHARSET); // 设置编码
             conn.setRequestProperty("connection", "keep-alive");
             conn.setRequestProperty("sign", sign);
-            conn.setRequestProperty("user-agent", "Mozilla/start4.0 (compatible; MSIE 6.0; Windows NT 5.start1; SV1)");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
             conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);
 //          conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 

@@ -212,7 +212,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     private void getBundleString() {
         Bundle getStringValue = this.getIntent().getExtras();
         if (getStringValue.getString("device_mac") != null) {
-            if(getStringValue.getString("activity").equals("start1")){
+            if(getStringValue.getString("activity").equals("1")){
 
                 delect.setVisibility(View.VISIBLE);
                 perfect.setVisibility(View.GONE);

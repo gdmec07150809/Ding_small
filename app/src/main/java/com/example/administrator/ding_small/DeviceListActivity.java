@@ -211,16 +211,16 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         device_ssids.add("465454651846515");
         device_ssids.add("156451518454841");
 
-        device_staus.add("start1");
-        device_staus.add("start1");
+        device_staus.add("1");
+        device_staus.add("1");
         device_staus.add("0");
         device_staus.add("0");
-        device_staus.add("start1");
+        device_staus.add("1");
 
         device_type.add("2017/5/9");
-        device_type.add("2017/6/start2");
-        device_type.add("2017/8/start1");
-        device_type.add("2017/9/start2");
+        device_type.add("2017/6/2");
+        device_type.add("2017/8/1");
+        device_type.add("2017/9/2");
         device_type.add("2017/10/12");
         try {
             for (int i = 0; i < device_names.size(); i++) {
@@ -390,7 +390,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 Intent intent = new Intent(DeviceListActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", mac_str);
-                bundle.putString("activity", "start1");
+                bundle.putString("activity", "1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -558,7 +558,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                 });
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     sortedJsonArray.put(jsonValues.get(i));
-                                    if (jsonValues.get(i).getString("eqpStatus").equals("start1")) {
+                                    if (jsonValues.get(i).getString("eqpStatus").equals("1")) {
                                         maintenancing_num += 1;
                                     } else{
                                         using_num += 1;

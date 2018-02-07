@@ -283,40 +283,40 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
             case R.id.number_1:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "start1");
+                        number.setText(number.getText().toString().substring(1) + "1");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "start1");
+                    number.setText(number.getText().toString().substring(0) + "1");
                 }
                 index++;
                 break;
             case R.id.number_2:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "start2");
+                        number.setText(number.getText().toString().substring(1) + "2");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "start2");
+                    number.setText(number.getText().toString().substring(0) + "2");
                 }
                 index++;
                 break;
             case R.id.number_3:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "start3");
+                        number.setText(number.getText().toString().substring(1) + "3");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "start3");
+                    number.setText(number.getText().toString().substring(0) + "3");
                 }
                 index++;
                 break;
             case R.id.number_4:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "start4");
+                        number.setText(number.getText().toString().substring(1) + "4");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "start4");
+                    number.setText(number.getText().toString().substring(0) + "4");
                 }
                 index++;
                 break;

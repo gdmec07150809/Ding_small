@@ -171,7 +171,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
             //String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
             String url = utils.url+"/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"start3\",\"msgLen\":\"start4\"}";//json字符串
+            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"3\",\"msgLen\":\"4\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)

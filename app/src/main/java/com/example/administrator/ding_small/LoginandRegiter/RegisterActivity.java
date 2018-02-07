@@ -169,7 +169,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
            // String url = "http://192.168.1.103:8080/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"start1\",\"msgLen\":\"start4\"}";//json字符串
+            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
@@ -335,7 +335,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.SECONDS).build();
             String pass = MD5Utils.md5(p2_str);
 
-            String b = "{\"loginType\":\"start2\",\"loginPwd\":\"" + pass + "\",\"loginAccount\":\"" + phone_str + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
+            String b = "{\"loginType\":\"2\",\"loginPwd\":\"" + pass + "\",\"loginAccount\":\"" + phone_str + "\",\"pid\":\"BKF-5b405a7d-5fb7-4278-a931-e45a3afe8e55\",\"rid\":\"f8c2d197098440e3909b0782400874d2\",\"cpFlag\":\"0\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);//请求体
             Request request = new Request.Builder()//发送请求

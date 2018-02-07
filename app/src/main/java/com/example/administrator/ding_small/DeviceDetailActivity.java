@@ -721,7 +721,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 String selling_phone_str = selling_name.getText().toString().trim();
                 String selling_user_name_str = selling_name.getText().toString().trim();
 
-                if(eqpStatus.equals("start1")){
+                if(eqpStatus.equals("1")){
                     new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("该设备已在维修中！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -750,7 +750,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 bundle.putString("device_mac", device_mac);
                 bundle.putString("device_id", device_id);
                 bundle.putString("act", ActivityStr);
-                bundle.putString("activity","start2");
+                bundle.putString("activity","2");
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -1021,7 +1021,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
                                 if (DataObject.getString("eqpFlag").equals("0")) {
                                     eqpFlag.setImageResource(R.mipmap.icon_info_scale_active);
-                                } else if (DataObject.getString("eqpFlag").equals("start1")) {
+                                } else if (DataObject.getString("eqpFlag").equals("1")) {
                                     eqpFlag.setImageResource(R.mipmap.icon_info_wifi_active);
                                 } else {
                                     eqpFlag.setImageResource(R.mipmap.icon_info_bluetooth_active);
