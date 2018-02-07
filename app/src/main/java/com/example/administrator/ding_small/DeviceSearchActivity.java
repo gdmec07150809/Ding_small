@@ -112,9 +112,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(DeviceSearchActivity.this, MainLayoutActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -159,7 +157,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 System.out.println("WIFI：" + i);
                 Bundle bundle1 = new Bundle();
-                bundle1.putString("activity", "DeviceSearch");
+                bundle1.putString("act", "DeviceSearch");
                 bundle1.putString("device_mac", scanResults.get(i).BSSID);
                 intent.putExtras(bundle1);
                 startActivity(intent);
@@ -235,6 +233,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         this.registerReceiver(receiver, intentFilter);
         // 寻找蓝牙设备，android会将查找到的设备以广播形式发出去
         adapter.startDiscovery();
+
     }
 
     //打开wifi
@@ -347,8 +346,15 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
         super.onStop();
         indexPression = pression;
         pression = true;
-        finish();
+
         scanLeDevice(false);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(receiver);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -423,6 +429,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                         System.out.println("蓝牙：" + i);
                         Bundle bundle1 = new Bundle();
                         bundle1.putString("device_mac", mBleArray.get(i).getAddress());
+                        bundle1.putString("act","DeviceSearch");
                         intent.putExtras(bundle1);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -457,9 +464,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 mCameraDialog.dismiss();
                 break;
             case R.id.back:
-                Intent intent = new Intent(DeviceSearchActivity.this, MainLayoutActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
                 break;
             default:
                 break;
@@ -498,13 +503,6 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
             }
         }
     };
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
-        System.out.println("取消广播");
-    }
 
     //蓝牙适配器
     class DeviceListAdapter extends BaseAdapter {

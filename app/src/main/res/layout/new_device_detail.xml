@@ -296,14 +296,7 @@
                     android:layout_height="@dimen/px90"
                     android:layout_marginLeft="@dimen/px30"
                     android:layout_marginRight="@dimen/px30">
-                    <TextView
-                        android:id="@+id/manufacturer_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="制造及保修"
-                        android:textSize="@dimen/px34"
-                        android:layout_centerVertical="true"
-                        android:textColor="@color/title_color"/>
+
                     <ImageView
                         android:id="@+id/manufacturer_img"
                         android:layout_width="wrap_content"
@@ -311,6 +304,17 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@mipmap/icon_info_down"/>
+
+                    <TextView
+                        android:id="@+id/manufacturer_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="制造及保修"
+                        android:textSize="@dimen/px34"
+                        android:textColor="@color/title_color"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
                 </RelativeLayout>
                 <LinearLayout
                     android:id="@+id/manufacturer_down_layout"

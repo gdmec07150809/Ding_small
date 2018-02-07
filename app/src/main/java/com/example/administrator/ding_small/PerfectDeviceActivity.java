@@ -130,7 +130,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     private ArrayList<String>  upPhotoPath=new ArrayList<String>();
     private LoadingLayout loading;
     List<File> fileList=null;
-    String fileName;
+    String fileName,act;
     private ImageView addimg;
     LinearLayout perfect,delect;
     @RequiresApi(api = VERSION_CODES.M)
@@ -221,6 +221,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             }
             device_mac = getStringValue.getString("device_mac");
             device_id = getStringValue.getString("device_id");
+            act=getStringValue.getString("act");
         }
 
     }
@@ -317,23 +318,44 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         Intent intent;
         switch (view.getId()) {
             case R.id.delect:
-                new AlertDialog.Builder(this).setTitle("确认返回？")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    new AlertDialog.Builder(this).setTitle("Back？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        })
-                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("back", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“返回”后的操作,这里不设置没有任何操作
-                                dialog.dismiss();
-                            }
-                        }).show();
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }else{
+                    new AlertDialog.Builder(this).setTitle("确认返回？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+
 
 
                 break;
@@ -350,44 +372,87 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
                 break;
             case R.id.confrim_btn://确定
-                new AlertDialog.Builder(this).setTitle("确认提交？")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    new AlertDialog.Builder(this).setTitle("Submit？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“确认”后的操作
+                                    repair_user_str = repair_user.getText().toString().trim();//自定义名称
+                                    selling_edit_str = selling_edit_text.getText().toString().trim();//售点名称
+                                    selling_location_edit_str = selling_location_edit_text.getText().toString().trim();//售点地址
+                                    selling_user_edit_str = selling_user_edit_text.getText().toString().trim();//售点联系人
+                                    selling_phone_edit_str = selling_phone_edit_text.getText().toString().trim();//联系人电话
+                                    address_edit_str = address_edit_text.getText().toString().trim();//详细地址
+                                    // longitude_str,latitude_str,str_location,temperature_str
+                                    if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
+                                        Toast.makeText(PerfectDeviceActivity.this, "Please check whether the information is empty", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        UpPhotoCache();//获取签名,id,ts,token
+                                        if(fileList!=null&&fileList.size()>0){
+                                            loading.setStatus(LoadingLayout.Loading);//状态取消
+                                            new Thread(upPhotoTask).start();
+                                        }else{
+                                            getCache();
+                                            System.out.println("没图片");
+                                        }
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“确认”后的操作
-                                repair_user_str = repair_user.getText().toString().trim();//自定义名称
-                                selling_edit_str = selling_edit_text.getText().toString().trim();//售点名称
-                                selling_location_edit_str = selling_location_edit_text.getText().toString().trim();//售点地址
-                                selling_user_edit_str = selling_user_edit_text.getText().toString().trim();//售点联系人
-                                selling_phone_edit_str = selling_phone_edit_text.getText().toString().trim();//联系人电话
-                                address_edit_str = address_edit_text.getText().toString().trim();//详细地址
-                                // longitude_str,latitude_str,str_location,temperature_str
-                                if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
-                                    Toast.makeText(PerfectDeviceActivity.this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    UpPhotoCache();//获取签名,id,ts,token
-                                    if(fileList!=null&&fileList.size()>0){
-                                        loading.setStatus(LoadingLayout.Loading);//状态取消
-                                        new Thread(upPhotoTask).start();
-                                    }else{
-                                        getCache();
-                                        System.out.println("没图片");
                                     }
 
                                 }
+                            })
+                            .setNegativeButton("back", new DialogInterface.OnClickListener() {
 
-                            }
-                        })
-                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“返回”后的操作,这里不设置没有任何操作
-                                dialog.dismiss();
-                            }
-                        }).show();
+                }else{
+                    new AlertDialog.Builder(this).setTitle("确认提交？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“确认”后的操作
+                                    repair_user_str = repair_user.getText().toString().trim();//自定义名称
+                                    selling_edit_str = selling_edit_text.getText().toString().trim();//售点名称
+                                    selling_location_edit_str = selling_location_edit_text.getText().toString().trim();//售点地址
+                                    selling_user_edit_str = selling_user_edit_text.getText().toString().trim();//售点联系人
+                                    selling_phone_edit_str = selling_phone_edit_text.getText().toString().trim();//联系人电话
+                                    address_edit_str = address_edit_text.getText().toString().trim();//详细地址
+                                    // longitude_str,latitude_str,str_location,temperature_str
+                                    if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
+                                        Toast.makeText(PerfectDeviceActivity.this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        UpPhotoCache();//获取签名,id,ts,token
+                                        if(fileList!=null&&fileList.size()>0){
+                                            loading.setStatus(LoadingLayout.Loading);//状态取消
+                                            new Thread(upPhotoTask).start();
+                                        }else{
+                                            getCache();
+                                            System.out.println("没图片");
+                                        }
+
+                                    }
+
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+
+
 
 
 
@@ -406,23 +471,43 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 //                startActivity(intent);
 //                break;
             case R.id.back:
-                new AlertDialog.Builder(this).setTitle("确认返回？")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    new AlertDialog.Builder(this).setTitle("Back？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        })
-                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("back", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“返回”后的操作,这里不设置没有任何操作
-                                dialog.dismiss();
-                            }
-                        }).show();
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }else{
+                    new AlertDialog.Builder(this).setTitle("确认返回？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
 
                 break;
             case R.id.new_information_layout:
@@ -913,6 +998,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                             Intent intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("device_mac", device_mac);
+                            bundle.putString("act", act);
                             intent.putExtras(bundle);
                             startActivity(intent);
                             } else {
@@ -1144,12 +1230,9 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 }
             }
         } catch (MalformedURLException e) {
-            loading.setStatus(LoadingLayout.Success);//状态取消
-            // sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
             System.out.println("上传失败");
             e.printStackTrace();
         } catch (IOException e) {
-            loading.setStatus(LoadingLayout.Success);//状态取消
             //sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
             System.out.println("上传失败");
             e.printStackTrace();

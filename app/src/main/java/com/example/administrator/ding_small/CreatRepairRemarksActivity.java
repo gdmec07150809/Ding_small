@@ -115,12 +115,15 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     private LoadingLayout loading;
 
     private ArrayList<String> photoList=null;
+
+    private TextView repair_information_text,repair_user_text,repair_phone_text,remarks_information_text,update_photo_text,confirm_text;
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_repair_layout);
         init();//初始化控件
+        changeTextView();//更换语言
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
@@ -133,6 +136,30 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
 
+    }
+
+    private void changeTextView() {
+
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            repair_information_text.setText("Repair Information (Required)");
+            repair_user_text.setText("Repair User");
+            repair_phone_text.setText("Repair Phone");
+            remarks_text.setText("Remarks");
+            photo_text.setText("Photo");
+            information_text.setText("Information");
+            location_text.setText("Repair Location");
+            remark_text.setHint("Fill in the note information");
+
+            //remarks_information_text,update_photo_text
+            remarks_information_text.setText("Note information");
+            update_photo_text.setText("Upload a picture (Optional)");
+            //  //repair_user,repair_phone,
+            repair_user.setHint("Enter");
+            repair_phone.setHint("Enter");
+            adress_text.setHint("Unselected");
+            confirm_text.setText("Comfirm");
+
+        }
     }
     private void  getCache(){
         /*    editor.putString("opName", user_str);
@@ -154,7 +181,13 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         repair_user.setText(sp.getString("opName", ""));
         repair_phone.setText(sp.getString("memPhone", ""));
         remark_text.setText(sp.getString("repireDescription", ""));
+
+        /*
+        *  remarks_text = findViewById(R.id.remarks_text);
+        photo_text = findViewById(R.id.photo_text);
+        information_text = findViewById(R.id.information_text);*/
         //adress_text.setText(sp.getString("cacheAdress",""));
+
     }
     private void getString() {
         if (getIntent().getStringExtra("adress") != null) {
@@ -252,6 +285,16 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 
 
         loading = findViewById(R.id.loading_layout);
+
+        //repair_information_text,repair_user_text,repair_phone_text
+        repair_information_text=findViewById(R.id.repair_information_text);
+        repair_user_text=findViewById(R.id.repair_user_text);
+        repair_phone_text=findViewById(R.id.repair_phone_text);
+        location_text=findViewById(R.id.location_text);
+        //remarks_information_text,update_photo_text
+        remarks_information_text=findViewById(R.id.remarks_information_text);
+        update_photo_text=findViewById(R.id.update_photo_text);
+        confirm_text=findViewById(R.id.confirm_text);
     }
 
     @Override

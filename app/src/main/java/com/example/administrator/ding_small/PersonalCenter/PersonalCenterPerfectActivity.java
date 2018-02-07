@@ -189,15 +189,18 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getLocation() {
-
-        //获取地址
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-
+        if(Build.VERSION.SDK_INT>=23){
+            //获取地址
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+            }
+            LocationUtil.initLocation(PersonalCenterPerfectActivity.this);
+            System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
         } else {
             LocationUtil.initLocation(PersonalCenterPerfectActivity.this);
             System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
         }
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -205,7 +208,11 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     str_location = getAddress(LocationUtil.location, getApplicationContext());
                     Message message = new Message();
                     message.what = 0;
-
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     locationHandler.sendMessage(message);
 
                     //位置信息-----一个字符串
@@ -225,7 +232,12 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             switch (msg.what){
                 case 0:
                     if(str_location!=null&&!str_location.equals("")){
-                        location_value.setText(str_location);
+                        String[] value=str_location.split("-");
+                        String str="";
+                        for(int i=0;i<value.length;i++){
+                            str+=value[i];
+                        }
+                        location_value.setText(str);
                     }
                     break;
                 default:break;
@@ -473,7 +485,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     fileList=new ArrayList<File>();
                     fileList.add(file);
                   //  path=picturePath;
-                    Drawable drawable = new BitmapDrawable(BitmapFactory.decodeFile(picturePath));
+                    Drawable drawable = new BitmapDrawable(this.getResources(), BitmapFactory.decodeFile(picturePath));
                     head_img.setBackground(drawable);
 
                 }
@@ -511,13 +523,30 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.select_sex_layout, null);
              RadioGroup radioGroup = root.findViewById(R.id.group);
-        if (sex_value.getText().toString().equals("男")) {
-            RadioButton radioButton = root.findViewById(R.id.button1);
-            radioButton.setChecked(true);
-        } else {
-            RadioButton radioButton = root.findViewById(R.id.button2);
-            radioButton.setChecked(true);
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            TextView sex=root.findViewById(R.id.sex_text);
+            RadioButton btn1=root.findViewById(R.id.button1);
+            RadioButton btn2=root.findViewById(R.id.button2);
+            btn1.setText("male");
+            sex.setText("Sex");
+            btn2.setText("female");
+            if (sex_value.getText().toString().equals("male")) {
+                RadioButton radioButton = root.findViewById(R.id.button1);
+                radioButton.setChecked(true);
+            } else {
+                RadioButton radioButton = root.findViewById(R.id.button2);
+                radioButton.setChecked(true);
+            }
+        }else{
+            if (sex_value.getText().toString().equals("男")) {
+                RadioButton radioButton = root.findViewById(R.id.button1);
+                radioButton.setChecked(true);
+            } else {
+                RadioButton radioButton = root.findViewById(R.id.button2);
+                radioButton.setChecked(true);
+            }
         }
+
 
         // 单选按钮组监听事件
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -526,11 +555,22 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // 根据ID判断选择的按钮
                 if (checkedId == R.id.button1) {
-                    sex_value.setText("男");
-                    mCameraDialog.dismiss();
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        sex_value.setText("male");
+                        mCameraDialog.dismiss();
+                    }else{
+                        sex_value.setText("男");
+                        mCameraDialog.dismiss();
+                    }
+
                 } else {
-                    sex_value.setText("女");
-                    mCameraDialog.dismiss();
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        sex_value.setText("female");
+                        mCameraDialog.dismiss();
+                    }else{
+                        sex_value.setText("女");
+                        mCameraDialog.dismiss();
+                    }
                 }
             }
         });
@@ -558,7 +598,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.change_name_layout, null);
         Button new_login = root.findViewById(R.id.new_login);
-
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            new_login.setText("save");
+        }
         final EditText editText = root.findViewById(R.id.nickname_value);
         editText.setText(nickname_value_text.getText().toString());
         new_login.setOnClickListener(new View.OnClickListener() {
@@ -592,6 +634,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.change_name_layout, null);
         Button new_login = root.findViewById(R.id.new_login);
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            new_login.setText("save");
+        }
         final EditText editText = root.findViewById(R.id.nickname_value);
         editText.setText(address_value.getText().toString());
         new_login.setOnClickListener(new View.OnClickListener() {
@@ -625,6 +670,9 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.change_name_layout, null);
         Button new_login = root.findViewById(R.id.new_login);
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            new_login.setText("save");
+        }
         final EditText editText = root.findViewById(R.id.nickname_value);
         new_login.setOnClickListener(new View.OnClickListener() {
             @Override

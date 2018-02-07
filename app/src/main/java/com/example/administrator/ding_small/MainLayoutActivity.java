@@ -1,6 +1,7 @@
 package com.example.administrator.ding_small;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -29,9 +31,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.AdvertisementGvAdapter;
+import com.example.administrator.ding_small.CarouselTool.MZModeBannerFragment;
 import com.example.administrator.ding_small.Fragment.AdvertisementFragment;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.HelpTool.PermissionHelper;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 import com.example.administrator.ding_small.Utils.utils;
@@ -70,12 +74,13 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     private TimerTask task;
     private ViewPager mPager;
     private AdvertisementGvAdapter advertisementGvAdapter;
-    @ViewInject(R.id.pager_position_gv)
-    private GridView pager_position_gv;
+   //// @ViewInject(R.id.pager_position_gv)
+  //  private GridView pager_position_gv;
     private long clickTime = 0;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     String memid, token, UserSign, oldPass, newPass, ts,sign,imgUrl;
+    private PermissionHelper mPermissionHelper;
     String nameStr="";
     //变化语言所改变的控件 登陆、客服、消息、名称、记事日历、记账日历、记事本、记账本、设备表、联系人,扫码、搜索、报修,首页,口碑服务,特供商城,我的
     private TextView login_text, custom_service_text, news_text, name_text, notepad_calendar_text, account_calendar_text,
@@ -93,13 +98,14 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         getLocation();//获取地址
         getCacheUser();//获取用户信息
         // ifApm();//判断上下午
-        initPager();//轮播图
+        //initPager();//轮播图
 
 
         changeLanguage();//设置语言
         //getCache();//获取轮播图
 
-
+        Fragment fragment = MZModeBannerFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_container,fragment).commit();
     }
 
 
@@ -149,25 +155,27 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 //            }
 //
 //        }
-        if(Build.VERSION.SDK_INT==23){
-            System.out.println("版本号："+Build.VERSION.SDK_INT);
+        if(Build.VERSION.SDK_INT==23) {
+            System.out.println(Build.VERSION.SDK_INT);
             int checkCallPhonePermission =
-                    ContextCompat.checkSelfPermission(MainLayoutActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+                    ContextCompat.checkSelfPermission(MainLayoutActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
             if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
-                //ActivityCompat.requestPermissions(MainLayoutActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+                ActivityCompat.requestPermissions(MainLayoutActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10);
+                System.out.println("开始授权");
+            }else{
+                LocationUtil.initLocation(MainLayoutActivity.this);
+                System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
+                String   longitude_str=Double.toString(LocationUtil.longitude);
+            if("0.0".equals(longitude_str)){
+                new AlertDialog.Builder(MainLayoutActivity.this).setTitle("权限提示").setMessage("请手动打开定位权限").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, 10);
+                    }
+                }).show();
 
-
-            }else {
-                if ("0.0".equals(Double.toString(LocationUtil.longitude))) {
-                    new AlertDialog.Builder(MainLayoutActivity.this).setTitle("权限提示").setMessage("请手动打开定位权限").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivityForResult(intent, 10);
-                        }
-                    }).show();
-                }
+            }
             }
         }else if (Build.VERSION.SDK_INT > 23) {
             System.out.println("版本号："+Build.VERSION.SDK_INT);
@@ -176,9 +184,6 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
                 //ActivityCompat.requestPermissions(MainLayoutActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
-
-
-
             }
         }else{
             System.out.println("版本号："+Build.VERSION.SDK_INT);
@@ -248,12 +253,12 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
             // TODO Auto-generated method stub
             ifApm(Locale.getDefault().getLanguage());//判断上下午
             System.out.println("判断上下午");
-            handler.postDelayed(this, 1000 * 60 * 30);
+           // handler.postDelayed(this, 1000 * 60 * 30);
         }
     };
 
     private void init() {
-        mPager = findViewById(R.id.home_activity_pager);
+       // mPager = findViewById(R.id.home_activity_pager);
         findViewById(R.id.notepad_layout).setOnClickListener(this);
         findViewById(R.id.account_layout).setOnClickListener(this);
         findViewById(R.id.device_layout).setOnClickListener(this);
@@ -312,68 +317,68 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         mPager.setOnPageChangeListener(new MyPageChangeListener());
 
         advertisementGvAdapter = new AdvertisementGvAdapter(images.length, MainLayoutActivity.this);
-        pager_position_gv.setAdapter(advertisementGvAdapter);
-        pager_position_gv.setNumColumns(images.length);//设置小圆按钮个数
-        utils.setGvwidth(advertisementGvAdapter, pager_position_gv);//设置小圆按钮宽度
-        //小圆按钮点击事件
-        pager_position_gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mPager.setCurrentItem(i);
-            }
-        });
-        task = new TimerTask() {
-            public void run() {
-                Message message = new Message();
-                message.what = 1;
-                handler.sendMessage(message);
-            }
-        };
-        timer = new Timer(true);
-        timer.schedule(task, 1000, 1000);//设置定时器,进入页面1秒开始滚动,间隔1秒
+//        pager_position_gv.setAdapter(advertisementGvAdapter);
+//        pager_position_gv.setNumColumns(images.length);//设置小圆按钮个数
+//        utils.setGvwidth(advertisementGvAdapter, pager_position_gv);//设置小圆按钮宽度
+//        //小圆按钮点击事件
+//        pager_position_gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                mPager.setCurrentItem(i);
+//            }
+//        });
+//        task = new TimerTask() {
+//            public void run() {
+//                Message message = new Message();
+//                message.what = 1;
+//                handler.sendMessage(message);
+//            }
+//        };
+//        timer = new Timer(true);
+//        timer.schedule(task, 1000, 1000);//设置定时器,进入页面1秒开始滚动,间隔1秒
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (mPager != null) {
-                if (nowPosition == images.length) {
-                    nowPosition = 0;
-                } else {
-                    nowPosition++;
-                }
-                mPager.setCurrentItem(nowPosition);
-            }
-        }
-    };
+//    private Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            if (mPager != null) {
+//                if (nowPosition == images.length) {
+//                    nowPosition = 0;
+//                } else {
+//                    nowPosition++;
+//                }
+//                mPager.setCurrentItem(nowPosition);
+//            }
+//        }
+//    };
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-        if (task != null) {
-            task.cancel();
-            task = null;
-        }
+//        if (timer != null) {
+//            timer.cancel();
+//            timer = null;
+//        }
+//        if (task != null) {
+//            task.cancel();
+//            task = null;
+//        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                if (mPager != null && nowPosition >= 0) {
-                    mPager.setCurrentItem(nowPosition);
-                }
-            }
-        };
-        timer = new Timer(true);
-        timer.schedule(task, 1000, 1000);
+//        task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (mPager != null && nowPosition >= 0) {
+//                    mPager.setCurrentItem(nowPosition);
+//                }
+//            }
+//        };
+//        timer = new Timer(true);
+//        timer.schedule(task, 1000, 1000);
     }
 
     //事件触发
@@ -382,13 +387,21 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         Intent intent;
         switch (view.getId()) {
             case R.id.notepad_layout://记事本
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(getApplicationContext(), "The functionality is not open", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                }
 //                intent=new Intent(MainLayoutActivity.this,NotepadBtnActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
                 break;
             case R.id.account_layout://记账本
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(getApplicationContext(), "The functionality is not open", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                }
 //                intent=new Intent(MainLayoutActivity.this,AccountBookActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
@@ -425,19 +438,31 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                 }
                 break;
             case R.id.contacts_layout://联系人
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(getApplicationContext(), "The functionality is not open", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                }
 //                intent=new Intent(MainLayoutActivity.this,ContactsActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
                 break;
             case R.id.notepad_calendar://记事本日历
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(getApplicationContext(), "The functionality is not open", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                }
 //                intent=new Intent(MainLayoutActivity.this,NotepadSearchByCalendarActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
                 break;
             case R.id.account_calendar://记账本日历
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(getApplicationContext(), "The functionality is not open", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                }
 //                intent=new Intent(MainLayoutActivity.this,AccountsSearchByCalendarActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
@@ -457,27 +482,52 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    new AlertDialog.Builder(this).setTitle("请登陆")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        new AlertDialog.Builder(this).setTitle("Login")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
-                                    intent.putExtra("back","in");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                }
-                            })
-                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back","in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // 点击“返回”后的操作,这里不设置没有任何操作
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }else{
+                        new AlertDialog.Builder(this).setTitle("请登陆")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back","in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }
+
                 }
 
                 break;
@@ -489,32 +539,60 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    new AlertDialog.Builder(this).setTitle("请登陆")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        new AlertDialog.Builder(this).setTitle("Login")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
-                                    intent.putExtra("back","in");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                }
-                            })
-                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back", "in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // 点击“返回”后的操作,这里不设置没有任何操作
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    } else {
+                        new AlertDialog.Builder(this).setTitle("请登陆")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back", "in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }
                 }
-
                 break;
             case R.id.more_layout://更多功能暂未开发
-                Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(getApplicationContext(), "The functionality is not open", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "该功能暂未对外开放！！！", Toast.LENGTH_SHORT).show();
+                }
+
                 //System.out.println("32px:"+DensityUtil.px2sp(MainLayoutActivity.this,32));
 //                intent = new Intent(MainLayoutActivity.this, TestActivity.class);//测试接口类
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -534,7 +612,11 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                             ActivityCompat.requestPermissions(MainLayoutActivity.this, new String[]{Manifest.permission.CAMERA}, 222);
                             IntentIntegrator integrator = new IntentIntegrator(MainLayoutActivity.this);
                             integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                            integrator.setPrompt("扫描二维码/条形码");
+                            if (Locale.getDefault().getLanguage().equals("en")) {
+                                integrator.setPrompt("two-dimensional code / bar code");
+                            }else{
+                                integrator.setPrompt("扫描二维码/条形码");
+                            }
                             integrator.setCameraId(0);
                             integrator.setBeepEnabled(true);
                             integrator.initiateScan();
@@ -542,7 +624,11 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                         } else {
                             IntentIntegrator integrator = new IntentIntegrator(MainLayoutActivity.this);
                             integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                            integrator.setPrompt("扫描二维码/条形码");
+                            if (Locale.getDefault().getLanguage().equals("en")) {
+                                integrator.setPrompt("two-dimensional code / bar code");
+                            }else{
+                                integrator.setPrompt("扫描二维码/条形码");
+                            }
                             integrator.setCameraId(0);
                             integrator.setBeepEnabled(true);
                             integrator.initiateScan();
@@ -550,7 +636,12 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     } else {
                         IntentIntegrator integrator = new IntentIntegrator(MainLayoutActivity.this);
                         integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                        integrator.setPrompt("扫描二维码/条形码");
+                        if (Locale.getDefault().getLanguage().equals("en")) {
+                            integrator.setPrompt("two-dimensional code / bar code");
+                        }else{
+                            integrator.setPrompt("扫描二维码/条形码");
+                        }
+
                         integrator.setCameraId(0);
                         integrator.setBeepEnabled(true);
                         integrator.initiateScan();
@@ -558,28 +649,51 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 
 
                 } else {
-                    new AlertDialog.Builder(this).setTitle("请登陆")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        new AlertDialog.Builder(this).setTitle("Login")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
-                                    intent.putExtra("back","in");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                }
-                            })
-                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back","in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // 点击“返回”后的操作,这里不设置没有任何操作
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }else {
+                        new AlertDialog.Builder(this).setTitle("请登陆")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back", "in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }
                 }
 
 //                 intent=new Intent(MainLayoutActivity.this,PerfectDeviceActivity.class);
@@ -595,27 +709,51 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    new AlertDialog.Builder(this).setTitle("请登陆")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        new AlertDialog.Builder(this).setTitle("Login")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
-                                    intent.putExtra("back","in");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                }
-                            })
-                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back", "in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // 点击“返回”后的操作,这里不设置没有任何操作
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    } else {
+                        new AlertDialog.Builder(this).setTitle("请登陆")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainLayoutActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back", "in");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                })
+                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }
                 }
                 break;
             default:
@@ -697,7 +835,12 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
     //退出事件
     private void exit() {
         if ((System.currentTimeMillis() - clickTime) > 2000) {
-            Toast.makeText(getApplicationContext(), "再次点击退出", Toast.LENGTH_SHORT).show();
+            if (Locale.getDefault().getLanguage().equals("en")) {
+                Toast.makeText(getApplicationContext(), "Click out again", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "再次点击退出", Toast.LENGTH_SHORT).show();
+            }
+
             clickTime = System.currentTimeMillis();
         } else {
             this.finish();
@@ -775,32 +918,44 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
 
 
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(resultCode==10){
-            Toast.makeText(this, "返回", Toast.LENGTH_SHORT).show();
-        }
-        if (result== null) {
-            Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
-        } else {
-            //http://www.ding-new.com/pptappdwnld.do?p1=16402&p2=03&p3=2w&p4=yy  试用链接
-            System.out.println("扫描结果：" + result.getContents());
-            // result.getContents().substring(result.getContents().indexOf("="), result.getContents().indexOf("&"));
-            String mac_str = null;
-            try {
-                mac_str = result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&"));
-                System.out.println("截取结果：" + result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&")));
-            } catch (Exception e) {
-                Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
+        if(requestCode==10){
+            //Toast.makeText(this, "返回", Toast.LENGTH_SHORT).show();
+        }else{
+            if (result.getContents()== null||"".equals(result.getContents())) {
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(this, "Scan failure", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
+                }
+
+            } else {
+                //http://www.ding-new.com/pptappdwnld.do?p1=16402&p2=03&p3=2w&p4=yy  试用链接
+                System.out.println("扫描结果：" + result.getContents());
+                // result.getContents().substring(result.getContents().indexOf("="), result.getContents().indexOf("&"));
+                String mac_str = null;
+                try {
+                    mac_str = result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&"));
+                    System.out.println("截取结果：" + result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&")));
+                } catch (Exception e) {
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        Toast.makeText(this, "no device", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                if (mac_str != null) {
+                    Intent intent = new Intent(MainLayoutActivity.this, PerfectDeviceActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("device_mac", mac_str);
+                    bundle.putString("activity", "1");
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                //resultNew.setText("扫描结果："+result.getContents());
             }
-            if (mac_str != null) {
-                Intent intent = new Intent(MainLayoutActivity.this, PerfectDeviceActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("device_mac", mac_str);
-                bundle.putString("activity", "1");
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-            //resultNew.setText("扫描结果："+result.getContents());
         }
+
     }
 
     /**
@@ -931,5 +1086,4 @@ public class MainLayoutActivity extends FragmentActivity implements View.OnClick
         }
 
     };
-
 }

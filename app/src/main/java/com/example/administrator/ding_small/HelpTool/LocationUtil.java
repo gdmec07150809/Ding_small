@@ -187,7 +187,11 @@ public class LocationUtil {
                 //System.out.println(stringBuilder.toString());
                // LogUtils.INSTANCE.d_debugprint("获取到的地理位置为：",stringBuilder.toString());
                 //locationStr=address.getAddressLine(0);
-                if(Build.VERSION.SDK_INT>23){
+                if(Build.VERSION.SDK_INT==24){
+                    locationStr=address.getAdminArea()+"-"+address.getLocality()+"-"+address.getSubLocality();
+                    System.out.println("详细位置："+locationStr);
+                    province=address.getLocality();
+                }else if(Build.VERSION.SDK_INT>23){
                     locationStr=address.getAdminArea()+"-"+address.getSubAdminArea()+"-"+address.getLocality();
                     System.out.println("详细位置："+locationStr);
                     province=address.getSubAdminArea();

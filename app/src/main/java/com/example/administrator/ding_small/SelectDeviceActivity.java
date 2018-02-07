@@ -599,6 +599,9 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
+                Message message = new Message();
+                message.what = 1;
+                getErrorHandler.sendMessage(message);
             }
         }
     };
@@ -683,8 +686,8 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                                     Bundle bundle = new Bundle();
                                     try {
                                         JSONObject object = new JSONObject(sortedJsonArray.get(i).toString());
-
                                         bundle.putString("device_mac", object.getString("macNo"));
+                                        bundle.putString("act", "select");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -713,6 +716,33 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                     break;
                 default:
                     break;
+            }
+        }
+
+    };
+
+    private Handler getErrorHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    loading.setStatus(LoadingLayout.No_Network);
+                    LoadingLayout.getConfig()
+                            .setNoNetworkText("无网络连接，请检查您的网络···")
+                            .setReloadButtonText("点我重试哦")
+                            .setReloadButtonTextSize(14)
+                            .setReloadButtonWidthAndHeight(150,40);
+                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                        @Override
+                        public void onReload(View v) {
+                            loading.setStatus(LoadingLayout.Loading);
+                            new Thread(networkTask).start();//获取设备列表
+                        }
+                    });
+                    break;
+                default: break;
             }
         }
 

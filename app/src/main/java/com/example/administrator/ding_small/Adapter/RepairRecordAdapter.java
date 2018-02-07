@@ -37,7 +37,7 @@ public class RepairRecordAdapter extends BaseAdapter {
     private ViewHolder holder;
     private JSONArray list=null;
     Bitmap bitmap=null;
-
+    JSONArray picArray=null;
     int listIndex=0;
     private ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
 
@@ -84,15 +84,21 @@ public class RepairRecordAdapter extends BaseAdapter {
 
         try {
             JSONObject jsonObject=new JSONObject(list.get(i)+"");
-            JSONArray picArray=new JSONArray(jsonObject.getString("picJson"));
+            picArray=new JSONArray(jsonObject.getString("picJson"));
             //String[] picArray={"http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=161e332af4246b607b5bba70dec8367a/8326cffc1e178a82111612d9f403738da977e8a5.jpg"};
            if(picArray.length()>0){
                for(int t=0;t<picArray.length();t++) {
+                   if(t==0){
+                       holder.img1.setTag(picArray.get(t));
+                   }else if(t==1){
+                       holder.img2.setTag(picArray.get(t));
+                   }else{
+                       holder.img3.setTag(picArray.get(t));
+                   }
                    System.out.println("图片路径："+picArray.get(t));
                    if(picArray.get(t)!=null&&!picArray.get(t).equals("null")){
                        returnBitMap(String.valueOf(picArray.get(t)),t);
                    }
-
                }
            }else{
              //  holder.img_layout.setVisibility(View.GONE);
@@ -142,11 +148,6 @@ public class RepairRecordAdapter extends BaseAdapter {
                 }
             }
         }).start();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
     private Handler handler = new Handler() {
 
@@ -159,19 +160,19 @@ public class RepairRecordAdapter extends BaseAdapter {
                     case 0:
                         holder.img1.setImageBitmap(bitmap);
                         break;
-                    case 1:
-                        holder.img2.setImageBitmap(bitmap);
-                        break;
-                    case 2:
-                        holder.img3.setImageBitmap(bitmap);
-                        break;
-                    default:
-                        break;
-                }
-            }
-             System.out.println("bitmap:"+bitmap);
-            //photo.setImageBitmap(bitmap);//更新UI
+case 1:
+        holder.img2.setImageBitmap(bitmap);
+        break;
+        case 2:
+        holder.img3.setImageBitmap(bitmap);
+        break;
+default:
+        break;
+        }
+        }
+        System.out.println("bitmap:"+bitmap);
+        //photo.setImageBitmap(bitmap);//更新UI
         }
 
-    };
-}
+        };
+        }

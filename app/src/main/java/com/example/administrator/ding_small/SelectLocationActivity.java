@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by CZK on 2018/1/4.
@@ -34,18 +35,33 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
 
     private static final String tokeFile = "selectAdressFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
+    private TextView select_location_text,select_text,unselect_text,confirm_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_location);
         initView();
+        changeTextView();//更换语言
         initJsonData();
         getCache();
     }
+
+    private void changeTextView() {
+
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            //select_location_text,select_text,unselect_text
+           select_location_text.setText("Select Location");
+            select_text.setText("Select");
+            unselect_text.setHint("Unselected");
+            confirm_btn.setText("Confirm");
+            location.setHint("Fill in the note information");
+
+        }
+    }
     private void getCache(){
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
-        mTvAddress.setText(sp.getString("adress", ""));
+        unselect_text.setText(sp.getString("adress", ""));
         location.setText(sp.getString("location", ""));
     }
     private void showPickerView() {
@@ -57,7 +73,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                         options2Items.get(options1).get(options2) +
                         options3Items.get(options1).get(options2).get(options3);
                 adress = text;
-                mTvAddress.setText(text);
+                unselect_text.setText(text);
             }
         }).setTitleText("")
                 .setDividerColor(Color.GRAY)
@@ -77,9 +93,14 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     }
 
     private void initView() {
-        mTvAddress = (TextView) findViewById(R.id.tv_address);
+        //mTvAddress = (TextView) findViewById(R.id.unselect_text);
         findViewById(R.id.select_layout).setOnClickListener(this);
-        findViewById(R.id.comfir_btn).setOnClickListener(this);
+        confirm_btn=findViewById(R.id.comfir_btn);
+        confirm_btn.setOnClickListener(this);
+        //select_location_text,select_text,unselect_text
+        select_location_text=findViewById(R.id.select_location_text);
+        select_text=findViewById(R.id.select_text);
+        unselect_text=findViewById(R.id.unselect_text);
         location=findViewById(R.id.location);
     }
 
@@ -165,7 +186,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
             case R.id.comfir_btn://确定
                 intent = new Intent(SelectLocationActivity.this, CreatRepairRemarksActivity.class);
                 String location_str=location.getText().toString().trim();
-                String adress=mTvAddress.getText().toString().trim();
+                String adress=unselect_text.getText().toString().trim();
                 if(adress.equals("")||adress==null||location_str.equals("")||location_str==null){
                     Toast.makeText(SelectLocationActivity.this,"地址不能为空",Toast.LENGTH_SHORT).show();
                 }else{

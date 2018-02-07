@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.MainLayoutActivity;
+import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.R;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
@@ -72,7 +73,11 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
     //两秒内点击两次退出,则退出
     private void exit() {
         if ((System.currentTimeMillis() - clickTime) > 2000) {
-            Toast.makeText(getApplicationContext(), "再次点击退出", Toast.LENGTH_SHORT).show();
+            if (Locale.getDefault().getLanguage().equals("en")) {
+                Toast.makeText(getApplicationContext(), "Click out again", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "再次点击退出", Toast.LENGTH_SHORT).show();
+            }
             clickTime = System.currentTimeMillis();
         } else {
             Log.e(TAG, "exit application");
@@ -214,10 +219,46 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                Message message = new Message();
+                message.what = 1;
+                getErrorHandler.sendMessage(message);
             }
         }
     };
+    private Handler getErrorHandler = new Handler() {
 
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    loading.setStatus(LoadingLayout.No_Network);
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("No network connection, please check your network···")
+                                .setReloadButtonText("Let me try again")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }else{
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("无网络连接，请检查您的网络···")
+                                .setReloadButtonText("点我重试哦")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }
+
+                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                        @Override
+                        public void onReload(View v) {
+                            loading.setStatus(LoadingLayout.Loading);
+                            new Thread(loginRun).start();//获取设备列表
+                        }
+                    });
+                    break;
+                default: break;
+            }
+        }
+    };
     //接收注册返回结果，并处理
     private Handler loginHandler = new Handler() {
 
@@ -264,7 +305,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                 }
 
                                 Toast.makeText(LoginAcitivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
+                                Intent intent = new Intent(LoginAcitivity.this, NewMainLayoutActivity.class);
                                 startActivity(intent);
                                 finish();
                                 break;

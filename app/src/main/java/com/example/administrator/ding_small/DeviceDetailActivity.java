@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -119,6 +120,8 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
     private ListView repair_record_listView;
 
+    private String ActivityStr="";//从某个Activity进入
+
     Bitmap bitmap=null;
 
     private int f1=1,f2=1,f3=1,f4=1,f5=1,f6=1,f7=1;
@@ -139,7 +142,33 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         getRepairRecordCache();//获取缓存,报修记录
 
     }
-
+    //重写onKeyDown方法,实现双击退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent;
+            if(ActivityStr.equals("device")){
+                intent = new Intent(DeviceDetailActivity.this, DeviceListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }else if(ActivityStr.equals("DeviceSearch")){
+                intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }else  if(ActivityStr.equals("search")){
+                intent = new Intent(DeviceDetailActivity.this, SearchBoxActiivty.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }else  if(ActivityStr.equals("select")){
+                intent = new Intent(DeviceDetailActivity.this, SelectDeviceActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     private void changeTextView() {
         //base_text,management_text,selling_text,phone_record_text,parameter_text,manufacturer_text,company_text,deptName_text,managementPhone_text,managementName_text
         // selling_name_text,selling_num_text,selling_location_text,selling_phone_text,selling_user_name_text
@@ -184,6 +213,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         Bundle getStringValue = this.getIntent().getExtras();
         if (getStringValue.getString("device_mac") != null) {
             device_mac = getStringValue.getString("device_mac");
+            ActivityStr=getStringValue.getString("act");
         }
     }
 
@@ -208,7 +238,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
         String url = utils.url+"/app/ppt7000/equipmentLog.do";
         repairTs = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + repairTs + "  token:" + token);
-        String Sign = url + memid + token + ts;
+        String Sign = url + memid + token + repairTs;
         System.out.println("Sign:" + Sign);
         repairSign = MD5Utils.md5(Sign);
 
@@ -715,62 +745,12 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.edit_img://编辑
-//                isEdit=!isEdit;
-//                //selling_point_name,selling_point_number,selling_point_location,selling_point_phone,selling_point_user
-//                selling_point_name=findViewById(R.id.selling_point_name);//售点名称
-//                selling_point_number=findViewById(R.id.selling_point_number);//售点编号
-//                selling_point_location=findViewById(R.id.selling_point_location);//售点地址
-//                selling_point_phone=findViewById(R.id.selling_point_phone);//售点人号码
-//                selling_point_user=findViewById(R.id.selling_point_user);//售点人姓名
-//                parameter_location=findViewById(R.id.parameter_detail_location);//参数详细地址
-//
-//                //latitude,longitude,temperature,location_detail
-//                longitude=findViewById(R.id.longitude);
-//                latitude=findViewById(R.id.latitude);
-//                temperature=findViewById(R.id.temperature);
-//                location_detail=findViewById(R.id.parameter_location);
-//
-//                if(isEdit){//判断可否编辑
-//                    ImageView img=findViewById(R.id.edit);
-//                    img.setImageResource(R.drawable.yes);
-//
-//                    selling_point_name.setEnabled(true);
-//                    selling_point_number.setEnabled(true);
-//                    selling_point_location.setEnabled(true);
-//                    selling_point_phone.setEnabled(true);
-//                    selling_point_user.setEnabled(true);
-//                    parameter_location.setEnabled(true);
-//                }else{
-//                    ImageView img=findViewById(R.id.edit);
-//                    img.setImageResource(R.drawable.edit_img);
-//
-//                    selling_point_name.setEnabled(false);
-//                    selling_point_number.setEnabled(false);
-//                    selling_point_location.setEnabled(false);
-//                    selling_point_phone.setEnabled(false);
-//                    selling_point_user.setEnabled(false);
-//                    parameter_location.setEnabled(false);
-//                }
-//
-//                //获取地址
-//                if(str_location ==null || str_location.isEmpty()){
-//                    Toast.makeText(this,"请打开网络,重新进入",Toast.LENGTH_SHORT).show();
-//                }else{
-//                    if(longitude_str.length()>14||latitude_str.length()>14){
-//                        longitude_str=longitude_str.substring(0,15);
-//                        latitude_str=latitude_str.substring(0,15);
-//                    }
-//                    longitude.setText(longitude_str);
-//                    latitude.setText( latitude_str);
-//                    location_detail.setText(str_location);
-//                }
-//                temperature.setText(temperature_str+"℃");
-
                 intent = new Intent(DeviceDetailActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", device_mac);
                 bundle.putString("device_id", device_id);
-                bundle.putString("activity", "2");
+                bundle.putString("act", ActivityStr);
+                bundle.putString("activity","2");
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -796,6 +776,23 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 builder.create().show();
                 break;
             case R.id.back://返回
+                if(ActivityStr.equals("device")){
+                    intent = new Intent(DeviceDetailActivity.this, DeviceListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else if(ActivityStr.equals("DeviceSearch")){
+                    intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else  if(ActivityStr.equals("search")){
+                    intent = new Intent(DeviceDetailActivity.this, SearchBoxActiivty.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else  if(ActivityStr.equals("select")){
+                intent = new Intent(DeviceDetailActivity.this, SelectDeviceActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
                 finish();
                 break;
             default:
@@ -954,8 +951,38 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                Message message = new Message();
+                message.what = 1;
+                getErrorHandler.sendMessage(message);
             }
         }
+    };
+
+    private Handler getErrorHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    loading.setStatus(LoadingLayout.No_Network);
+                    LoadingLayout.getConfig()
+                            .setNoNetworkText("无网络连接，请检查您的网络···")
+                            .setReloadButtonText("点我重试哦")
+                            .setReloadButtonTextSize(14)
+                            .setReloadButtonWidthAndHeight(150,40);
+                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                        @Override
+                        public void onReload(View v) {
+                            loading.setStatus(LoadingLayout.Loading);
+                            new Thread(networkTask).start();//获取设备列表
+                        }
+                    });
+                    break;
+                default: break;
+            }
+        }
+
     };
     private Handler getDeviceListHandler = new Handler() {
 
@@ -993,7 +1020,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 editor.commit();    //提交数据保存
 
                                 if (DataObject.getString("eqpFlag").equals("0")) {
-                                    eqpFlag.setImageResource(R.mipmap.icon_equiplist_scan);
+                                    eqpFlag.setImageResource(R.mipmap.icon_info_scale_active);
                                 } else if (DataObject.getString("eqpFlag").equals("1")) {
                                     eqpFlag.setImageResource(R.mipmap.icon_info_wifi_active);
                                 } else {
@@ -1041,7 +1068,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
             // TODO
             // 在这里进行 http request.网络请求相关操作
             String url = utils.url+"/app/ppt7000/equipmentLog.do?memId=" + memid + "&ts=" + repairTs + "&macNo=" + device_mac;
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60,TimeUnit.SECONDS).build();
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(20,TimeUnit.SECONDS).build();
             System.out.println("验证：" + repairSign);
             String b = "{\"parentId\":\"" + memid + "\",\"macNo\":\"" + device_mac + "\"}";//json字符串
             System.out.println("设备维修记录参数：" + b);

@@ -22,6 +22,7 @@ import com.example.administrator.ding_small.ContactsActivity;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.MainLayoutActivity;
+import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.NotepadActivity;
 import com.example.administrator.ding_small.NotepadBtnActivity;
 import com.example.administrator.ding_small.R;
@@ -126,7 +127,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.home_layout:
-                intent = new Intent(PersonalCenterActivity.this, MainLayoutActivity.class);
+                intent = new Intent(PersonalCenterActivity.this, NewMainLayoutActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

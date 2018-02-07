@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.CountDownTimerUtils;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.MainLayoutActivity;
+import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.R;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
@@ -406,7 +407,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                                 }
 
                                 Toast.makeText(RegisterActivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(RegisterActivity.this, MainLayoutActivity.class);
+                                Intent intent = new Intent(RegisterActivity.this, NewMainLayoutActivity.class);
                                 startActivity(intent);
                                 finish();
                                 break;

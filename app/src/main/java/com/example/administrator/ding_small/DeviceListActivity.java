@@ -1,16 +1,21 @@
 package com.example.administrator.ding_small;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,6 +42,7 @@ import com.weavey.loading.lib.LoadingLayout;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.ErrorHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -273,12 +279,48 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
 //                break;
             case R.id.scan_list_layout:
                 System.out.println("扫码");
-                IntentIntegrator integrator = new IntentIntegrator(DeviceListActivity.this);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                integrator.setPrompt("扫描二维码/条形码");
-                integrator.setCameraId(0);
-                integrator.setBeepEnabled(true);
-                integrator.initiateScan();
+                if (Build.VERSION.SDK_INT >= 23) {
+                    int checkCallPhonePermission =
+                            ContextCompat.checkSelfPermission(DeviceListActivity.this, Manifest.permission.CAMERA);
+                    if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(DeviceListActivity.this, new String[]{Manifest.permission.CAMERA}, 222);
+                        IntentIntegrator integrator = new IntentIntegrator(DeviceListActivity.this);
+                        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                        if (Locale.getDefault().getLanguage().equals("en")) {
+                            integrator.setPrompt("two-dimensional code / bar code");
+                        }else{
+                            integrator.setPrompt("扫描二维码/条形码");
+                        }
+                        integrator.setCameraId(0);
+                        integrator.setBeepEnabled(true);
+                        integrator.initiateScan();
+                        return;
+                    } else {
+                        IntentIntegrator integrator = new IntentIntegrator(DeviceListActivity.this);
+                        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                        if (Locale.getDefault().getLanguage().equals("en")) {
+                            integrator.setPrompt("two-dimensional code / bar code");
+                        }else{
+                            integrator.setPrompt("扫描二维码/条形码");
+                        }
+                        integrator.setCameraId(0);
+                        integrator.setBeepEnabled(true);
+                        integrator.initiateScan();
+                    }
+                } else {
+                    IntentIntegrator integrator = new IntentIntegrator(DeviceListActivity.this);
+                    integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        integrator.setPrompt("two-dimensional code / bar code");
+                    }else{
+                        integrator.setPrompt("扫描二维码/条形码");
+                    }
+
+                    integrator.setCameraId(0);
+                    integrator.setBeepEnabled(true);
+                    integrator.initiateScan();
+                }
+
                 break;
 //            case R.id.personalcenter_layout:
 //                intent=new Intent(DeviceListActivity.this,PersonalCenterActivity.class);
@@ -315,7 +357,11 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result.getContents() == null) {
-            Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
+            if (Locale.getDefault().getLanguage().equals("en")) {
+                Toast.makeText(this, "Scan failure", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
+            }
         } else {
             System.out.println("扫描结果：" + result.getContents());
             String mac_str = null;
@@ -323,7 +369,11 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 mac_str = result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&"));
                 System.out.println("截取结果：" + result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&")));
             } catch (Exception e) {
-                Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(this, "no device", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
+                }
             }
             if (mac_str != null) {
                 Intent intent = new Intent(DeviceListActivity.this, PerfectDeviceActivity.class);
@@ -370,18 +420,73 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                         getDeviceListHandler.sendMessage(message);
                     }else{
                         loading.setStatus(LoadingLayout.No_Network);
+                        if (Locale.getDefault().getLanguage().equals("en")) {
+                            LoadingLayout.getConfig()
+                                    .setNoNetworkText("No network connection, please check your network···");
+                        }else{
+                            LoadingLayout.getConfig()
+                                    .setNoNetworkText("无网络连接，请检查您的网络···");
+                        }
+
+                    }
+
+                }else{
+                    loading.setStatus(LoadingLayout.No_Network);
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("No network connection, please check your network···");
+                    }else{
                         LoadingLayout.getConfig()
                                 .setNoNetworkText("无网络连接，请检查您的网络···");
                     }
-
                 }
                 System.out.println("结果：" + result + "状态码：" + response.code());
                 //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
+                Message message = new Message();
+                message.what = 1;
+                getErrorHandler.sendMessage(message);
+
             }
         }
     };
+
+    private Handler getErrorHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    loading.setStatus(LoadingLayout.No_Network);
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("No network connection, please check your network···")
+                                .setReloadButtonText("Let me try again")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }else{
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("无网络连接，请检查您的网络···")
+                                .setReloadButtonText("点我重试哦")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }
+
+                        loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                            @Override
+                            public void onReload(View v) {
+                                loading.setStatus(LoadingLayout.Loading);
+                            new Thread(networkTask).start();//获取设备列表
+                            }
+                    });
+                break;
+                default: break;
+            }
+        }
+    };
+
     private Handler getDeviceListHandler = new Handler() {
 
         @Override
@@ -451,8 +556,14 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
 
                             }else{
                                 loading.setStatus(LoadingLayout.Empty);
-                                LoadingLayout.getConfig()
-                                        .setEmptyText("抱歉，暂无数据");
+                                if (Locale.getDefault().getLanguage().equals("en")) {
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("sorry，no data");
+                                }else{
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("抱歉，暂无数据");
+                                }
+
                                 default_lay.setVisibility(View.VISIBLE);
                                 device_listview.setVisibility(View.GONE);
                             }
@@ -471,6 +582,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                     try {
                                         JSONObject object = new JSONObject(sortedJsonArray.get(i).toString());
                                         bundle.putString("device_mac", object.getString("macNo"));
+                                        bundle.putString("act","device");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -481,16 +593,22 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                             setListViewHeightBasedOnChildren(device_listview);//计算listview的item个数,并完整显示
                         } else {
                             loading.setStatus(LoadingLayout.Error);
-                            LoadingLayout.getConfig()
-                                    .setErrorText("出错啦~请稍后重试！");
+                            if (Locale.getDefault().getLanguage().equals("en")) {
+                                LoadingLayout.getConfig()
+                                        .setErrorText("There is a mistake ~ please try again later!");
+                            }else{
+                                LoadingLayout.getConfig()
+                                        .setErrorText("出错啦~请稍后重试！");
+                            }
+
                             default_lay.setVisibility(View.VISIBLE);
                             device_listview.setVisibility(View.GONE);
-                            new AlertDialog.Builder(DeviceListActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+//                            new AlertDialog.Builder(DeviceListActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            }).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

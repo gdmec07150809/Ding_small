@@ -235,6 +235,43 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                 //Toast.makeText(EditPassWordActivity.this,result,Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
+                Message message = new Message();
+                message.what = 1;
+                getErrorHandler.sendMessage(message);
+            }
+        }
+    };
+    private Handler getErrorHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    loading.setStatus(LoadingLayout.No_Network);
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("No network connection, please check your network···")
+                                .setReloadButtonText("Let me try again")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }else{
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("无网络连接，请检查您的网络···")
+                                .setReloadButtonText("点我重试哦")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }
+
+                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                        @Override
+                        public void onReload(View v) {
+                            loading.setStatus(LoadingLayout.Loading);
+                            new Thread(networkTask).start();//获取设备列表
+                        }
+                    });
+                    break;
+                default: break;
             }
         }
     };
@@ -267,8 +304,13 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                                 }
                             }else{
                                 loading.setStatus(LoadingLayout.Empty);//无数据
-                                LoadingLayout.getConfig()
-                                        .setEmptyText("抱歉，暂无数据");
+                                if (Locale.getDefault().getLanguage().equals("en")) {
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("sorry，no this device");
+                                }else{
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("抱歉，无此设备");
+                                }
 //                                loading.setStatus(LoadingLayout.Success);
 //                                defult_lay.setVisibility(View.VISIBLE);
 //                                select_device_list.setVisibility(View.GONE);
@@ -278,8 +320,14 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                                 loading.setStatus(LoadingLayout.Success);
                             }else{
                                 loading.setStatus(LoadingLayout.Empty);//无数据
-                                LoadingLayout.getConfig()
-                                        .setEmptyText("抱歉，无此设备");
+                                if (Locale.getDefault().getLanguage().equals("en")) {
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("sorry，no this device");
+                                }else{
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("抱歉，无此设备");
+                                }
+
                                // Toast.makeText(SearchBoxActiivty.this,"找不到该设备",Toast.LENGTH_SHORT).show();
                                 //loading.setStatus(LoadingLayout.Success);
                             }
@@ -292,6 +340,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                                         JSONObject object = new JSONObject(sortedJsonArray.get(i).toString());
                                         System.out.println(object.getString("macNo"));
                                         bundle.putString("device_mac", object.getString("macNo"));
+                                        bundle.putString("act","search");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

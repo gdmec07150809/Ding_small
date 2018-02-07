@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by CZK on 2018/1/5.
@@ -53,10 +54,18 @@ public class ManufacturerAdapter extends BaseAdapter {
             holder.company_name=contentView.findViewById(R.id.company_name);
             holder.selling_phone=contentView.findViewById(R.id.selling_phone);
             holder.repair_phone=contentView.findViewById(R.id.repair_phone);
+            //after_phone_text,repair_phone_text
+            holder.after_phone_text=contentView.findViewById(R.id.after_phone_text);
+            holder.repair_phone_text=contentView.findViewById(R.id.repair_phone_text);
             holder.manufacturer_location=contentView.findViewById(R.id.manufacturer_location);
             contentView.setTag(holder);
         }else{
             holder = (ViewHolder) contentView.getTag();
+        }
+
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            holder.after_phone_text.setText("  (After sale telephone)");
+            holder.repair_phone_text.setText("  (Repair telephone)");
         }
         try {
             JSONObject jsonObject=new JSONObject(list.get(i));
@@ -72,6 +81,6 @@ public class ManufacturerAdapter extends BaseAdapter {
         return contentView;
     }
     private class ViewHolder{
-        TextView manufacturer_name,company_name,selling_phone,repair_phone,manufacturer_location;
+        TextView manufacturer_name,company_name,selling_phone,repair_phone,manufacturer_location,after_phone_text,repair_phone_text;
     }
 }

@@ -71,14 +71,23 @@
                         android:orientation="horizontal"
                         android:layout_marginRight="@dimen/px30"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1.5">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        android:layout_weight="1.9">
+
+                        <RelativeLayout
+                            android:layout_width="100dp"
+                            android:layout_height="18dp"
                             android:layout_centerVertical="true"
                             android:layout_toLeftOf="@+id/come"
                             android:layout_marginRight="@dimen/px20"
-                            android:src="@mipmap/icon_my_mymessage"/>
+                           android:background="@drawable/information_icon_bg">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="个人信息"
+                                android:textSize="10dp"
+                                android:layout_centerInParent="true"
+                                android:textColor="@color/white"/>
+                        </RelativeLayout>
                         <ImageView
                             android:id="@+id/come"
                             android:layout_width="@dimen/px30"

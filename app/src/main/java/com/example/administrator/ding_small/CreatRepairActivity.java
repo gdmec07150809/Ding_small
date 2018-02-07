@@ -59,6 +59,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -123,6 +124,8 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     public static final int SHOW_RESPONSE = 0;
     LoadingLayout loading;
 
+    private TextView back_text,creat_repair_text,finish_time_text,repair_information_text,next;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +145,14 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         confirmation=findViewById(R.id.confirmation);
         repair_user=findViewById(R.id.repair_user);
         loading = findViewById(R.id.loading_layout);
+
+       // back_text,creat_repair_text,finish_time_text,repair_information_text,next
+        back_text=findViewById(R.id.back_text);
+        creat_repair_text=findViewById(R.id.creat_repair_text);
+        finish_time_text=findViewById(R.id.finish_time_text);
+        repair_information_text=findViewById(R.id.repair_information_text);
+        next=findViewById(R.id.next);
+        changeTextView();//更换语言
         getCache();//获取缓存
         getBundleString();
         //获取当前年月日时分
@@ -164,6 +175,22 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         }
 
       //  System.out.println("时间5"+getNextDay(dateStr,"5"));
+    }
+
+    private void changeTextView() {
+        //base_text,management_text,selling_text,phone_record_text,parameter_text,manufacturer_text,company_text,deptName_text,managementPhone_text,managementName_text
+        // selling_name_text,selling_num_text,selling_location_text,selling_phone_text,selling_user_name_text
+        //lo_la_text,auto_text,location_detail_text,temperature_text
+        if (Locale.getDefault().getLanguage().equals("en")) {
+          //back_text,creat_repair_text,finish_time_text,repair_information_text,next
+            back_text.setText("Back");
+            creat_repair_text.setText("Creat Repair");
+            finish_time_text.setText("Finish Time");
+            repair_information_text.setText("Repair Information");
+            next.setText("Submit");
+            repair_user.setText("Repair User");
+            confirmation.setText("Unfilled");
+        }
     }
 
     /**
@@ -261,7 +288,12 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
 
               sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
               device_id = sp.getString("device_id", "");
-              confirmation.setText("已填写");
+              if(Locale.getDefault().getLanguage().equals("en")){
+                  confirmation.setText("Already filled in");
+              }else{
+                  confirmation.setText("已填写");
+              }
+
               repair_user.setText(opName);
           }
         }
@@ -285,37 +317,36 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                 break;
             case R.id.footer:
                 //action_text.getText().toString(); repair_user date_str
-                new AlertDialog.Builder(this).setTitle("确认提交？")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                String setValue = confirmation.getText().toString().trim();
+                if(setValue.equals("未填写")){
+                    Toast.makeText(CreatRepairActivity.this,"请填写信息",Toast.LENGTH_SHORT).show();
+                }else {
+                    new AlertDialog.Builder(this).setTitle("确认提交？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String setValue=confirmation.getText().toString().trim();
-                                if(setValue.equals("未填写")){
-                                    Toast.makeText(CreatRepairActivity.this,"请填写信息",Toast.LENGTH_SHORT).show();
-                                }else{
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
                                     loading.setStatus(LoadingLayout.Loading);
-                                    if(arrayList!=null&&arrayList.size()>0){
+                                    if (arrayList != null && arrayList.size() > 0) {
                                         getPhotoCache();//上传图片
                                         new Thread(upPhotoTask).start();
-                                    }else{
+                                    } else {
                                         new Thread(repairTask).start();
                                     }
 
 
                                 }
-                            }
-                        })
-                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“返回”后的操作,这里不设置没有任何操作
-                                dialog.dismiss();
-                            }
-                        }).show();
-
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
 
                 break;
             case R.id.remarks_layout:

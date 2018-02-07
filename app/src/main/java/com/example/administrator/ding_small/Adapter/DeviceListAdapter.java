@@ -13,6 +13,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.ding_small.ContactsActivity;
@@ -29,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 /**
@@ -41,6 +43,7 @@ public class DeviceListAdapter extends BaseAdapter {
     private JSONArray list=null;
     private String date;
     Bitmap bitmap=null;
+    private ListView mListView;
     JSONObject obj;
     private LruCache<String, BitmapDrawable> mImageCache;
     public DeviceListAdapter(Context context, JSONArray list) {
@@ -66,6 +69,9 @@ public class DeviceListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        if (mListView == null) {
+            mListView = (ListView) viewGroup;
+        }
         View contentView = null;
 
         if(contentView==null){
@@ -78,23 +84,24 @@ public class DeviceListAdapter extends BaseAdapter {
             holder.device_date=contentView.findViewById(R.id.device_date);
             holder.date_layout=contentView.findViewById(R.id.date_layout);
             holder.device_img=contentView.findViewById(R.id.device_head_img);
+            holder.sell_date_text=contentView.findViewById(R.id.sell_date_text);
             contentView.setTag(holder);
         }else{
-            holder = (ViewHolder) contentView.getTag ( ) ;
+            holder = (ViewHolder) contentView.getTag();
         }
 
-
+        if (Locale.getDefault().getLanguage().equals("en")){
+            holder.sell_date_text.setText("sales date");
+        }
         try {
              obj=new JSONObject(String.valueOf(list.get(i)));
             System.out.println("adapter:"+String.valueOf(list.get(i)));
             holder.device_name.setText( obj.getString("eqpName"));
             holder.device_img.setTag(obj.getString("imsPci"));
-            synchronized(this) {
-                if (obj.getString("imsPci") != null && !obj.getString("imsPci").equals("null")) {
-                    System.out.println("路劲:" + obj.getString("imsPci"));
-                    //String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
-                    new Thread(urlPhoto).start();
-                }
+            if (obj.getString("imsPci") != null && !obj.getString("imsPci").equals("null")) {
+                System.out.println("路劲:" + obj.getString("imsPci"));
+                //String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
+                new Thread(urlPhoto).start();
             }
             if(obj.getString("eqpAddressJson")==null||obj.getString("eqpAddressJson").equals("null")){
                 holder.location.setText("");
@@ -106,7 +113,6 @@ public class DeviceListAdapter extends BaseAdapter {
             String stauts=obj.getString("eqpStatus");
             String type=obj.getString("insertDate");
            // long date1= Long.parseLong(type);
-
             if(stauts.equals("1")){
                 holder.stauts_img.setImageResource(R.mipmap.icon_list_fixing);
             }else{
@@ -130,8 +136,9 @@ public class DeviceListAdapter extends BaseAdapter {
         }
         return contentView;
     }
+
     private class ViewHolder{
-        TextView  device_name,location,ssid,device_date;
+        TextView  device_name,location,ssid,device_date,sell_date_text;
         ImageView stauts,stauts_img,device_img;
         LinearLayout date_layout;
     }
@@ -139,14 +146,11 @@ public class DeviceListAdapter extends BaseAdapter {
         SimpleDateFormat sDateFormat = new SimpleDateFormat(pattern);
         return sDateFormat.format(new Date(dateTime + 0));
     }
-
-
        Runnable urlPhoto=new Runnable() {
             @Override
             public void run() {
                 URL imageurl = null;
                 try {
-
                     imageurl = new URL(obj.getString("imsPci"));
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -167,7 +171,6 @@ public class DeviceListAdapter extends BaseAdapter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         };
 
@@ -183,7 +186,6 @@ public class DeviceListAdapter extends BaseAdapter {
                            System.out.println("图片bitmap:"+bitmap);
                            holder.device_img.setImageBitmap(bitmap);
                        }
-
                    } catch (JSONException e) {
                        e.printStackTrace();
                    }

@@ -70,7 +70,7 @@ public class PermissionHelper {
 
 
     // 显示缺失权限提示
-    private void showMissingPermissionDialog() {
+    public  void showMissingPermissionDialog() {
         startAppSettings();
     }
 
