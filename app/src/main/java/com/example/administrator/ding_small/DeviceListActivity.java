@@ -16,6 +16,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.EditPassWordActivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 import com.example.administrator.ding_small.Utils.Data;
@@ -95,7 +97,16 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     //更改语言所要更改的控件 返回、设备列表、设备总数、使用中、维修中、扫码添加、搜索添加、手工输入、历史设备
     private TextView back_text, device_list_text, device_num_text, using_text, maintenancing_text, add_by_scan_text, add_by_search_text, enter_by_manually_text, device_history_text;
 
-
+    //重写onKeyDown方法,实现双击退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(DeviceListActivity.this, NewMainLayoutActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,16 +211,16 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         device_ssids.add("465454651846515");
         device_ssids.add("156451518454841");
 
-        device_staus.add("1");
-        device_staus.add("1");
+        device_staus.add("start1");
+        device_staus.add("start1");
         device_staus.add("0");
         device_staus.add("0");
-        device_staus.add("1");
+        device_staus.add("start1");
 
         device_type.add("2017/5/9");
-        device_type.add("2017/6/2");
-        device_type.add("2017/8/1");
-        device_type.add("2017/9/2");
+        device_type.add("2017/6/start2");
+        device_type.add("2017/8/start1");
+        device_type.add("2017/9/start2");
         device_type.add("2017/10/12");
         try {
             for (int i = 0; i < device_names.size(); i++) {
@@ -379,7 +390,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 Intent intent = new Intent(DeviceListActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", mac_str);
-                bundle.putString("activity", "1");
+                bundle.putString("activity", "start1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -547,7 +558,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                 });
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     sortedJsonArray.put(jsonValues.get(i));
-                                    if (jsonValues.get(i).getString("eqpStatus").equals("1")) {
+                                    if (jsonValues.get(i).getString("eqpStatus").equals("start1")) {
                                         maintenancing_num += 1;
                                     } else{
                                         using_num += 1;
@@ -558,10 +569,36 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                 loading.setStatus(LoadingLayout.Empty);
                                 if (Locale.getDefault().getLanguage().equals("en")) {
                                     LoadingLayout.getConfig()
-                                            .setEmptyText("sorry，no data");
+                                            .setEmptyText("sorry，no data")
+                                            .setEmptyImage(R.mipmap.no_data)
+                                             .setReloadButtonText("add")
+                                            .setReloadButtonTextSize(14)
+                                            .setReloadButtonWidthAndHeight(150,40);
+
+                                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                                        @Override
+                                        public void onReload(View v) {
+                                            Intent intent = new Intent(DeviceListActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    });
                                 }else{
                                     LoadingLayout.getConfig()
-                                            .setEmptyText("抱歉，暂无数据");
+                                            .setEmptyText("抱歉，暂无数据")
+                                            .setEmptyImage(R.mipmap.no_data)
+                                            .setReloadButtonText("添加")
+                                            .setReloadButtonTextSize(14)
+                                            .setReloadButtonWidthAndHeight(150,40);
+
+                                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                                        @Override
+                                        public void onReload(View v) {
+                                            Intent intent = new Intent(DeviceListActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    });
                                 }
 
                                 default_lay.setVisibility(View.VISIBLE);

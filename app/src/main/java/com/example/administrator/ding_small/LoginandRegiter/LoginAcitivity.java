@@ -303,7 +303,6 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                         }
                                     }
                                 }
-
                                 Toast.makeText(LoginAcitivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginAcitivity.this, NewMainLayoutActivity.class);
                                 startActivity(intent);

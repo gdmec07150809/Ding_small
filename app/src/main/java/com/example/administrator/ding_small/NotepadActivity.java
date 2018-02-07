@@ -271,7 +271,7 @@ public class NotepadActivity extends FragmentActivity implements View.OnClickLis
      * 页卡切换监听
      *
      * @author CZK
-     * @version 1.0
+     * @version start1.0
      */
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -287,7 +287,7 @@ public class NotepadActivity extends FragmentActivity implements View.OnClickLis
                     bundle.putStringArray("name", name);
                     fragment1.setArguments(bundle);
                     ft.replace(android.R.id.content, fragment1);
-                    //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NotepadActivity.this,"页面"+(position+start1),Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }
@@ -300,7 +300,7 @@ public class NotepadActivity extends FragmentActivity implements View.OnClickLis
                     bundle1.putStringArray("name", name);
                     fragment2.setArguments(bundle1);
                     ft.replace(android.R.id.content, fragment2);
-                    //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NotepadActivity.this,"页面"+(position+start1),Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }

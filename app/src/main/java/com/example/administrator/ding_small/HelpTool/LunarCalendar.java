@@ -181,7 +181,7 @@ public class LunarCalendar {
             return 0;
     }
 
-    // ====== 传回农历 y年闰哪个月 1-12 , 没闰传回 0
+    // ====== 传回农历 y年闰哪个月 start1-12 , 没闰传回 0
     public  int leapMonth(int y) {
         long var = lunarInfo[y - 1900] & 0xf;
         return (int)(var == 0xf ? 0 : var);
@@ -280,7 +280,7 @@ public class LunarCalendar {
         /*
         Date date=cal.getTime();
         int year_c = cal.get(Calendar.YEAR);
-        int month_c = cal.get(Calendar.MONTH)+1;
+        int month_c = cal.get(Calendar.MONTH)+start1;
         int day_c = cal.get(Calendar.DAY_OF_MONTH);
         */
         return cal;
@@ -319,8 +319,8 @@ public class LunarCalendar {
         int iYear,LYear,LMonth,LDay, daysOfYear = 0;
         // 求出和1900年1月31日相差的天数
         //year =1908;
-        //month = 3;
-        //day =3;
+        //month = start3;
+        //day =start3;
         int offset = getDaysOfTwoDate(1900,1,31,year,month,day);
         //Log.i("--ss--","公历:"+year+"-"+month+"-"+day+":"+offset);
         // 用offset减去每农历年的天数
@@ -341,7 +341,7 @@ public class LunarCalendar {
         // 农历年份
         LYear = iYear;
 
-        leapMonth = leapMonth(iYear); // 闰哪个月,1-12
+        leapMonth = leapMonth(iYear); // 闰哪个月,start1-12
         leap = false;
 
         // 用当年的天数offset,逐个减去每月（农历）的天数，求出当天是本月的第几天
@@ -487,13 +487,13 @@ public class LunarCalendar {
             return chineseNumber[(month-1)%12] + "月";
         else
             return getChinaDayString(day);
-        // return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] +
+        // return year + "年" + (leap ? "闰" : "") + chineseNumber[month - start1] +
         // "月" + getChinaDayString(day);
     }
 
     /*
      * public static void main(String[] args) { System.out.println(new
-     * LunarCalendar().getLunarDate(2012, 1, 23)); }
+     * LunarCalendar().getLunarDate(2012, start1, 23)); }
      */
 
     public int getLeapMonth() {
@@ -599,7 +599,7 @@ public class LunarCalendar {
     }
 
     /* num_y%12, num_m%12, num_d%12, num_y%10, num_d%10
-     * m:农历月份 1---12
+     * m:农历月份 start1---12
      * dt：农历日
      * */
     public String CalConv2(int yy, int mm, int dd, int y, int d, int m, int dt) {
@@ -652,7 +652,7 @@ public class LunarCalendar {
     }
     /*输入
      * year 公历年份，大于1900
-     * month 公历月份 1--12
+     * month 公历月份 start1--12
      * 输出
      * ArrayList<String> year年month月全月宜忌
      * */
@@ -673,8 +673,8 @@ public class LunarCalendar {
         int firstNode = sTerm(year, (month-1)*2);//当月的24节气中的节开始日
         //cyclicalm(num_m);
         //Calendar cal = Calendar.getInstance();
-        //cal.set(year, month, 1, 0, 0, 0);
-        //1900/1/1与 1970/1/1 相差25567日, 1900/1/1 日柱为甲戌日(60进制10)
+        //cal.set(year, month, start1, 0, 0, 0);
+        //1900/start1/1与 1970/start1/start1 相差25567日, 1900/start1/start1 日柱为甲戌日(60进制10)
         int dayCyclical = (int) (getDaysOfTwoDate(1900,1,1,year,month,1)+10);
         for(int i=0;i<days_of_month;i++){
             if(mLDay > mLun_x){
@@ -706,9 +706,9 @@ public class LunarCalendar {
             if(str == null){
                 String var = jcName[num_m%12][num_d%12];
                 str = jcrt(var);
-                //Log.i("","---"+month+"-"+(i+1)+","+var+":"+str);
+                //Log.i("","---"+month+"-"+(i+start1)+","+var+":"+str);
             }
-            //Log.i("","---"+year+"-"+month+"-"+(i+1)+","+str);
+            //Log.i("","---"+year+"-"+month+"-"+(i+start1)+","+str);
             yiji.add(str);
         }
 
@@ -753,9 +753,9 @@ public class LunarCalendar {
         String str = CalConv2(num_y%12, num_m%12, num_d%12, num_y%10, num_d%10, mLMonth, mLDay);
         if(str == null){
             str = jcrt(jcName[num_m%12][num_d%12]);
-            //Log.i("","---"+month+"-"+(i+1)+","+var+":"+str);
+            //Log.i("","---"+month+"-"+(i+start1)+","+var+":"+str);
         }
-        //Log.i("","---"+year+"-"+month+"-"+(i+1)+","+str);
+        //Log.i("","---"+year+"-"+month+"-"+(i+start1)+","+str);
         return str;
     }
     /*

@@ -164,7 +164,7 @@ public class LocationUtil {
 
             System.out.println("纬度："+Double.toString(location.getLatitude())+"经度："+Double.toString(location.getLongitude()));
             //根据地址获取地理位置信息
-            //List<Address> addresses = geocoder.getFromLocationName( "广东省珠海市香洲区沿河路321号", 1);
+            //List<Address> addresses = geocoder.getFromLocationName( "广东省珠海市香洲区沿河路321号", start1);
 
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);

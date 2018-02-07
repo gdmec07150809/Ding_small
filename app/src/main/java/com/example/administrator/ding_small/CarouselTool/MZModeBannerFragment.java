@@ -26,7 +26,7 @@ import java.util.List;
 public class MZModeBannerFragment extends Fragment {
     public static final String TAG = "MZModeBannerFragment";
     //public static final int []RES = new int[]{R.mipmap.image5,R.mipmap.image2,R.mipmap.image3,R.mipmap.image4,R.mipmap.image6,R.mipmap.image7,R.mipmap.image8};
-    public static final int []BANNER = new int[]{R.mipmap.banner1, R.mipmap.banner2,R.mipmap.banner3,R.mipmap.banner4,R.mipmap.banner5};
+    public static final int []BANNER = new int[]{R.drawable.banner1, R.drawable.banner2,R.drawable.banner3};
     private MZBannerView mMZBanner;
     private MZBannerView mNormalBanner;
 
@@ -69,7 +69,7 @@ public class MZModeBannerFragment extends Fragment {
         for(int i=0;i<BANNER.length;i++){
             bannerList.add(BANNER[i]);
         }
-        mMZBanner.setIndicatorVisible(true);
+        mMZBanner.setIndicatorVisible(false);//中间的小球是否显示
         mMZBanner.setPages(bannerList, new MZHolderCreator<BannerViewHolder>() {
             @Override
             public BannerViewHolder createViewHolder() {

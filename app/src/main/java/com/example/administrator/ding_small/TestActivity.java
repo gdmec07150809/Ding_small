@@ -49,7 +49,7 @@ import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivit
 import static org.xutils.common.util.IOUtil.copy;
 
 /**
- * Created by youyou000 on 2018/1/27.
+ * Created by youyou000 on 2018/start1/27.
  */
 
 public class TestActivity extends Activity {
@@ -86,7 +86,7 @@ public class TestActivity extends Activity {
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
 
-        String url = "http://192.168.1.105:8080/app/ppt7000/statisticsSummarySecr9000.do";
+        String url = "http://192.168.start1.105:8080/app/ppt7000/statisticsSummarySecr9000.do";
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：memId" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -106,7 +106,7 @@ public class TestActivity extends Activity {
 
             //System.out.println("图片："+getBitmap.getBitmapPhoto("https://avatar.csdn.net/C/3/5/1_hmyang314.jpg"));
             // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do?memId=" + memid + "&ts=" + ts ;轮播图
-            String url = "http://192.168.1.105:8080/app/secr9000/statisticsSummarySecr9000.do?memId=" + memid + "&ts=" + ts ;
+            String url = "http://192.168.start1.105:8080/app/secr9000/statisticsSummarySecr9000.do?memId=" + memid + "&ts=" + ts ;
             OkHttpClient okHttpClient = new OkHttpClient();
 
             String b = "{\"dateFm\":\"2017-12-01\",\"dateTo\":\"2018-03-01\",\"memId\":\""+memid+"\"}";//json字符串
@@ -140,7 +140,7 @@ public class TestActivity extends Activity {
     Runnable getPhoto=new Runnable() {
         @Override
         public void run() {
-            String[] url={"https://avatar.csdn.net/C/3/5/1_hmyang314.jpg","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517057253649&di=322b0a2d78c713c71f53a434f4ebbdd4&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Decfe83b9042442a7ba03f5e5b83bc827%2F728da9773912b31bc2fe74138d18367adab4e17e.jpg","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517057253648&di=59d9a1e4d8da7441d593f4a4f6b86ce4&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fe1fe9925bc315c600dce09d386b1cb13495477b6.jpg"};
+            String[] url={"https://avatar.csdn.net/C/start3/5/1_hmyang314.jpg","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517057253649&di=322b0a2d78c713c71f53a434f4ebbdd4&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Decfe83b9042442a7ba03f5e5b83bc827%2F728da9773912b31bc2fe74138d18367adab4e17e.jpg","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517057253648&di=59d9a1e4d8da7441d593f4a4f6b86ce4&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fe1fe9925bc315c600dce09d386b1cb13495477b6.jpg"};
             for(int i=0;i<url.length;i++){
                     returnBitMap(url[i]);//获取网络图片，并转化为Bitmap格式
             }
@@ -222,7 +222,7 @@ public class TestActivity extends Activity {
         MultipartBody.Builder mbody=new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         List<File> fileList=new ArrayList<File>();
-        File img1=new File("https://avatar.csdn.net/C/3/5/1_hmyang314.jpg");
+        File img1=new File("https://avatar.csdn.net/C/start3/5/1_hmyang314.jpg");
         fileList.add(img1);
         int i=0;
         for(File file:fileList){
@@ -232,7 +232,7 @@ public class TestActivity extends Activity {
                 i++;
             }
         }
-        String url="http://192.168.1.110:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
+        String url="http://192.168.start1.110:8080/app/ppt7000/memberImgUpload.do?memId="+memid+"&ts="+ts;
         RequestBody requestBody =mbody.build();
         Request request = new Request.Builder()
                 .header("Authorization", "Client-ID " + "...")

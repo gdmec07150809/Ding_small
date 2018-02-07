@@ -93,7 +93,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
             R.mipmap.fix_icon_loushui_normal, R.mipmap.fix_icon_loudian_normal, R.mipmap.fix_icon_louqi_normal,
             R.mipmap.fix_icon_noise_normal, R.mipmap.fix_icon_surface_normal, R.mipmap.fix_icon_print_normal, R.mipmap.fix_icon_others_normal};
     //图标下的文字
-    String name[] = {"不通电", "不充电", "不发光", "不制冷", "不排气", "不防水", "不排气",
+    String name[] = {"不通电", "不充电", "不发光", "不制冷", "不排气", "不防水", "不排水",
             "漏水", "漏电", "漏气", "噪音大", "外观破损","印刷错误", "其它"};
 
     //实现Tab滑动效果
@@ -132,6 +132,10 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
         setContentView(R.layout.creat_repair);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
+        if (Locale.getDefault().getLanguage().equals("en")){
+            name= new String[]{"no electricity", "non charge", "no light", "no refrigeration", "not exhaust", "no waterproof", "undrained",
+                    "water leakage", "electric leakage", "air leakage", "loud noise", "Appearance breakage", "printing errors", "other"};
         }
         InitFragment();//初始化流式布局
         InitViewPager();//初始化viewPager
@@ -190,6 +194,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
             next.setText("Submit");
             repair_user.setText("Repair User");
             confirmation.setText("Unfilled");
+            action_text.setText("no electricity");
         }
     }
 
@@ -276,7 +281,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
 //                  for(int i=0;i<str.length;i++){
 //                      System.out.println("上传路径："+str[i]);
 //
-//                      if(i==str.length-1){
+//                      if(i==str.length-start1){
 //                          picPath+=str[i];
 //                      }else{
 //                          picPath+=str[i]+"\\\\";
@@ -318,34 +323,63 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
             case R.id.footer:
                 //action_text.getText().toString(); repair_user date_str
                 String setValue = confirmation.getText().toString().trim();
-                if(setValue.equals("未填写")){
-                    Toast.makeText(CreatRepairActivity.this,"请填写信息",Toast.LENGTH_SHORT).show();
-                }else {
-                    new AlertDialog.Builder(this).setTitle("确认提交？")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    if(setValue.equals("Unfilled")){
+                        Toast.makeText(CreatRepairActivity.this,"Please fill in the information",Toast.LENGTH_SHORT).show();
+                    }else {
+                        new AlertDialog.Builder(this).setTitle("submit？")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    loading.setStatus(LoadingLayout.Loading);
-                                    if (arrayList != null && arrayList.size() > 0) {
-                                        getPhotoCache();//上传图片
-                                        new Thread(upPhotoTask).start();
-                                    } else {
-                                        new Thread(repairTask).start();
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        loading.setStatus(LoadingLayout.Loading);
+                                        if (arrayList != null && arrayList.size() > 0) {
+                                            getPhotoCache();//上传图片
+                                            new Thread(upPhotoTask).start();
+                                        } else {
+                                            new Thread(repairTask).start();
+                                        }
                                     }
+                                })
+                                .setNegativeButton("back", new DialogInterface.OnClickListener() {
 
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }
+                }else{
+                    if(setValue.equals("未填写")){
+                        Toast.makeText(CreatRepairActivity.this,"请填写信息",Toast.LENGTH_SHORT).show();
+                    }else {
+                        new AlertDialog.Builder(this).setTitle("确认提交？")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
-                                }
-                            })
-                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        loading.setStatus(LoadingLayout.Loading);
+                                        if (arrayList != null && arrayList.size() > 0) {
+                                            getPhotoCache();//上传图片
+                                            new Thread(upPhotoTask).start();
+                                        } else {
+                                            new Thread(repairTask).start();
+                                        }
+                                    }
+                                })
+                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // 点击“返回”后的操作,这里不设置没有任何操作
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 点击“返回”后的操作,这里不设置没有任何操作
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    }
+
                 }
 
                 break;
@@ -369,23 +403,44 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                 startActivity(intent);
                 break;
             case R.id.back:
-                new AlertDialog.Builder(this).setTitle("确认返回？")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    new AlertDialog.Builder(this).setTitle("Confirm return？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        })
-                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("back", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“返回”后的操作,这里不设置没有任何操作
-                                dialog.dismiss();
-                            }
-                        }).show();
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }else{
+                    new AlertDialog.Builder(this).setTitle("确认返回？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+
                 break;
             default:
                 break;
@@ -452,25 +507,50 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
                             loading.setStatus(LoadingLayout.Success);
-                            new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage("报修成功").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    Intent intent=new Intent(CreatRepairActivity.this,DeviceListActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                }
-                            }).show();
+                            if (Locale.getDefault().getLanguage().equals("en")) {
+                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("Repair prompt").setMessage("success").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        Intent intent=new Intent(CreatRepairActivity.this,DeviceListActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                            }else{
+                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage("报修成功").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        Intent intent=new Intent(CreatRepairActivity.this,DeviceListActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                            }
+
                         } else {
                             loading.setStatus(LoadingLayout.Error);
-                            LoadingLayout.getConfig()
-                                    .setErrorText("出错啦~请稍后重试！");
-                            new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                LoadingLayout.getConfig()
+                                        .setErrorText("Error~");
+                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("Repair prompt").setMessage(object1.getString("msg")).setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                            }else{
+                                LoadingLayout.getConfig()
+                                        .setErrorText("出错啦~请稍后重试！");
+                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -517,7 +597,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
      * 页卡切换监听
      *
      * @author CZK
-     * @version 1.0
+     * @version start1.0
      */
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -533,7 +613,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                     bundle.putStringArray("name", name);
                     fragment1.setArguments(bundle);
                     ft.replace(android.R.id.content, fragment1);
-                    //Toast.makeText(NotepadActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NotepadActivity.this,"页面"+(position+start1),Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }

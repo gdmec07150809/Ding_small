@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -41,33 +42,57 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by CZK on 2018/1/9.
+ * Created by CZK on 2018/start1/9.
  */
 
 public class ChangePhoneActivity extends Activity implements View.OnClickListener {
     private TextView back, phone;
     private Dialog mCameraDialog;//弹出窗初始化
+    private TextView back_text,reset_password_text,phone_text,code_text;
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     String memid, token, sign, newPass, ts, phone_str,save_phone;
     private TextView send_text;
     public static final int SHOW_RESPONSE = 0;
+    private EditText p_code;
+    private Button confirm_change;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_phone_layout);
         findViewById(R.id.back).setOnClickListener(this);
-        findViewById(R.id.confirm_change).setOnClickListener(this);
+        confirm_change=findViewById(R.id.confirm_change);
+        confirm_change.setOnClickListener(this);
         phone = findViewById(R.id.phone);
         send_text = findViewById(R.id.send_text);
         send_text.setOnClickListener(this);
+        // back_text,reset_password_text,phone_text,code_text;
+        back_text=findViewById(R.id.back_text);
+        reset_password_text=findViewById(R.id.reset_password_text);
+        phone_text=findViewById(R.id.phone_text);
+        code_text=findViewById(R.id.code_text);
+        p_code=findViewById(R.id.p_code);
         getCache();
+        changeTextView();//更换语言
 
 
     }
 
+    private void changeTextView(){
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            back_text.setText("Back");
+            reset_password_text.setText("Change Phone");
+            phone_text.setText("Phone");
+            code_text.setText("Verify Code");
+            send_text.setText("gain");
+            phone.setHint("Enter");
+            p_code.setHint("Enter");
+            confirm_change.setText("confirm");
+
+        }
+    }
     private void getCache() {
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
@@ -94,9 +119,14 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.confirm_change://确认修改
                 phone_str=phone.getText().toString().trim();
-                String send_str=send_text.getText().toString().trim();
+                String send_str=p_code.getText().toString().trim();
                 if(phone_str.equals("")||send_str.equals("")){
-                    new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("注册提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("The replacement of mobile phone prompt").setMessage("Information can not be empty").setPositiveButton("confirm", null).show();
+                    }else{
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("更换手机提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+                    }
+
                 }else{
                     setPhoneDialog();
                 }
@@ -105,10 +135,19 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                 phone_str = phone.getText().toString();
                 //判断信息
                 if (phone_str.equals("")) {
-                    new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("注册提示").setMessage("手机号不能为空").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("The replacement of mobile phone prompt").setMessage("Mobile phone number can not be empty").setPositiveButton("confirm", null).show();
+                    }else{
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("更换手机提示").setMessage("手机号不能为空").setPositiveButton("确定", null).show();
+                    }
+
                 } else {
                     if(!phone_str.equals(save_phone)){
-                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("注册提示").setMessage("必须输入旧手机").setPositiveButton("确定", null).show();
+                        if (Locale.getDefault().getLanguage().equals("en")){
+                            new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("The replacement of mobile phone prompt").setMessage("You have to enter the old cell phone").setPositiveButton("confirm", null).show();
+                        }else{
+                            new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("更换手机提示").setMessage("必须输入旧手机").setPositiveButton("确定", null).show();
+                        }
                     }else{
                         TextView send_text = findViewById(R.id.send_text);
                         CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
@@ -132,7 +171,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
             //String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
             String url = utils.url+"/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"3\",\"msgLen\":\"4\"}";//json字符串
+            String b = "{\"memPhone\":" + phone_str + ",\"msgType\":\"start3\",\"msgLen\":\"start4\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
@@ -172,7 +211,12 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         switch (object1.getString("res")) {
                             case "00000"://成功
-                                Toast.makeText(ChangePhoneActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    Toast.makeText(ChangePhoneActivity.this,"Verifying code has been sent",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(ChangePhoneActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                }
+
                                 break;
                         }
                     } catch (JSONException e) {
@@ -193,20 +237,33 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.change_phone_dialog, null);
         Button new_login = root.findViewById(R.id.new_login);
+        EditText newPhone_value=root.findViewById(R.id.newPhone_value);
+        if(Locale.getDefault().getLanguage().equals("en")){
+            newPhone_value.setHint("Please enter a new mobile phone");
+            new_login.setText("binding");
+        }
         final EditText editText = root.findViewById(R.id.newPhone_value);
         new_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //判断输入的手机号是否和上次一样
                 if (save_phone.equals(editText.getText().toString())) {
-                    new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("更换手机").setMessage("不能跟上次手机一样").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("Change the phone").setMessage("Can't be the same as the last cell phone").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+
                 } else {
-                    Toast.makeText(ChangePhoneActivity.this, "更换成功", Toast.LENGTH_SHORT).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        Toast.makeText(ChangePhoneActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(ChangePhoneActivity.this, "更换成功", Toast.LENGTH_SHORT).show();
+                    }
+
                     mCameraDialog.dismiss();
                     finish();
                 }

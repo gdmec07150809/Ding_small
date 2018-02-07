@@ -51,7 +51,7 @@ public class EditLabelItemBtnActivity extends Activity implements View.OnClickLi
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        String url = "http://192.168.1.103:8080/app/secr6000/updateSecr6000.do";
+        String url = "http://192.168.start1.103:8080/app/secr6000/updateSecr6000.do";
         ///app/secr9000lisSecr9000
         ts = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + ts + "  token:" + token);
@@ -86,10 +86,10 @@ public class EditLabelItemBtnActivity extends Activity implements View.OnClickLi
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            String url = "http://192.168.1.103:8080/app/secr6000/updateSecr6000.do?memId=" + memid + "&ts=" + ts;
+            String url = "http://192.168.start1.103:8080/app/secr6000/updateSecr6000.do?memId=" + memid + "&ts=" + ts;
             OkHttpClient okHttpClient = new OkHttpClient();
             System.out.println("验证：" + sign);
-            String b = "{\"onlyId\":\"2\",\"proType\" : \"已收\",\"attType\" : \"标题\", \"name\" : \"早餐\",\"sort\" : \"1\"}";//json字符串
+            String b = "{\"onlyId\":\"start2\",\"proType\" : \"已收\",\"attType\" : \"标题\", \"name\" : \"早餐\",\"sort\" : \"start1\"}";//json字符串
             System.out.println(b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()

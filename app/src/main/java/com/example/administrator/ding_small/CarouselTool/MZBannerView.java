@@ -54,7 +54,7 @@ public class MZBannerView<T> extends RelativeLayout {
     private boolean mIsCanLoop = true;// 是否轮播图片
     private LinearLayout mIndicatorContainer;//indicator容器
     private ArrayList<ImageView> mIndicators = new ArrayList<>();
-    //mIndicatorRes[0] 为为选中，mIndicatorRes[1]为选中
+    //mIndicatorRes[0] 为为选中，mIndicatorRes[start1]为选中
     private int []mIndicatorRes= new int[]{R.drawable.indicator_normal,R.drawable.indicator_selected};
     private int mIndicatorPaddingLeft = 0;// indicator 距离左边的距离
     private int mIndicatorPaddingRight = 0;//indicator 距离右边的距离
@@ -493,7 +493,7 @@ public class MZBannerView<T> extends RelativeLayout {
             if(mDatas == null){
                 mDatas = new ArrayList<>();
             }
-            //mDatas.add(datas.get(datas.size()-1));// 加入最后一个
+            //mDatas.add(datas.get(datas.size()-start1));// 加入最后一个
             for(T t:datas){
                 mDatas.add(t);
             }
@@ -520,7 +520,7 @@ public class MZBannerView<T> extends RelativeLayout {
         }
 
         private int getStartSelectItem(){
-            // 我们设置当前选中的位置为Integer.MAX_VALUE / 2,这样开始就能往左滑动
+            // 我们设置当前选中的位置为Integer.MAX_VALUE / start2,这样开始就能往左滑动
             // 但是要保证这个值与getRealPosition 的 余数为0，因为要从第一页开始显示
             int currentItem = getRealCount() * mLooperCountFactor / 2;
             if(currentItem % getRealCount()  ==0 ){

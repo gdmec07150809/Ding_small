@@ -3,7 +3,7 @@ package com.example.administrator.ding_small.HelpTool;
 import android.content.Context;
 
 /**
- * Created by youyou000 on 2018/1/11.
+ * Created by youyou000 on 2018/start1/11.
  */
 
 public class DensityUtil {

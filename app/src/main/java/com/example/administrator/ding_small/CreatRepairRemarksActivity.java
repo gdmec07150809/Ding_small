@@ -111,7 +111,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     String memid,token,ts,upPhotoSign,path;
-    String user_str,phone_str,remark_str;
+    String user_str,phone_str,remark_str,addres_str;
     private LoadingLayout loading;
 
     private ArrayList<String> photoList=null;
@@ -130,9 +130,8 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         //getStringValue();//获取前页传来的数据
         //getLocation();//获取当前经纬度
         //getTemperature();//获取当前温度
-        getString();//获取页面传递数据
-
         getCache();
+        getString();//获取页面传递数据
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
         arrayList.add(icon);
 
@@ -186,7 +185,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         *  remarks_text = findViewById(R.id.remarks_text);
         photo_text = findViewById(R.id.photo_text);
         information_text = findViewById(R.id.information_text);*/
-        //adress_text.setText(sp.getString("cacheAdress",""));
+        adress_text.setText(sp.getString("addres",""));
 
     }
     private void getString() {
@@ -484,9 +483,16 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 //repair_user,repair_phone,remark_text
                  user_str=repair_user.getText().toString().trim();
                 phone_str=repair_phone.getText().toString().trim();
+                addres_str=adress_text.getText().toString().trim();
+
                 remark_str=remark_text.getText().toString().trim();
-                if(user_str.equals("")||phone_str.equals("")||remark_str.equals("")){
-                    Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
+                if(user_str.equals("")||phone_str.equals("")||remark_str.equals("")||addres_str.equals("")){
+                    if(Locale.getDefault().getLanguage().equals("en")){
+                        Toast.makeText(this, "Please check whether the information is empty", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
+                    }
+
                 }else{
 //                    if(photoPath!=null&&photoPath.size()>0){
 //                        loading.setStatus(LoadingLayout.Loading);
@@ -504,6 +510,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         editor1.putString("opName", user_str);
                         editor1.putString("memPhone", phone_str);
                         editor1.putString("repireDescription", remark_str);
+                        editor1.putString("addres",addres_str);
                         editor1.commit();    //提交数据保存
 
                         bundle.putString("opName", user_str);
@@ -773,8 +780,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         //第五步：从相应对象当中取出数据，放到entity当中
                         HttpEntity entity = httpResponse.getEntity();
                         String result = EntityUtils.toString(entity, "utf-8");//将entity当中的数据转换为字符串
-
-
                         if (result != null) {
                             //在子线程中将Message对象发出去
                             Message message = new Message();
@@ -784,8 +789,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                             handler.sendMessage(message);
 
                         }
-                    } else {
-                        Toast.makeText(context, "访问失败!!!请检查服务器...", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
@@ -979,7 +982,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         e.printStackTrace();
                     }
                     loading.setStatus(LoadingLayout.Success);//状态取消
-                    Toast.makeText(CreatRepairRemarksActivity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(CreatRepairRemarksActivity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(CreatRepairRemarksActivity.this, CreatRepairActivity.class);
                     Bundle bundle = new Bundle();
@@ -1010,7 +1013,12 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     break;
                 case 1:
                     loading.setStatus(LoadingLayout.Success);//状态取消
-                    Toast.makeText(CreatRepairRemarksActivity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        Toast.makeText(CreatRepairRemarksActivity.this,"Image upload failure",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(CreatRepairRemarksActivity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
                 default:break;
             }

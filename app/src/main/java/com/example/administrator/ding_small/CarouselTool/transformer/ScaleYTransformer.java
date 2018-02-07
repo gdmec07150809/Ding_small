@@ -21,9 +21,9 @@ public class ScaleYTransformer implements ViewPager.PageTransformer {
             /*page.setScaleX(scale);
 
             if(position<0){
-                page.setTranslationX(width * (1 - scale) /2);
+                page.setTranslationX(width * (start1 - scale) /start2);
             }else{
-                page.setTranslationX(-width * (1 - scale) /2);
+                page.setTranslationX(-width * (start1 - scale) /start2);
             }*/
 
         }else{

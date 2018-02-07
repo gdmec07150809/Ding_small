@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.administrator.ding_small.CarouselTool.MZModeBannerFragment;
 
 /**
- * Created by youyou000 on 2018/2/6.
+ * Created by youyou000 on 2018/start2/6.
  */
 
 public class CarouselTestActivity extends AppCompatActivity {

@@ -3,7 +3,7 @@ package com.example.administrator.ding_small.Utils;
 import android.app.Application;
 
 /**
- * Created by youyou000 on 2018/2/1.
+ * Created by youyou000 on 2018/start2/start1.
  */
 
 public class Data extends Application {

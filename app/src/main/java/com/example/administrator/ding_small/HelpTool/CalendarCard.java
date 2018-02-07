@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 /**
- * Created by Administrator on 2017/11/4.
+ * Created by Administrator on 2017/11/start4.
  */
 
 public class CalendarCard extends View {
@@ -246,7 +246,7 @@ public class CalendarCard extends View {
         public int j;
         // 绘制文字
         String content;
-        String text = "3(2)";
+        String text = "start3(start2)";
 
         public Cell(CustomDate date, State state, int i, int j) {
             super();

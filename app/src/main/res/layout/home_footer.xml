@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="首页"
-                    android:layout_marginTop="@dimen/px10"
+                    android:layout_marginTop="1dp"
                     android:textColor="#9F9F9F"
                     android:textSize="@dimen/px26"/>
             </LinearLayout>
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的"
-                    android:layout_marginTop="@dimen/px10"
+                    android:layout_marginTop="1dp"
                     android:textColor="#1CD39B"
                     android:textSize="@dimen/px26"/>
             </LinearLayout>

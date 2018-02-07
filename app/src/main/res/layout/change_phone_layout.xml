@@ -157,6 +157,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/px30"
         android:background="@drawable/btn_theme">
+
         <Button
             android:id="@+id/confirm_change"
             android:layout_width="@dimen/px600"

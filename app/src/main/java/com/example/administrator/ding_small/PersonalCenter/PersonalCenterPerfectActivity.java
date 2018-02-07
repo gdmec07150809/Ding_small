@@ -53,6 +53,7 @@ import com.example.administrator.ding_small.JsonClass.JsonBean;
 import com.example.administrator.ding_small.JsonClass.JsonFileReader;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.MainLayoutActivity;
+import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.PerfectDeviceActivity;
 import com.example.administrator.ding_small.R;
 import com.example.administrator.ding_small.Utils.utils;
@@ -256,6 +257,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             signature_text.setText("Signature");
             switch_account_text.setText("Switch Account");
             next.setText("Save");
+            signature_value.setText("No signature");
         }
     }
 
@@ -320,50 +322,99 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                 setSignatureDialog();//个性签名弹出框
                 break;
             case R.id.save_layout:
-                new AlertDialog.Builder(this).setTitle("确认保存？")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    new AlertDialog.Builder(this).setTitle("save？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(fileList!=null&&fileList.size()>0){
-                                    loading.setStatus(LoadingLayout.Loading);//状态取消
-                                    new Thread(run).start();
-                                }else{
-                                    setUser();//修改用户信息
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(fileList!=null&&fileList.size()>0){
+                                        loading.setStatus(LoadingLayout.Loading);//状态取消
+                                        new Thread(run).start();
+                                    }else{
+                                        setUser();//修改用户信息
+                                    }
                                 }
-                            }
-                        })
-                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                            })
+                            .setNegativeButton("back", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“返回”后的操作,这里不设置没有任何操作
-                                dialog.dismiss();
-                            }
-                        }).show();
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+
+                }else{
+                    new AlertDialog.Builder(this).setTitle("确认保存？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(fileList!=null&&fileList.size()>0){
+                                        loading.setStatus(LoadingLayout.Loading);//状态取消
+                                        new Thread(run).start();
+                                    }else{
+                                        setUser();//修改用户信息
+                                    }
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+
 
                 break;
             case R.id.head3://退出
                 getCache();//退出
-                new AlertDialog.Builder(this).setTitle("确认退出？")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    new AlertDialog.Builder(this).setTitle("Exit？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("confrim", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                new Thread(networkTask).start();//登出
-                            }
-                        })
-                        .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    new Thread(networkTask).start();//登出
+                                }
+                            })
+                            .setNegativeButton("back", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // 点击“返回”后的操作,这里不设置没有任何操作
-                                dialog.dismiss();
-                            }
-                        }).show();
-                break;
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+
+                }else {
+                    new AlertDialog.Builder(this).setTitle("确认退出？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    new Thread(networkTask).start();//登出
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+                    break;
+
         }
     }
 
@@ -420,28 +471,65 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
-                            new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("登出提示").setMessage("登出成功,返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //清除本地缓存
-                                    SharedPreferences userSettings= getSharedPreferences(tokeFile, 0);
-                                    SharedPreferences.Editor editor = userSettings.edit();
-                                    editor.clear();
-                                    editor.commit();
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("Logout prompts").setMessage("Login successfully and return to login").setPositiveButton("confrim", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //清除本地缓存
+                                        SharedPreferences userSettings= getSharedPreferences(tokeFile, 0);
+                                        SharedPreferences.Editor editor = userSettings.edit();
+                                        editor.clear();
+                                        editor.commit();
 
-                                    Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
-                                    intent.putExtra("back","out");
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).show();
+                                        Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back","out");
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).show();
+                            }else{
+                                new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("登出提示").setMessage("登出成功,返回登录").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //清除本地缓存
+                                        SharedPreferences userSettings= getSharedPreferences(tokeFile, 0);
+                                        SharedPreferences.Editor editor = userSettings.edit();
+                                        editor.clear();
+                                        editor.commit();
+
+                                        Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back","out");
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).show();
+                            }
+
                         } else {
-                            new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("登出提示").setMessage("请先登陆").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("Logout prompts").setMessage("Please login first").setPositiveButton("confrim", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back", "out");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                }).show();
+                            }else{
+                                new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("登出提示").setMessage("请先登陆").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(PersonalCenterPerfectActivity.this, LoginAcitivity.class);
+                                        intent.putExtra("back", "out");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
+                                    }
+                                }).show();
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -940,7 +1028,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                         if (object1.getString("res").equals("00000")) {
                             loading.setStatus(LoadingLayout.Loading);//状态取消
                             Toast.makeText(PersonalCenterPerfectActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-                            Intent   intent = new Intent(PersonalCenterPerfectActivity.this, MainLayoutActivity.class);
+                            Intent   intent = new Intent(PersonalCenterPerfectActivity.this, NewMainLayoutActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         } else {

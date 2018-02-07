@@ -12,6 +12,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -85,7 +86,16 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 
     private int date_sort=1;//初始正序
 
-
+    //重写onKeyDown方法,实现双击退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(SelectDeviceActivity.this, NewMainLayoutActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,20 +197,20 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         device_ssids.add("156848184654564");
         device_ssids.add("574575762425112");
 
-        device_staus.add("1");
-        device_staus.add("1");
+        device_staus.add("start1");
+        device_staus.add("start1");
         device_staus.add("0");
         device_staus.add("0");
-        device_staus.add("1");
+        device_staus.add("start1");
         device_staus.add("0");
-        device_staus.add("1");
+        device_staus.add("start1");
 
         device_date.add("2017/12/5");
         device_date.add("2017/5/6");
         device_date.add("2017/6/8");
         device_date.add("2017/6/8");
-        device_date.add("2017/6/4");
-        device_date.add("2017/2/6");
+        device_date.add("2017/6/start4");
+        device_date.add("2017/start2/6");
         device_date.add("2017/6/9");
         try {
             for (int i = 0; i < device_names.size(); i++) {
@@ -533,7 +543,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
             String mac_str = null;
             try {
                 mac_str = result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&"));
-                System.out.println("截取结果：" + result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&")));
+                System.out.println("截取结果：" + result.getContents().substring(result.getContents().indexOf("=") +1, result.getContents().indexOf("&")));
             } catch (Exception e) {
                 Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
             }
@@ -541,7 +551,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 Intent intent = new Intent(SelectDeviceActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("device_mac", mac_str);
-                bundle.putString("activity", "1");
+                bundle.putString("activity", "start1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -582,16 +592,27 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                         getDeviceListHandler.sendMessage(message);
                     }else{
                         loading.setStatus(LoadingLayout.No_Network);
-                        LoadingLayout.getConfig()
-                                .setNoNetworkText("无网络连接，请检查您的网络···");
-                        default_lay.setVisibility(View.VISIBLE);
-                        select_device_list.setVisibility(View.GONE);
-                        new AlertDialog.Builder(SelectDeviceActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        if (Locale.getDefault().getLanguage().equals("en")) {
+                            LoadingLayout.getConfig()
+                                    .setNoNetworkText("No network connection, please check your network···")
+                                    .setReloadButtonText("Let me try again")
+                                    .setReloadButtonTextSize(14)
+                                    .setReloadButtonWidthAndHeight(150,40);
+                        }else{
+                            LoadingLayout.getConfig()
+                                    .setNoNetworkText("无网络连接，请检查您的网络···")
+                                    .setReloadButtonText("点我重试哦")
+                                    .setReloadButtonTextSize(14)
+                                    .setReloadButtonWidthAndHeight(150,40);
+                        }
+
+                        loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
+                            public void onReload(View v) {
+                                loading.setStatus(LoadingLayout.Loading);
+                                new Thread(networkTask).start();//获取设备列表
                             }
-                        }).show();
+                        });
                     }
 
                 }
@@ -665,8 +686,39 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 
                             }else{
                                 loading.setStatus(LoadingLayout.Empty);
-                                LoadingLayout.getConfig()
-                                        .setEmptyText("抱歉，暂无数据");
+                                if (Locale.getDefault().getLanguage().equals("en")) {
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("sorry，no data")
+                                            .setEmptyImage(R.mipmap.no_data)
+                                            .setReloadButtonText("add")
+                                            .setReloadButtonTextSize(14)
+                                            .setReloadButtonWidthAndHeight(150,40);
+
+                                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                                        @Override
+                                        public void onReload(View v) {
+                                            Intent intent = new Intent(SelectDeviceActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }else{
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("抱歉，暂无数据")
+                                            .setEmptyImage(R.mipmap.no_data)
+                                            .setReloadButtonText("添加")
+                                            .setReloadButtonTextSize(14)
+                                            .setReloadButtonWidthAndHeight(150,40);
+
+                                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                                        @Override
+                                        public void onReload(View v) {
+                                            Intent intent = new Intent(SelectDeviceActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }
                                default_lay.setVisibility(View.VISIBLE);
                                 select_device_list.setVisibility(View.GONE);
                             }
@@ -676,8 +728,41 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                             }else{
                                 //loading.setStatus(LoadingLayout.Success);
                                 loading.setStatus(LoadingLayout.Empty);
-                                LoadingLayout.getConfig()
-                                        .setEmptyText("抱歉，暂无数据");
+                                if (Locale.getDefault().getLanguage().equals("en")) {
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("sorry，no data")
+                                            .setEmptyImage(R.mipmap.no_data)
+                                            .setReloadButtonText("add")
+                                            .setReloadButtonTextSize(14)
+                                            .setReloadButtonWidthAndHeight(150,40);
+
+                                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                                        @Override
+                                        public void onReload(View v) {
+                                            Intent intent = new Intent(SelectDeviceActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }else{
+                                    LoadingLayout.getConfig()
+                                            .setEmptyText("抱歉，暂无数据")
+                                            .setEmptyImage(R.mipmap.no_data)
+                                            .setReloadButtonText("添加")
+                                            .setReloadButtonTextSize(14)
+                                            .setReloadButtonWidthAndHeight(150,40);
+
+                                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                                        @Override
+                                        public void onReload(View v) {
+                                            Intent intent = new Intent(SelectDeviceActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }
+
+
                             }
                             select_device_list.setOnItemClickListener(new OnItemClickListener() {//列表item事件
                                 @Override

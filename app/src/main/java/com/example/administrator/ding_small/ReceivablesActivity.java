@@ -130,7 +130,7 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
         //给时分赋值
         if (minute < 10) {
             String minute_text = "0" + minute;
-            atTime = year + "-" + (month + 1) + "-" + date + "  " + hour + ":" + minute_text;
+            atTime = year + "-" + (month +1) + "-" + date + "  " + hour + ":" + minute_text;
             day.setText(atTime);
         } else {
             atTime = year + "-" + (month + 1) + "-" + date + "  " + hour + ":" + minute;
@@ -171,18 +171,18 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
 //                        case 0:
 //                            action.setBackgroundColor(getResources().getColor(R.color.bg1));
 //                            break;
-//                        case 1:
+//                        case start1:
 //                            action.setBackgroundColor(getResources().getColor(R.color.bg2));
 //
 //                            break;
-//                        case 2:
+//                        case start2:
 //                            action.setBackgroundColor(getResources().getColor(R.color.bg3));
 //                            break;
-//                        case 3:
+//                        case start3:
 //                            action.setBackgroundColor(getResources().getColor(R.color.bg4));
 //
 //                            break;
-//                        case 4:
+//                        case start4:
 //                            action.setBackgroundColor(getResources().getColor(R.color.bg5));
 //
 //                            break;
@@ -283,40 +283,40 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
             case R.id.number_1:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "1");
+                        number.setText(number.getText().toString().substring(1) + "start1");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "1");
+                    number.setText(number.getText().toString().substring(0) + "start1");
                 }
                 index++;
                 break;
             case R.id.number_2:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "2");
+                        number.setText(number.getText().toString().substring(1) + "start2");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "2");
+                    number.setText(number.getText().toString().substring(0) + "start2");
                 }
                 index++;
                 break;
             case R.id.number_3:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "3");
+                        number.setText(number.getText().toString().substring(1) + "start3");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "3");
+                    number.setText(number.getText().toString().substring(0) + "start3");
                 }
                 index++;
                 break;
             case R.id.number_4:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "4");
+                        number.setText(number.getText().toString().substring(1) + "start4");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "4");
+                    number.setText(number.getText().toString().substring(0) + "start4");
                 }
                 index++;
                 break;
@@ -332,7 +332,7 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
                 break;
             case R.id.number_6:
                 if (index == 0) {
-                    if (number.getText().toString().substring(0, 1).equals("0")) {
+                    if (number.getText().toString().substring(0,1).equals("0")) {
                         number.setText(number.getText().toString().substring(1) + "6");
                     }
                 } else {
@@ -362,7 +362,7 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
                 break;
             case R.id.number_9:
                 if (index == 0) {
-                    if (number.getText().toString().substring(0, 1).equals("0")) {
+                    if (number.getText().toString().substring(0,1).equals("0")) {
                         number.setText(number.getText().toString().substring(1) + "9");
                     }
                 } else {
@@ -545,7 +545,7 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
      * 页卡切换监听
      *
      * @author CZK
-     * @version 1.0
+     * @version start1.0
      */
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -561,7 +561,7 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
                     bundle.putStringArray("name", name);
                     fragment1.setArguments(bundle);
                     ft.replace(android.R.id.content, fragment1);
-                    // Toast.makeText(PayableActivity.this,"页面"+(position+1), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(PayableActivity.this,"页面"+(position+start1), Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }
@@ -574,7 +574,7 @@ public class ReceivablesActivity extends FragmentActivity implements View.OnClic
                     bundle1.putStringArray("name", name);
                     fragment2.setArguments(bundle1);
                     ft.replace(android.R.id.content, fragment2);
-                    //   Toast.makeText(PayableActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(PayableActivity.this,"页面"+(position+start1),Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }

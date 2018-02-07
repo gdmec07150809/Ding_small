@@ -199,7 +199,7 @@ public class NotepadRemarkDetailsActivity extends Activity implements View.OnCli
             phone.setText(getStringValue.getString("phone"));
         }
         if (getStringValue.get("activityName") != null) {
-            System.out.println("1");
+            System.out.println("start1");
             //储存token,备用
             SharedPreferences share = super.getSharedPreferences(Notepadfile, MODE_PRIVATE);//实例化
             SharedPreferences.Editor editor = share.edit(); //使处于可编辑状态

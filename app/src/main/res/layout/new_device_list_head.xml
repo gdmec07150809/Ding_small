@@ -131,7 +131,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="扫码添加"
-                        android:layout_marginTop="@dimen/px20"
+                        android:layout_marginTop="@dimen/px10"
                         android:layout_gravity="center_horizontal"
                         android:textSize="@dimen/px28"
                         android:textColor="#888888"/>
@@ -163,7 +163,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="搜索添加"
-                        android:layout_marginTop="@dimen/px20"
+                        android:layout_marginTop="@dimen/px10"
                         android:layout_gravity="center_horizontal"
                         android:textSize="@dimen/px28"
                         android:textColor="#888888"/>
@@ -194,7 +194,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="手工输入"
-                        android:layout_marginTop="@dimen/px20"
+                        android:layout_marginTop="@dimen/px10"
                         android:layout_gravity="center_horizontal"
                         android:textSize="@dimen/px28"
                         android:textColor="#888888"/>

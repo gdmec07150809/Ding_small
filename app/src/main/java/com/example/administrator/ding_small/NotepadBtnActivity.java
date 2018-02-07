@@ -36,7 +36,7 @@ import static com.example.administrator.ding_small.R.id.sort;
 import static com.example.administrator.ding_small.HelpTool.JsonArrayBySort.sort;
 
 /**
- * Created by CZK on 2017/11/3.
+ * Created by CZK on 2017/11/start3.
  */
 
 public class NotepadBtnActivity extends Activity implements View.OnClickListener {
@@ -93,17 +93,17 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
         titleColor = new int[]{R.color.green, R.color.fen, R.color.orange, R.color.green, R.color.fen, R.color.orange, R.color.bg1, R.color.bg2, R.color.bg3, R.color.bg4, R.color.bg5};
         time = new ArrayList<String>();
 
-        date.add("2016-4-5");
-        date.add("2016-4-6");
-        date.add("2016-4-7");
-        date.add("2016-4-7");
-        date.add("2016-4-8");
-        date.add("2016-4-9");
-        date.add("2016-4-6");
-        date.add("2016-4-7");
-        date.add("2016-4-7");
-        date.add("2016-4-8");
-        date.add("2016-4-9");
+        date.add("2016-start4-5");
+        date.add("2016-start4-6");
+        date.add("2016-start4-7");
+        date.add("2016-start4-7");
+        date.add("2016-start4-8");
+        date.add("2016-start4-9");
+        date.add("2016-start4-6");
+        date.add("2016-start4-7");
+        date.add("2016-start4-7");
+        date.add("2016-start4-8");
+        date.add("2016-start4-9");
         explain.add("21元,20170922,到105告拉进来");
         explain.add("21元,20170922,到105告拉进来");
         explain.add("21元,20170922,到105告拉进来");
@@ -149,10 +149,10 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
         label.add("2118-乐堡吸塑灯箱");
         label.add("2118-乐堡吸塑灯箱");
         time.add("10:30");
-        time.add("1:30");
+        time.add("start1:30");
         time.add("12:30");
         time.add("9:30");
-        time.add("4:30");
+        time.add("start4:30");
         time.add("19:30");
         time.add("22:30");
         time.add("11:30");
@@ -194,7 +194,7 @@ public class NotepadBtnActivity extends Activity implements View.OnClickListener
                     bundle.putString("date", object.getString("date"));
                     bundle.putString("time", object.getString("time"));
                     bundle.putString("label", object.getString("label"));
-                    bundle.putString("activityName", "1");
+                    bundle.putString("activityName", "start1");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

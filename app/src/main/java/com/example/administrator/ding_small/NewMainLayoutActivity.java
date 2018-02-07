@@ -3,6 +3,7 @@ package com.example.administrator.ding_small;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,13 +20,20 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ding_small.CarouselTool.MZModeBannerFragment;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
@@ -55,28 +63,61 @@ import okhttp3.Response;
 
 import static com.example.administrator.ding_small.HelpTool.DateUtils.changeweek;
 import static com.example.administrator.ding_small.HelpTool.DateUtils.changeweekOne;
+import static com.example.administrator.ding_small.NotepadActivity.TAG;
 
 
 /**
- * Created by youyou000 on 2018/2/6.
+ * Created by youyou000 on 2018/start2/6.
  */
 
 public class NewMainLayoutActivity extends FragmentActivity implements View.OnClickListener{
-    private TextView name_text,time_text,home_text,my_text,wellcome_text;
+    private TextView name_text,time_text,home_text,my_text,wellcome_text,device_list_text,repair_text,search_btn,search_text;
     private ImageView home_img,my_img;
     private long clickTime = 0;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     String memid, token, UserSign, oldPass, newPass, ts,sign,imgUrl;
     String nameStr="";//用户
+    private Dialog mCameraDialog;
     private LinearLayout search_lay;
+
+    private static final String fristFile = "fristFile";//定义保存的文件的名称
+    //重写onKeyDown方法,实现双击退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    //两秒内点击两次退出,则退出
+    private void exit() {
+        if ((System.currentTimeMillis() - clickTime) > 2000) {
+            if (Locale.getDefault().getLanguage().equals("en")) {
+                Toast.makeText(getApplicationContext(), "Click out again", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "再次点击退出", Toast.LENGTH_SHORT).show();
+            }
+            clickTime = System.currentTimeMillis();
+        } else {
+            Log.e(TAG, "exit application");
+            this.finish();
+            System.exit(0);
+        }
+    }
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.new_main_layout);
+
+        if(getIntent().getStringExtra("loginCache")!=null&&!getIntent().getStringExtra("loginCache").equals("")){
+            firstLoginDialog();
+        }
         init();//初始化控
+
         getLocation();//获取位置权限
         getCacheUser();//获取用户信息
         Fragment fragment = MZModeBannerFragment.newInstance();
@@ -102,6 +143,18 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
     private void changeTextView(){
         if (Locale.getDefault().getLanguage().equals("en")){
             wellcome_text.setText("Hello, welcome to use");
+            repair_text.setText("Repair");
+            device_list_text.setText("Equipment table");
+            search_text.setText("Enter a keyword search");
+            search_btn.setText("Search");
+            home_text.setText("Home");
+            my_text.setText("My");
+
+
+            if (!"null".equals(memid) && memid != null) {
+            }else{
+                name_text.setText("Please login");
+            }
         }
 
     }
@@ -157,6 +210,11 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
         home_img= (ImageView) findViewById(R.id.home_img);
         my_img= (ImageView) findViewById(R.id.my_img);
         wellcome_text=findViewById(R.id.wellcome_text);
+        repair_text=findViewById(R.id.repair_text);
+        device_list_text=findViewById(R.id.device_list_text);
+        search_btn=findViewById(R.id.search_btn);
+        search_text=findViewById(R.id.search_text);
+
         findViewById(R.id.repair_lay).setOnClickListener(this);
         findViewById(R.id.device_list_lay).setOnClickListener(this);
         findViewById(R.id.my_lay).setOnClickListener(this);
@@ -193,52 +251,11 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    if (Locale.getDefault().getLanguage().equals("en")) {
-                        new AlertDialog.Builder(this).setTitle("Login")
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
-                                        intent.putExtra("back","in");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                    }
-                                })
-                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 点击“返回”后的操作,这里不设置没有任何操作
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    }else{
-                        new AlertDialog.Builder(this).setTitle("请登陆")
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
-                                        intent.putExtra("back","in");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                    }
-                                })
-                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 点击“返回”后的操作,这里不设置没有任何操作
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    }
-
+                    intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
+                    intent.putExtra("back","in");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
             case R.id.device_list_lay:
@@ -247,27 +264,11 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    new AlertDialog.Builder(this).setTitle("请登陆")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
-                                    intent.putExtra("back","in");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                }
-                            })
-                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // 点击“返回”后的操作,这里不设置没有任何操作
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                    intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
+                    intent.putExtra("back","in");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
             case R.id.my_lay:
@@ -279,51 +280,11 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    if (Locale.getDefault().getLanguage().equals("en")) {
-                        new AlertDialog.Builder(this).setTitle("Login")
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
-                                        intent.putExtra("back", "in");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                    }
-                                })
-                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 点击“返回”后的操作,这里不设置没有任何操作
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    } else {
-                        new AlertDialog.Builder(this).setTitle("请登陆")
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
-                                        intent.putExtra("back", "in");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                    }
-                                })
-                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 点击“返回”后的操作,这里不设置没有任何操作
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    }
+                    intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
+                    intent.putExtra("back","in");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
 
@@ -333,51 +294,11 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }else{
-                    if (Locale.getDefault().getLanguage().equals("en")) {
-                        new AlertDialog.Builder(this).setTitle("Login")
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
-                                        intent.putExtra("back", "in");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                    }
-                                })
-                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 点击“返回”后的操作,这里不设置没有任何操作
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    } else {
-                        new AlertDialog.Builder(this).setTitle("请登陆")
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
-                                        intent.putExtra("back", "in");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                                    }
-                                })
-                                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // 点击“返回”后的操作,这里不设置没有任何操作
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    }
+                    intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
+                    intent.putExtra("back","in");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
 
                 break;
@@ -503,5 +424,26 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             week = "星期六";
         }
         return week;
+    }
+
+    private void firstLoginDialog() {
+        RelativeLayout root = null;
+        mCameraDialog = new Dialog(this, R.style.logindialog);
+        root = (RelativeLayout) LayoutInflater.from(this).inflate(
+                R.layout.first_login_dialog, null);
+        //初始化视图
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.CENTER);
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
     }
 }

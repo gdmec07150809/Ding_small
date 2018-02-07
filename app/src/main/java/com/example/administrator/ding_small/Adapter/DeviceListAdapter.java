@@ -113,7 +113,7 @@ public class DeviceListAdapter extends BaseAdapter {
             String stauts=obj.getString("eqpStatus");
             String type=obj.getString("insertDate");
            // long date1= Long.parseLong(type);
-            if(stauts.equals("1")){
+            if(stauts.equals("start1")){
                 holder.stauts_img.setImageResource(R.mipmap.icon_list_fixing);
             }else{
                 holder.stauts_img.setVisibility(View.GONE);

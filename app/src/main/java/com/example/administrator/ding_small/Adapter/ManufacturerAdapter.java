@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by CZK on 2018/1/5.
+ * Created by CZK on 2018/start1/5.
  */
 
 public class ManufacturerAdapter extends BaseAdapter {

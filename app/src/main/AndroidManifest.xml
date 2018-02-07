@@ -39,13 +39,14 @@
         <service
             android:name="com.yunliwuli.beacon.kit.service.UartService"
             android:enabled="true" />
-        <activity android:name=".NewMainLayoutActivity" android:windowSoftInputMode="adjustPan" android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
+        <activity android:name=".StartActivity" android:windowSoftInputMode="adjustPan" android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NewMainLayoutActivity"/>
         <activity android:name=".ContactsActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".NotepadActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ReceivedActivity" android:windowSoftInputMode="adjustPan"/>

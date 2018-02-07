@@ -49,6 +49,7 @@ import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.HelpTool.UploadUtil;
+import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
@@ -167,6 +168,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         System.out.println("Sign:" + Sign+" "+url);
         getSign = MD5Utils.md5(Sign);
 
+        address_edit_text.setText(sp.getString("perfect_addres",""));
         new Thread(getDeta).start();//获取该设备详情
     }
 
@@ -210,7 +212,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     private void getBundleString() {
         Bundle getStringValue = this.getIntent().getExtras();
         if (getStringValue.getString("device_mac") != null) {
-            if(getStringValue.getString("activity").equals("1")){
+            if(getStringValue.getString("activity").equals("start1")){
 
                 delect.setVisibility(View.VISIBLE);
                 perfect.setVisibility(View.GONE);
@@ -233,7 +235,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         nowYear = t.year;
         nowMonth = t.month;
         nowDay = t.monthDay;
-        // date_text.setText(nowYear+"-"+(nowMonth+1)+"-"+nowDay);
+        // date_text.setText(nowYear+"-"+(nowMonth+start1)+"-"+nowDay);
         System.out.println("日期：" + nowYear + "-" + nowMonth + "-" + nowDay);
     }
 
@@ -385,10 +387,16 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                                     selling_user_edit_str = selling_user_edit_text.getText().toString().trim();//售点联系人
                                     selling_phone_edit_str = selling_phone_edit_text.getText().toString().trim();//联系人电话
                                     address_edit_str = address_edit_text.getText().toString().trim();//详细地址
+
+
                                     // longitude_str,latitude_str,str_location,temperature_str
                                     if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
                                         Toast.makeText(PerfectDeviceActivity.this, "Please check whether the information is empty", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        sp = PerfectDeviceActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                                        SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                                        editor.putString("perfect_addres", address_edit_str);
+                                        editor.commit();    //提交数据保存
                                         UpPhotoCache();//获取签名,id,ts,token
                                         if(fileList!=null&&fileList.size()>0){
                                             loading.setStatus(LoadingLayout.Loading);//状态取消
@@ -425,10 +433,15 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                                     selling_user_edit_str = selling_user_edit_text.getText().toString().trim();//售点联系人
                                     selling_phone_edit_str = selling_phone_edit_text.getText().toString().trim();//联系人电话
                                     address_edit_str = address_edit_text.getText().toString().trim();//详细地址
+
                                     // longitude_str,latitude_str,str_location,temperature_str
                                     if (selling_edit_str.equals("") || selling_location_edit_str.equals("") || selling_user_edit_str.equals("") || selling_phone_edit_str.equals("") || address_edit_str.equals("")) {
                                         Toast.makeText(PerfectDeviceActivity.this, "请检查信息是否为空", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        sp = PerfectDeviceActivity.this.getSharedPreferences(tokeFile, MODE_PRIVATE);//实例化
+                                        SharedPreferences.Editor editor = sp.edit(); //使处于可编辑状态
+                                        editor.putString("perfect_addres", address_edit_str);
+                                        editor.commit();    //提交数据保存
                                         UpPhotoCache();//获取签名,id,ts,token
                                         if(fileList!=null&&fileList.size()>0){
                                             loading.setStatus(LoadingLayout.Loading);//状态取消

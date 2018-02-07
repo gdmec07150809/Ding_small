@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -38,20 +39,49 @@ public class EmailRegisterAcitivity extends Activity implements View.OnClickList
     private String p1_str, p2_str, phone_str, code_str;
     public static final int SHOW_RESPONSE = 0;
 
+    private TextView back_text,email_text,email,code_text,pass_text,pass2,send_text,next;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_mail_register);
-        findViewById(R.id.send_text).setOnClickListener(this);
-        findViewById(R.id.next).setOnClickListener(this);
+        send_text=findViewById(R.id.send_text);
+        send_text.setOnClickListener(this);
+        next=findViewById(R.id.next);
+        next.setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
         p_code = findViewById(R.id.p_code);
         phone = findViewById(R.id.phone);
         password = findViewById(R.id.password1);
         c_password = findViewById(R.id.c_password);
 
+        back_text=findViewById(R.id.back_text);
+        email_text=findViewById(R.id.email_text);
+        email=findViewById(R.id.email);
+        code_text=findViewById(R.id.code_text);
+        pass_text=findViewById(R.id.pass_text);
+        pass2=findViewById(R.id.pass2);
+
+        changeTextView();//更换语言
     }
 
+    private void changeTextView(){
+        if (Locale.getDefault().getLanguage().equals("en")){
+            back_text.setText("Back");
+            email_text.setText("Mailbox Registration");
+            email.setText("Mailbox");
+            code_text.setText("Code");
+            pass_text.setText("Password");
+            pass2.setText("confirm");
+            send_text.setText("gain");
+
+            phone.setHint("Enter the mailbox");
+            p_code.setHint("Enter the code");
+            password.setHint("Enter password");
+            c_password.setHint("Enter the password again");
+            next.setText("Finish Registration");
+        }
+    }
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -60,7 +90,12 @@ public class EmailRegisterAcitivity extends Activity implements View.OnClickList
                 phone_str = phone.getText().toString();
                 //判断信息
                 if (phone_str.equals("")) {
-                    new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("注册提示").setMessage("邮箱不能为空").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("Registration prompts").setMessage("Mailbox cannot be empty").setPositiveButton("confirm", null).show();
+                    }else{
+                        new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("注册提示").setMessage("邮箱不能为空").setPositiveButton("确定", null).show();
+                    }
+
                 } else {
                     TextView send_text = findViewById(R.id.send_text);
                     CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
@@ -85,10 +120,19 @@ public class EmailRegisterAcitivity extends Activity implements View.OnClickList
         code_str = p_code.getText().toString();
         //判断信息
         if (p1_str.equals("") || p2_str.equals("") || code_str.equals("")) {
-            new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("注册提示").setMessage("密码不能为空").setPositiveButton("确定", null).show();
+            if (Locale.getDefault().getLanguage().equals("en")){
+                new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("Registration prompts").setMessage("The password can not be empty").setPositiveButton("confirm", null).show();
+            }else{
+                new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("注册提示").setMessage("密码不能为空").setPositiveButton("确定", null).show();
+            }
+
         } else {
             if (!p1_str.equals(p2_str)) {
-                new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("注册提示").setMessage("两次密码不相等").setPositiveButton("确定", null).show();
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("Registration prompts").setMessage("Two passwords are not equal").setPositiveButton("confirm", null).show();
+                }else {
+                    new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("注册提示").setMessage("两次密码不相等").setPositiveButton("确定", null).show();
+                }
             } else {
                 new Thread(sendRegister).start();//注册
             }
@@ -105,7 +149,7 @@ public class EmailRegisterAcitivity extends Activity implements View.OnClickList
             // 在这里进行 http request.网络请求相关操作
             String url = "http://120.76.188.131:8080/a10/api/user/getSmsMsg.do";
             OkHttpClient okHttpClient = new OkHttpClient();
-            String b = "{\"memPhone\":\"" + phone_str + "\",\"msgType\":\"1\",\"msgLen\":\"4\"}";//json字符串
+            String b = "{\"memPhone\":\"" + phone_str + "\",\"msgType\":\"start1\",\"msgLen\":\"start4\"}";//json字符串
             System.out.println("邮箱：" + b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
@@ -175,14 +219,26 @@ public class EmailRegisterAcitivity extends Activity implements View.OnClickList
 
                         switch (object1.getString("res")) {
                             case "00000"://成功
-                                new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("返回登陆").setMessage("注册成功").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(EmailRegisterAcitivity.this, LoginAcitivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("Return to landing").setMessage("registration is successful").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(EmailRegisterAcitivity.this, LoginAcitivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }else{
+                                    new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("返回登陆").setMessage("注册成功").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(EmailRegisterAcitivity.this, LoginAcitivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }
+
                                 break;
                             case "21001"://手机号已存在
                                 new AlertDialog.Builder(EmailRegisterAcitivity.this).setTitle("返回注册").setMessage("手机号 " + phone_str + " 已存在.").setPositiveButton("确定", new DialogInterface.OnClickListener() {

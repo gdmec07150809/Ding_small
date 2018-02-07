@@ -445,6 +445,11 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 one_minute_img.setVisibility(View.GONE);
                 refresh_num = 1;
                 refreshTime = 30000;//30秒
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    refresh_text.setText("Default");
+                }else{
+                    refresh_text.setText("默认刷新频率");
+                }
                 mCameraDialog.dismiss();
                 break;
             case R.id.five_layout:
@@ -453,6 +458,11 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 one_minute_img.setVisibility(View.GONE);
                 refresh_num = 2;
                 refreshTime = 5000;//5秒
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    refresh_text.setText("Five Second");
+                }else {
+                    refresh_text.setText("5秒刷新频率");
+                }
                 mCameraDialog.dismiss();
                 break;
             case R.id.one_minute_layout:
@@ -461,6 +471,11 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 one_minute_img.setVisibility(View.VISIBLE);
                 refresh_num = 3;
                 refreshTime = 1000 * 60;//1分钟
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    refresh_text.setText("One Minute");
+                }else {
+                    refresh_text.setText("1分钟刷新频率");
+                }
                 mCameraDialog.dismiss();
                 break;
             case R.id.back:

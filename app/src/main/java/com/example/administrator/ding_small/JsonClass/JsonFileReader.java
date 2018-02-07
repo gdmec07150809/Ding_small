@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by zhangpan on 2016/7/2.
+ * Created by zhangpan on 2016/7/start2.
  */
 //  读取assets中的json文件
 public class JsonFileReader {

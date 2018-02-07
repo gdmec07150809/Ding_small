@@ -167,46 +167,46 @@ public class ReceivedActivity extends FragmentActivity implements View.OnClickLi
             case R.id.number_1:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "1");
+                        number.setText(number.getText().toString().substring(1) + "start1");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "1");
+                    number.setText(number.getText().toString().substring(0) + "start1");
                 }
                 index++;
                 break;
             case R.id.number_2:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "2");
+                        number.setText(number.getText().toString().substring(1) + "start2");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "2");
+                    number.setText(number.getText().toString().substring(0) + "start2");
                 }
                 index++;
                 break;
             case R.id.number_3:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "3");
+                        number.setText(number.getText().toString().substring(1) + "start3");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "3");
+                    number.setText(number.getText().toString().substring(0) + "start3");
                 }
                 index++;
                 break;
             case R.id.number_4:
                 if (index == 0) {
                     if (number.getText().toString().substring(0, 1).equals("0")) {
-                        number.setText(number.getText().toString().substring(1) + "4");
+                        number.setText(number.getText().toString().substring(1) + "start4");
                     }
                 } else {
-                    number.setText(number.getText().toString().substring(0) + "4");
+                    number.setText(number.getText().toString().substring(0) + "start4");
                 }
                 index++;
                 break;
             case R.id.number_5:
                 if (index == 0) {
-                    if (number.getText().toString().substring(0, 1).equals("0")) {
+                    if (number.getText().toString().substring(0,1).equals("0")) {
                         number.setText(number.getText().toString().substring(1) + "5");
                     }
                 } else {
@@ -441,7 +441,7 @@ public class ReceivedActivity extends FragmentActivity implements View.OnClickLi
      * 页卡切换监听
      *
      * @author CZK
-     * @version 1.0
+     * @version start1.0
      */
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
@@ -457,7 +457,7 @@ public class ReceivedActivity extends FragmentActivity implements View.OnClickLi
                     bundle.putStringArray("name", name);
                     fragment1.setArguments(bundle);
                     ft.replace(android.R.id.content, fragment1);
-                    // Toast.makeText(PayableActivity.this,"页面"+(position+1), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(PayableActivity.this,"页面"+(position+start1), Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }
@@ -470,7 +470,7 @@ public class ReceivedActivity extends FragmentActivity implements View.OnClickLi
                     bundle1.putStringArray("name", name);
                     fragment2.setArguments(bundle1);
                     ft.replace(android.R.id.content, fragment2);
-                    //   Toast.makeText(PayableActivity.this,"页面"+(position+1),Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(PayableActivity.this,"页面"+(position+start1),Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < ll.getChildCount(); i++) {
                         ll.getChildAt(i).setSelected(false);
                     }

@@ -74,7 +74,7 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
         lists.add("23");
         lists.add("89");
         lists.add("45");
-        lists.add("1");
+        lists.add("start1");
         lists.add("21");
         lists.add("15");
         lists.add("16");
@@ -120,7 +120,7 @@ public class AccountBookAnalysisActivity extends Activity implements View.OnClic
     //绘制柱形图
     private void generateStackedData() {
 
-        int numSubcolumns = 1;
+        int numSubcolumns =1;
         int numColumns = 12;
 
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
