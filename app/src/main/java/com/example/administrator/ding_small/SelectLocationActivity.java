@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Created by CZK on 2018/start1/start4.
+ * Created by CZK on 2018/1/4.
  */
 
 public class SelectLocationActivity extends Activity implements View.OnClickListener {
@@ -36,7 +37,15 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     private static final String tokeFile = "selectAdressFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     private TextView select_location_text,select_text,unselect_text,confirm_btn;
-
+    //重写onKeyDown方法
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+           finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

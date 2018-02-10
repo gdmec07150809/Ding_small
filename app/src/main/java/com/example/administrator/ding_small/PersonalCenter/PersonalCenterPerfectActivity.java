@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -27,6 +28,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.test.ServiceTestCase;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +70,8 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -74,6 +79,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -302,9 +308,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 //                startActivity(intent);
 //                break;
             case R.id.head_img://头像
-
-                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 21);
+                setPhotoDialog();//图片弹出框
                 break;
             case R.id.sex_layout:
                 setDialog();//性别弹出框
@@ -320,6 +324,17 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                 break;
             case R.id.signature_layout:
                 setSignatureDialog();//个性签名弹出框
+                break;
+            case R.id.btn_open_camera:
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 11);
+                break;
+            case R.id.btn_choose_img:
+                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 21);
+                break;
+            case R.id.btn_cancel:
+                mCameraDialog.dismiss();
                 break;
             case R.id.save_layout:
                 if (Locale.getDefault().getLanguage().equals("en")) {
@@ -550,6 +565,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         //判断那个相机回调
+        mCameraDialog.dismiss();
         switch (requestCode) {
             case 21:
                 //打开相册并选择照片，这个方式选择单张
@@ -578,9 +594,59 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 
                 }
                 break;
-            case 10:
-                    Toast.makeText(this,"返回",Toast.LENGTH_SHORT).show();
+            case 11:
+                if (resultCode == Activity.RESULT_OK) {
+                    String sdStatus = Environment.getExternalStorageState();
+                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+                        Log.i("TestFile",
+                                "SD card is not avaiable/writeable right now.");
+                        Toast.makeText(PersonalCenterPerfectActivity.this, "sd卡不可用！！！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    new DateFormat();
+                    String name = DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".png";
+                    System.out.println("路径：" + name);
+                    // Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+                    fileList=new ArrayList<File>();
+                    FileOutputStream b = null;
+                    File file = new File("/sdcard/Image/");
+                    file.mkdirs();// 创建文件夹
+                    String fileName = "/sdcard/Image/" + name;
+
+                    //upPhotoPath.add(fileName);
+                    File file1=new File(fileName);
+                    fileList=new ArrayList<File>();
+                    fileList.add(file1);
+                    //  path=picturePath;
+
+                    try {
+                        b = new FileOutputStream(fileName);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (b != null) {
+                                b.flush();
+                                b.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try
+                    {
+                        Drawable drawable = new BitmapDrawable(this.getResources(), bitmap);
+                        head_img.setBackground(drawable);
+                    }catch(Exception e)
+                    {
+                        Log.e("error", e.getMessage());
+                    }
+                }
                 break;
+
             default:
                 break;
         }
@@ -604,6 +670,40 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
          ;
         }
     };
+
+    //选择图片方式底部弹出菜单
+    private void setPhotoDialog() {
+        LinearLayout root = null;
+        mCameraDialog = new Dialog(this, R.style.Dialog);
+        root = (LinearLayout) LayoutInflater.from(this).inflate(
+                R.layout.photo_menu, null);
+        Button camera=root.findViewById(R.id.btn_open_camera);//拍照
+        camera.setOnClickListener(this);
+        Button choose=root.findViewById(R.id.btn_choose_img);//相册
+        choose.setOnClickListener(this);
+        Button cancel=root.findViewById(R.id.btn_cancel);//取消
+        cancel.setOnClickListener(this);
+
+        if (Locale.getDefault().getLanguage().equals("en")){
+            camera.setText("photograph");
+            choose.setText("select from the album");
+            cancel.setText("cancel");
+        }
+        //初始化视图
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+        }
     //性别底部弹出菜单
     private void setDialog() {
         LinearLayout root = null;

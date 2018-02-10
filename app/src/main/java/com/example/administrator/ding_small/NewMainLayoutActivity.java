@@ -67,7 +67,7 @@ import static com.example.administrator.ding_small.NotepadActivity.TAG;
 
 
 /**
- * Created by youyou000 on 2018/start2/6.
+ * Created by youyou000 on 2018/2/6.
  */
 
 public class NewMainLayoutActivity extends FragmentActivity implements View.OnClickListener{
@@ -102,7 +102,6 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             clickTime = System.currentTimeMillis();
         } else {
             Log.e(TAG, "exit application");
-            this.finish();
             System.exit(0);
         }
     }
@@ -250,6 +249,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     intent = new Intent(NewMainLayoutActivity.this, SelectDeviceActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+
                 } else {
                     intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
                     intent.putExtra("back","in");
@@ -263,6 +263,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     intent = new Intent(NewMainLayoutActivity.this, DeviceListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+
                 } else {
                     intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
                     intent.putExtra("back","in");

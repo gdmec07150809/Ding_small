@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by youyou000 on 2018/start2/7.
+ * Created by youyou000 on 2018/2/7.
  */
 
 public class StartActivity extends Activity {

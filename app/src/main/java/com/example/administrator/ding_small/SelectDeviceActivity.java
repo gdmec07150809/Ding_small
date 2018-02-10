@@ -86,16 +86,6 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 
     private int date_sort=1;//初始正序
 
-    //重写onKeyDown方法,实现双击退出程序
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(SelectDeviceActivity.this, NewMainLayoutActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -561,7 +551,6 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 }else{
                     Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
                 }
-
             }
             if (mac_str != null) {
                 Intent intent = new Intent(SelectDeviceActivity.this, PerfectDeviceActivity.class);
@@ -570,6 +559,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 bundle.putString("activity", "1");
                 intent.putExtras(bundle);
                 startActivity(intent);
+                overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
             }
             //resultNew.setText("扫描结果："+result.getContents());
         }

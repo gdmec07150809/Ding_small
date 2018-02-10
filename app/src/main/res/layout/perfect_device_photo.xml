@@ -17,8 +17,8 @@
 
            <ImageView
                android:id="@+id/addimg"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
+               android:layout_width="@dimen/px200"
+               android:layout_height="@dimen/px200"
                android:src="@mipmap/icon_fix_addimg"/>
         </LinearLayout>
     </LinearLayout>

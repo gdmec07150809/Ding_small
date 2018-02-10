@@ -112,10 +112,10 @@ public class DeviceListAdapter extends BaseAdapter {
             if (obj.getString("imsPci") != null && !obj.getString("imsPci").equals("null")) {
                 System.out.println("路劲:" + obj.getString("imsPci"));
                 //String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
-                //new Thread(urlPhoto).start();
-                holder.device_img.setDefaultImageResId(R.drawable.defult_no_img);
-                holder.device_img.setErrorImageResId(R.drawable.defult_no_img);
-                holder.device_img.setImageUrl(obj.getString("imsPci"), imageLoader);
+                //new Thread(urlPhoto).start();//不适用,此方式会造成图片错位
+                holder.device_img.setDefaultImageResId(R.drawable.defult_no_img);//默认图片
+                holder.device_img.setErrorImageResId(R.drawable.defult_no_img);//错误图片
+                holder.device_img.setImageUrl(obj.getString("imsPci"), imageLoader);//加载图片
             }
             if(obj.getString("eqpAddressJson")==null||obj.getString("eqpAddressJson").equals("null")){
                 holder.location.setText("");

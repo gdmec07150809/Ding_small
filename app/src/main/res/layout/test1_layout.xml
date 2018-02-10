@@ -71,7 +71,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="2dp"
             android:layout_centerHorizontal="true"
-            android:alpha="0.03"
+            android:alpha="0.04"
 
             android:background="@drawable/shadow_search"/>
     </RelativeLayout>

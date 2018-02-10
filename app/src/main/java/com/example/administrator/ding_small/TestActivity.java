@@ -49,7 +49,7 @@ import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivit
 import static org.xutils.common.util.IOUtil.copy;
 
 /**
- * Created by youyou000 on 2018/start1/27.
+ * Created by youyou000 on 2018/1/27.
  */
 
 public class TestActivity extends Activity {

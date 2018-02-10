@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -270,6 +271,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     private void init() {
         findViewById(R.id.confrim_btn).setOnClickListener(this);
         leapfrog = findViewById(R.id.leapfrog);
+        leapfrog.setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
 
         findViewById(R.id.new_information_layout).setOnClickListener(this);//信息
@@ -365,16 +367,25 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
                 break;
             case R.id.addimg:
-
+                setPhotoDialog();//图片弹出框
+                break;
+            case R.id.btn_open_camera:
                 int checkCallPhonePermission = ContextCompat.checkSelfPermission(PerfectDeviceActivity.this, Manifest.permission.CAMERA);
                 if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(PerfectDeviceActivity.this,new String[]{Manifest.permission.CAMERA},222);
-
+                    intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 11);
                 }else{
                     intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, 11);
                 }
-
+                break;
+            case R.id.btn_choose_img:
+                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 21);
+                break;
+            case R.id.btn_cancel:
+                mCameraDialog.dismiss();
                 break;
             case R.id.confrim_btn://确定
                 if (Locale.getDefault().getLanguage().equals("en")){
@@ -476,16 +487,16 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             case R.id.icon_equiplist_boxdelete:
                 repair_user.setText("");
                 break;
-//            case R.id.leapfrog://跳过
-//                // String location_detail_str=location_detail.getText().toString();
-//                //String device_name_str=repair_user.getText().toString();
-//                intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
-//                Bundle bundle1 = new Bundle();
-//                bundle1.putString("device_mac", device_mac);
-//                intent.putExtras(bundle1);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
+            case R.id.leapfrog://跳过
+                // String location_detail_str=location_detail.getText().toString();
+                //String device_name_str=repair_user.getText().toString();
+                intent = new Intent(PerfectDeviceActivity.this, DeviceDetailActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("device_mac", device_mac);
+                intent.putExtras(bundle1);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
             case R.id.back:
                 if (Locale.getDefault().getLanguage().equals("en")) {
                     new AlertDialog.Builder(this).setTitle("Back？")
@@ -596,6 +607,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
+        mCameraDialog.dismiss();
         //判断那个相机回调
         switch (requestCode) {
             case 11:
@@ -651,6 +663,33 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 //                    }
                 }
                 break;
+            case 21:
+                //打开相册并选择照片，这个方式选择单张
+                // 获取返回的数据，这里是android自定义的Uri地址
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    // 获取选择照片的数据视图
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    // 从数据视图中获取已选择图片的路径
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    //Toast.makeText(this, picturePath, Toast.LENGTH_SHORT).show();
+
+                    System.out.println(picturePath);
+                    cursor.close();
+                    // 将图片显示到界面上
+                    File file=new File(picturePath);
+                    fileList=new ArrayList<File>();
+                    fileList.add(file);
+                    //  path=picturePath;
+                    addimg.setClickable(false);
+                    addimg.setLongClickable(true);
+                    addimg.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                }
+                break;
         }
 
     }
@@ -675,6 +714,41 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
 
         }
     };
+
+    //选择图片方式底部弹出菜单
+    private void setPhotoDialog() {
+        LinearLayout root = null;
+        mCameraDialog = new Dialog(this, R.style.Dialog);
+        root = (LinearLayout) LayoutInflater.from(this).inflate(
+                R.layout.photo_menu, null);
+        Button camera=root.findViewById(R.id.btn_open_camera);//拍照
+        camera.setOnClickListener(this);
+        Button choose=root.findViewById(R.id.btn_choose_img);//相册
+        choose.setOnClickListener(this);
+        Button cancel=root.findViewById(R.id.btn_cancel);//取消
+        cancel.setOnClickListener(this);
+
+        if (Locale.getDefault().getLanguage().equals("en")){
+            camera.setText("photograph");
+            choose.setText("select from the album");
+            cancel.setText("cancel");
+        }
+        //初始化视图
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+    }
+
     private void showDetelePhotoDialog() {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
