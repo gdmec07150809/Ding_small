@@ -525,7 +525,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                             jsonArray = new JSONArray(object.getString("data"));
 
                             if (jsonArray.length() > 0) {
-                                default_lay.setVisibility(View.GONE);
+                                //default_lay.setVisibility(View.GONE);
                                 device_listview.setVisibility(View.VISIBLE);
                                 System.out.println(jsonArray.length());
                                 count_number.setText(jsonArray.length() + "");
@@ -601,7 +601,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                     });
                                 }
 
-                                default_lay.setVisibility(View.VISIBLE);
+                                //default_lay.setVisibility(View.VISIBLE);
                                 device_listview.setVisibility(View.GONE);
                             }
                             if (sortedJsonArray != null) {
@@ -638,7 +638,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                                         .setErrorText("出错啦~请稍后重试！");
                             }
 
-                            default_lay.setVisibility(View.VISIBLE);
+                            //default_lay.setVisibility(View.VISIBLE);
                             device_listview.setVisibility(View.GONE);
 //                            new AlertDialog.Builder(DeviceListActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
 //                                @Override

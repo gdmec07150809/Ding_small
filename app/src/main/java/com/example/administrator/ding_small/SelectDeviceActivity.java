@@ -156,9 +156,6 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //        search_edittext=findViewById(R.id.search_edittext);
 
         date_img = findViewById(R.id.date_img);
-        selling_img = findViewById(R.id.selling_img);
-        device_img = findViewById(R.id.device_img);
-        uuid_img = findViewById(R.id.uuid_img);
         loading = findViewById(R.id.loading_layout);
 
         default_lay=findViewById(R.id.default_lay);
@@ -234,25 +231,19 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         Intent intent;
         switch (view.getId()) {
             case R.id.start_layout://启用日期
-//                date_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
-//                selling_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
-//                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                uuid_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
                 if(date_sort==1){
                     date_img.setImageResource(R.mipmap.icon_common_sort_up);
-                    selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                    device_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                    uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
                     date_sort=2;
                 }else{
                     date_img.setImageResource(R.mipmap.icon_common_sort_down);
-                    selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                    device_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                    uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
                     date_sort=1;
                 }
-                if (jsonArray.length() > 0) {
+                if (jsonArray!=null&&jsonArray.length() > 0) {
                                 /*按销售日期排序 */
                     sortedJsonArray = new JSONArray();
                     List<JSONObject> jsonValues = new ArrayList<JSONObject>();
@@ -292,14 +283,17 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                         sortedJsonArray.put(jsonValues.get(i));
                     }
                     loading.setStatus(LoadingLayout.Success);
-                    default_lay.setVisibility(View.GONE);
+                   // default_lay.setVisibility(View.GONE);
                     select_device_list.setVisibility(View.VISIBLE);
                 }else{
                     loading.setStatus(LoadingLayout.Success);
-                    default_lay.setVisibility(View.VISIBLE);
+                    //default_lay.setVisibility(View.VISIBLE);
                     select_device_list.setVisibility(View.GONE);
                 }
-                select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+
+                if(sortedJsonArray!=null&&sortedJsonArray.length()>0){
+                    select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+                }
                 break;
             case R.id.selling_layout://售点名称
 //                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
@@ -308,12 +302,12 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 
                 date_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                selling_img.setImageResource(R.mipmap.icon_common_sort_down);
-                device_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
 
-
-                if (jsonArray.length() > 0) {
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                uuid_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                if (jsonArray!=null&&jsonArray.length() > 0) {
                     loading.setStatus(LoadingLayout.Success);
                     /*按售点名称排序 */
                     sortedJsonArray = new JSONArray();
@@ -351,7 +345,10 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                         sortedJsonArray.put(jsonValues.get(i));
                     }
                 }
-                select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+                if(sortedJsonArray!=null&&sortedJsonArray.length()>0){
+                    select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+                }
+
                 break;
             case R.id.device_layout://设备名称
 //                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
@@ -359,12 +356,14 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //                device_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
 //                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 
-                date_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                device_img.setImageResource(R.mipmap.icon_common_sort_down);
-                uuid_img.setImageResource(R.mipmap.icon_common_sort_normal);
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+                uuid_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
 
-                if (jsonArray.length() > 0) {
+                date_img.setImageResource(R.mipmap.icon_common_sort_normal);
+
+                if (jsonArray!=null&&jsonArray.length() > 0) {
                     loading.setStatus(LoadingLayout.Success);
 
                                 /*按设备名称排序 */
@@ -402,7 +401,9 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                         sortedJsonArray.put(jsonValues.get(i));
                     }
                 }
-                select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+                if(sortedJsonArray!=null&&sortedJsonArray.length()>0){
+                    select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+                }
                 break;
             case R.id.uuid_layout://UUID
 //                date_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
@@ -410,13 +411,16 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
 //                device_text.setTextColor(ContextCompat.getColor(this,R.color.blank));
 //                ssid_text.setTextColor(ContextCompat.getColor(this,R.color.orange));
 
+                date_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                selling_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                device_text.setTextColor(ContextCompat.getColor(this,R.color.title_color));
+                uuid_text.setTextColor(ContextCompat.getColor(this,R.color.theme_color));
+
                 date_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                selling_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                device_img.setImageResource(R.mipmap.icon_common_sort_normal);
-                uuid_img.setImageResource(R.mipmap.icon_common_sort_down);
 
 
-                if (jsonArray.length() > 0) {
+
+                if (jsonArray!=null&&jsonArray.length() > 0) {
                     loading.setStatus(LoadingLayout.Success);
 
                                 /*按UUID排序 */
@@ -454,7 +458,9 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                         sortedJsonArray.put(jsonValues.get(i));
                     }
                 }
-                select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+                if(sortedJsonArray!=null&&sortedJsonArray.length()>0){
+                    select_device_list.setAdapter(new DeviceListAdapter(SelectDeviceActivity.this, sortedJsonArray));//设置适配器
+                }
                 break;
             case R.id.add_device://新增
 //                intent=new Intent(SelectDeviceActivity.this,MainLayoutActivity.class);
@@ -537,7 +543,12 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result.getContents() == null) {
-            Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
+            if (Locale.getDefault().getLanguage().equals("en")){
+                Toast.makeText(this, "Scan failure", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
+            }
+
         } else {
             System.out.println("扫描结果：" + result.getContents());
             String mac_str = null;
@@ -545,7 +556,12 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 mac_str = result.getContents().substring(result.getContents().indexOf("=") + 1, result.getContents().indexOf("&"));
                 System.out.println("截取结果：" + result.getContents().substring(result.getContents().indexOf("=") +1, result.getContents().indexOf("&")));
             } catch (Exception e) {
-                Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    Toast.makeText(this, "no device", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "该设备不存在", Toast.LENGTH_SHORT).show();
+                }
+
             }
             if (mac_str != null) {
                 Intent intent = new Intent(SelectDeviceActivity.this, PerfectDeviceActivity.class);
@@ -567,7 +583,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
             // TODO
             // 在这里进行 http request.网络请求相关操作
             String url = utils.url+"/app/ppt6000/dateList.do?memId=" + memid + "&ts=" + ts;
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(5, TimeUnit.SECONDS).build();
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(10, TimeUnit.SECONDS).build();
             System.out.println("验证：" + sign);
             String b = "{\"parentId\":\""+memid+"\"}";//json字符串
             System.out.println(b);
@@ -719,7 +735,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                                         }
                                     });
                                 }
-                               default_lay.setVisibility(View.VISIBLE);
+                               //default_lay.setVisibility(View.VISIBLE);
                                 select_device_list.setVisibility(View.GONE);
                             }
                             if (sortedJsonArray != null) {
@@ -787,13 +803,6 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                             loading.setStatus(LoadingLayout.Error);
                             LoadingLayout.getConfig()
                                     .setErrorText("出错啦~请稍后重试！");
-                            new AlertDialog.Builder(SelectDeviceActivity.this).setTitle("网络提示").setMessage("请检查网络是否畅通").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                    dialog.dismiss();
-                                }
-                            }).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

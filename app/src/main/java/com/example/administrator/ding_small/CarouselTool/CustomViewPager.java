@@ -53,7 +53,7 @@ public class CustomViewPager extends ViewPager {
                 childCenterXAbs.add(indexAbs);
                 childIndex.append(indexAbs, i);
             }
-            Collections.sort(childCenterXAbs);//start1,0,start2  0,start1,start2
+            Collections.sort(childCenterXAbs);//1,0,2  0,1,2
         }
         //那个item距离中心点远一些，就先draw它。（最近的就是中间放大的item,最后draw）
         return childIndex.get(childCenterXAbs.get(childCount - 1 - n));

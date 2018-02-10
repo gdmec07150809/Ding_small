@@ -298,7 +298,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                                 sortedJsonArray = new JSONArray();
                                 //List<JSONObject> jsonValues = new ArrayList<JSONObject>();
                                 for (int i = 0; i < jsonArray.length(); i++) {
-                                    if ((jsonArray.getJSONObject(i).getString("eqpName")).indexOf(search_str) > -1) {
+                                    if ((jsonArray.getJSONObject(i).getString("eqpName")).indexOf(search_str) > -1||(jsonArray.getJSONObject(i).getString("macNo")).indexOf(search_str) > -1) {
                                         sortedJsonArray.put(jsonArray.getJSONObject(i));
                                     }
                                 }

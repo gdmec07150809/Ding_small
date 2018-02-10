@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class utils {
         public final static String url="http://120.76.188.131:8080/a10";
-        //public final static String url="http://192.168.1.110:8080";
+        //public final static String url="http://192.168.1.104:8080";
     /**
      * 设置gridview固定宽度
      */

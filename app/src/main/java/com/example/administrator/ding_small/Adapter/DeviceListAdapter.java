@@ -16,7 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
 import com.example.administrator.ding_small.ContactsActivity;
+import com.example.administrator.ding_small.HelpTool.BitmapCache;
 import com.example.administrator.ding_small.R;
 
 import org.json.JSONArray;
@@ -45,11 +50,17 @@ public class DeviceListAdapter extends BaseAdapter {
     Bitmap bitmap=null;
     private ListView mListView;
     JSONObject obj;
+
+    private RequestQueue queue;
+    private ImageLoader imageLoader;
     private LruCache<String, BitmapDrawable> mImageCache;
     public DeviceListAdapter(Context context, JSONArray list) {
         this.context = context;
         holder = new ViewHolder();
         this.list = list;
+
+        queue = Volley.newRequestQueue(context);
+        imageLoader = new ImageLoader(queue, new BitmapCache());
     }
 
     @Override
@@ -101,7 +112,10 @@ public class DeviceListAdapter extends BaseAdapter {
             if (obj.getString("imsPci") != null && !obj.getString("imsPci").equals("null")) {
                 System.out.println("路劲:" + obj.getString("imsPci"));
                 //String imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
-                new Thread(urlPhoto).start();
+                //new Thread(urlPhoto).start();
+                holder.device_img.setDefaultImageResId(R.drawable.defult_no_img);
+                holder.device_img.setErrorImageResId(R.drawable.defult_no_img);
+                holder.device_img.setImageUrl(obj.getString("imsPci"), imageLoader);
             }
             if(obj.getString("eqpAddressJson")==null||obj.getString("eqpAddressJson").equals("null")){
                 holder.location.setText("");
@@ -139,7 +153,8 @@ public class DeviceListAdapter extends BaseAdapter {
 
     private class ViewHolder{
         TextView  device_name,location,ssid,device_date,sell_date_text;
-        ImageView stauts,stauts_img,device_img;
+        ImageView stauts,stauts_img;
+        NetworkImageView device_img;
         LinearLayout date_layout;
     }
     public static String getFormatedDateTime(String pattern, long dateTime) {

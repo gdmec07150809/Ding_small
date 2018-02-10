@@ -41,18 +41,18 @@ public class MZModeBannerFragment extends Fragment {
         mMZBanner.setBannerPageClickListener(new MZBannerView.BannerPageClickListener() {
             @Override
             public void onPageClick(View view, int position) {
-                Toast.makeText(getContext(),"click page:"+position, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),"click page:"+position, Toast.LENGTH_LONG).show();
             }
         });
         mMZBanner.addPageChangeLisnter(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.e(TAG,"----->addPageChangeLisnter:"+position + "positionOffset:"+positionOffset+ "positionOffsetPixels:"+positionOffsetPixels);
+                //Log.e(TAG,"----->addPageChangeLisnter:"+position + "positionOffset:"+positionOffset+ "positionOffsetPixels:"+positionOffsetPixels);
             }
 
             @Override
             public void onPageSelected(int position) {
-                Log.e(TAG,"addPageChangeLisnter:"+position);
+                //Log.e(TAG,"addPageChangeLisnter:"+position);
             }
 
             @Override

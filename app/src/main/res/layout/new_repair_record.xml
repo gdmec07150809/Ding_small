@@ -120,14 +120,14 @@
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:orientation="horizontal">
-                    <ImageView
+                    <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/img1"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/px180"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/defult_no_img"/>
-                    <ImageView
+                    <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/img2"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/px180"
@@ -136,7 +136,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/defult_no_img"/>
-                    <ImageView
+                    <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/img3"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/px180"

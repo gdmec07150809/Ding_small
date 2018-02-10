@@ -57,6 +57,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
     public static final int SHOW_RESPONSE = 0;
     private EditText p_code;
     private Button confirm_change;
+    LinearLayout root = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,17 +233,47 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
 
     //更换手机底部弹出菜单
     private void setPhoneDialog() {
-        LinearLayout root = null;
+
         mCameraDialog = new Dialog(this, R.style.Dialog);
         root = (LinearLayout) LayoutInflater.from(this).inflate(
                 R.layout.change_phone_dialog, null);
         Button new_login = root.findViewById(R.id.new_login);
+        TextView send_text=root.findViewById(R.id.send_text);
         EditText newPhone_value=root.findViewById(R.id.newPhone_value);
         if(Locale.getDefault().getLanguage().equals("en")){
             newPhone_value.setHint("Please enter a new mobile phone");
             new_login.setText("binding");
         }
         final EditText editText = root.findViewById(R.id.newPhone_value);
+
+        send_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (save_phone.equals(editText.getText().toString())) {
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("Change the phone").setMessage("Can't be the same as the last cell phone").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }else{
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("更换手机").setMessage("不能跟上次绑定的手机一样").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+
+                }else{
+                    TextView send_text=root.findViewById(R.id.send_text);
+                    CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
+                    mCountDownTimerUtils.start();
+                    new Thread(networkTask).start();//发送验证码
+                }
+            }
+        });
         new_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +281,13 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                 if (save_phone.equals(editText.getText().toString())) {
                     if (Locale.getDefault().getLanguage().equals("en")){
                         new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("Change the phone").setMessage("Can't be the same as the last cell phone").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }else{
+                        new AlertDialog.Builder(ChangePhoneActivity.this).setTitle("更换手机").setMessage("不能跟上次绑定的手机一样").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();

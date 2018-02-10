@@ -273,7 +273,9 @@
                             android:textSize="@dimen/px30"
                             android:textColor="#C8C8C8"
                             android:layout_marginRight="14px"
-                            android:text="暂无签名"/>
+                            android:hint="暂无签名"
+                            android:textColorHint="#C8C8C8"
+                            />
                         <ImageView
                             android:id="@+id/time"
                             android:layout_width="wrap_content"

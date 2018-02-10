@@ -59,6 +59,7 @@ dependencies {
     compile 'com.contrarywind:Android-PickerView:3.2.5'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.support:design:22.2.0'
+    compile files('libs/volley.jar')
     //compile 'com.github.pinguo-zhouwei:MZBannerView:v1.start1.start1'
     
 }

@@ -14,6 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
+import com.example.administrator.ding_small.HelpTool.BitmapCache;
 import com.example.administrator.ding_small.R;
 
 import org.json.JSONArray;
@@ -39,13 +44,17 @@ public class RepairRecordAdapter extends BaseAdapter {
     Bitmap bitmap=null;
     JSONArray picArray=null;
     int listIndex=0;
+
+    private RequestQueue queue;
+    private ImageLoader imageLoader;
     private ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
 
     public RepairRecordAdapter(Context context, JSONArray list) {
         this.context = context;
         holder = new ViewHolder();
         this.list = list;
-
+        queue = Volley.newRequestQueue(context);
+        imageLoader = new ImageLoader(queue, new BitmapCache());
     }
 
     @Override
@@ -85,20 +94,29 @@ public class RepairRecordAdapter extends BaseAdapter {
         try {
             JSONObject jsonObject=new JSONObject(list.get(i)+"");
             picArray=new JSONArray(jsonObject.getString("picJson"));
+            holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
+            holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
+            holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
             //String[] picArray={"http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=161e332af4246b607b5bba70dec8367a/8326cffc1e178a82111612d9f403738da977e8a5.jpg"};
            if(picArray.length()>0){
                for(int t=0;t<picArray.length();t++) {
                    if(t==0){
-                       holder.img1.setTag(picArray.get(t));
+                       holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
+                       holder.img1.setErrorImageResId(R.drawable.defult_no_img);
+                       holder.img1.setImageUrl((String) picArray.get(t), imageLoader);
                    }else if(t==1){
-                       holder.img2.setTag(picArray.get(t));
+                       holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
+                       holder.img2.setErrorImageResId(R.drawable.defult_no_img);
+                       holder.img2.setImageUrl((String) picArray.get(t), imageLoader);
                    }else{
-                       holder.img3.setTag(picArray.get(t));
+                       holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
+                       holder.img3.setErrorImageResId(R.drawable.defult_no_img);
+                       holder.img3.setImageUrl((String) picArray.get(t), imageLoader);
                    }
-                   System.out.println("图片路径："+picArray.get(t));
-                   if(picArray.get(t)!=null&&!picArray.get(t).equals("null")){
-                       returnBitMap(String.valueOf(picArray.get(t)),t);
-                   }
+//                   System.out.println("图片路径："+picArray.get(t));
+//                   if(picArray.get(t)!=null&&!picArray.get(t).equals("null")){
+//                       returnBitMap(String.valueOf(picArray.get(t)),t);
+//                   }
                }
            }else{
              //  holder.img_layout.setVisibility(View.GONE);
@@ -115,7 +133,7 @@ public class RepairRecordAdapter extends BaseAdapter {
     }
     private class ViewHolder{
         TextView repair_name,repqir_record_time,repair_content;
-        ImageView img1,img2,img3;
+        NetworkImageView img1,img2,img3;
         RelativeLayout pic_layout;
         LinearLayout img_layout;
     }

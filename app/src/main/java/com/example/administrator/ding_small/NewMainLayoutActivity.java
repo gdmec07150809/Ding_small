@@ -117,9 +117,9 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             firstLoginDialog();
         }
         init();//初始化控
-
         getLocation();//获取位置权限
         getCacheUser();//获取用户信息
+        //轮播图绑定
         Fragment fragment = MZModeBannerFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container,fragment).commit();
 
@@ -314,6 +314,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             // TODO
             // 在这里进行 http request.网络请求相关操作
             String url = utils.url+"/api/secr/user/getPersonalInfo.do?memId=" + memid + "&ts=" + ts;
+            System.out.println("用户："+url);
             OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(10,TimeUnit.SECONDS).build();
 
             System.out.println("验证：" + UserSign);

@@ -244,7 +244,10 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         //获取地址
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-
+            LocationUtil.initLocation(PerfectDeviceActivity.this);
+            System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
+            longitude_str = Double.toString(LocationUtil.longitude);
+            latitude_str = Double.toString(LocationUtil.latitude);
         } else {
             LocationUtil.initLocation(PerfectDeviceActivity.this);
             System.out.println("主经度:" + Double.toString(LocationUtil.longitude) + "主纬度：" + Double.toString(LocationUtil.latitude));
@@ -255,7 +258,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             @Override
             public void run() {
                 try {
-                    str_location = getAddress(LocationUtil.location, getApplicationContext());
+                    str_location = getAddress(LocationUtil.location, PerfectDeviceActivity.this);
                     //位置信息-----一个字符串
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -560,7 +563,9 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 if (str_location == null || str_location.isEmpty()) {
                     Toast.makeText(this, "请打开网络,重新进入", Toast.LENGTH_SHORT).show();
                 } else {
-                    location_text.setText(longitude_str + ",  " + latitude_str);
+                    String lo=longitude_str.substring(0,10);
+                    String la=latitude_str.substring(0,10);
+                    location_text.setText(lo + ",  " + la);
                     location_str1.setText(str_location);
                 }
 
@@ -944,6 +949,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     selling_phone_edit_str=selling_phone_edit_text.getText().toString().trim();//联系人电话*/
 
             String pc[]=str_location.split("-");
+
 
             // 在这里进行 http request.网络请求相关操作
             String url = utils.url+"/app/ppt6000/updateDate.do?memId=" + memid + "&ts=" + ts;

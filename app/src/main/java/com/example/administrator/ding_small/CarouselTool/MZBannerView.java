@@ -65,7 +65,7 @@ public class MZBannerView<T> extends RelativeLayout {
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private BannerPageClickListener mBannerPageClickListener;
     public enum IndicatorAlign{
-        LEFT,//做对齐
+        LEFT,//左对齐
         CENTER,//居中对齐
         RIGHT //右对齐
     }

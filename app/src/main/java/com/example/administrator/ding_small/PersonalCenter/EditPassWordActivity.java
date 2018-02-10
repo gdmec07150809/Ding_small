@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.MainLayoutActivity;
+import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.R;
 
 import org.json.JSONException;
@@ -112,7 +113,7 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
                 } else if (!newPass.equals(c_newPass)) {
                     new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改提示").setMessage("新密码不相等,请重新输入！！").setPositiveButton("确定", null).show();
                 } else {
-                    new Thread(networkTask).start();//发送验证码
+                    new Thread(networkTask).start();//修改密码
                 }
                 break;
             case R.id.back:
@@ -122,7 +123,7 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
     }
 
     /**
-     * 网络操作相关的子线程okhttp框架  发送验证码
+     * 网络操作相关的子线程okhttp框架  修改密码
      */
     Runnable networkTask = new Runnable() {
         @Override
@@ -134,7 +135,7 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
             String oldpass = MD5Utils.md5(oldPass);
             String newpass = MD5Utils.md5(newPass);
             System.out.println("验证：" + sign);
-            String b = "{\"pwdOrg\":\"" + oldpass + "\",\"pwdNew\":\"" + newpass + "\"}";//json字符串
+            String b = "{\"pwdOrg\":\"" + oldpass + "\",\"pwdNew\":\"" + newpass + "\",\"pwdType\":\"1\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
@@ -177,7 +178,7 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
                             new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改密码").setMessage("修改成功,返回首页").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(EditPassWordActivity.this, MainLayoutActivity.class);
+                                    Intent intent = new Intent(EditPassWordActivity.this, NewMainLayoutActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }

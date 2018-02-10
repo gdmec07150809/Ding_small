@@ -206,7 +206,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             @Override
             public void run() {
                 try {
-                    str_location = getAddress(LocationUtil.location, getApplicationContext());
+                    str_location = getAddress(LocationUtil.location, PersonalCenterPerfectActivity.this);
                     Message message = new Message();
                     message.what = 0;
                     try {
@@ -943,6 +943,16 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                             nameStr=objectData.getString("nick");
                             nickname_value_text.setText(nameStr);
                             String img=objectData.getString("imgUrl");
+                            if(!objectData.getString("address").equals("")&&objectData.getString("address")!=null&&!objectData.getString("address").equals("null")){
+                                String ad=objectData.getString("address");
+                                address_value.setText(ad);
+                            }
+                            if(!objectData.getString("userFlag").equals("")&&objectData.getString("userFlag")!=null){
+                                String si=objectData.getString("userFlag");
+
+                                signature_value.setText(si);
+                            }
+
                             //String img="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
                             if(img!=null&&!img.equals("null")){
                                 returnBitMap(img);//获取网络图片，并转化为Bitmap格式  设备图片
@@ -985,8 +995,11 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             OkHttpClient okHttpClient = new OkHttpClient();
             String nickValue=nickname_value_text.getText().toString();
             String sexValue=sex_value.getText().toString();
+            String addres_str=location_value.getText().toString().trim()+address_value.getText().toString().trim();
+            String sign_value=signature_value.getText().toString().trim();
+
             System.out.println("验证：" + setUserSign);
-            String b = "{\"nick\":\""+nickValue+"\",\"sex\":\""+sexValue+"\"}";//json字符串
+            String b = "{\"nick\":\""+nickValue+"\",\"sex\":\""+sexValue+"\",\"cusFlag\":\""+sign_value+"\",\"address\":\""+addres_str+"\"}";//json字符串
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
                     .url(url)
@@ -994,6 +1007,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                     .addHeader("sIgn", setUserSign)
                     .build();
             System.out.println(request.headers());
+            System.out.println(url+" "+setUserSign+" "+b);
             Call call = okHttpClient.newCall(request);
             try {
                 Response response = call.execute();
@@ -1026,21 +1040,39 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
-                            loading.setStatus(LoadingLayout.Loading);//状态取消
-                            Toast.makeText(PersonalCenterPerfectActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                            loading.setStatus(LoadingLayout.Success);//状态取消
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                Toast.makeText(PersonalCenterPerfectActivity.this, "success", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(PersonalCenterPerfectActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                            }
+
                             Intent   intent = new Intent(PersonalCenterPerfectActivity.this, NewMainLayoutActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         } else {
                             loading.setStatus(LoadingLayout.Error);
-                            LoadingLayout.getConfig()
-                                    .setErrorText("出错啦~请稍后重试！");
-                            new AlertDialog.Builder(PersonalCenterPerfectActivity.this).setTitle("网络提示").setMessage("请检查网络").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                LoadingLayout.getConfig()
+                                        .setErrorText("There is a mistake ~ please try again later!")
+                                        .setReloadButtonText("retry")
+                                        .setReloadButtonTextSize(14)
+                                        .setReloadButtonWidthAndHeight(150,40);
+                            }else{
+                                LoadingLayout.getConfig()
+                                        .setErrorText("出错啦~请稍后重试！")
+                                        .setReloadButtonText("点我重试哦")
+                                        .setReloadButtonTextSize(14)
+                                        .setReloadButtonWidthAndHeight(150,40);
+                            }
+
+                            loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                                public void onReload(View v) {
+                                    loading.setStatus(LoadingLayout.Loading);//状态取消
+                                    new Thread(setUserTask).start();//获取设备列表
+                                    }
+                            });
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
