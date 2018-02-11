@@ -104,7 +104,7 @@ import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddr
 public class PersonalCenterPerfectActivity extends Activity implements View.OnClickListener {
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, UserSign, setUserSign,oldPass, newPass, ts,getTs, photoSign,c_newPass,sign,nameStr,setTs,photoTs;
+    String memid, token, UserSign, setUserSign, ts,getTs, photoSign,sign,nameStr,setTs,photoTs;
     public static final int SHOW_RESPONSE = 0;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
 
@@ -185,7 +185,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         String url = utils.url+"/api/secr/user/amendPersonalInfo.do";
-        //String url = "http://192.168.1.103:8080/api/user/logout.do";
         setTs = String.valueOf(new Date().getTime());
         System.out.println("首页：" + memid + "  ts:" + setTs + "  token:" + token);
         String Sign = url + memid + token + setTs;
@@ -230,7 +229,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         }).start();
     }
 
-
+    /*处理地址信息*/
     private Handler locationHandler = new Handler() {
 
         @Override
@@ -251,6 +250,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             }
         }
     };
+    /*更换语言*/
     private void changeTextView() {
         if (Locale.getDefault().getLanguage().equals("en")) {
             back_text.setText("Back");
@@ -272,8 +272,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
         String url = utils.url+"/api/user/logout.do";
-       // String url = "http://192.168.1.103:8080/api/user/logout.do";
-
         ts = String.valueOf(new Date().getTime());
         System.out.println("登出：" + memid + "  ts:" + ts + "  token:" + token);
         String Sign = url + memid + token + ts;
@@ -285,7 +283,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         memid = sp.getString("memId", "null");
         token = sp.getString("tokEn", "null");
-        // String url = "http://192.168.1.108:8080/app/invs6002/lisSecr6002.do";轮播图
         String url = utils.url+"/api/user/userAvatarUpload.do";
         photoTs = String.valueOf(new Date().getTime());
         System.out.println("上传图片：memId" + memid + "  ts:" + photoTs + "  token:" + token);
@@ -293,7 +290,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         System.out.println("Sign:" + Sign);
         photoSign = MD5Utils.md5(Sign);
         System.out.println("加密sign:" + photoSign);
-        // new Thread(networkTask).start();//获取轮播图
+
     }
     @Override
     public void onClick(View view) {
@@ -302,11 +299,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             case R.id.back:
                 finish();
                 break;
-//            case R.id.confirm:
-//                intent = new Intent(PersonalCenterPerfectActivity.this, PersonalCenterActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
             case R.id.head_img://头像
                 setPhotoDialog();//图片弹出框
                 break;
@@ -325,18 +317,18 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             case R.id.signature_layout:
                 setSignatureDialog();//个性签名弹出框
                 break;
-            case R.id.btn_open_camera:
+            case R.id.btn_open_camera://打开相机
                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 11);
                 break;
-            case R.id.btn_choose_img:
+            case R.id.btn_choose_img://打开相册
                 intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 21);
                 break;
-            case R.id.btn_cancel:
+            case R.id.btn_cancel://取消弹出框
                 mCameraDialog.dismiss();
                 break;
-            case R.id.save_layout:
+            case R.id.save_layout://确认保存
                 if (Locale.getDefault().getLanguage().equals("en")) {
                     new AlertDialog.Builder(this).setTitle("save？")
                             .setIcon(android.R.drawable.ic_dialog_info)
@@ -472,6 +464,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         }
     };
 
+    /*登出处理信息*/
     private Handler loginHandler = new Handler() {
 
         @Override
@@ -567,7 +560,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         //判断那个相机回调
         mCameraDialog.dismiss();
         switch (requestCode) {
-            case 21:
+            case 21://相机处理信息
                 //打开相册并选择照片，这个方式选择单张
                 // 获取返回的数据，这里是android自定义的Uri地址
                 if (resultCode == Activity.RESULT_OK) {
@@ -594,7 +587,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 
                 }
                 break;
-            case 11:
+            case 11://相册处理信息
                 if (resultCode == Activity.RESULT_OK) {
                     String sdStatus = Environment.getExternalStorageState();
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
@@ -660,8 +653,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         @Override
         public void run() {
             // TODO
-
-                //System.out.println("图片："+file);
                 String url=utils.url+"/api/user/userAvatarUpload.do?memId="+memid+"&ts="+photoTs;
                 System.out.println("路径："+path+"  :  "+fileList+" : "+photoSign+" : "+url);
                 String name="file1";
@@ -886,6 +877,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         mCameraDialog.show();
     }
 
+    /*地址三级联动*/
     private void showPickerView() {
         OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
@@ -1025,6 +1017,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
     };
 
 
+    /*处理用户信息*/
     private Handler getUserHandler = new Handler() {
 
         @Override
@@ -1126,6 +1119,8 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
             }
         }
     };
+
+    /*处理修改用户信息*/
     private Handler setUserHandler = new Handler() {
 
         @Override
@@ -1185,6 +1180,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
 
     };
 
+    /*将图片路径转化为Bitmap*/
     public Bitmap returnBitMap(final String url){
         new Thread(new Runnable() {
             @Override
@@ -1215,6 +1211,8 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         }).start();
         return bitmap;
     }
+
+    /*设置图片*/
     private Handler DeviceImgHandler = new Handler() {
 
         @Override
@@ -1338,6 +1336,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         return result;
     }
 
+    /*处理上传图片信息*/
     private Handler upPhotoHandler1 = new Handler() {
 
         @Override
@@ -1366,7 +1365,6 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                                 head_img.setBackground(drawable);
                             }
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

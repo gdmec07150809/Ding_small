@@ -111,7 +111,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.new_main_layout);
-
+        /*判断是否第一次安装*/
         if(getIntent().getStringExtra("loginCache")!=null&&!getIntent().getStringExtra("loginCache").equals("")){
             firstLoginDialog();
         }
@@ -136,6 +136,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
         //String ts1 = String.valueOf(new Date().getTime());
         System.out.println("时间："+week(time_str));
         time_text.setText((month+1)+"月"+date+"日  "+week(time_str));
+
         changeTextView();//更换语言
     }
 
@@ -149,13 +150,11 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             home_text.setText("Home");
             my_text.setText("My");
 
-
             if (!"null".equals(memid) && memid != null) {
             }else{
                 name_text.setText("Please login");
             }
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -201,6 +200,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             System.out.println("版本号："+Build.VERSION.SDK_INT);
         }
     }
+
     private void init() {
         name_text= (TextView) findViewById(R.id.name_text);
         time_text= (TextView) findViewById(R.id.time_text);
@@ -240,11 +240,12 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             new Thread(getUserTask).start();//获取用户信息,启动
         }
     }
+
     @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()){
-            case R.id.repair_lay:
+            case R.id.repair_lay://报修
                 if (!memid.equals("null") && memid != null) {
                     intent = new Intent(NewMainLayoutActivity.this, SelectDeviceActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -258,7 +259,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
-            case R.id.device_list_lay:
+            case R.id.device_list_lay://设备表
                 if (!memid.equals("null") && memid != null) {
                     intent = new Intent(NewMainLayoutActivity.this, DeviceListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -272,7 +273,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
-            case R.id.my_lay:
+            case R.id.my_lay://我的
                 if (!"null".equals(memid) && memid != null) {
                     intent = new Intent(NewMainLayoutActivity.this, PersonalCenterActivity.class);
                     Bundle bundle = new Bundle();
@@ -289,7 +290,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                 }
                 break;
 
-            case R.id.search_lay:
+            case R.id.search_lay://搜索
                 if (!"null".equals(memid) && memid != null) {
                     intent = new Intent(NewMainLayoutActivity.this, SearchBoxActiivty.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -345,7 +346,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             }
         }
     };
-
+    /*处理获取用户信息*/
     private Handler getUserHandler = new Handler() {
 
         @Override
@@ -428,6 +429,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
         return week;
     }
 
+    /*指示弹出窗*/
     private void firstLoginDialog() {
         RelativeLayout root = null;
         mCameraDialog = new Dialog(this, R.style.logindialog);

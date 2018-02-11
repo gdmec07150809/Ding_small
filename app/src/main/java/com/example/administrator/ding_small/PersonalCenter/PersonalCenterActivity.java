@@ -51,14 +51,14 @@ import okhttp3.Response;
  */
 
 public class PersonalCenterActivity extends Activity implements View.OnClickListener {
-    private ImageView f_account, f_contacts, f_center, f_notepad,head1;
+    private ImageView head1;
     //更改语言所要更改的控件
     private TextView security_text, setting_text, about_text, custom_text, feedback_text, home_text, my_text,name_text;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, UserSign, oldPass, newPass, ts, c_newPass,sign,nick,imgUrl;
+    String nick,imgUrl;
     public static final int SHOW_RESPONSE = 0;
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
+
     Bitmap bitmap;
 
     @Override
@@ -66,7 +66,6 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_personal_center);
         findViewById(R.id.perfect).setOnClickListener(this);
-        //      findViewById(R.id.instructions).setOnClickListener(this);
         findViewById(R.id.about).setOnClickListener(this);
         findViewById(R.id.setting).setOnClickListener(this);
         findViewById(R.id.security).setOnClickListener(this);
@@ -89,7 +88,6 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         nick = sp.getString("nameStr", "");
        imgUrl = sp.getString("imgUrl",null);
-        //imgUrl="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
         if(imgUrl!=null&&!imgUrl.equals("")&&!imgUrl.equals("null")){
             returnBitMap(imgUrl);//获取网络图片，并转化为Bitmap格式  设备图片
         }
@@ -111,22 +109,22 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.perfect:
+            case R.id.perfect://个人信息
                 intent = new Intent(PersonalCenterActivity.this, PersonalCenterPerfectActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.setting:
+            case R.id.setting://基本设置
                 intent = new Intent(PersonalCenterActivity.this, SettingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.security:
+            case R.id.security://账号安全
                 intent = new Intent(PersonalCenterActivity.this, AccountSecurityActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.home_layout:
+            case R.id.home_layout://首页
                 intent = new Intent(PersonalCenterActivity.this, NewMainLayoutActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -136,6 +134,8 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
                 break;
         }
     }
+
+    /*将图片路径转化为BitMap*/
     public Bitmap returnBitMap(final String url){
         new Thread(new Runnable() {
             @Override
@@ -165,6 +165,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         }).start();
         return bitmap;
     }
+    /*设置图片*/
     private Handler DeviceImgHandler = new Handler() {
 
         @Override

@@ -151,7 +151,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
                         }
                     }else{
                         TextView send_text = findViewById(R.id.send_text);
-                        CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
+                        CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);//1秒后，一分钟倒计时
                         mCountDownTimerUtils.start();
                         new Thread(networkTask).start();//发送验证码
                     }

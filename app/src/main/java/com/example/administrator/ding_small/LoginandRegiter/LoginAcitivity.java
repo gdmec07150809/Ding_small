@@ -47,12 +47,12 @@ import static com.example.administrator.ding_small.R.*;
 
 
 public class LoginAcitivity extends Activity implements View.OnClickListener {
-    private EditText user_name, user_password, p_code, phone, password1, c_password;
+    private EditText user_name, user_password;
     public static final int SHOW_RESPONSE = 0;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     String memId, tokEn;
-    String code_str, phone_str, p1_str, p2_str, login_user, login_pass,back_str;
+    String  login_user, login_pass,back_str;
 
 
     private long clickTime = 0;
@@ -165,7 +165,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                 //判断返回页面
                 if(back_str.equals("out")){
                     overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
-                     intent = new Intent(LoginAcitivity.this, MainLayoutActivity.class);
+                     intent = new Intent(LoginAcitivity.this, NewMainLayoutActivity.class);
                     startActivity(intent);
 
                 }else {
@@ -193,7 +193,6 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
             // TODO
             // 在这里进行 http request.网络请求相关操作
             String url = utils.url+"/api/user/login.do";
-            //String url = "http://192.168.1.105:8080/api/user/login.do";
             OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.SECONDS).build();
             String pass = MD5Utils.md5(login_pass);
 
