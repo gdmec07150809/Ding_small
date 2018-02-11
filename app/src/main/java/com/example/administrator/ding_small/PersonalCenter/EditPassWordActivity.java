@@ -107,11 +107,26 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
                 newPass = c_password.getText().toString().trim();
                 c_newPass = c_new_password.getText().toString().trim();
                 if (oldPass.equals("") || newPass.equals("") || c_newPass.equals("")) {
-                    new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改提示").setMessage("信息不能为空！！").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(EditPassWordActivity.this).setTitle("Modify Tips").setMessage("Information can not be empty！！").setPositiveButton("confirm", null).show();
+                    }else{
+                        new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改提示").setMessage("信息不能为空！！").setPositiveButton("确定", null).show();
+                    }
+
                 } else if (oldPass.equals(newPass)) {
-                    new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改提示").setMessage("新密码不能跟旧密码一样！！").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        new AlertDialog.Builder(EditPassWordActivity.this).setTitle("Modify Tips").setMessage("The new password can't be the same as the old one！！").setPositiveButton("confirm", null).show();
+
+                    }else {
+                        new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改提示").setMessage("新密码不能跟旧密码一样！！").setPositiveButton("确定", null).show();
+                    }
                 } else if (!newPass.equals(c_newPass)) {
-                    new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改提示").setMessage("新密码不相等,请重新输入！！").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        new AlertDialog.Builder(EditPassWordActivity.this).setTitle("Modify Tips").setMessage("The new password is not equal, please retype！！").setPositiveButton("confirm", null).show();
+
+                    }else {
+                        new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改提示").setMessage("新密码不相等,请重新输入！！").setPositiveButton("确定", null).show();
+                    }
                 } else {
                     new Thread(networkTask).start();//修改密码
                 }
@@ -175,21 +190,41 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
                         JSONObject object1 = new JSONObject(object.getString("meta"));
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
-                            new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改密码").setMessage("修改成功,返回首页").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(EditPassWordActivity.this, NewMainLayoutActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).show();
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                new AlertDialog.Builder(EditPassWordActivity.this).setTitle("Modify the password").setMessage("Revise successfully and return to the home page").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(EditPassWordActivity.this, NewMainLayoutActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).show();
+                            }else{
+                                new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改密码").setMessage("修改成功,返回首页").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(EditPassWordActivity.this, NewMainLayoutActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).show();
+                            }
                         } else {
-                            new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改密码").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                new AlertDialog.Builder(EditPassWordActivity.this).setTitle("Modify the password").setMessage(object1.getString("msg")).setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                            }else{
+                                new AlertDialog.Builder(EditPassWordActivity.this).setTitle("修改密码").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
