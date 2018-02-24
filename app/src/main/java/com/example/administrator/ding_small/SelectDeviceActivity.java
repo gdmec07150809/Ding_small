@@ -597,7 +597,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                         message.obj = result.toString();
                         getDeviceListHandler.sendMessage(message);
                     }else{
-                        loading.setStatus(LoadingLayout.No_Network);
+                        //loading.setStatus(LoadingLayout.No_Network);
                         if (Locale.getDefault().getLanguage().equals("en")) {
                             LoadingLayout.getConfig()
                                     .setNoNetworkText("No network connection, please check your network···")

@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#1CD39B"
+                android:textSize="15dp"
                 android:layout_marginLeft="@dimen/px26"
                 android:layout_gravity="center_vertical"
                 android:text="返回"/>
@@ -123,21 +124,15 @@
             </LinearLayout>
             <TextView
                 android:id="@+id/lang_text"
-                android:layout_toLeftOf="@+id/lang"
+               android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/px30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="#C8C8C8"
                 android:text="中文"/>
-            <ImageView
-                android:id="@+id/lang"
-                android:layout_width="@dimen/px30"
-                android:layout_height="@dimen/px30"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/px30"
-                android:src="@drawable/come"/>
+
         </RelativeLayout>
     </LinearLayout>
 

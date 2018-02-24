@@ -42,7 +42,7 @@
                     android:textColor="@color/list_item_color"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="121.1245487877"/>
+                    android:text=""/>
 
                 <TextView
                     android:id="@+id/latitude"
@@ -55,7 +55,7 @@
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/list_item_color"
-                    android:text="121.1245487877"/>
+                    android:text=""/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -82,7 +82,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="广州番禺"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="广州番禺"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="-4"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"

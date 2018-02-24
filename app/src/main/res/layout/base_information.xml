@@ -27,7 +27,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="164262164216"/>
+                android:text=""/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="无"/>
+                android:text=""/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="YOUPLUS"
+                android:text=""
                 android:layout_alignBaseline="@+id/brand_name_text"
                 android:layout_alignBottom="@+id/brand_name_text"
                 android:layout_alignParentRight="true"
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="吧台灯"
+                android:text=""
                 android:layout_alignBaseline="@+id/category_text"
                 android:layout_alignBottom="@+id/category_text"
                 android:layout_alignParentRight="true"
@@ -116,7 +116,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="2017-12-30"/>
+                android:text=""/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="12个月"/>
+                android:text=""/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

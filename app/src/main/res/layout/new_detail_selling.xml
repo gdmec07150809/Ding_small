@@ -28,7 +28,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="大夫山百乐门酒店"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="12354545"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="广州番禺"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="132565467848"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -128,7 +128,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text="陈小姐"/>
+                android:text=""/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"

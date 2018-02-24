@@ -574,10 +574,16 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                 if (str_location == null || str_location.isEmpty()) {
                     Toast.makeText(this, "请打开网络,重新进入", Toast.LENGTH_SHORT).show();
                 } else {
-                    String lo=longitude_str.substring(0,10);
-                    String la=latitude_str.substring(0,10);
-                    location_text.setText(lo + ",  " + la);
-                    location_str1.setText(str_location);
+                    if(longitude_str.length()>10){
+                        String lo=longitude_str.substring(0,10);
+                        String la=latitude_str.substring(0,10);
+                        location_text.setText(lo + ",  " + la);
+                        location_str1.setText(str_location);
+                    }else{
+                        location_text.setText(longitude_str + ",  " + latitude_str);
+                        location_str1.setText(str_location);
+                    }
+
                 }
 
                 break;

@@ -118,6 +118,8 @@
                     android:id="@+id/img_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/px30"
+                    android:layout_marginBottom="@dimen/px30"
                     android:layout_centerVertical="true"
                     android:orientation="horizontal">
                     <com.android.volley.toolbox.NetworkImageView

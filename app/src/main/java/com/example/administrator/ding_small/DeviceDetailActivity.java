@@ -424,11 +424,22 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     if (DataObject.getString("managerInfoJson") != null) {
                         System.out.println("管理信息：" + DataObject.getString("managerInfoJson"));
                         JSONObject jsonObject = new JSONObject(DataObject.getString("managerInfoJson"));
-                        poc.setText(jsonObject.getString("poc"));
-                        deptName.setText(jsonObject.getString("deptName"));
-                        companyName.setText(jsonObject.getString("companyName"));
-                        managementName.setText(jsonObject.getString("managementName"));
-                        managementPhone.setText(jsonObject.getString("managementPhone"));
+                        if(!jsonObject.getString("poc").equals("")&&!jsonObject.getString("poc").equals("null")&&jsonObject.getString("poc")!=null){
+                            poc.setText(jsonObject.getString("poc"));
+                        }
+                        if(!jsonObject.getString("deptName").equals("")&&!jsonObject.getString("deptName").equals("null")&&jsonObject.getString("deptName")!=null){
+                            deptName.setText(jsonObject.getString("deptName"));
+                        }
+                        if(!jsonObject.getString("companyName").equals("")&&!jsonObject.getString("companyName").equals("null")&&jsonObject.getString("companyName")!=null){
+                            companyName.setText(jsonObject.getString("companyName"));
+                        }
+                        if(!jsonObject.getString("managementName").equals("")&&!jsonObject.getString("managementName").equals("null")&&jsonObject.getString("managementName")!=null){
+                            managementName.setText(jsonObject.getString("managementName"));
+                        }
+                        if(!jsonObject.getString("managementPhone").equals("")&&!jsonObject.getString("managementPhone").equals("null")&&jsonObject.getString("managementPhone")!=null){
+                            managementPhone.setText(jsonObject.getString("managementPhone"));
+                        }
+
                     } else {
                         System.out.println("管理无信息");
                     }
@@ -538,11 +549,22 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     if (DataObject.getString("eqpAddressJson") != null) {
 
                         JSONObject jsonObject = new JSONObject(DataObject.getString("eqpAddressJson"));
-                        location_detail.setText(jsonObject.getString("fa"));
-                        latitude.setText(jsonObject.getString("la"));
-                        longitude.setText(jsonObject.getString("lo"));
-                        loaction.setText(jsonObject.getString("pv") + jsonObject.getString("ct"));
-                        temperature.setText(jsonObject.getString("te"));
+                        if(!jsonObject.getString("fa").equals("")&&!jsonObject.getString("fa").equals("null")&&jsonObject.getString("fa")!=null){
+                            location_detail.setText(jsonObject.getString("fa"));
+                        }
+                        if(!jsonObject.getString("la").equals("")&&!jsonObject.getString("la").equals("null")&&jsonObject.getString("la")!=null){
+                            latitude.setText(jsonObject.getString("la"));
+                        }
+                        if(!jsonObject.getString("lo").equals("")&&!jsonObject.getString("lo").equals("null")&&jsonObject.getString("lo")!=null){
+                            longitude.setText(jsonObject.getString("lo"));
+                        }
+                        if(!jsonObject.getString("ct").equals("")&&!jsonObject.getString("ct").equals("null")&&jsonObject.getString("ct")!=null){
+                            loaction.setText(jsonObject.getString("pv") + jsonObject.getString("ct"));
+                        }
+                        if(!jsonObject.getString("te").equals("")&&!jsonObject.getString("te").equals("null")&&jsonObject.getString("te")!=null){
+                            temperature.setText(jsonObject.getString("te"));
+                        }
+
                         //location_detail.setText(jsonObject.getString("fa"));
                         System.out.println("参数信息：" + DataObject.getString("eqpAddressJson"));
                     } else {
@@ -593,11 +615,23 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                         System.out.println("售点信息：" + DataObject.getString("userInfoJson"));
                         JSONObject jsonObject = new JSONObject(DataObject.getString("userInfoJson"));
                         JSONObject jsonObject1 = new JSONObject(jsonObject.getString("addressInfoJson"));
-                        selling_name.setText(jsonObject.getString("pointOfSaleName"));
-                        selling_num.setText(jsonObject.getString("userId"));
-                        selling_phone.setText(jsonObject.getString("pointOfSalePhone"));
-                        selling_location.setText(jsonObject1.getString("fa"));
-                        selling_user_name.setText(jsonObject.getString("username"));
+
+                        if(!jsonObject.getString("pointOfSaleName").equals("")&&!jsonObject.getString("pointOfSaleName").equals("null")&&jsonObject.getString("pointOfSaleName")!=null){
+                            selling_name.setText(jsonObject.getString("pointOfSaleName"));
+                        }
+                        if(!jsonObject.getString("userId").equals("")&&!jsonObject.getString("userId").equals("null")&&jsonObject.getString("userId")!=null){
+                            selling_num.setText(jsonObject.getString("userId"));
+                        }
+                        if(!jsonObject.getString("pointOfSalePhone").equals("")&&!jsonObject.getString("pointOfSalePhone").equals("null")&&jsonObject.getString("pointOfSalePhone")!=null){
+                            selling_phone.setText(jsonObject.getString("pointOfSalePhone"));
+                        }
+                        if(!jsonObject1.getString("fa").equals("")&&!jsonObject1.getString("fa").equals("null")&&jsonObject1.getString("fa")!=null){
+                            selling_location.setText(jsonObject1.getString("fa"));
+                        }
+                        if(!jsonObject.getString("username").equals("")&&!jsonObject.getString("username").equals("null")&&jsonObject.getString("username")!=null){
+                            selling_user_name.setText(jsonObject.getString("username"));
+                        }
+
 
                     } else {
                         System.out.println("售点无信息");
@@ -651,12 +685,25 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 protectDateTo = findViewById(R.id.protectDateTo);
 
                 try {
-                    ssid.setText(DataObject.getString("ssid"));
-                    macNo.setText(DataObject.getString("macNo"));
-                    eqpBrand.setText(DataObject.getString("eqpBrand"));
-                    eqpStyle.setText(DataObject.getString("eqpStyle"));
-                    startDate.setText(DataObject.getString("insertDate"));
-                    protectDateTo.setText(DataObject.getString("protectDateTo"));
+                    if(!DataObject.getString("ssid").equals("")&&!DataObject.getString("ssid").equals("null")&&DataObject.getString("ssid")!=null){
+                        ssid.setText(DataObject.getString("ssid"));
+                    }
+                    if(!DataObject.getString("macNo").equals("")&&!DataObject.getString("macNo").equals("null")&&DataObject.getString("macNo")!=null){
+                        macNo.setText(DataObject.getString("macNo"));
+                    }
+                    if(!DataObject.getString("eqpBrand").equals("")&&!DataObject.getString("eqpBrand").equals("null")&&DataObject.getString("eqpBrand")!=null){
+                        eqpBrand.setText(DataObject.getString("eqpBrand"));
+                    }
+                    if(!DataObject.getString("eqpStyle").equals("")&&!DataObject.getString("eqpStyle").equals("null")&&DataObject.getString("eqpStyle")!=null){
+                        eqpStyle.setText(DataObject.getString("eqpStyle"));
+                    }
+                    if(!DataObject.getString("insertDate").equals("")&&!DataObject.getString("insertDate").equals("null")&&DataObject.getString("insertDate")!=null){
+                        startDate.setText(DataObject.getString("insertDate"));
+                    }
+                    if(!DataObject.getString("protectDateTo").equals("")&&!DataObject.getString("protectDateTo").equals("null")&&DataObject.getString("protectDateTo")!=null){
+                        protectDateTo.setText(DataObject.getString("protectDateTo"));
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

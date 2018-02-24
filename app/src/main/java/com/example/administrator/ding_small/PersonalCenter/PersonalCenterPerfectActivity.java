@@ -1034,20 +1034,23 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                         //{"meta":{"res":"99999","msg":"用户名或密码有误"},"data":null}状态码：200
                         if (object1.getString("res").equals("00000")) {
                             nameStr=objectData.getString("nick");
-                            nickname_value_text.setText(nameStr);
+                            if(!objectData.getString("nick").equals("")&&objectData.getString("nick")!=null&&!objectData.getString("nick").equals("null")){
+                                nickname_value_text.setText(nameStr);
+                            }
+
                             String img=objectData.getString("imgUrl");
                             if(!objectData.getString("address").equals("")&&objectData.getString("address")!=null&&!objectData.getString("address").equals("null")){
                                 String ad=objectData.getString("address");
                                 address_value.setText(ad);
                             }
-                            if(!objectData.getString("userFlag").equals("")&&objectData.getString("userFlag")!=null){
+                            if(!objectData.getString("userFlag").equals("")&&objectData.getString("userFlag")!=null&&!objectData.getString("userFlag").equals("null")){
                                 String si=objectData.getString("userFlag");
 
                                 signature_value.setText(si);
                             }
 
                             //String img="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1517382173&di=26a2bf5e76ab8b80075729896093b7ac&src=http://image.tianjimedia.com/uploadImages/2015/215/41/M68709LC8O6L.jpg";
-                            if(img!=null&&!img.equals("null")){
+                            if(img!=null&&!img.equals("null")&&!img.equals("")){
                                 returnBitMap(img);//获取网络图片，并转化为Bitmap格式  设备图片
                             }
 

@@ -1003,7 +1003,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     bundle.putString("opName", user_str);
                     bundle.putString("memPhone", phone_str);
                     bundle.putString("repireDescription", remark_str);
-                    bundle.putString("fa", location_str);
+                    bundle.putString("fa", cacheAdress);
                     bundle.putString("path", path);
                     bundle.putString("explain","repair");
                     bundle.putSerializable("pathList",photoPath);

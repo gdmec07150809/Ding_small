@@ -149,7 +149,6 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             search_btn.setText("Search");
             home_text.setText("Home");
             my_text.setText("My");
-
             if (!"null".equals(memid) && memid != null) {
             }else{
                 name_text.setText("Please login");
@@ -250,7 +249,6 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     intent = new Intent(NewMainLayoutActivity.this, SelectDeviceActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-
                 } else {
                     intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
                     intent.putExtra("back","in");
@@ -259,12 +257,12 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
+
             case R.id.device_list_lay://设备表
                 if (!memid.equals("null") && memid != null) {
                     intent = new Intent(NewMainLayoutActivity.this, DeviceListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-
                 } else {
                     intent = new Intent(NewMainLayoutActivity.this, LoginAcitivity.class);
                     intent.putExtra("back","in");
@@ -273,6 +271,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                     overridePendingTransition(R.anim.activity_anim_in, R.anim.activity_anim_out);
                 }
                 break;
+
             case R.id.my_lay://我的
                 if (!"null".equals(memid) && memid != null) {
                     intent = new Intent(NewMainLayoutActivity.this, PersonalCenterActivity.class);
@@ -306,6 +305,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
                 break;
         }
     }
+
 
     /**
      * 网络操作相关的子线程okhttp框架  获取用户信息
@@ -346,6 +346,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             }
         }
     };
+
     /*处理获取用户信息*/
     private Handler getUserHandler = new Handler() {
 
@@ -390,6 +391,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
 
     };
 
+
     /**
      * 输入日期如（2014年06月14日16时09分00秒）返回（星期数）
      *
@@ -428,6 +430,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
         }
         return week;
     }
+
 
     /*指示弹出窗*/
     private void firstLoginDialog() {
