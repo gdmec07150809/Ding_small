@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.administrator.ding_small.Fragment.Fragment1;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
+import com.example.administrator.ding_small.Utils.SysApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.start_layout);
+        SysApplication.getInstance().addActivity(this);
         sp = this.getSharedPreferences(tokeFile, MODE_PRIVATE);
         if(sp.getString("login", "")!=null&&!sp.getString("login", "").equals("")){
             Intent intent=new Intent(StartActivity.this,NewMainLayoutActivity.class);

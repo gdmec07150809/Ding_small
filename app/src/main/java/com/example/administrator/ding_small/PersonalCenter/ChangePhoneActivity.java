@@ -26,6 +26,7 @@ import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.LoginandRegiter.RegisterActivity;
 import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 
 import org.json.JSONException;
@@ -64,6 +65,7 @@ public class ChangePhoneActivity extends Activity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_phone_layout);
+        SysApplication.getInstance().addActivity(this);
         findViewById(R.id.back).setOnClickListener(this);
         confirm_change=findViewById(R.id.confirm_change);
         confirm_change.setOnClickListener(this);

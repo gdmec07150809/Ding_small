@@ -20,6 +20,7 @@ import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
@@ -64,6 +65,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_phone_register);
+        SysApplication.getInstance().addActivity(this);
         send_text = findViewById(R.id.send_text);
         send_text.setOnClickListener(this);
         next = findViewById(R.id.next);
@@ -117,7 +119,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 phone_str = phone.getText().toString();
                 //判断信息
                 if (phone_str.equals("")) {
-                    new AlertDialog.Builder(RegisterActivity.this).setTitle("注册提示").setMessage("手机号不能为空").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(RegisterActivity.this).setTitle("Registration prompts").setMessage("Cell phone number can not be empty").setPositiveButton("confirm", null).show();
+                    }else{
+                        new AlertDialog.Builder(RegisterActivity.this).setTitle("注册提示").setMessage("手机号不能为空").setPositiveButton("确定", null).show();
+                    }
+
                 } else {
                     TextView send_text = findViewById(R.id.send_text);
                     CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
@@ -148,10 +155,20 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         memName_str = memName.getText().toString();
         //判断信息
         if (p1_str.equals("") || p2_str.equals("") || code_str.equals("") || memName_str.equals("")) {
-            new AlertDialog.Builder(RegisterActivity.this).setTitle("注册提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+            if (Locale.getDefault().getLanguage().equals("en")){
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Registration prompts").setMessage("Information can not be empty").setPositiveButton("confirm", null).show();
+            }else{
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("注册提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+            }
+
         } else {
             if (!p1_str.equals(p2_str)) {
-                new AlertDialog.Builder(RegisterActivity.this).setTitle("注册提示").setMessage("两次密码不相等").setPositiveButton("确定", null).show();
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Registration prompts").setMessage("Two passwords are not equal").setPositiveButton("confirm", null).show();
+                }else{
+                    new AlertDialog.Builder(RegisterActivity.this).setTitle("注册提示").setMessage("两次密码不相等").setPositiveButton("确定", null).show();
+                }
+
             } else {
                 new Thread(sendRegister).start();//注册
             }
@@ -210,7 +227,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
                         switch (object1.getString("res")) {
                             case "00000"://成功
-                                Toast.makeText(RegisterActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    Toast.makeText(RegisterActivity.this,"Verifying code has been sent",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(RegisterActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                }
+
                                 break;
                         }
                     } catch (JSONException e) {
@@ -287,29 +309,57 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                                 new Thread(loginRun).start();//登录
                                 break;
                             case "21001"://手机号已存在
-                                new AlertDialog.Builder(RegisterActivity.this).setTitle("返回注册").setMessage("手机号 " + phone_str + " 已存在.").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("return").setMessage("phone " + phone_str + " Already existed.").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }else{
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("返回注册").setMessage("手机号 " + phone_str + " 已存在.").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
+
                                 break;
                             case "21003"://验证码错误
-                                new AlertDialog.Builder(RegisterActivity.this).setTitle("返回注册").setMessage("短信验证码错误, 请核对!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("return").setMessage("SMS verification code error, please check!").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }else {
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("返回注册").setMessage("短信验证码错误, 请核对!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
                                 break;
                             case "21004"://短信验证码已失效
-                                new AlertDialog.Builder(RegisterActivity.this).setTitle("返回注册").setMessage("短信验证码已失效, 请重新发送!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                                break;
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("return").setMessage("SMS authentication code has failed, please send it again!").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }else {
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("返回注册").setMessage("短信验证码已失效, 请重新发送!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                    break;
+                                }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -377,12 +427,22 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                         switch (object1.getString("res")) {
                             case "99999"://登录失败
                                 loading.setStatus(LoadingLayout.Success);
-                                new AlertDialog.Builder(RegisterActivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Login again").setMessage(object1.getString("msg")).setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }else{
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
+
                                 break;
                             case "00000"://登录成功
                                 loading.setStatus(LoadingLayout.Success);
@@ -405,13 +465,33 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                                         }
                                     }
                                 }
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    Toast.makeText(RegisterActivity.this,"success",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(RegisterActivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
+                                }
 
-                                Toast.makeText(RegisterActivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(RegisterActivity.this, NewMainLayoutActivity.class);
                                 startActivity(intent);
                                 finish();
                                 break;
                             default:
+                                loading.setStatus(LoadingLayout.Success);
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Login again").setMessage(object1.getString("msg")).setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }else{
+                                    new AlertDialog.Builder(RegisterActivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
                                 break;
                         }
                     } catch (JSONException e) {

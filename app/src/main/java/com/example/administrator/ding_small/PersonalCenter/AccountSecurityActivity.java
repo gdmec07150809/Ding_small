@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 
 import java.util.Locale;
 
@@ -22,6 +23,7 @@ public class AccountSecurityActivity extends Activity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_security);
+        SysApplication.getInstance().addActivity(this);
         findViewById(R.id.edit_password_layout).setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
         findViewById(R.id.change_layout).setOnClickListener(this);

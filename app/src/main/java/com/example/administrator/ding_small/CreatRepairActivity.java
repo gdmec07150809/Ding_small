@@ -37,6 +37,7 @@ import com.example.administrator.ding_small.Fragment.Fragment2;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
@@ -130,6 +131,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.creat_repair);
+        SysApplication.getInstance().addActivity(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }

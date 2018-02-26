@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.CountDownTimerUtils;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -58,6 +59,7 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_forgot_password);
+        SysApplication.getInstance().addActivity(this);
         send_text = findViewById(R.id.send_text);
         send_text.setOnClickListener(this);
         confirm_reset = findViewById(R.id.confirm_reset);
@@ -101,7 +103,12 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
                 phone_str = phone.getText().toString();
                 //判断信息
                 if (phone_str.equals("")) {
-                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("Reset prompt").setMessage("Information can not be empty").setPositiveButton("confirm", null).show();
+                    }else{
+                        new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+                    }
+
                 } else {
                     TextView send_text = findViewById(R.id.send_text);
                     CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(send_text, 60000, 1000);
@@ -117,10 +124,18 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
                 p2_str = c_password.getText().toString();
                 //判断信息
                 if (p1_str.equals("") || p2_str.equals("") || phone_str.equals("") || code_str.equals("")) {
-                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("Reset prompt").setMessage("Information can not be empty").setPositiveButton("confirm", null).show();
+                    }else{
+                        new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("信息不能为空").setPositiveButton("确定", null).show();
+                    }
                 } else {
                     if (!p1_str.equals(p2_str)) {
-                        new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("两次密码不相等").setPositiveButton("确定", null).show();
+                        if (Locale.getDefault().getLanguage().equals("en")){
+                            new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("Reset prompt").setMessage("Two passwords are not equal").setPositiveButton("confirm", null).show();
+                        }else {
+                            new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("重置提示").setMessage("两次密码不相等").setPositiveButton("确定", null).show();
+                        }
                     } else {
                         //sendConfirmEdit(phone_str,p1_str,saveCode);
                         new Thread(comfirPassword).start();//重置密码
@@ -185,7 +200,12 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
 
                         switch (object1.getString("res")) {
                             case "00000"://成功
-                              Toast.makeText(ForgotPassWordActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    Toast.makeText(ForgotPassWordActivity.this,"Verifying code has been sent",Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(ForgotPassWordActivity.this,"验证码已发送",Toast.LENGTH_SHORT).show();
+                                }
+
                                 break;
                         }
                     } catch (JSONException e) {
@@ -338,38 +358,83 @@ public class ForgotPassWordActivity extends Activity implements View.OnClickList
 
                         switch (object1.getString("res")) {
                             case "00000"://成功
-                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回登陆").setMessage("重置成功").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(ForgotPassWordActivity.this, LoginAcitivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("Return to landing").setMessage("success").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(ForgotPassWordActivity.this, LoginAcitivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }else{
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回登陆").setMessage("重置成功").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(ForgotPassWordActivity.this, LoginAcitivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }
+
                                 break;
                             case "21001"://手机号已存在
-                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("手机号 " + phone_str + " 已存在.").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("Return to reset").setMessage("phone " + phone_str + " Already existed.").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(ForgotPassWordActivity.this, LoginAcitivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }else {
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("手机号 " + phone_str + " 已存在.").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
                                 break;
                             case "21003"://验证码错误
-                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("短信验证码错误, 请核对!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("Return to reset").setMessage("SMS verification code error, please check!").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(ForgotPassWordActivity.this, LoginAcitivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }else {
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("短信验证码错误, 请核对!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
                                 break;
                             case "21004"://短信验证码已失效
-                                new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("短信验证码已失效, 请重新发送!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("Return to reset").setMessage("SMS authentication code has failed, please send it again!").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(ForgotPassWordActivity.this, LoginAcitivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }else {
+                                    new AlertDialog.Builder(ForgotPassWordActivity.this).setTitle("返回重置").setMessage("短信验证码已失效, 请重新发送!").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
                                 break;
                         }
                     } catch (JSONException e) {

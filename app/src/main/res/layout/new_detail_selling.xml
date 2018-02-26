@@ -28,7 +28,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text=""/>
+                />
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +53,8 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text=""/>
+                android:text="1af3dahfg5rtr58yr897ef"
+                />
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,7 +79,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text=""/>
+                />
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +104,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text=""/>
+                />
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -128,7 +129,7 @@
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/px30"
                 android:textColor="@color/list_item_color"
-                android:text=""/>
+                />
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"

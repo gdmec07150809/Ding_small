@@ -44,6 +44,7 @@ import com.example.administrator.ding_small.Adapter.WifiAdapter;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.HelpTool.PermissionHelper;
 import com.example.administrator.ding_small.HelpTool.WifiAdmin;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.weavey.loading.lib.LoadingLayout;
 
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_search);
+        SysApplication.getInstance().addActivity(this);
         getTimeCache();//获取修改的时间
         init();//初始化控件
         changeTextView();//更改语言
@@ -112,7 +114,10 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
+
+            Intent intent=new Intent(DeviceSearchActivity.this,SelectDeviceActivity.class);
+            startActivity(intent);
+
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -426,7 +431,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(DeviceSearchActivity.this, DeviceDetailActivity.class);
-                        System.out.println("蓝牙：" + i);
+                        System.out.println("蓝牙：" +  mBleArray.get(i).getAddress());
                         Bundle bundle1 = new Bundle();
                         bundle1.putString("device_mac", mBleArray.get(i).getAddress());
                         bundle1.putString("act","DeviceSearch");
@@ -479,7 +484,9 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 mCameraDialog.dismiss();
                 break;
             case R.id.back:
-                finish();
+                Intent intent=new Intent(DeviceSearchActivity.this,SelectDeviceActivity.class);
+                startActivity(intent);
+
                 break;
             default:
                 break;

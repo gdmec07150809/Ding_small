@@ -49,6 +49,7 @@ import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.example.administrator.ding_small.Label.EditLabelActivity;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
@@ -122,6 +123,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_repair_layout);
+        SysApplication.getInstance().addActivity(this);
         init();//初始化控件
         changeTextView();//更换语言
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

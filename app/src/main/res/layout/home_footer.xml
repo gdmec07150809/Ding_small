@@ -28,6 +28,7 @@
                     android:id="@+id/home_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:src="@mipmap/icon_home_normal" />
                 <TextView
                     android:id="@+id/home_text"
@@ -36,6 +37,7 @@
                     android:text="首页"
                     android:layout_marginTop="1dp"
                     android:textColor="#9F9F9F"
+                    android:layout_gravity="center_horizontal"
                     android:textSize="@dimen/px26"/>
             </LinearLayout>
         </RelativeLayout>
@@ -54,6 +56,7 @@
                     android:id="@+id/my_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:src="@mipmap/icon_my_active" />
                 <TextView
                     android:id="@+id/my_text"
@@ -62,6 +65,7 @@
                     android:text="我的"
                     android:layout_marginTop="1dp"
                     android:textColor="#1CD39B"
+                    android:layout_gravity="center_horizontal"
                     android:textSize="@dimen/px26"/>
             </LinearLayout>
         </RelativeLayout>

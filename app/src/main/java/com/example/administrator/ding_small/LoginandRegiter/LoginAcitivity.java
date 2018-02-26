@@ -23,6 +23,7 @@ import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 import com.weavey.loading.lib.Utils;
@@ -90,7 +91,7 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_login);
-
+        SysApplication.getInstance().addActivity(this);
         new_login = findViewById(R.id.new_login);
         new_login.setOnClickListener(this);
         register = findViewById(R.id.register);
@@ -302,12 +303,34 @@ public class LoginAcitivity extends Activity implements View.OnClickListener {
                                         }
                                     }
                                 }
-                                Toast.makeText(LoginAcitivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    Toast.makeText(LoginAcitivity.this,"success",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(LoginAcitivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
+                                }
+
                                 Intent intent = new Intent(LoginAcitivity.this, NewMainLayoutActivity.class);
                                 startActivity(intent);
                                 finish();
                                 break;
                             default:
+                                loading.setStatus(LoadingLayout.Success);
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(LoginAcitivity.this).setTitle("Login again").setMessage(object1.getString("msg")).setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }else{
+                                    new AlertDialog.Builder(LoginAcitivity.this).setTitle("重新登录").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
+
                                 break;
                         }
                     } catch (JSONException e) {

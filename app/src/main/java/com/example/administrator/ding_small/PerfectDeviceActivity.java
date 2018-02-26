@@ -52,6 +52,7 @@ import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
@@ -120,7 +121,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     private EditText repair_user;
     //更改语言所要更改的控件 返回、完善设备信息、自定义名称、售点名称、售点地址、售点联系人、联系人电话、当前位置参数、具体地址,确定
     private TextView back_text, perfect_device_information, custom_name_text, selling_name_text, selling_location_text,
-            selling_user_name_text, selling_phone_text, location_parameters_text, address_text, comfir_text,leapfrog,temperature_text;
+            selling_user_name_text, selling_phone_text, location_parameters_text, address_text, comfir_text,leapfrog,temperature_text,demo_text;
     private EditText selling_edit_text, selling_location_edit_text, selling_user_edit_text, selling_phone_edit_text, address_edit_text;
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
@@ -140,6 +141,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_perfect_device);
+        SysApplication.getInstance().addActivity(this);
         init();//初始化控件
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
@@ -198,7 +200,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             information_text.setText("Remarks");
             photo_text.setText("Photo");
             remarks_text.setText("Location");
-            comfir_text.setText("Comfir");
+            comfir_text.setText("confirm");
             temperature_text.setText("Temperature");
 
             //selling_edit_text,selling_location_edit_text,selling_user_edit_text,selling_phone_edit_text;
@@ -207,6 +209,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             selling_user_edit_text.setHint("Enter");
             selling_phone_edit_text.setHint("Enter");
             address_edit_text.setHint("Enter");
+            demo_text.setText("Example: the kitchen in the 2 building in the kitchen");
         }
     }
 
@@ -317,6 +320,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
         delect=findViewById(R.id.delect);
         delect.setOnClickListener(this);
         loading = findViewById(R.id.loading_layout);
+        demo_text=findViewById(R.id.demo_text);
 
     }
 

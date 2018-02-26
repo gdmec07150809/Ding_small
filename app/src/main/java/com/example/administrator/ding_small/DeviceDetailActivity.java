@@ -37,6 +37,7 @@ import com.example.administrator.ding_small.Adapter.RepairRecordAdapter;
 import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
@@ -105,7 +106,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
-    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id,repairTs,repairSign;
+    String memid, token, sign, oldPass, newPass, ts, c_newPass, device_mac,device_id,repairTs,repairSign,activityType;
     public static final int SHOW_RESPONSE = 0;
     private ScrollView scrollview;
     private JSONObject DataObject;//设备数据
@@ -132,6 +133,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_detail);
+        SysApplication.getInstance().addActivity(this);
         init();//初始化控件，绑定监听
         changeTextView();//更改语言
         loading.setStatus(LoadingLayout.Loading);
@@ -187,7 +189,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
             phone_record_text.setText("Call Record");
 
             back_text.setText("Back");
-            device_dateil_text.setText("Device dateil");
+            device_dateil_text.setText("Device Dateil");
             next_text.setText("Repair");
 
             company_text.setText("Company Name");
@@ -345,6 +347,13 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                     phone_record_img.setImageResource(R.mipmap.icon_info_up);
                     f7=2;
+
+                    f1=1;
+                    f2=1;
+                    f3=1;
+                    f4=1;
+                    f5=1;
+                    f6=1;
                 }else{
                     f7=1;
                     phone_record_layout.setVisibility(View.GONE);
@@ -366,7 +375,6 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 base_img.setImageResource(R.mipmap.icon_info_down);
                 repair_img.setImageResource(R.mipmap.icon_info_down);
 
-
                 //base_text,management_text,selling_text,parameter_text,manufacturer_text
                 base_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 management_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
@@ -375,11 +383,17 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
                 repair_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
 
-
                 break;
             case R.id.management_layout://管理信息
                 if(f2==1){
                     f2=2;
+
+                    f1=1;
+                    f6=1;
+                    f3=1;
+                    f4=1;
+                    f5=1;
+                    f7=1;
                     management_layout.setVisibility(View.VISIBLE);
                     management_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                     management_img.setImageResource(R.mipmap.icon_info_up);
@@ -453,6 +467,13 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     manufacturer_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                     manufacturer_img.setImageResource(R.mipmap.icon_info_up);
                     f5=2;
+
+                    f1=1;
+                    f2=1;
+                    f3=1;
+                    f4=1;
+                    f6=1;
+                    f7=1;
                 }else{
                     f5=1;
                     manufacturer_layout.setVisibility(View.GONE);
@@ -507,6 +528,13 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     parameter_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                     parameter_img.setImageResource(R.mipmap.icon_info_up);
                     f4=2;
+
+                    f1=1;
+                    f2=1;
+                    f3=1;
+                    f6=1;
+                    f5=1;
+                    f7=1;
                 }else{
                     f4=1;
                     parameter_layout.setVisibility(View.GONE);
@@ -580,6 +608,13 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     selling_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                     selling_point_img.setImageResource(R.mipmap.icon_info_up);
                     f3=2;
+
+                    f1=1;
+                    f2=1;
+                    f6=1;
+                    f4=1;
+                    f5=1;
+                    f7=1;
                 }else{
                     f3=1;
                     selling_point_layout.setVisibility(View.GONE);
@@ -646,6 +681,13 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     base_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                     base_img.setImageResource(R.mipmap.icon_info_up);
                     f1=2;
+
+                    f6=1;
+                    f2=1;
+                    f3=1;
+                    f4=1;
+                    f5=1;
+                    f7=1;
                 }else{
                     f1=1;
                     base_layout.setVisibility(View.GONE);
@@ -715,6 +757,12 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     repair_text.setTextColor(ContextCompat.getColor(this, R.color.theme_color));
                     repair_img.setImageResource(R.mipmap.icon_info_up);
                     f6=2;
+                    f1=1;
+                    f2=1;
+                    f3=1;
+                    f4=1;
+                    f5=1;
+                    f7=1;
                 }else{
                     f6=1;
                     record_layout.setVisibility(View.GONE);
@@ -748,8 +796,6 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
                 phone_record_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
 
-
-
 //                if(isRecord){
 //                    record_layout.setVisibility(View.VISIBLE);
 //                    isRecord=!isRecord;
@@ -763,25 +809,44 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
             case R.id.repair_btn://报修按钮
                 //selling_name,selling_num,selling_location,selling_phone,selling_user_name
                 String selling_name_str = selling_name.getText().toString().trim();
-                String selling_num_str = selling_name.getText().toString().trim();
+
                 String selling_location_str = selling_name.getText().toString().trim();
                 String selling_phone_str = selling_name.getText().toString().trim();
                 String selling_user_name_str = selling_name.getText().toString().trim();
 
                 if(eqpStatus.equals("1")){
-                    new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("该设备已在维修中！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                           dialog.dismiss();
-                        }
-                    }).show();
-                }else if (selling_name_str.equals("") || selling_num_str.equals("") || selling_location_str.equals("") || selling_phone_str.equals("") || selling_user_name_str.equals("")) {
-                    new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("请完善设备信息,再报修！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    }).show();
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("Repair tips").setMessage("The equipment has been in repair！！！").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }else{
+                        new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("该设备已在维修中！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+
+                }else if (selling_name_str.equals("") || selling_location_str.equals("") || selling_phone_str.equals("") || selling_user_name_str.equals("")) {
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("Repair tips").setMessage("Please improve the equipment information and renew the information！！！").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }else {
+                        new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("请完善设备信息，在报修！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
                 } else {
                     intent = new Intent(DeviceDetailActivity.this, CreatRepairActivity.class);
                     Bundle bundle = new Bundle();
@@ -803,24 +868,47 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.delete_img:
-                CustomDialog.Builder builder = new CustomDialog.Builder(this);
-                builder.setMessage("是否删除该设备");
-                builder.setTitle("提示");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Intent intent1 = new Intent(DeviceDetailActivity.this, DeviceListActivity.class);
-                        startActivity(intent1);
-                    }
-                });
+                if (Locale.getDefault().getLanguage().equals("en")){
+                    CustomDialog.Builder builder = new CustomDialog.Builder(this);
+                    builder.setMessage("Whether to delete the device");
+                    builder.setTitle("Prompt");
+                    builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent1 = new Intent(DeviceDetailActivity.this, DeviceListActivity.class);
+                            startActivity(intent1);
+                        }
+                    });
 
-                builder.setNegativeButton("取消",
-                        new android.content.DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                builder.create().show();
+                    builder.setNegativeButton("cancel",
+                            new android.content.DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }else{
+                    CustomDialog.Builder builder = new CustomDialog.Builder(this);
+                    builder.setMessage("是否删除该设备");
+                    builder.setTitle("提示");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent1 = new Intent(DeviceDetailActivity.this, DeviceListActivity.class);
+                            startActivity(intent1);
+                        }
+                    });
+
+                    builder.setNegativeButton("取消",
+                            new android.content.DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }
+
+
                 break;
             case R.id.back://返回
                 if(ActivityStr.equals("device")){

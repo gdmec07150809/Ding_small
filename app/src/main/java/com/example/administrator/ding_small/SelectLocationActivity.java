@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.example.administrator.ding_small.JsonClass.JsonBean;
 import com.example.administrator.ding_small.JsonClass.JsonFileReader;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -49,6 +50,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SysApplication.getInstance().addActivity(this);
         setContentView(R.layout.select_location);
         initView();
         changeTextView();//更换语言

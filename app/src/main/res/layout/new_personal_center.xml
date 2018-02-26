@@ -84,6 +84,7 @@
                             android:layout_marginRight="@dimen/px20"
                            android:background="@drawable/information_icon_bg">
                             <TextView
+                                android:id="@+id/personal_infor"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="个人信息"

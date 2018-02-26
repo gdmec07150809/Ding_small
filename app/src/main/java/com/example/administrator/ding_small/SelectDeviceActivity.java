@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -85,11 +86,22 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
     private TextView date_text, selling_text, device_text, uuid_text, back_text, select_device_text;
 
     private int date_sort=1;//初始正序
-
+    //重写onKeyDown方法,实现双击退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(SelectDeviceActivity.this, NewMainLayoutActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_new_device);
+        SysApplication.getInstance().addActivity(this);
         init();//初始化控件
         //CreatJson();//构造jsonArray备用
         changeTextView();//更改语言
@@ -460,6 +472,7 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.search_layout://搜索添加
                 intent = new Intent(SelectDeviceActivity.this, DeviceSearchActivity.class);
+                intent.putExtra("wifi","select");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -480,7 +493,9 @@ public class SelectDeviceActivity extends Activity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.back:
-                finish();
+                intent = new Intent(SelectDeviceActivity.this, NewMainLayoutActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             default:
                 break;

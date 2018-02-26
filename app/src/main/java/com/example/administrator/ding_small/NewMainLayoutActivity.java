@@ -40,6 +40,7 @@ import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.lidroid.xutils.ViewUtils;
@@ -102,7 +103,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             clickTime = System.currentTimeMillis();
         } else {
             Log.e(TAG, "exit application");
-            System.exit(0);
+            SysApplication.getInstance().exit();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -111,6 +112,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.new_main_layout);
+        SysApplication.getInstance().addActivity(this);
         /*判断是否第一次安装*/
         if(getIntent().getStringExtra("loginCache")!=null&&!getIntent().getStringExtra("loginCache").equals("")){
             firstLoginDialog();

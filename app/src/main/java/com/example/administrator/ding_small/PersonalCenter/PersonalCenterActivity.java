@@ -26,6 +26,7 @@ import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.NotepadActivity;
 import com.example.administrator.ding_small.NotepadBtnActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +54,7 @@ import okhttp3.Response;
 public class PersonalCenterActivity extends Activity implements View.OnClickListener {
     private ImageView head1;
     //更改语言所要更改的控件
-    private TextView security_text, setting_text, about_text, custom_text, feedback_text, home_text, my_text,name_text;
+    private TextView security_text, setting_text, about_text, custom_text, feedback_text, home_text, my_text,name_text,personal_infor;
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     String nick,imgUrl;
@@ -65,6 +66,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_personal_center);
+        SysApplication.getInstance().addActivity(this);
         findViewById(R.id.perfect).setOnClickListener(this);
         findViewById(R.id.about).setOnClickListener(this);
         findViewById(R.id.setting).setOnClickListener(this);
@@ -80,6 +82,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         my_text = findViewById(R.id.my_text);
         name_text=findViewById(R.id.name_text);
         head1=findViewById(R.id.head1);
+        personal_infor=findViewById(R.id.personal_infor);
         changeTextView();//更改语言
         getCacheUser();//获取缓存
     }
@@ -94,6 +97,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         name_text.setText(nick);
 
     }
+
     private void changeTextView() {
         if (Locale.getDefault().getLanguage().equals("en")) {
             security_text.setText("Account Security");
@@ -103,8 +107,10 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
             feedback_text.setText("Feedback");
             home_text.setText("Home");
             my_text.setText("My");
+            personal_infor.setText("information");
         }
     }
+
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -165,6 +171,7 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
         }).start();
         return bitmap;
     }
+
     /*设置图片*/
     private Handler DeviceImgHandler = new Handler() {
 

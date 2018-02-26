@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.SearchBoxAdapter;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
@@ -68,6 +69,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SysApplication.getInstance().addActivity(this);
         setContentView(R.layout.new_search_list);
         init();//初始化控件
         changeTextView();

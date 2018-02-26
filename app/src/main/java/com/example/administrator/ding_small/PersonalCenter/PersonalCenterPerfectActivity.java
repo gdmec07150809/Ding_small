@@ -59,6 +59,7 @@ import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.PerfectDeviceActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.google.gson.Gson;
 import com.weavey.loading.lib.LoadingLayout;
@@ -129,6 +130,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfect_personal);
+        SysApplication.getInstance().addActivity(this);
         findViewById(R.id.back).setOnClickListener(this);
         findViewById(R.id.head3).setOnClickListener(this);
         head_img = findViewById(R.id.head_img);

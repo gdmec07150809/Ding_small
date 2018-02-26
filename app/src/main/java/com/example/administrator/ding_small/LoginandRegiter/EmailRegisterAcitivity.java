@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.administrator.ding_small.HelpTool.CountDownTimerUtils;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +46,7 @@ public class EmailRegisterAcitivity extends Activity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_mail_register);
+        SysApplication.getInstance().addActivity(this);
         send_text=findViewById(R.id.send_text);
         send_text.setOnClickListener(this);
         next=findViewById(R.id.next);

@@ -19,6 +19,7 @@ import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.NewMainLayoutActivity;
 import com.example.administrator.ding_small.R;
+import com.example.administrator.ding_small.Utils.SysApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class EditPassWordActivity extends Activity implements View.OnClickListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_edit_password);
+        SysApplication.getInstance().addActivity(this);
         password1 = findViewById(R.id.password1);
         c_password = findViewById(R.id.c_password);
         c_new_password = findViewById(R.id.c_new_password);

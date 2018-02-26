@@ -36,6 +36,7 @@ import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
 import com.example.administrator.ding_small.PersonalCenter.EditPassWordActivity;
 import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivity;
 import com.example.administrator.ding_small.Utils.Data;
+import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -101,6 +102,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_list);
+        SysApplication.getInstance().addActivity(this);
         init();//初始化控件
         //getSpnner();//下拉列表
         changeTextView();//更改语言
@@ -341,6 +343,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 break;
             case R.id.add_by_search:
                 intent = new Intent(DeviceListActivity.this, DeviceSearchActivity.class);
+                intent.putExtra("wifi","list");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
