@@ -502,7 +502,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
 //
 //                    }else{
                         Bundle bundle = new Bundle();
-                        String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + location_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
+                        String jsonString="{\"opName\":\""+user_str+"\",\"memPhone\":\""+phone_str+"\",\"repireDescription\":\""+remark_str+"\",\"otherInfoJson\": {\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"" + addres_str + "\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}}";
                         String otherInfoJson_str="{\"dt\": \"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \"\",\"la\": \"\",\"fa\": \"\" + location_str + \"\",\"ar\": \"\",\"pv\": \"\",\"te\": \"\",\"ct\": \"\"}";
                         System.out.println("报修  "+jsonString);
 
@@ -518,7 +518,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         bundle.putString("opName", user_str);
                         bundle.putString("memPhone", phone_str);
                         bundle.putString("repireDescription", remark_str);
-                        bundle.putString("fa", location_str);
+                        bundle.putString("fa", addres_str);
                        // bundle.putString("path", path);
                         bundle.putString("explain","repair");
                         bundle.putSerializable("pathList",photoPath);

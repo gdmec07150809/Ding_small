@@ -97,7 +97,17 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     private LinearLayout default_lay;
     //更改语言所要更改的控件 返回、设备列表、设备总数、使用中、维修中、扫码添加、搜索添加、手工输入、历史设备
     private TextView back_text, device_list_text, device_num_text, using_text, maintenancing_text, add_by_scan_text, add_by_search_text, enter_by_manually_text, device_history_text;
-
+    //重写onKeyDown方法,实现双击退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(DeviceListActivity.this, NewMainLayoutActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -348,7 +358,9 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.back:
-                finish();
+                intent = new Intent(DeviceListActivity.this, NewMainLayoutActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             default:
                 break;

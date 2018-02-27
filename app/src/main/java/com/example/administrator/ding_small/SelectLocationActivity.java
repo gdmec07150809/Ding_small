@@ -209,7 +209,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                     editor.commit();    //提交数据保存
 
 
-                    String detailStr=adress+location_str;
+                    String detailStr=adress;
                     intent.putExtra("adress", detailStr);
                     intent.putExtra("location",location_str);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
