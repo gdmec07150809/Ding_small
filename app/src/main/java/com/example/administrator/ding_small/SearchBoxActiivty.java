@@ -1,17 +1,18 @@
 package com.example.administrator.ding_small;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -31,10 +32,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import okhttp3.Call;
@@ -66,6 +64,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
     private TextView cancel_text, recent_search_record_text, clean_text;
 
     private LinearLayout defult_lay;
+    private ImageView back_img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +82,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
         if (Locale.getDefault().getLanguage().equals("en")) {
             recent_search_record_text.setText("Recent Search Record");
             clean_text.setText("Clean");
-            cancel_text.setText("Cancel");
+            cancel_text.setText("Search");
             search_text.setHint("Search");
         }
     }
@@ -154,15 +153,46 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
 
         defult_lay=findViewById(R.id.defult_lay);
         defult_lay.setVisibility(View.GONE);
+        findViewById(R.id.back_img).setOnClickListener(this);
+
+        search_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    setCache();//设置缓存
+                    if(search_str.equals("")){
+                        if (Locale.getDefault().getLanguage().equals("en")){
+                            Toast.makeText(SearchBoxActiivty.this,"Please enter the query content！！！",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(SearchBoxActiivty.this,"请输入查询内容！！！",Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        loading.setStatus(LoadingLayout.Loading);
+                        getMemId();//查询
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.search_btn:
+            case R.id.cancel_btn:
                 setCache();//设置缓存
-                loading.setStatus(LoadingLayout.Loading);
-                getMemId();//查询
+                if(search_str.equals("")){
+                    if (Locale.getDefault().getLanguage().equals("en")){
+                        Toast.makeText(SearchBoxActiivty.this,"Please enter the query content！！！",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(SearchBoxActiivty.this,"请输入查询内容！！！",Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    loading.setStatus(LoadingLayout.Loading);
+                    getMemId();//查询
+                }
+
                 break;
             case R.id.remove_cache://清除搜索记录
                 SharedPreferences userSettings = getSharedPreferences("SearchDataList", 0);
@@ -171,7 +201,7 @@ public class SearchBoxActiivty extends Activity implements View.OnClickListener 
                 editor.commit();
                 getCache();
                 break;
-            case R.id.cancel_btn://取消
+            case R.id.back_img://取消
                 finish();
                 break;
             default:

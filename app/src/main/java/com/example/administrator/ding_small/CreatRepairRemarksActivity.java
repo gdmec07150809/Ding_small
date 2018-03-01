@@ -2,20 +2,14 @@ package com.example.administrator.ding_small;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,10 +25,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,25 +36,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
-import com.example.administrator.ding_small.HelpTool.UploadUtil;
-import com.example.administrator.ding_small.Label.EditLabelActivity;
-import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
-import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
+import com.example.administrator.ding_small.ImageFile.utils.ImageSelectorUtils;
 import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.feezu.liuli.timeselector.TimeSelector;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,9 +66,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import static android.R.attr.path;
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
-import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
 /**
  * Created by CZK on 2017/12/20.
@@ -110,6 +93,8 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     //private static final String repairFile = "repairFile";//定义保存的文件的名称
 
     private static final String tokeFile = "tokeFile";//定义保存的文件的名称
+
+    private static final int REQUEST_CODE = 0x00000011;
     SharedPreferences sp = null;//定义储存源，备用
     String memid,token,ts,upPhotoSign,path;
     String user_str,phone_str,remark_str,addres_str;
@@ -131,11 +116,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         }
         //getStringValue();//获取前页传来的数据
         //getLocation();//获取当前经纬度
-        //getTemperature();//获取当前温度
         getCache();
         getString();//获取页面传递数据
-        Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
-        arrayList.add(icon);
+
 
     }
 
@@ -192,32 +175,22 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     }
     private void getString() {
         if (getIntent().getStringExtra("adress") != null) {
-            adress_text.setText(getIntent().getStringExtra("adress"));
+
             String locationValue=getIntent().getStringExtra("adress")+getIntent().getStringExtra("location");
+            adress_text.setText(locationValue);
             location_str=locationValue;
         }
         Bundle bundle=this.getIntent().getExtras();
         photoList= (ArrayList<String>) bundle.getSerializable("pathList");
         if(photoList!=null&&photoList.size()>0){
+            Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
+            arrayList.add(icon);
             for(int i=0;i<photoList.size();i++){
                 photoPath.add(photoList.get(i));
                 arrayList.add(BitmapFactory.decodeFile(photoList.get(i)));
             }
         }
         ;
-    }
-
-    private void getTemperature() {
-        try {
-            String str = getAddress(LocationUtil.location, getApplicationContext());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        province_str = LocationUtil.province;
-        System.out.println("市：" + province_str);
-        String url = "https://api.seniverse.com/v3/weather/now.json?key=hifwkocphbol8biw&location=" + province_str + "&language=zh-Hans&unit=c";
-        sendRequestWithHttpClient(this, url);//获取温度的方法
     }
 
     @RequiresApi(api = VERSION_CODES.M)
@@ -345,7 +318,12 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_normal);
                 new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_active);
                 new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
-
+                findViewById(R.id.back_remarks).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
                 break;
             case R.id.new_photo_layout://备注图片事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -361,7 +339,12 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 new_photo_img.setBackgroundResource(R.mipmap.icon_fix_img_active);
                 new_remarks_img.setBackgroundResource(R.mipmap.icon_fix_remark_normal);
                 new_information_img.setBackgroundResource(R.mipmap.icon_fix_info_normal);
-
+                findViewById(R.id.back_img).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
                 labelFlowLayout(arrayList);
                 break;
 
@@ -421,6 +404,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 reimbursement_text.setTextColor(ContextCompat.getColor(this, R.color.green));
                 parameter_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
                 management_text.setTextColor(ContextCompat.getColor(this, R.color.blank));
+
                 break;
             case R.id.parameter_layout://备注参数事件
                 imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -530,6 +514,22 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 }
 
                 break;
+
+            case R.id.btn_open_camera://打开相机
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 11);
+                break;
+            case R.id.btn_choose_img://打开相册
+//                intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 21);
+
+                if(arrayList.size()>1){
+                    ImageSelectorUtils.openPhoto(CreatRepairRemarksActivity.this, REQUEST_CODE, false, 4-(arrayList.size()-1));
+                }else{
+                    ImageSelectorUtils.openPhoto(CreatRepairRemarksActivity.this, REQUEST_CODE, false, 4);
+                }
+
+                break;
             case R.id.back:
                 finish();
                 break;
@@ -543,8 +543,203 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-
+        mCameraDialog.dismiss();
         findViewById(R.id.new_repair_photo_lay).setVisibility(View.VISIBLE);
+
+        if(requestCode == REQUEST_CODE && data != null){
+
+            //arrayList.clear();
+            ArrayList<String> images = data.getStringArrayListExtra(ImageSelectorUtils.SELECT_RESULT);
+//            Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
+//            arrayList.add(icon);
+
+            for (String img:images){
+               Bitmap bit=BitmapFactory.decodeFile(img.toString());
+                arrayList.add(bit);
+                photoPath.add(img);
+            }
+
+//            if (arrayList.size() == 5) {
+//                arrayList.remove(0);
+//            }
+                    /*更新图片布局*/
+            found_activity_fyt.removeAllViews();
+            //加载搜索记录
+            if(arrayList.size()>5){
+                for (int i = 4; i >= 0; i--) {
+                    final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                    System.out.println("数组：" + arrayList.size());
+                    imageView.setImageBitmap(arrayList.get(i));
+                    imageView.setPadding(15, 10, 15, 10);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                    //设置边距
+                    params.topMargin = 30;
+                    params.bottomMargin = 5;
+                    params.leftMargin = 0;
+                    params.rightMargin = 8;
+                    imageView.setLayoutParams(params);
+                    found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                    found_activity_fyt.addView(imageView);//将内容添加到布局中
+                    imageView.setTag(i);
+                    System.out.println("图片数2："+ found_activity_fyt.getChildCount()+":"+i);
+
+                    imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(final View view) {
+
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("Do you delete the picture?");
+                                builder.setTitle("Tips");
+                                builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("cancel",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }else{
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("是否删除该图片");
+                                builder.setTitle("提示");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("取消",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }
+
+
+                            return true;
+                        }
+                    });
+                }
+            }else{
+                for (int i = arrayList.size() - 1; i >= 0; i--) {
+                    final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                    System.out.println("数组：" + arrayList.size());
+                    imageView.setImageBitmap(arrayList.get(i));
+                    imageView.setPadding(15, 10, 15, 10);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                    //设置边距
+                    params.topMargin = 30;
+                    params.bottomMargin = 5;
+                    params.leftMargin = 0;
+                    params.rightMargin = 8;
+                    imageView.setLayoutParams(params);
+                    imageView.setTag(i);
+                    found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                    found_activity_fyt.addView(imageView);//将内容添加到布局中
+
+                    System.out.println("图片数2："+ found_activity_fyt.getChildCount()+":"+i);
+
+                    imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(final View view) {
+
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("Do you delete the picture?");
+                                builder.setTitle("Tips");
+                                builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag-1);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("cancel",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }else{
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("是否删除该图片");
+                                builder.setTitle("提示");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag-1);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("取消",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }
+
+
+                            return true;
+                        }
+                    });
+                }
+            }
+
+
+
+             /*删除图片*/
+
+                found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setLongClickable(false);
+
+            if(found_activity_fyt.getChildCount()==5){
+                found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.GONE);
+            }
+            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {//添加点击事件
+                    System.out.println("图片数：" + found_activity_fyt.getChildCount());
+                    //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
+
+//                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                        startActivityForResult(intent, 11);
+                    setPhotoDialog();
+                }
+
+            });
+        }
         //判断那个相机回调
         switch (requestCode) {
             case 11:
@@ -564,51 +759,185 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
 
                     arrayList.add(bitmap);
-                    if (arrayList.size() == 5) {
-                        arrayList.remove(0);
-                    }
+//                    if (arrayList.size() == 5) {
+//                        arrayList.remove(0);
+//                    }
                     /*更新图片布局*/
                     found_activity_fyt.removeAllViews();
                     //加载搜索记录
-                    for (int i = arrayList.size() - 1; i >= 0; i--) {
-                        final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
-                        System.out.println("数组：" + arrayList.size());
-                        imageView.setImageBitmap(arrayList.get(i));
-                        imageView.setPadding(15, 10, 15, 10);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
-                        //设置边距
-                        params.topMargin = 30;
-                        params.bottomMargin = 5;
-                        params.leftMargin = 0;
-                        params.rightMargin = 8;
-                        imageView.setLayoutParams(params);
-                        found_activity_fyt = findViewById(R.id.found_activity_fyt);
-                        found_activity_fyt.addView(imageView);//将内容添加到布局中
-
+                    if(arrayList.size()>5){
+                        for (int i = 4; i >= 0; i--) {
+                            final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                            System.out.println("数组：" + arrayList.size());
+                            imageView.setImageBitmap(arrayList.get(i));
+                            imageView.setPadding(15, 10, 15, 10);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                            //设置边距
+                            params.topMargin = 30;
+                            params.bottomMargin = 5;
+                            params.leftMargin = 0;
+                            params.rightMargin = 8;
+                            imageView.setLayoutParams(params);
+                            found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                            found_activity_fyt.addView(imageView);//将内容添加到布局中
+                            imageView.setTag(i);
                             System.out.println("图片数2："+ found_activity_fyt.getChildCount()+":"+i);
-                            imageView.setOnClickListener(new View.OnClickListener() {
+
+                            imageView.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
-                                public void onClick(View view) {//添加点击事件
-                                    System.out.println("图片数：" + found_activity_fyt.getChildCount());
-                                    //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
-                                    if (found_activity_fyt.getChildCount() < 5) {
-                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                        startActivityForResult(intent, 11);
+                                public boolean onLongClick(final View view) {
+
+                                    if (Locale.getDefault().getLanguage().equals("en")){
+                                        CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                        builder.setMessage("Do you delete the picture?");
+                                        builder.setTitle("Tips");
+                                        builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                found_activity_fyt.removeView(view);
+                                                int tag= (int) view.getTag();
+                                                arrayList.remove(tag);
+                                                photoPath.remove(tag-1);
+                                                if(found_activity_fyt.getChildCount()<5){
+                                                    found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        });
+                                        builder.setNegativeButton("cancel",
+                                                new android.content.DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                        builder.create().show();
+                                    }else{
+                                        CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                        builder.setMessage("是否删除该图片");
+                                        builder.setTitle("提示");
+                                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                found_activity_fyt.removeView(view);
+                                                int tag= (int) view.getTag();
+                                                arrayList.remove(tag);
+                                                photoPath.remove(tag-1);
+                                                if(found_activity_fyt.getChildCount()<5){
+                                                    found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        });
+                                        builder.setNegativeButton("取消",
+                                                new android.content.DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                        builder.create().show();
                                     }
+
+
+                                    return true;
                                 }
                             });
-                             if(found_activity_fyt.getChildCount()<4){
-                                 found_activity_fyt.getChildAt(0).setLongClickable(false);
-                            }else {
-                                 imageView.setOnLongClickListener(new View.OnLongClickListener() {
-                                     @Override
-                                     public boolean onLongClick(View view) {
-                                        found_activity_fyt.removeView(view);
-                                         return true;
-                                     }
-                                 });
-                             }
+                        }
+                    }else{
+                        for (int i = arrayList.size() - 1; i >= 0; i--) {
+                            final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                            System.out.println("数组：" + arrayList.size());
+                            imageView.setImageBitmap(arrayList.get(i));
+                            imageView.setPadding(15, 10, 15, 10);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                            //设置边距
+                            params.topMargin = 30;
+                            params.bottomMargin = 5;
+                            params.leftMargin = 0;
+                            params.rightMargin = 8;
+                            imageView.setLayoutParams(params);
+                            found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                            found_activity_fyt.addView(imageView);//将内容添加到布局中
+                            imageView.setTag(i);
+                            System.out.println("图片数2："+ found_activity_fyt.getChildCount()+":"+i);
+
+                            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                                @Override
+                                public boolean onLongClick(final View view) {
+
+                                    if (Locale.getDefault().getLanguage().equals("en")){
+                                        CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                        builder.setMessage("Do you delete the picture?");
+                                        builder.setTitle("Tips");
+                                        builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                found_activity_fyt.removeView(view);
+                                                int tag= (int) view.getTag();
+                                                arrayList.remove(tag);
+                                                photoPath.remove(tag-1);
+                                                if(found_activity_fyt.getChildCount()<5){
+                                                    found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        });
+                                        builder.setNegativeButton("cancel",
+                                                new android.content.DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                        builder.create().show();
+                                    }else{
+                                        CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                        builder.setMessage("是否删除该图片");
+                                        builder.setTitle("提示");
+                                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                found_activity_fyt.removeView(view);
+                                                int tag= (int) view.getTag();
+                                                arrayList.remove(tag);
+                                                photoPath.remove(tag-1);
+                                                if(found_activity_fyt.getChildCount()<5){
+                                                    found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        });
+                                        builder.setNegativeButton("取消",
+                                                new android.content.DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                        builder.create().show();
+                                    }
+
+
+                                    return true;
+                                }
+                            });
+                        }
                     }
+
+
+                     /*删除图片*/
+
+                        found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setLongClickable(false);
+
+                    if(found_activity_fyt.getChildCount()==5){
+                        found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.GONE);
+                    }
+
+                    found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {//添加点击事件
+                            System.out.println("图片数：" + found_activity_fyt.getChildCount());
+                            //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
+
+//                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                        startActivityForResult(intent, 11);
+                            setPhotoDialog();
+                        }
+
+                    });
 
                     FileOutputStream b = null;
                     File file = new File("/sdcard/Image/");
@@ -633,6 +962,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                         }
                     }
                 }
+                break;
+
+
         }
 
     }
@@ -661,50 +993,6 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         }
     };
 
-    private void showDetelePhotoDialog(final int number) {
-        /* @setIcon 设置对话框图标
-         * @setTitle 设置对话框标题
-         * @setMessage 设置对话框消息提示
-         * setXXX方法返回Dialog对象，因此可以链式设置属性
-         */
-        final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(CreatRepairRemarksActivity.this);
-        normalDialog.setTitle("删除");
-        normalDialog.setMessage("是否删除该图片？");
-        normalDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //判断那个图片删除
-                        switch (number) {
-                            case 1:
-                                photo1.setImageResource(R.drawable.no_photo);
-                                break;
-                            case 2:
-                                photo2.setImageResource(R.drawable.no_photo);
-                                break;
-                            case 3:
-                                photo3.setImageResource(R.drawable.no_photo);
-                                break;
-                            case 4:
-                                photo4.setImageResource(R.drawable.no_photo);
-                                break;
-                            default:
-                                break;
-                        }
-
-                    }
-                });
-        normalDialog.setNegativeButton("关闭",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-        // 显示
-        normalDialog.show();
-    }
 
     //底部弹出菜单
     private void setDialog(int number) {
@@ -763,106 +1051,221 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
         mCameraDialog.show();
     }
 
-    public void sendRequestWithHttpClient(final Context context, final String url) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //用HttpClient发送请求，分为五步
-                //第一步：创建HttpClient对象
-                HttpClient httpCient = new DefaultHttpClient();
-                //第二步：创建代表请求的对象,参数是访问的服务器地址blMac=12:34:56:78:9A:BC&userId=1001&userName=%E5%BC%A0%E4%B8%89
-                //HttpGet httpGet = new HttpGet("http://192.168.1.101:8080/appUser/appUserLogin.do?loginType=1&loginAccount="+name1+"&loginPwd="+pass1);
-                HttpGet httpGet = new HttpGet(url);//测试链接
-                try {
-                    //第三步：执行请求，获取服务器发还的相应对象
-                    HttpResponse httpResponse = httpCient.execute(httpGet);
-                    //第四步：检查相应的状态是否正常：检查状态码的值是200表示正常
-                    System.out.println("状态码：" + httpResponse.getStatusLine().getStatusCode());
-                    if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                        //第五步：从相应对象当中取出数据，放到entity当中
-                        HttpEntity entity = httpResponse.getEntity();
-                        String result = EntityUtils.toString(entity, "utf-8");//将entity当中的数据转换为字符串
-                        if (result != null) {
-                            //在子线程中将Message对象发出去
-                            Message message = new Message();
-                            message.what = SHOW_RESPONSE;
-                            message.obj = result.toString();
-                            System.out.println("返回结果：" + result);
-                            handler.sendMessage(message);
 
-                        }
-                    }
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    System.out.println("访问失败！！！");
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();//这个start()方法不要忘记了
-
-    }
-
-    private Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case SHOW_RESPONSE:
-                    String response = (String) msg.obj;
-                    try {
-                        JSONObject responseObject = new JSONObject(response);
-                        System.out.println("返回：" + responseObject);
-                        JSONArray jsonArray = new JSONArray(responseObject.getString("results"));
-                        JSONObject jsonObject = new JSONObject(jsonArray.get(0).toString());
-                        JSONObject jsonObject1 = new JSONObject(jsonObject.getString("now"));
-                        System.out.println("温度：" + jsonObject1.getString("temperature"));
-                        temperature_str = jsonObject1.getString("temperature");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    };
 
     //图片布局方法
     private void labelFlowLayout(final ArrayList<Bitmap> arrayList) {
-        if (found_activity_fyt == null) {
-            //加载搜索记录
-            for (int i = 0; i < arrayList.size(); i++) {
-                final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
-                System.out.println("数组：" + arrayList.size());
-                imageView.setImageBitmap(arrayList.get(i));
-                imageView.setPadding(15, 10, 15, 10);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//设置宽高,第一个参数是宽,第二个参数是高
-                //设置边距
-                params.topMargin = 5;
-                params.bottomMargin = 5;
-                params.leftMargin = 8;
-                params.rightMargin = 8;
-                imageView.setLayoutParams(params);
-                found_activity_fyt = findViewById(R.id.found_activity_fyt);
-                found_activity_fyt.addView(imageView);//将内容添加到布局中
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {//添加点击事件
-                      for(int i=0;i<found_activity_fyt.getChildCount();i++){
-                          found_activity_fyt.getChildAt(i).setClickable(false);
-                      }
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 11);
 
-                    }
-                });
+            //加载搜索记录
+            if(arrayList.size()==0){
+                Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.mipmap.icon_fix_addimg);
+                arrayList.add(icon);
+                for (int i =  arrayList.size()-1; i >=0; i--) {
+                    final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                    System.out.println("数组：" + arrayList.size());
+                    imageView.setImageBitmap(arrayList.get(i));
+                    imageView.setPadding(15, 10, 15, 10);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200,200);//设置宽高,第一个参数是宽,第二个参数是高
+                    //设置边距
+                    params.topMargin = 5;
+                    params.bottomMargin = 5;
+                    params.leftMargin = 8;
+                    params.rightMargin = 8;
+                    imageView.setLayoutParams(params);
+                    imageView.setTag(i);
+                    found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                    found_activity_fyt.addView(imageView);//将内容添加到布局中
+
+                    imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(final View view) {
+
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("Do you delete the picture?");
+                                builder.setTitle("Tips");
+                                builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag-1);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("cancel",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }else{
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("是否删除该图片");
+                                builder.setTitle("提示");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag-1);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("取消",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }
+
+                            return true;
+                        }
+                    });
+                }
+            }else{
+                if(found_activity_fyt!=null){
+                    found_activity_fyt.removeAllViews();
+                }
+                for (int i =  arrayList.size()-1; i >=0; i--) {
+                    final ImageView imageView = new ImageView(CreatRepairRemarksActivity.this);
+                    System.out.println("数组：" + arrayList.size());
+                    imageView.setImageBitmap(arrayList.get(i));
+                    imageView.setPadding(15, 10, 15, 10);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200,200);//设置宽高,第一个参数是宽,第二个参数是高
+                    //设置边距
+                    params.topMargin = 5;
+                    params.bottomMargin = 5;
+                    params.leftMargin = 8;
+                    params.rightMargin = 8;
+                    imageView.setLayoutParams(params);
+                    imageView.setTag(i);
+                    found_activity_fyt = findViewById(R.id.found_activity_fyt);
+                    found_activity_fyt.addView(imageView);//将内容添加到布局中
+
+                    imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(final View view) {
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("Do you delete the picture?");
+                                builder.setTitle("Tips");
+                                builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag-1);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("cancel",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }else{
+                                CustomDialog.Builder builder = new CustomDialog.Builder(CreatRepairRemarksActivity.this);
+                                builder.setMessage("是否删除该图片");
+                                builder.setTitle("提示");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        found_activity_fyt.removeView(view);
+                                        int tag= (int) view.getTag();
+                                        arrayList.remove(tag);
+                                        photoPath.remove(tag-1);
+                                        if(found_activity_fyt.getChildCount()<5){
+                                            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("取消",
+                                        new android.content.DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.create().show();
+                            }
+
+
+                            return true;
+                        }
+                    });
+                }
             }
-        }
+
+
+                     /*删除图片*/
+            if(arrayList.size()<4) {
+                found_activity_fyt.getChildAt(found_activity_fyt.getChildCount() - 1).setLongClickable(false);
+            }
+            if(found_activity_fyt.getChildCount()==5){
+                found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.GONE);
+            }
+            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {//添加点击事件
+                    System.out.println("图片数：" + found_activity_fyt.getChildCount());
+                    //判断图片少于9张时,去除（除最后一张）的点击事件;等于9张时,去除所有图片的点击事件
+
+//                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                        startActivityForResult(intent, 11);
+                    setPhotoDialog();
+                }
+
+            });
+
     }
 
+    //选择图片方式底部弹出菜单
+    private void setPhotoDialog() {
+        LinearLayout root = null;
+        mCameraDialog = new Dialog(this, R.style.Dialog);
+        root = (LinearLayout) LayoutInflater.from(this).inflate(
+                R.layout.photo_menu, null);
+        Button camera=root.findViewById(R.id.btn_open_camera);//拍照
+        camera.setOnClickListener(this);
+        Button choose=root.findViewById(R.id.btn_choose_img);//相册
+        choose.setOnClickListener(this);
+        Button cancel=root.findViewById(R.id.btn_cancel);//取消
+        cancel.setOnClickListener(this);
+
+        if (Locale.getDefault().getLanguage().equals("en")){
+            camera.setText("photograph");
+            choose.setText("select from the album");
+            cancel.setText("cancel");
+        }
+        //初始化视图
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+    }
     /**
      * android上传文件到服务器
      * @param file  需要上传的文件

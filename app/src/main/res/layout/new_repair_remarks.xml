@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px90">
         <ImageView
+            android:id="@+id/back_remarks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_fix_cancel"
@@ -35,9 +36,10 @@
        <EditText
            android:id="@+id/remark_text"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
+           android:layout_height="200dp"
            android:textColorHint="@color/hint_color"
            android:textSize="@dimen/px30"
+           android:gravity="top"
            android:background="@null"
            android:textColor="@color/list_item_color"
            android:hint="请输入备注信息......"/>

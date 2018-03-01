@@ -14,4 +14,8 @@
     <string name="income">收入</string>
     <string name="expenditure">支出</string>
     <string name="outtime">逾期</string>
+    <string name="image">图片</string>
+    <string name="confirm">确定</string>
+    <string name="preview">预览</string>
+    <string name="select">选择</string>
 </resources>

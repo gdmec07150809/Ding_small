@@ -3,7 +3,6 @@ package com.example.administrator.ding_small;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,8 +12,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -32,14 +29,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,9 +44,6 @@ import android.widget.Toast;
 import com.example.administrator.ding_small.HelpTool.FlowLayout;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
-import com.example.administrator.ding_small.HelpTool.UploadUtil;
-import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
-import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
@@ -60,7 +52,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -80,10 +71,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -96,10 +85,6 @@ import okhttp3.Response;
 
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
 import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
-import static com.example.administrator.ding_small.R.id.add;
-import static com.example.administrator.ding_small.R.id.content;
-import static com.example.administrator.ding_small.R.id.date;
-import static com.example.administrator.ding_small.R.id.perfect;
 
 /**
  * Created by CZK on 2017/12/21.
@@ -1042,8 +1027,8 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             String b = "{\"macNo\": \"" + device_mac + "\",\"eqpId\": \"" + device_id + "\",\"memFullName\": \"" + repair_user_str + "\"," +
                     "\"Temperature\": \"" + temperature_str + "\",\"userInfoJson\": {\"username\": \"" + selling_user_edit_str + "\"," +
                     "\"pointOfSalePhone\": \"" + selling_phone_edit_str + "\",\"pointOfSaleName\": \"" + selling_edit_str + "\"," +
-                    "\"addressInfoJson\": {\"dt\": \""+pc[2]+"\",\"lo\": \"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \""+pc[0]+"\"," +
-                    "\"la\": \"\",\"fa\": \"" + selling_location_edit_str + "\",\"ar\": \"\",\"pv\": \"山东\",\"te\": \"" + temperature_str + "\",\"ct\": \""+pc[1]+"\"}}}";//json字符串
+                    "\"addressInfoJson\": {\"dt\": \""+pc[2]+"\",\"lo\": \""+longitude_str+"\",\"da\": \"dsagvx\",\"sq\": \"\",\"pc\": \""+pc[0]+"\"," +
+                    "\"la\": \""+latitude_str+"\",\"fa\": \"" +selling_location_edit_str + "\",\"ar\": \"\",\"pv\": \"" + pc[0]+pc[1]+pc[2]+address_edit_str + "\",\"te\": \"" + temperature_str + "\",\"ct\": \""+pc[1]+"\"}}}";//json字符串
             System.out.println("完善设备json:" + b);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), b);
             Request request = new Request.Builder()
@@ -1334,9 +1319,15 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
             }
         } catch (MalformedURLException e) {
             System.out.println("上传失败");
+            Message message = new Message();
+            message.what = 1;
+            upPhotoHandler1.sendMessage(message);
             e.printStackTrace();
         } catch (IOException e) {
             //sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
+            Message message = new Message();
+            message.what = 1;
+            upPhotoHandler1.sendMessage(message);
             System.out.println("上传失败");
             e.printStackTrace();
         }

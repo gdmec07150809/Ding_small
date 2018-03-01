@@ -22,12 +22,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.test.ServiceTestCase;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
@@ -45,19 +43,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
-import com.example.administrator.ding_small.CreatRepairRemarksActivity;
-import com.example.administrator.ding_small.DeviceDetailActivity;
-import com.example.administrator.ding_small.DeviceListActivity;
-import com.example.administrator.ding_small.HelpTool.CustomDialog;
 import com.example.administrator.ding_small.HelpTool.LocationUtil;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
-import com.example.administrator.ding_small.HelpTool.UploadUtil;
 import com.example.administrator.ding_small.JsonClass.JsonBean;
 import com.example.administrator.ding_small.JsonClass.JsonFileReader;
 import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
-import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.NewMainLayoutActivity;
-import com.example.administrator.ding_small.PerfectDeviceActivity;
 import com.example.administrator.ding_small.R;
 import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
@@ -82,10 +73,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -1170,7 +1159,7 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
                                 @Override
                                 public void onReload(View v) {
                                     loading.setStatus(LoadingLayout.Loading);//状态取消
-                                    new Thread(setUserTask).start();//获取设备列表
+                                    new Thread(   ).start();//获取设备列表
                                     }
                             });
                         }
@@ -1332,14 +1321,60 @@ public class PersonalCenterPerfectActivity extends Activity implements View.OnCl
         } catch (MalformedURLException e) {
             // sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
             System.out.println("上传失败");
+            Message message = new Message();
+            message.what = 2;
+            getErrorHandler.sendMessage(message);
             e.printStackTrace();
         } catch (IOException e) {
             //sendMessage(UPLOAD_SERVER_ERROR_CODE,"上传失败：error=" + e.getMessage());
             System.out.println("上传失败");
+            Message message = new Message();
+            message.what = 2;
+            getErrorHandler.sendMessage(message);
             e.printStackTrace();
         }
         return result;
     }
+
+    private Handler getErrorHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 2:
+                    loading.setStatus(LoadingLayout.No_Network);
+                    if (Locale.getDefault().getLanguage().equals("en")) {
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("Upload failure, please check your network···")
+                                .setReloadButtonText("Let me try again")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }else{
+                        LoadingLayout.getConfig()
+                                .setNoNetworkText("上传失败，请检查您的网络···")
+                                .setReloadButtonText("点我重试哦")
+                                .setReloadButtonTextSize(14)
+                                .setReloadButtonWidthAndHeight(150,40);
+                    }
+
+                    loading.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+                        @Override
+                        public void onReload(View v) {
+                            if(fileList!=null&&fileList.size()>0){
+                                loading.setStatus(LoadingLayout.Loading);//状态取消
+                                new Thread(run).start();
+                            }else{
+                                setUser();//修改用户信息
+                            }
+                        }
+                    });
+                    break;
+                default: break;
+            }
+        }
+    };
+
 
     /*处理上传图片信息*/
     private Handler upPhotoHandler1 = new Handler() {

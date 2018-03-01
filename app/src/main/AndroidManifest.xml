@@ -125,6 +125,11 @@
 
         <activity android:name=".SelectLocationActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".SearchBoxActiivty"/>
+
+        <!--选择图片-->
+        <activity android:name=".ImageFile.ClipImageActivity"  />
+        <activity android:name=".ImageFile.ImageSelectorActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ImageFile.PreviewActivity"  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <!--测试页面-->
         <activity android:name=".TestActivity"/>
     </application>

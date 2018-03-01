@@ -1,8 +1,6 @@
 package com.example.administrator.ding_small.PersonalCenter;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -17,35 +15,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.administrator.ding_small.AccountBookActivity;
-import com.example.administrator.ding_small.ContactsActivity;
-import com.example.administrator.ding_small.HelpTool.MD5Utils;
-import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
-import com.example.administrator.ding_small.MainLayoutActivity;
 import com.example.administrator.ding_small.NewMainLayoutActivity;
-import com.example.administrator.ding_small.NotepadActivity;
-import com.example.administrator.ding_small.NotepadBtnActivity;
 import com.example.administrator.ding_small.R;
 import com.example.administrator.ding_small.Utils.SysApplication;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 import java.util.Locale;
-
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by CZK on 2017/11/6.
@@ -66,7 +45,8 @@ public class PersonalCenterActivity extends Activity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_personal_center);
-        SysApplication.getInstance().addActivity(this);
+        SysApplication.getInstance().addActivity(this);//添加activity到管理器上
+
         findViewById(R.id.perfect).setOnClickListener(this);
         findViewById(R.id.about).setOnClickListener(this);
         findViewById(R.id.setting).setOnClickListener(this);

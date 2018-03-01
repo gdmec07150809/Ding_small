@@ -1,7 +1,6 @@
 package com.example.administrator.ding_small;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -18,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,8 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,7 +39,6 @@ import com.example.administrator.ding_small.PersonalCenter.PersonalCenterActivit
 import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.lidroid.xutils.ViewUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,8 +57,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.example.administrator.ding_small.HelpTool.DateUtils.changeweek;
-import static com.example.administrator.ding_small.HelpTool.DateUtils.changeweekOne;
 import static com.example.administrator.ding_small.NotepadActivity.TAG;
 
 
@@ -103,7 +96,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
             clickTime = System.currentTimeMillis();
         } else {
             Log.e(TAG, "exit application");
-            SysApplication.getInstance().exit();
+            SysApplication.getInstance().exit();//退出所有Activity
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -120,6 +113,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
         init();//初始化控
         getLocation();//获取位置权限
         getCacheUser();//获取用户信息
+
         //轮播图绑定
         Fragment fragment = MZModeBannerFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container,fragment).commit();

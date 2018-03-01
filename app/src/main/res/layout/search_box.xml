@@ -7,11 +7,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/px100">
+        <RelativeLayout
+            android:id="@+id/back_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/back_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_common_back_col"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/px30"
+                />
+        </RelativeLayout>
+
         <LinearLayout
-            android:layout_width="@dimen/px560"
+            android:layout_width="@dimen/px540"
             android:layout_height="@dimen/px64"
             android:background="@drawable/c_bg"
-            android:layout_marginLeft="@dimen/px30"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_toRightOf="@+id/back_lay"
             android:layout_marginTop="@dimen/px20">
             <ImageView
                 android:id="@+id/search_btn"
@@ -27,6 +42,9 @@
                 android:layout_marginLeft="@dimen/px14"
                 android:background="@null"
                 android:textSize="@dimen/px26"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:inputType="text"
                 android:hint="请输入关键字"
               android:textColorHint="#c3c3c3"/>
         </LinearLayout>
@@ -39,7 +57,7 @@
             android:layout_marginRight="@dimen/px30"
             android:textSize="@dimen/px32"
             android:textColor="@color/theme_color"
-            android:text="取消"/>
+            android:text="搜索"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1px"

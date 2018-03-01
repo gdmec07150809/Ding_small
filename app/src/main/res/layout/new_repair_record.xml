@@ -22,12 +22,21 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/icon_info_dot"/>
-                <ImageView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/px10"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/icon_info_line2"/>
+                    android:layout_gravity="center_horizontal">
+                    <View
+                        android:id="@+id/xu_img"
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/px10"
+                        android:layout_gravity="center_horizontal"
+                        android:layerType="software"
+                        android:background="@drawable/bg_dotted_line_shu"
+                        />
+                </LinearLayout>
+
             </LinearLayout>
         </RelativeLayout>
         <LinearLayout
@@ -84,7 +93,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px90"
                 android:layout_marginLeft="@dimen/px50">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -129,6 +137,7 @@
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/defult_no_img"/>
+
                     <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/img2"
                         android:layout_width="0dp"
@@ -138,6 +147,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/defult_no_img"/>
+
                     <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/img3"
                         android:layout_width="0dp"

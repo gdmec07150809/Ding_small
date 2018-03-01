@@ -21,7 +21,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,9 +28,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.ManufacturerAdapter;
 import com.example.administrator.ding_small.Adapter.RepairRecordAdapter;
 import com.example.administrator.ding_small.HelpTool.CustomDialog;
@@ -57,10 +54,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -72,7 +66,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.example.administrator.ding_small.HelpTool.LocationUtil.getAddress;
-import static com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity.SHOW_RESPONSE;
 
 /**
  * Created by CZK on 2017/12/19.
@@ -384,6 +377,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 repair_text.setTextColor(ContextCompat.getColor(this, R.color.title_color));
 
                 break;
+
             case R.id.management_layout://管理信息
                 if(f2==1){
                     f2=2;
@@ -521,6 +515,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     e.printStackTrace();
                 }
                 break;
+
             case R.id.new_parameter_layout://参数信息
 
                 if(f4==1){
@@ -574,27 +569,28 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 location_detail = findViewById(R.id.location_detail);
 
                 try {
-                    if (DataObject.getString("eqpAddressJson") != null) {
+                    if (DataObject.getString("userInfoJson") != null) {
 
-                        JSONObject jsonObject = new JSONObject(DataObject.getString("eqpAddressJson"));
-                        if(!jsonObject.getString("fa").equals("")&&!jsonObject.getString("fa").equals("null")&&jsonObject.getString("fa")!=null){
-                            location_detail.setText(jsonObject.getString("fa"));
+                        JSONObject jsonObject = new JSONObject(DataObject.getString("userInfoJson"));
+                        JSONObject jsonObject1 = new JSONObject(jsonObject.getString("addressInfoJson"));
+                        if(!jsonObject1.getString("pv").equals("")&&!jsonObject1.getString("pv").equals("null")&&jsonObject1.getString("pv")!=null){
+                            location_detail.setText(jsonObject1.getString("pv"));
                         }
-                        if(!jsonObject.getString("la").equals("")&&!jsonObject.getString("la").equals("null")&&jsonObject.getString("la")!=null){
-                            latitude.setText(jsonObject.getString("la"));
+                        if(!jsonObject1.getString("la").equals("")&&!jsonObject1.getString("la").equals("null")&&jsonObject1.getString("la")!=null){
+                            latitude.setText(jsonObject1.getString("la"));
                         }
-                        if(!jsonObject.getString("lo").equals("")&&!jsonObject.getString("lo").equals("null")&&jsonObject.getString("lo")!=null){
-                            longitude.setText(jsonObject.getString("lo"));
+                        if(!jsonObject1.getString("lo").equals("")&&!jsonObject1.getString("lo").equals("null")&&jsonObject1.getString("lo")!=null){
+                            longitude.setText(jsonObject1.getString("lo"));
                         }
-                        if(!jsonObject.getString("ct").equals("")&&!jsonObject.getString("ct").equals("null")&&jsonObject.getString("ct")!=null){
-                            loaction.setText(jsonObject.getString("pv") + jsonObject.getString("ct"));
+                        if(!jsonObject1.getString("ct").equals("")&&!jsonObject1.getString("ct").equals("null")&&jsonObject1.getString("ct")!=null){
+                            loaction.setText(jsonObject1.getString("pc") + jsonObject1.getString("ct")+ jsonObject1.getString("dt"));
                         }
-                        if(!jsonObject.getString("te").equals("")&&!jsonObject.getString("te").equals("null")&&jsonObject.getString("te")!=null){
-                            temperature.setText(jsonObject.getString("te"));
+                        if(!jsonObject1.getString("te").equals("")&&!jsonObject1.getString("te").equals("null")&&jsonObject1.getString("te")!=null){
+                            temperature.setText(jsonObject1.getString("te")+"℃");
                         }
 
                         //location_detail.setText(jsonObject.getString("fa"));
-                        System.out.println("参数信息：" + DataObject.getString("eqpAddressJson"));
+                        System.out.println("参数信息：" + DataObject.getString("userInfoJson"));
                     } else {
                         System.out.println("参数无信息");
                     }
@@ -602,6 +598,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     e.printStackTrace();
                 }
                 break;
+
             case R.id.new_selling_layout://售点信息
                 if(f3==1){
                     selling_point_layout.setVisibility(View.VISIBLE);
@@ -675,6 +672,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     e.printStackTrace();
                 }
                 break;
+
             case R.id.base_layout://基本信息
                 if(f1==1){
                     base_layout.setVisibility(View.VISIBLE);
@@ -750,6 +748,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     e.printStackTrace();
                 }
                 break;
+
             case R.id.repair_record_layout://维修记录
 
                 if(f6==1){
@@ -806,6 +805,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 //                    record_img.setImageResource(R.drawable.butoom_jiantou);
 //                }
                 break;
+
             case R.id.repair_btn://报修按钮
                 //selling_name,selling_num,selling_location,selling_phone,selling_user_name
                 String selling_name_str = selling_name.getText().toString().trim();
@@ -813,6 +813,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 String selling_location_str = selling_name.getText().toString().trim();
                 String selling_phone_str = selling_name.getText().toString().trim();
                 String selling_user_name_str = selling_name.getText().toString().trim();
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(DataObject.getString("userInfoJson"));
+                    JSONObject jsonObject1 = new JSONObject(jsonObject.getString("addressInfoJson"));
+
 
                 if(eqpStatus.equals("1")){
                     if (Locale.getDefault().getLanguage().equals("en")){
@@ -831,19 +836,35 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                         }).show();
                     }
 
-                }else if (selling_name_str.equals("") || selling_location_str.equals("") || selling_phone_str.equals("") || selling_user_name_str.equals("")) {
+                }else if (jsonObject.getString("pointOfSaleName").equals("") || jsonObject1.getString("fa").equals("") || jsonObject.getString("pointOfSalePhone").equals("") || jsonObject.getString("username").equals("")) {
                     if (Locale.getDefault().getLanguage().equals("en")){
                         new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("Repair tips").setMessage("Please improve the equipment information and renew the information！！！").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                               Intent intent = new Intent(DeviceDetailActivity.this, PerfectDeviceActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("device_mac", device_mac);
+                                bundle.putString("device_id", device_id);
+                                bundle.putString("act", ActivityStr);
+                                bundle.putString("activity","2");
+                                intent.putExtras(bundle);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             }
                         }).show();
                     }else {
                         new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("报修提示").setMessage("请完善设备信息，在报修！！！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                             Intent   intent = new Intent(DeviceDetailActivity.this, PerfectDeviceActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("device_mac", device_mac);
+                                bundle.putString("device_id", device_id);
+                                bundle.putString("act", ActivityStr);
+                                bundle.putString("activity","2");
+                                intent.putExtras(bundle);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             }
                         }).show();
                     }
@@ -855,7 +876,12 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
+
             case R.id.edit_img://编辑
                 intent = new Intent(DeviceDetailActivity.this, PerfectDeviceActivity.class);
                 Bundle bundle = new Bundle();
@@ -867,6 +893,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+
             case R.id.delete_img:
                 if (Locale.getDefault().getLanguage().equals("en")){
                     CustomDialog.Builder builder = new CustomDialog.Builder(this);
@@ -910,6 +937,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
 
                 break;
+
             case R.id.back://返回
                 if(ActivityStr.equals("device")){
                     intent = new Intent(DeviceDetailActivity.this, DeviceListActivity.class);
@@ -930,6 +958,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
             }
                 finish();
                 break;
+
             default:
                 break;
         }
@@ -1164,24 +1193,47 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
 
                              fa_location.setText(FAObject.getString("fa"));
                             } else {
-                                new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                if (Locale.getDefault().getLanguage().equals("en")){
+                                    new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("device tips").setMessage("No data of the device in the background,Please rechoose").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }else{
+                                    new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("后台无该设备数据,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                                }
+
+                            }
+                        } else {
+                            if (Locale.getDefault().getLanguage().equals("en")){
+                                new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("device tips").setMessage("No data of the device in the background,Please rechoose").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                      Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                                        Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                            }else {
+                                new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("后台无该设备数据,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                     }
                                 }).show();
                             }
-                        } else {
-                            new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("设备提示").setMessage("无此设备,请重新选择").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                }
-                            }).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

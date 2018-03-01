@@ -1,7 +1,6 @@
 package com.example.administrator.ding_small;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,9 +20,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,10 +30,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ding_small.Adapter.MFragmentPagerAdapter;
 import com.example.administrator.ding_small.Fragment.Fragment1;
-import com.example.administrator.ding_small.Fragment.Fragment2;
 import com.example.administrator.ding_small.HelpTool.MD5Utils;
-import com.example.administrator.ding_small.LoginandRegiter.LoginAcitivity;
-import com.example.administrator.ding_small.PersonalCenter.PersonalCenterPerfectActivity;
 import com.example.administrator.ding_small.Utils.SysApplication;
 import com.example.administrator.ding_small.Utils.utils;
 import com.weavey.loading.lib.LoadingLayout;
@@ -56,9 +50,7 @@ import java.net.URL;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,8 +63,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static com.example.administrator.ding_small.R.layout.fragment1;
 
 /**
  * Created by CZK on 2017/12/20.
@@ -534,8 +524,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                         } else {
                             loading.setStatus(LoadingLayout.Error);
                             if (Locale.getDefault().getLanguage().equals("en")){
-                                LoadingLayout.getConfig()
-                                        .setErrorText("Error~");
+
                                 new AlertDialog.Builder(CreatRepairActivity.this).setTitle("Repair prompt").setMessage(object1.getString("msg")).setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -543,8 +532,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                                     }
                                 }).show();
                             }else{
-                                LoadingLayout.getConfig()
-                                        .setErrorText("出错啦~请稍后重试！");
+
                                 new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -552,7 +540,6 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                                     }
                                 }).show();
                             }
-
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

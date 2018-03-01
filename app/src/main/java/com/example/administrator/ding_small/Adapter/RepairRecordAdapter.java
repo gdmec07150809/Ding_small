@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +30,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by youyou000 on 2018/start1/29.
@@ -77,15 +75,32 @@ public class RepairRecordAdapter extends BaseAdapter {
 
         View contentView = null;
         if (contentView == null ){
-            contentView = LayoutInflater.from(context).inflate(R.layout.new_repair_record,viewGroup,false);
-            holder.repair_name=contentView.findViewById(R.id.repair_name);
-            holder.repqir_record_time=contentView.findViewById(R.id.repqir_record_time);
-            holder.repair_content=contentView.findViewById(R.id.repair_content);
-            holder.pic_layout=contentView.findViewById(R.id.pic_layout);
-            holder.img1=contentView.findViewById(R.id.img1);
-            holder.img2=contentView.findViewById(R.id.img2);
-            holder.img3=contentView.findViewById(R.id.img3);
-            holder.img_layout=contentView.findViewById(R.id.img_layout);
+            JSONObject jsonObject= null;
+            try {
+                jsonObject = new JSONObject(list.get(i)+"");
+                picArray=new JSONArray(jsonObject.getString("picJson"));
+                if(picArray.length()==0||picArray==null){
+                    contentView = LayoutInflater.from(context).inflate(R.layout.new_repair_recoed_no_img,viewGroup,false);
+                    holder.repair_name=contentView.findViewById(R.id.repair_name);
+                    holder.repqir_record_time=contentView.findViewById(R.id.repqir_record_time);
+                    holder.repair_content=contentView.findViewById(R.id.repair_content);
+                }else{
+                    contentView = LayoutInflater.from(context).inflate(R.layout.new_repair_record,viewGroup,false);
+                    holder.repair_name=contentView.findViewById(R.id.repair_name);
+                    holder.repqir_record_time=contentView.findViewById(R.id.repqir_record_time);
+                    holder.repair_content=contentView.findViewById(R.id.repair_content);
+                    holder.pic_layout=contentView.findViewById(R.id.pic_layout);
+                    holder.img1=contentView.findViewById(R.id.img1);
+                    holder.img2=contentView.findViewById(R.id.img2);
+                    holder.img3=contentView.findViewById(R.id.img3);
+                    holder.img_layout=contentView.findViewById(R.id.img_layout);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
             contentView.setTag(holder);
         }else{
             holder = (ViewHolder) contentView.getTag();
@@ -94,33 +109,37 @@ public class RepairRecordAdapter extends BaseAdapter {
         try {
             JSONObject jsonObject=new JSONObject(list.get(i)+"");
             picArray=new JSONArray(jsonObject.getString("picJson"));
-            holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
-            holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
-            holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
-            //String[] picArray={"http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=161e332af4246b607b5bba70dec8367a/8326cffc1e178a82111612d9f403738da977e8a5.jpg"};
-           if(picArray.length()>0){
-               for(int t=0;t<picArray.length();t++) {
-                   if(t==0){
-                       holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
-                       holder.img1.setErrorImageResId(R.drawable.defult_no_img);
-                       holder.img1.setImageUrl((String) picArray.get(t), imageLoader);
-                   }else if(t==1){
-                       holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
-                       holder.img2.setErrorImageResId(R.drawable.defult_no_img);
-                       holder.img2.setImageUrl((String) picArray.get(t), imageLoader);
-                   }else{
-                       holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
-                       holder.img3.setErrorImageResId(R.drawable.defult_no_img);
-                       holder.img3.setImageUrl((String) picArray.get(t), imageLoader);
-                   }
+            if(picArray!=null&&picArray.length()>0){
+
+//                holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
+//                holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
+//                holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
+                //String[] picArray={"http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=161e332af4246b607b5bba70dec8367a/8326cffc1e178a82111612d9f403738da977e8a5.jpg"};
+                if(picArray.length()>0){
+                    for(int t=0;t<picArray.length();t++) {
+                        if(t==0){
+                            holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
+                            holder.img1.setErrorImageResId(R.drawable.defult_no_img);
+                            holder.img1.setImageUrl((String) picArray.get(t), imageLoader);
+                        }else if(t==1){
+                            holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
+                            holder.img2.setErrorImageResId(R.drawable.defult_no_img);
+                            holder.img2.setImageUrl((String) picArray.get(t), imageLoader);
+                        }else{
+                            holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
+                            holder.img3.setErrorImageResId(R.drawable.defult_no_img);
+                            holder.img3.setImageUrl((String) picArray.get(t), imageLoader);
+                        }
 //                   System.out.println("图片路径："+picArray.get(t));
 //                   if(picArray.get(t)!=null&&!picArray.get(t).equals("null")){
 //                       returnBitMap(String.valueOf(picArray.get(t)),t);
 //                   }
-               }
-           }else{
-             //  holder.img_layout.setVisibility(View.GONE);
-           }
+                    }
+                }else{
+                    //  holder.img_layout.setVisibility(View.GONE);
+                }
+            }
+
             if(jsonObject.getString("equipmenUserName")!=null&&!jsonObject.getString("equipmenUserName").equals("null")){
                 holder.repair_name.setText(jsonObject.getString("equipmenUserName"));
                 holder.repqir_record_time.setText(jsonObject.getString("equipmenDate"));
@@ -178,15 +197,15 @@ public class RepairRecordAdapter extends BaseAdapter {
                     case 0:
                         holder.img1.setImageBitmap(bitmap);
                         break;
-case 1:
-        holder.img2.setImageBitmap(bitmap);
-        break;
-        case 2:
-        holder.img3.setImageBitmap(bitmap);
-        break;
-default:
-        break;
-        }
+                    case 1:
+                        holder.img2.setImageBitmap(bitmap);
+                        break;
+                    case 2:
+                        holder.img3.setImageBitmap(bitmap);
+                    break;
+                    default:
+                    break;
+            }
         }
         System.out.println("bitmap:"+bitmap);
         //photo.setImageBitmap(bitmap);//更新UI

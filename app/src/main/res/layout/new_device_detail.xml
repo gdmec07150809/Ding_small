@@ -152,10 +152,11 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1px"
+                    android:layout_height="3dp"
                     android:layout_marginLeft="@dimen/px30"
                     android:layout_marginRight="@dimen/px30"
-                    android:background="@drawable/icon_info_line1" />
+                    android:layerType="software"
+                    android:background="@drawable/bg_dotted_line" />
                 <RelativeLayout
                     android:id="@+id/base_layout"
                     android:layout_width="match_parent"
