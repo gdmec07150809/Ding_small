@@ -718,11 +718,9 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                 }
             }
 
-
-
              /*删除图片*/
 
-                found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setLongClickable(false);
+            found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setLongClickable(false);
 
             if(found_activity_fyt.getChildCount()==5){
                 found_activity_fyt.getChildAt(found_activity_fyt.getChildCount()-1).setVisibility(View.GONE);

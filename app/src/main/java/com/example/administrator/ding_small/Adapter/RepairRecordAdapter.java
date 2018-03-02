@@ -1,14 +1,21 @@
 package com.example.administrator.ding_small.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,17 +42,18 @@ import java.util.ArrayList;
  * Created by youyou000 on 2018/start1/29.
  */
 
-public class RepairRecordAdapter extends BaseAdapter {
+public class RepairRecordAdapter extends BaseAdapter implements View.OnClickListener {
     private Context context;
     private ViewHolder holder;
     private JSONArray list=null;
     Bitmap bitmap=null;
     JSONArray picArray=null;
     int listIndex=0;
+    private Dialog mCameraDialog;
 
     private RequestQueue queue;
     private ImageLoader imageLoader;
-    private ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
+    private ArrayList<String> arrayList = new ArrayList<String>();
 
     public RepairRecordAdapter(Context context, JSONArray list) {
         this.context = context;
@@ -91,8 +99,11 @@ public class RepairRecordAdapter extends BaseAdapter {
                     holder.repair_content=contentView.findViewById(R.id.repair_content);
                     holder.pic_layout=contentView.findViewById(R.id.pic_layout);
                     holder.img1=contentView.findViewById(R.id.img1);
+                    holder.img1.setOnClickListener(this);
                     holder.img2=contentView.findViewById(R.id.img2);
+                    holder.img2.setOnClickListener(this);
                     holder.img3=contentView.findViewById(R.id.img3);
+                    holder.img3.setOnClickListener(this);
                     holder.img_layout=contentView.findViewById(R.id.img_layout);
                 }
             } catch (JSONException e) {
@@ -111,29 +122,28 @@ public class RepairRecordAdapter extends BaseAdapter {
             picArray=new JSONArray(jsonObject.getString("picJson"));
             if(picArray!=null&&picArray.length()>0){
 
-//                holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
-//                holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
-//                holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
-                //String[] picArray={"http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=161e332af4246b607b5bba70dec8367a/8326cffc1e178a82111612d9f403738da977e8a5.jpg"};
                 if(picArray.length()>0){
                     for(int t=0;t<picArray.length();t++) {
                         if(t==0){
                             holder.img1.setDefaultImageResId(R.drawable.defult_no_img);
                             holder.img1.setErrorImageResId(R.drawable.defult_no_img);
                             holder.img1.setImageUrl((String) picArray.get(t), imageLoader);
+                            holder.img1.setTag((String) picArray.get(t));
                         }else if(t==1){
                             holder.img2.setDefaultImageResId(R.drawable.defult_no_img);
                             holder.img2.setErrorImageResId(R.drawable.defult_no_img);
                             holder.img2.setImageUrl((String) picArray.get(t), imageLoader);
+                            holder.img2.setTag((String) picArray.get(t));
                         }else{
                             holder.img3.setDefaultImageResId(R.drawable.defult_no_img);
                             holder.img3.setErrorImageResId(R.drawable.defult_no_img);
                             holder.img3.setImageUrl((String) picArray.get(t), imageLoader);
+                            holder.img3.setTag((String) picArray.get(t));
                         }
-//                   System.out.println("图片路径："+picArray.get(t));
-//                   if(picArray.get(t)!=null&&!picArray.get(t).equals("null")){
-//                       returnBitMap(String.valueOf(picArray.get(t)),t);
-//                   }
+
+                        if(!arrayList.contains((String)picArray.get(t))){
+                            arrayList.add((String)picArray.get(t));
+                        }
                     }
                 }else{
                     //  holder.img_layout.setVisibility(View.GONE);
@@ -150,14 +160,83 @@ public class RepairRecordAdapter extends BaseAdapter {
         }
         return contentView;
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.img1:
+               //Toast.makeText(context,""+v.getTag(),Toast.LENGTH_SHORT).show();
+                for(int i=0;i<arrayList.size();i++){
+                    if (v.getTag()!=null&&v.getTag().equals(arrayList.get(i))){
+                        System.out.println(v.getTag());
+                        returnBitMap(arrayList.get(i));
+                    }
+                }
+
+                break;
+            case R.id.img2:
+                //Toast.makeText(context,""+v.getTag(),Toast.LENGTH_SHORT).show();
+                for(int i=0;i<arrayList.size();i++){
+                    if (v.getTag()!=null&&v.getTag().equals(arrayList.get(i))){
+                        System.out.println(v.getTag());
+                        returnBitMap(arrayList.get(i));
+                    }
+                }
+                break;
+            case R.id.img3:
+               //Toast.makeText(context,""+v.getTag(),Toast.LENGTH_SHORT).show();
+                for(int i=0;i<arrayList.size();i++){
+                    if (v.getTag()!=null&&v.getTag().equals(arrayList.get(i))){
+                        System.out.println(v.getTag());
+                        returnBitMap(arrayList.get(i));
+                    }
+                }
+                break;
+        }
+    }
+
+    //昵称底部弹出菜单
+    private void setNichNameDialog(Bitmap img) {
+        RelativeLayout root = null;
+        mCameraDialog = new Dialog(context, R.style.Dialog);
+        root = (RelativeLayout) LayoutInflater.from(context).inflate(
+                R.layout.image_dialog, null);
+        holder.imgs=root.findViewById(R.id.big_img);
+        Drawable drawable1 = new BitmapDrawable(img);
+        holder.imgs.setBackground(drawable1);
+        holder.imgs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCameraDialog.dismiss();
+            }
+        });
+        //初始化视图
+        mCameraDialog.setContentView(root);
+        mCameraDialog.getWindow().setDimAmount(1f);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.CENTER);
+        dialogWindow.setWindowAnimations(R.style.imgAnimation); // 添加动画
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) context.getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        lp.alpha = 10f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+    }
+
     private class ViewHolder{
         TextView repair_name,repqir_record_time,repair_content;
         NetworkImageView img1,img2,img3;
+        ImageView imgs;
         RelativeLayout pic_layout;
         LinearLayout img_layout;
     }
 
-    public void returnBitMap(final String url,final int t){
+
+    public void returnBitMap(final String url){
 
         new Thread(new Runnable() {
             @Override
@@ -176,9 +255,11 @@ public class RepairRecordAdapter extends BaseAdapter {
                     conn.connect();
                     InputStream is = conn.getInputStream();
                     bitmap = BitmapFactory.decodeStream(is);
-                    Message message = new Message();
-                    message.what = t;
+
+                    Message message=new Message();
+                    message.what=0;
                     handler.sendMessage(message);
+
                     is.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -195,14 +276,8 @@ public class RepairRecordAdapter extends BaseAdapter {
             if(bitmap!=null){
                 switch (msg.what){
                     case 0:
-                        holder.img1.setImageBitmap(bitmap);
+                        setNichNameDialog(bitmap);
                         break;
-                    case 1:
-                        holder.img2.setImageBitmap(bitmap);
-                        break;
-                    case 2:
-                        holder.img3.setImageBitmap(bitmap);
-                    break;
                     default:
                     break;
             }
