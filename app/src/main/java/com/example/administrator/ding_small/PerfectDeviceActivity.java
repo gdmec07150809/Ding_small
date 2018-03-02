@@ -625,6 +625,7 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                     File file = new File("/sdcard/Image/");
                     file.mkdirs();// 创建文件夹
                     fileName = "/sdcard/Image/" + name;
+
                     addimg.setClickable(false);
                     addimg.setLongClickable(true);
                     addimg.setImageBitmap(bitmap);
@@ -649,13 +650,6 @@ public class PerfectDeviceActivity extends Activity implements View.OnClickListe
                             e.printStackTrace();
                         }
                     }
-//                    try
-//                    {
-//                        photo1.setImageBitmap(bitmap);// 将图片显示在ImageView里
-//                    }catch(Exception e)
-//                    {
-//                        Log.e("error", e.getMessage());
-//                    }
                 }
                 break;
             case 21:

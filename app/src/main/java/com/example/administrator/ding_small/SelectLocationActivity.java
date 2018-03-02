@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
     private static final String tokeFile = "selectAdressFile";//定义保存的文件的名称
     SharedPreferences sp = null;//定义储存源，备用
     private TextView select_location_text,select_text,unselect_text,confirm_btn;
+    private ImageView back;
     //重写onKeyDown方法
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -113,6 +115,8 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
         select_text=findViewById(R.id.select_text);
         unselect_text=findViewById(R.id.unselect_text);
         location=findViewById(R.id.location);
+        back=findViewById(R.id.back);
+        back.setOnClickListener(this);
     }
 
 
@@ -215,6 +219,9 @@ public class SelectLocationActivity extends Activity implements View.OnClickList
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
+                break;
+            case R.id.back:
+                finish();
                 break;
             default:
                 break;

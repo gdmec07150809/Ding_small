@@ -4,13 +4,11 @@ package com.example.administrator.ding_small.Utils;
  * Created by youyou000 on 2018/2/26.
  */
 
+import android.app.Activity;
+import android.app.Application;
+
 import java.util.LinkedList;
 import java.util.List;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Application;
-import android.content.DialogInterface;
-import android.content.Intent;
 public class SysApplication extends Application {
     private List<Activity> mList = new LinkedList<Activity>();
     private static SysApplication instance;

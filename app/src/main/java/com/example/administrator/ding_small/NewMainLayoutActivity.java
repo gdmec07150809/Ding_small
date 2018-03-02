@@ -106,6 +106,7 @@ public class NewMainLayoutActivity extends FragmentActivity implements View.OnCl
 
         setContentView(R.layout.new_main_layout);
         SysApplication.getInstance().addActivity(this);
+
         /*判断是否第一次安装*/
         if(getIntent().getStringExtra("loginCache")!=null&&!getIntent().getStringExtra("loginCache").equals("")){
             firstLoginDialog();

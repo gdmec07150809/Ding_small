@@ -571,7 +571,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     System.out.println("数组：" + arrayList.size());
                     imageView.setImageBitmap(arrayList.get(i));
                     imageView.setPadding(15, 10, 15, 10);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);//设置宽高,第一个参数是宽,第二个参数是高
                     //设置边距
                     params.topMargin = 30;
                     params.bottomMargin = 5;
@@ -646,7 +646,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     System.out.println("数组：" + arrayList.size());
                     imageView.setImageBitmap(arrayList.get(i));
                     imageView.setPadding(15, 10, 15, 10);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);//设置宽高,第一个参数是宽,第二个参数是高
                     //设置边距
                     params.topMargin = 30;
                     params.bottomMargin = 5;
@@ -769,7 +769,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                             System.out.println("数组：" + arrayList.size());
                             imageView.setImageBitmap(arrayList.get(i));
                             imageView.setPadding(15, 10, 15, 10);
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);//设置宽高,第一个参数是宽,第二个参数是高
                             //设置边距
                             params.topMargin = 30;
                             params.bottomMargin = 5;
@@ -844,7 +844,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                             System.out.println("数组：" + arrayList.size());
                             imageView.setImageBitmap(arrayList.get(i));
                             imageView.setPadding(15, 10, 15, 10);
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);//设置宽高,第一个参数是宽,第二个参数是高
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250, 250);//设置宽高,第一个参数是宽,第二个参数是高
                             //设置边距
                             params.topMargin = 30;
                             params.bottomMargin = 5;
@@ -1063,7 +1063,7 @@ public class CreatRepairRemarksActivity extends Activity implements View.OnClick
                     System.out.println("数组：" + arrayList.size());
                     imageView.setImageBitmap(arrayList.get(i));
                     imageView.setPadding(15, 10, 15, 10);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200,200);//设置宽高,第一个参数是宽,第二个参数是高
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(250,250);//设置宽高,第一个参数是宽,第二个参数是高
                     //设置边距
                     params.topMargin = 5;
                     params.bottomMargin = 5;

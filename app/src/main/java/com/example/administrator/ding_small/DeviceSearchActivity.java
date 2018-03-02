@@ -39,9 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ding_small.Adapter.DeviceListAdapter;
 import com.example.administrator.ding_small.Adapter.WifiAdapter;
-import com.example.administrator.ding_small.HelpTool.MD5Utils;
 import com.example.administrator.ding_small.HelpTool.PermissionHelper;
 import com.example.administrator.ding_small.HelpTool.WifiAdmin;
 import com.example.administrator.ding_small.Utils.SysApplication;
@@ -50,7 +48,6 @@ import com.weavey.loading.lib.LoadingLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -114,10 +111,10 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
+            this.unregisterReceiver(receiver);
             Intent intent=new Intent(DeviceSearchActivity.this,SelectDeviceActivity.class);
             startActivity(intent);
-
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -359,7 +356,7 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.unregisterReceiver(receiver);
+        //this.unregisterReceiver(receiver);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -484,8 +481,10 @@ public class DeviceSearchActivity extends Activity implements View.OnClickListen
                 mCameraDialog.dismiss();
                 break;
             case R.id.back:
+                this.unregisterReceiver(receiver);
                 Intent intent=new Intent(DeviceSearchActivity.this,SelectDeviceActivity.class);
                 startActivity(intent);
+                finish();
 
                 break;
             default:

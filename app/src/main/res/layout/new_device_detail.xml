@@ -97,7 +97,7 @@
                                 android:layout_height="@dimen/px180"
                                 android:layout_marginLeft="@dimen/px10"
                                 android:layout_gravity="center_horizontal"
-                                android:src="@drawable/device_head_img"/>
+                                android:src="@drawable/defult_no_img"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"

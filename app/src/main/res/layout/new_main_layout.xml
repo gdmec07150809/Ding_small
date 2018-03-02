@@ -153,7 +153,6 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:layout_below="@+id/function"
             android:id="@+id/search_lay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

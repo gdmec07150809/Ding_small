@@ -1197,6 +1197,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                     new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("device tips").setMessage("No data of the device in the background,Please rechoose").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+
                                             Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
@@ -1209,6 +1210,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                             Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
+
                                         }
                                     }).show();
                                 }
@@ -1219,9 +1221,11 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                 new AlertDialog.Builder(DeviceDetailActivity.this).setTitle("device tips").setMessage("No data of the device in the background,Please rechoose").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+
                                         Intent  intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
+
                                     }
                                 }).show();
                             }else {
@@ -1231,6 +1235,7 @@ public class DeviceDetailActivity extends Activity implements View.OnClickListen
                                         Intent intent = new Intent(DeviceDetailActivity.this, DeviceSearchActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
+
                                     }
                                 }).show();
                             }

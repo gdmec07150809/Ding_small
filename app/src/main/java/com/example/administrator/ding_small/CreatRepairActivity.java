@@ -524,8 +524,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                         } else {
                             loading.setStatus(LoadingLayout.Error);
                             if (Locale.getDefault().getLanguage().equals("en")){
-
-                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("Repair prompt").setMessage(object1.getString("msg")).setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("Repair prompt").setMessage("Repair failure, please check the network to rereport").setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
@@ -533,7 +532,7 @@ public class CreatRepairActivity extends FragmentActivity implements View.OnClic
                                 }).show();
                             }else{
 
-                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage(object1.getString("msg")).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                new AlertDialog.Builder(CreatRepairActivity.this).setTitle("报修提示").setMessage("报修失败，请检查网络重新报修").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
